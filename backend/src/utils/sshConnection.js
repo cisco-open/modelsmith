@@ -105,15 +105,11 @@ class SSHConnection {
 				return;
 			}
 
-			stream
-				.on('data', (data) => {
-					onData(data.toString());
-				})
-				.stderr.on('data', (data) => {
-					onError(new Error(data.toString()));
-				});
+			stream.on('data', (data) => {
+				onData(data.toString());
+			});
 
-			stream.on('close', (code, signal) => {
+			stream.on('close', (code) => {
 				if (code === 0) {
 					onEnd();
 				} else {

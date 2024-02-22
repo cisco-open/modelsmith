@@ -34,7 +34,6 @@ function executeCommand(cmd, onData, onEnd = () => {}, onError = () => {}) {
 		// RUN ON LOCAL MACHINE
 		const child = exec(cmd);
 		child.stdout.on('data', onData);
-		child.stderr.on('data', onError);
 		child.on('close', (code) => {
 			if (code !== 0) {
 				onError(new Error(`Process exited with code ${code}`));
