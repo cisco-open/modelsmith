@@ -65,7 +65,7 @@ def main():
     scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=200)
 
 
-    for epoch in range(start_epoch, start_epoch+200):
+    for epoch in range(start_epoch, start_epoch+1):
         train(epoch, device, net, trainloader, optimizer, criterion)
         test(epoch, device, net, testloader, criterion, best_acc)
         scheduler.step()

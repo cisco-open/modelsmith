@@ -28,6 +28,8 @@ echo "3) Update iterative_magnitude_pruning.py script"
 echo "4) Update block_recon.py"
 echo "5) Update utils.py"
 echo "6) Update pruner.py"
+echo "7) Update basic-ptq-example.py"
+echo "8) Update quantization train.py"
 read -p "Enter your choice: " choice
 
 case $choice in
@@ -60,6 +62,16 @@ case $choice in
     echo -e "${GREEN}Updating pruner.py...${NC}"
     ssh ${PRIMARY_SSH_USERNAME}@${PRIMARY_SSH_HOST} "rm -f /home/${PRIMARY_SSH_USERNAME}/modelsmith/utils/pruner.py"
     scp ../modelsmith/utils/pruner.py ${PRIMARY_SSH_USERNAME}@${PRIMARY_SSH_HOST}:/home/${PRIMARY_SSH_USERNAME}/${MODELSMITH_PATH}/utils/
+    ;;
+  7)
+    echo -e "${GREEN}Updating basic-ptq-example.py...${NC}"
+    ssh ${PRIMARY_SSH_USERNAME}@${PRIMARY_SSH_HOST} "rm -f /home/${PRIMARY_SSH_USERNAME}/modelsmith/examples_quant/basic-ptq-example.py"
+    scp ../modelsmith/examples_quant/basic-ptq-example.py ${PRIMARY_SSH_USERNAME}@${PRIMARY_SSH_HOST}:/home/${PRIMARY_SSH_USERNAME}/${MODELSMITH_PATH}/examples_quant/
+    ;;
+  8)
+    echo -e "${GREEN}Updating quantization train.py...${NC}"
+    ssh ${PRIMARY_SSH_USERNAME}@${PRIMARY_SSH_HOST} "rm -f /home/${PRIMARY_SSH_USERNAME}/modelsmith/examples_quant/train.py"
+    scp ../modelsmith/examples_quant/train.py ${PRIMARY_SSH_USERNAME}@${PRIMARY_SSH_HOST}:/home/${PRIMARY_SSH_USERNAME}/${MODELSMITH_PATH}/examples_quant/
     ;;
   *)
     echo -e "${RED}Invalid choice.${NC}"
