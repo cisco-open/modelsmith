@@ -1,0 +1,22 @@
+@use '@angular/material' as mat;
+@use './ms-theme-common' as common;
+@use './ms-theme-palettes' as palettes;
+@use 'sass:map';
+
+$ms-theme-primary: mat.define-palette(map.get(palettes.$ms-theme-variables, primary), 800);
+$ms-theme-accent: mat.define-palette(map.get(palettes.$ms-theme-variables, accent), 400);
+$ms-theme-warn: mat.define-palette(mat.$red-palette);
+
+$ms-theme: mat.define-light-theme(
+	(
+		color: (
+			primary: $ms-theme-primary,
+			accent: $ms-theme-accent,
+			warn: $ms-theme-warn
+		),
+		typography: common.$ms-typography
+	)
+);
+
+@include common.create-theme($ms-theme);
+@include common.configure-root-theme-variables(palettes.$ms-theme-variables);

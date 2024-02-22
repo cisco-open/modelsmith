@@ -1,0 +1,40 @@
+<header class="header-wrapper">
+	<div class="left flex justify-center items-center">
+		<div class="icon">
+			<button mat-icon-button>
+				<mat-icon fontSet="ms" fontIcon="icon-Nav" class="mat-white"></mat-icon>
+			</button>
+		</div>
+		<div class="logo ml-4">
+			<img src="./assets/logo/logo-header.svg" alt="" />
+		</div>
+	</div>
+
+	<div class="right flex justify-center items-center gap-1">
+		<div class="form-field-container ms-white-form-field">
+			<mat-form-field subscriptSizing="dynamic" floatLabel="auto">
+				<input matInput placeholder="Search" [formControl]="search" />
+				<mat-icon matPrefix fontSet="ms" fontIcon="icon-MagnifyingGlass" class="mat-white"></mat-icon>
+			</mat-form-field>
+		</div>
+		<div>
+			<button mat-icon-button>
+				<mat-icon fontSet="ms" fontIcon="icon-Question" class="mat-white"></mat-icon>
+			</button>
+		</div>
+		<div>
+			<button mat-icon-button>
+				<mat-icon fontSet="ms" fontIcon="icon-Bell" class="mat-white"></mat-icon>
+			</button>
+		</div>
+		<div class="vertical-divider h-9"></div>
+		<div>
+			<ms-user-navigation></ms-user-navigation>
+		</div>
+		<div class="icon cursor-pointer">
+			<button mat-icon-button>
+				<mat-icon fontSet="ms" fontIcon="icon-Nav" class="mat-white"></mat-icon>
+			</button>
+		</div>
+	</div>
+</header>

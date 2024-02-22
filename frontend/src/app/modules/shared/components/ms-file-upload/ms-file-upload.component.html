@@ -1,0 +1,27 @@
+<div
+	class="dropzone"
+	(drop)="onFileDrop($event)"
+	(dragover)="onDragOver($event)"
+	(dragleave)="onDragLeave($event)"
+	role="button"
+	aria-label="File upload drop zone"
+	#dropzone>
+	<ng-container *ngIf="uploadedFileName; else uploadPrompt">
+		<div class="uploaded-file-container">
+			<span class="uploaded-file-name">
+				Uploaded: <b>{{ uploadedFileName }}</b>
+			</span>
+			<button mat-raised-button color="warn" (click)="removeFile(); $event.stopPropagation()">Remove</button>
+		</div>
+	</ng-container>
+
+	<ng-template #uploadPrompt>
+		<input type="file" hidden #fileInput (change)="onFileSelected($event)" />
+		<div class="upload-prompt">
+			<mat-icon fontSet="ms" fontIcon="icon-UploadSimple"></mat-icon>
+			<div>
+				Drag & Drop your file here or <span class="select-file" (click)="fileInput.click()">browse</span> to select.
+			</div>
+		</div>
+	</ng-template>
+</div>

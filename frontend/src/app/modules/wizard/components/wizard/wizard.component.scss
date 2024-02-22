@@ -1,0 +1,16 @@
+.wizard-layout {
+	display: flex;
+	justify-content: space-between;
+	gap: 20px;
+	height: 100%;
+
+	.left {
+		width: 45%;
+		gap: 20px;
+		margin-left: 20px;
+	}
+
+	.right {
+		width: 55%;
+	}
+}

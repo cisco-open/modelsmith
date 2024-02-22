@@ -1,0 +1,17 @@
+<mat-card class="ms-card">
+	<p class="heading-section-title">Statistics</p>
+	<ng-container *ngIf="{ stats: statistics$ | async | keyvalue } as data">
+		<ng-container *ngIf="data.stats?.length; else noStatistics">
+			<div class="key-value-container">
+				<div *ngFor="let stat of data.stats" class="key-value-pair">
+					<span class="key-value-key">{{ stat.key }}</span>
+					<span class="key-value-value">{{ stat.value }}</span>
+				</div>
+			</div>
+		</ng-container>
+
+		<ng-template #noStatistics>
+			<ms-empty-state title="No statistics available."></ms-empty-state>
+		</ng-template>
+	</ng-container>
+</mat-card>

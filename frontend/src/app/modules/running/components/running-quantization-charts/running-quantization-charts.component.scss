@@ -1,0 +1,13 @@
+.charts {
+	.ms-chart-display {
+		display: flex;
+
+		.reconstructions {
+			flex: 0 0 70%;
+		}
+
+		.testing {
+			flex: 0 0 30%;
+		}
+	}
+}

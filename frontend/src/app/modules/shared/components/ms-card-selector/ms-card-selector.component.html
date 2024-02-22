@@ -1,0 +1,9 @@
+<div class="cards-section">
+	<mat-card
+		*ngFor="let option of options; trackBy: trackByOption"
+		class="ms-card action-card"
+		[class.selected]="activeCard === option"
+		(click)="selectCard(option)">
+		<span class="heading-sub-section-title">{{ option }}</span>
+	</mat-card>
+</div>

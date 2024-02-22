@@ -1,0 +1,36 @@
+<ms-background-gradient>
+	<div class="login-container">
+		<div class="logo-section">
+			<img src="/assets/logo/login-logo.svg" alt="ModelSmith Logo" />
+			<div class="login-title">ModelSmith</div>
+			<div class="login-subtitle">A super cool compression tool</div>
+		</div>
+		<div class="login-section">
+			<form [formGroup]="form" (submit)="login()">
+				<div class="form-field-container ms-white-form-field">
+					<mat-label> Email </mat-label>
+					<mat-form-field>
+						<input matInput msErrorDisplay [formControlName]="CONTROL_NAMES.EMAIL" autocomplete="current-password" />
+					</mat-form-field>
+				</div>
+				<div class="form-field-container ms-white-form-field">
+					<mat-label> Password </mat-label>
+					<mat-form-field>
+						<input
+							msPasswordToggle
+							msErrorDisplay
+							matInput
+							[formControlName]="CONTROL_NAMES.PASSWORD"
+							autocomplete="current-password" />
+					</mat-form-field>
+				</div>
+				<div class="mt-[2px]">
+					<button [disabled]="form.invalid" type="submit" mat-raised-button color="primary" class="w-full">
+						Login
+					</button>
+				</div>
+			</form>
+		</div>
+	</div>
+	<ms-footer styleMode="fullWidth"></ms-footer>
+</ms-background-gradient>

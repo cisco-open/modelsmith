@@ -1,0 +1,134 @@
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { debounceTime, distinctUntilChanged, filter, map } from 'rxjs';
+import { ScriptConfigsDto } from '../../../../services/client/models/script/script-configs.interface-dto';
+import { FileActions } from '../../../../state/core/file/file.actions';
+import { ScriptActions } from '../../../../state/core/script/script.actions';
+import { RoutesList } from '../../../core/models/enums/routes-list.enum';
+import { FileFacadeService } from '../../../core/services/file-facade.service';
+import { FileService } from '../../../core/services/file.service';
+import { ScriptFacadeService } from '../../../core/services/script-facade.service';
+import { BannerService } from '../../../core/services/banner.service';
+import { MsPanelParametersComponent } from '../../../shared/components/ms-panel-parameters/ms-panel-parameters.component';
+import { CUSTOM_MODEL } from '../../models/constants/supported-models.constants';
+import { AlgorithmType, determineAlgorithmType } from '../../models/enums/algorithms.enum';
+import { isScriptActive } from '../../models/enums/script-status.enum';
+import { sanitizeFilename } from '../../utils/sanitize-file-name.utils';
+import { PanelAlgorithmComponent } from '../panel-algorithm/panel-algorithm.component';
+
+@UntilDestroy()
+@Component({
+	selector: 'ms-machine-unlearning',
+	templateUrl: './project-settings.component.html',
+	styleUrls: ['./project-settings.component.scss']
+})
+export class ProjectSettingsComponent implements OnInit {
+	form!: FormGroup;
+
+	@ViewChild('panelParameters', { static: false }) panelParametersComponent!: MsPanelParametersComponent;
+	@ViewChild('algorithmPanel', { static: false }) algorithmParametersComponent!: PanelAlgorithmComponent;
+
+	isScriptActive: boolean = false;
+	isQuantAlgorithmSelected: boolean = false;
+
+	constructor(
+		private scriptFacadeService: ScriptFacadeService,
+		private fb: FormBuilder,
+		private fileService: FileService,
+		private fileFacadeService: FileFacadeService,
+		private snackbarService: BannerService,
+		private router: Router,
+		private route: ActivatedRoute
+	) {}
+
+	ngOnInit() {
+		this.initForm();
+		this.listenToScriptStateChanges();
+		this.listenToAlgorithmPanelChanges();
+	}
+
+	private listenToAlgorithmPanelChanges(): void {
+		this.form.valueChanges
+			.pipe(
+				debounceTime(50),
+				map((formValue) => formValue.algorithm && formValue.algorithm.alg),
+				distinctUntilChanged(),
+				filter((algValue) => !!algValue),
+				untilDestroyed(this)
+			)
+			.subscribe((algValue) => {
+				this.isQuantAlgorithmSelected = determineAlgorithmType(algValue) === AlgorithmType.QUANTIZATION;
+			});
+	}
+
+	private listenToScriptStateChanges(): void {
+		this.scriptFacadeService.scriptStatus$.pipe(untilDestroyed(this)).subscribe((state) => {
+			this.isScriptActive = isScriptActive(state);
+
+			if (isScriptActive(state)) {
+				this.form.disable();
+			} else {
+				this.form.enable();
+			}
+		});
+	}
+
+	private initForm() {
+		this.form = this.fb.group({
+			algorithm: [],
+			model: [],
+			params: []
+		});
+	}
+
+	submit() {
+		if (this.isQuantAlgorithmSelected) {
+			this.handleQuantizationCase();
+		} else {
+			this.handlePruningCase();
+		}
+	}
+
+	handleQuantizationCase() {
+		const { algorithm, model: modelPanel } = this.form.getRawValue();
+		const { model } = modelPanel;
+
+		if (model === CUSTOM_MODEL && !this.fileService.isFileLoaded) {
+			this.snackbarService.showError('Please select a predefined model or upload a custom file.');
+			return;
+		}
+
+		let modelName = model === CUSTOM_MODEL ? sanitizeFilename(this.fileService?.file!.name) : model;
+
+		const configs: ScriptConfigsDto = {
+			...algorithm,
+			params: {
+				...this.panelParametersComponent.parametersFormatted,
+				arch: modelName
+			}
+		};
+
+		if (model === CUSTOM_MODEL) {
+			this.fileFacadeService.dispatch(FileActions.uploadFileAndCallScript({ file: this.fileService.file, configs }));
+		} else {
+			this.scriptFacadeService.dispatch(ScriptActions.callScript({ configs }));
+		}
+	}
+
+	handlePruningCase() {
+		const { algorithm } = this.form.getRawValue();
+
+		const configs: ScriptConfigsDto = {
+			...algorithm,
+			params: this.panelParametersComponent.parametersFormatted
+		};
+
+		this.scriptFacadeService.dispatch(ScriptActions.callScript({ configs }));
+	}
+
+	goToChartPage() {
+		this.router.navigate([RoutesList.MODEL_COMPRESSION.RUNNING.ROOT], { relativeTo: this.route.parent });
+	}
+}

@@ -1,0 +1,114 @@
+@use '@angular/material' as mat;
+@use 'sass:map';
+
+/**
+ * Angular Material Typography System
+ * Reference: https://m2.material.io/design/typography/the-type-system.html#type-scale
+ * 
+ * Definitions:
+ * - headline-1 (.mat-headline-1): One-off header, often atop pages (like hero headers).
+ * - headline-2 (.mat-headline-2): Same as headline-1.
+ * - headline-3 (.mat-headline-3): Same as headline-1.
+ * - headline-4 (.mat-headline-4): Same as headline-1.
+ * - headline-5 (.mat-h1 or .mat-headline-5): Section heading (<h1> equivalent).
+ * - headline-6 (.mat-h2 or .mat-headline-6): Section heading (<h2> equivalent).
+ * - subtitle-1 (.mat-h3 or .mat-subtitle-1): Section heading (<h3> equivalent).
+ * - subtitle-2 (.mat-body-strong or .mat-subtitle-2): Section heading (<h4> equivalent).
+ * - body-1 (.mat-h4 or .mat-body-1): Base body text.
+ * - body-2 (.mat-body or .mat-body-2): Secondary body text.
+ * - caption (.mat-small or .mat-caption): Smaller body and hint text.
+ * - button: Used for buttons and anchors.
+ */
+$ms-typography: mat.define-rem-typography-config(
+	$font-family: 'Montserrat',
+	$headline-1: mat.define-typography-level(7rem, 7rem, 300, $letter-spacing: -0.05em),
+	$headline-2: mat.define-typography-level(3.5rem, 3.5rem, 400, $letter-spacing: -0.02em),
+	$headline-3: mat.define-typography-level(2.8125rem, 3rem, 400, $letter-spacing: -0.005em),
+	$headline-4: mat.define-typography-level(2.125rem, 2.5rem, 400),
+	$headline-5: mat.define-typography-level(1.5rem, 2.125rem, 700),
+	$button: mat.define-typography-level(0.875rem, 1.25rem, 700, 'Inter')
+);
+
+@function apply-extra-colors($theme, $extra-color-scheme) {
+	@return map.deep-merge(
+		$theme,
+		(
+			color: $extra-color-scheme
+		)
+	);
+}
+
+@function is-map-type($value) {
+	@return type-of($value) == 'map';
+}
+
+@mixin set-properties($prefix, $map) {
+	@each $key, $value in $map {
+		@if is-map-type($value) {
+			@include set-properties($prefix + '-' + $key, $value);
+		} @else {
+			-#{$prefix}-#{$key}: #{$value};
+		}
+	}
+}
+
+/**
+ * `configure-root-theme-variables` mixin
+ *
+ * This mixin is responsible for dynamically setting up CSS custom properties (often referred to as CSS variables)
+ * based on the provided `$theme-color-scheme`. These custom properties can be used throughout the application
+ * to maintain consistency and adaptability in theme styling.
+ *
+ * The `$theme-color-scheme` map may contain various color types (e.g., primary, secondary, accent) and their respective shades.
+ * These shades might be simple color values or they could be nested maps with additional shades or variations.
+ *
+ * The resulting custom properties will have a naming convention of `--colorType-shade` for nested maps or simply `--colorType` for direct values.
+ *
+ * For instance, given a `$theme-color-scheme` map like:
+ *  (
+ *     primary: (
+ *        light: #FFF,
+ *        dark: #000,
+ *        contrast: (
+ *   		light: #000,
+ * 			dark: #fff
+ *     ),
+ *     secondary: #123456,
+ * 
+ * The mixin would generate the following CSS custom properties:
+ *  --primary-light: #FFF;
+ *  --primary-dark: #000;
+ *  --primary-contrast-light: #000;
+ *  --primary-contrast-dark: #000;
+ *  --secondary: #123456;
+ * 
+ * This approach allows for a flexible theming system where theme-related values are defined in one centralized location
+ * and consumed throughout the application using the generated custom properties.
+ */
+@mixin configure-root-theme-variables($theme-color-scheme) {
+	:root {
+		@include set-properties('', $theme-color-scheme);
+	}
+}
+
+@mixin create-theme($theme) {
+	@include mat.core-theme($theme);
+	@include mat.button-theme($theme);
+	@include mat.form-field-theme($theme);
+	@include mat.input-theme($theme);
+	@include mat.menu-theme($theme);
+	@include mat.select-theme($theme);
+	@include mat.icon-button-theme($theme);
+	@include mat.table-theme($theme);
+	@include mat.card-theme($theme);
+	@include mat.stepper-theme($theme);
+	@include mat.chips-theme($theme);
+	@include mat.checkbox-theme($theme);
+	@include mat.snack-bar-theme($theme);
+	@include mat.tooltip-theme($theme);
+	@include mat.progress-bar-theme($theme);
+	@include mat.slide-toggle-theme($theme);
+
+	@include mat.form-field-density(-4);
+	@include mat.icon-button-density(-4);
+}

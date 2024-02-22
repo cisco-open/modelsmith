@@ -1,0 +1,30 @@
+<button mat-button [matMenuTriggerFor]="menu" #menuTrigger="matMenuTrigger">
+	<div class="user-navigation-content-wrapper flex items-center gap-2">
+		<div class="content-1 flex items-center">
+			<mat-icon fontSet="ms" fontIcon="icon-User" class="mat-white"></mat-icon>
+		</div>
+		<div class="content-2 right text-left ml-2" *ngIf="user$ | async as currentUser">
+			<div class="paragraph-semibold-p3-default-emphasis">{{ currentUser.name }}</div>
+			<div class="paragraph-regular-p3-default">{{ currentUser.role }}</div>
+		</div>
+		<div class="content-3">
+			<mat-icon
+				fontSet="ms"
+				fontIcon="icon-CaretDown"
+				[style.transform]="menuTrigger.menuOpen ? 'rotate(180deg)' : 'rotate(0)'"
+				class="mat-white rotate-icon text-base">
+			</mat-icon>
+		</div>
+	</div>
+</button>
+
+<mat-menu class="ms-mat-menu" #menu="matMenu">
+	<button mat-menu-item [routerLink]="['/' + RoutesList.DEMO.ROOT]">
+		<mat-icon fontSet="ms" fontIcon="icon-Stack"></mat-icon>
+		Demo
+	</button>
+	<button mat-menu-item (click)="logout()">
+		<mat-icon fontSet="ms" fontIcon="icon-SignOut"></mat-icon>
+		Logout
+	</button>
+</mat-menu>

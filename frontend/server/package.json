@@ -1,0 +1,15 @@
+{
+	"name": "local-production-server",
+	"version": "1.0.0",
+	"description": "This app serves locally the angular production build.",
+	"main": "index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"start": "node index.js"
+	},
+	"author": "Pop Ioan (John)",
+	"license": "ISC",
+	"dependencies": {
+		"express": "^4.18.2"
+	}
+}

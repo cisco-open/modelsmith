@@ -1,0 +1,26 @@
+@use '../../base/typography';
+@use 'sass:map';
+
+.mat-mdc-chip.ms-chip {
+	.mdc-evolution-chip__text-label {
+		@include typography.paragraph-semibold-p4-xSmall-emphasis;
+	}
+
+	&.mat-accent {
+		&.mat-mdc-standard-chip {
+			background-color: var(--accent-50);
+		}
+	}
+
+	&.mat-primary {
+		&.mat-mdc-standard-chip {
+			background-color: var(--primary-100);
+		}
+	}
+
+	&.mat-warn {
+		&.mat-mdc-standard-chip {
+			background-color: var(--error-200);
+		}
+	}
+}

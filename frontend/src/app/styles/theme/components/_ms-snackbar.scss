@@ -1,0 +1,30 @@
+.mat-mdc-snack-bar-container {
+	--mdc-snackbar-container-color: rgba(255, 255, 255, 1) !important;
+	--mdc-snackbar-supporting-text-color: rgba(35, 40, 46, 1) !important;
+}
+
+.notification-panel {
+	&-success {
+		.mdc-snackbar__surface {
+			border-left: 6px solid var(--success-500);
+		}
+	}
+
+	&-error {
+		.mdc-snackbar__surface {
+			border-left: 6px solid var(--error-500);
+		}
+	}
+
+	&-warning {
+		.mdc-snackbar__surface {
+			border-left: 6px solid var(--warning-500);
+		}
+	}
+
+	&-info {
+		.mdc-snackbar__surface {
+			border-left: 6px solid var(--primary-800);
+		}
+	}
+}

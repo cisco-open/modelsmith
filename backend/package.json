@@ -1,0 +1,29 @@
+{
+	"name": "modelsmith-be",
+	"version": "1.0.0",
+	"description": "BE for Modelsmith",
+	"main": "index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"start": "nodemon src/index.js",
+		"start:prod": "node src/index.js",
+		"prettier:fix": "npx prettier --write . --config ./.prettierrc.js"
+	},
+	"author": "Pop Ioan (John)",
+	"license": "ISC",
+	"dependencies": {
+		"async": "^3.2.5",
+		"child_process": "^1.0.2",
+		"cors": "^2.8.5",
+		"dotenv": "^16.3.1",
+		"express": "^4.18.2",
+		"multer": "^1.4.5-lts.1",
+		"ssh2": "^1.14.0",
+		"winston": "^3.11.0",
+		"ws": "^8.14.2"
+	},
+	"devDependencies": {
+		"nodemon": "^3.0.1",
+		"prettier": "^3.0.3"
+	}
+}

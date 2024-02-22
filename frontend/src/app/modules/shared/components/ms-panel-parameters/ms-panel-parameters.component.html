@@ -1,0 +1,45 @@
+<mat-card class="ms-card parameters-card">
+	<p class="heading-sub-section-title">Parameters</p>
+
+	<div class="parameters-wrapper" *ngIf="parameters.length; else noParametersTemplate">
+		<form [formGroup]="form">
+			<div formArrayName="parametersArray">
+				<ng-container *ngFor="let param of parameters; let i = index">
+					<!-- Text input for type 'text' or 'number' -->
+					<div class="form-field-container" *ngIf="param.inputType === 'text' || param.inputType === 'number'">
+						<mat-label>{{ param.label }}</mat-label>
+						<mat-form-field appearance="outline">
+							<input matInput [formControlName]="i" [placeholder]="param.placeholder" [type]="param.inputType" />
+							<mat-icon fontSet="ms" fontIcon="icon-Info" matSuffix matTooltip="{{ param.help }}"></mat-icon>
+						</mat-form-field>
+					</div>
+
+					<!-- Select dropdown for type 'select' -->
+					<div class="form-field-container" *ngIf="param.inputType === 'select'">
+						<mat-label>{{ param.label }}</mat-label>
+						<mat-form-field appearance="outline">
+							<mat-select [formControlName]="i">
+								<mat-option *ngFor="let option of param.options" [value]="option.value">
+									{{ option.viewValue }}
+								</mat-option>
+							</mat-select>
+							<mat-icon fontSet="ms" fontIcon="icon-Info" matSuffix matTooltip="{{ param.help }}"></mat-icon>
+						</mat-form-field>
+					</div>
+
+					<!-- Checkbox input for type 'checkbox' -->
+					<div class="form-field-container inline-container mb-[22px]" *ngIf="param.inputType === 'checkbox'">
+						<mat-checkbox [formControlName]="i">{{ param.label }}</mat-checkbox>
+						<div class="ml-2">
+							<mat-icon fontSet="ms" fontIcon="icon-Info" matTooltip="{{ param.help }}"></mat-icon>
+						</div>
+					</div>
+				</ng-container>
+			</div>
+		</form>
+	</div>
+
+	<ng-template #noParametersTemplate>
+		<p class="no-parameters-message">No parameters configured.</p>
+	</ng-template>
+</mat-card>

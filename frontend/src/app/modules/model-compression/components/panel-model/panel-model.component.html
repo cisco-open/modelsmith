@@ -1,0 +1,34 @@
+<mat-card class="ms-card model-card">
+	<p class="heading-sub-section-title">Model</p>
+
+	<ng-container [formGroup]="form">
+		<div class="form-field-container">
+			<mat-form-field appearance="outline" subscriptSizing="dynamic">
+				<mat-select formControlName="model" placeholder="Select a model...">
+					<mat-optgroup label="Predefined Models">
+						<mat-option>
+							<ngx-mat-select-search [formControl]="searchModel"> </ngx-mat-select-search>
+						</mat-option>
+
+						<ng-container *ngIf="filteredModels | async as models">
+							<mat-option *ngFor="let model of models; trackBy: trackByModel" [value]="model">
+								{{ model }}
+							</mat-option>
+							<mat-option *ngIf="models.length === 0" disabled>No results found</mat-option>
+						</ng-container>
+					</mat-optgroup>
+
+					<mat-divider></mat-divider>
+
+					<mat-optgroup label="Custom">
+						<mat-option [value]="customModel">Custom Model</mat-option>
+					</mat-optgroup>
+				</mat-select>
+			</mat-form-field>
+		</div>
+	</ng-container>
+
+	<ng-container *ngIf="isCustomModelSelected">
+		<ms-file-upload class="mt-2"></ms-file-upload>
+	</ng-container>
+</mat-card>

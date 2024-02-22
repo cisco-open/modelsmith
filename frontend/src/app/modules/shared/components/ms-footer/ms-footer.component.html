@@ -1,0 +1,17 @@
+<div class="footer-wrapper">
+	<div class="mb-4">
+		<mat-divider></mat-divider>
+	</div>
+
+	<footer class="grid grid-cols-12">
+		<div *ngIf="styleMode !== 'mainLayout'" class="col-span-1"></div>
+		<div [ngClass]="styleMode === 'mainLayout' ? 'col-span-12' : 'col-span-10'" class="footer-content">
+			<div class="left">© {{ currentYear }} Cisco Systems, Inc</div>
+			<div class="right">
+				<a class="mr-4">Privacy Policy</a>
+				<a>Terms of Service</a>
+			</div>
+		</div>
+		<div *ngIf="styleMode !== 'mainLayout'" class="col-span-1"></div>
+	</footer>
+</div>

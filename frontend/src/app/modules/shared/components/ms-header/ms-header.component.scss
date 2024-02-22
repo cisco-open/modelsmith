@@ -1,0 +1,8 @@
+.header-wrapper {
+	height: 56px;
+	padding: 0px 10px;
+	background: linear-gradient(to right, var(--header-left), var(--header-right));
+
+	display: flex;
+	justify-content: space-between;
+}

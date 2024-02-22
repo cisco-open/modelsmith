@@ -1,0 +1,19 @@
+@import '~xterm/css/xterm.css';
+
+.ms-terminal-wrapper {
+	overflow-x: auto;
+	.terminal-wrapper {
+		border: 10px solid var(--terminal-color);
+		background-color: var(--terminal-color);
+		border-radius: 10px;
+	}
+
+	.xterm-viewport {
+		overflow-y: auto !important;
+	}
+
+	.top-terminal-section {
+		display: flex;
+		justify-content: space-between;
+	}
+}

@@ -1,0 +1,36 @@
+@use '../../base/typography';
+
+button.ms-white-stroked-button {
+	&.mat-mdc-outlined-button {
+		@include typography.paragraph-monospace-p2-large;
+		border-color: var(--backgrounds-50);
+		color: var(--backgrounds-50);
+	}
+}
+
+.mat-mdc-button.mat-unthemed {
+	color: var(--foregrounds-700) !important;
+	@include typography.paragraph-semibold-p3-small-emphasis;
+}
+
+.mat-mdc-outlined-button {
+	border-radius: 6px;
+	border-width: 1px !important;
+	@include typography.paragraph-bold-p3-small-bold;
+
+	&:not(:disabled) {
+		&.mat-primary {
+			border-color: var(--primary-800);
+		}
+
+		&.mat-accent {
+			border-color: var(--accent-400);
+			font-weight: 700;
+		}
+
+		&.mat-warn {
+			border-color: var(--error-500);
+			font-weight: 700;
+		}
+	}
+}

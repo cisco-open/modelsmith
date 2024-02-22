@@ -1,0 +1,15 @@
+@use '../../base/typography';
+
+.mdc-label {
+	@include typography.paragraph-regular-p3-small;
+}
+
+.ms-checkbox-white {
+	--mdc-checkbox-unselected-hover-icon-color: var(--backgrounds-300) !important;
+	--mdc-checkbox-unselected-focus-icon-color: var(--backgrounds-300) !important;
+	--mdc-checkbox-unselected-pressed-state-layer-color: var(--backgrounds-300) !important;
+	--mdc-checkbox-unselected-icon-color: var(--backgrounds-50) !important;
+	.mdc-label {
+		color: var(--backgrounds-50);
+	}
+}

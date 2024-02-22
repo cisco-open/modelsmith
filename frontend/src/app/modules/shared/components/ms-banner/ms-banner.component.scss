@@ -1,0 +1,21 @@
+.banner {
+	display: flex;
+	width: 100%;
+
+	.banner-left-container {
+		flex: 0 1 5%;
+	}
+
+	.banner-middle-container {
+		flex: 0 1 90%;
+		margin: 2px 10px;
+	}
+
+	.banner-right-container {
+		flex: 0 1 5%;
+
+		&:hover {
+			cursor: pointer;
+		}
+	}
+}

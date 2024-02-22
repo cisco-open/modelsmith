@@ -1,0 +1,27 @@
+<h1>Notifications</h1>
+<div class="line">
+	<mat-divider></mat-divider>
+</div>
+
+<div class="section">
+	<h2>Banners</h2>
+
+	<div class="parent items-per-row-8">
+		<div>
+			<button mat-raised-button color="primary" (click)="snackbarService.showSuccess('Example Success')">
+				Open Success
+			</button>
+		</div>
+		<div>
+			<button mat-raised-button color="primary" (click)="snackbarService.showError('Example Error')">Open Error</button>
+		</div>
+		<div>
+			<button mat-raised-button color="primary" (click)="snackbarService.showInfo('Example Info')">Open Info</button>
+		</div>
+		<div>
+			<button mat-raised-button color="primary" (click)="snackbarService.showWarning('Example Warning')">
+				Open Warning
+			</button>
+		</div>
+	</div>
+</div>

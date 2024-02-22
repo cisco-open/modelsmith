@@ -1,0 +1,25 @@
+@use '../../base/typography';
+
+$table-header-background: transparent;
+$table-cell-background: transparent;
+
+mat-table.ms-table {
+	.mat-mdc-header-row {
+		background: $table-header-background;
+		@include typography.paragraph-bold-p3-small-bold;
+		text-align: left;
+		color: var(--foregrounds-800);
+	}
+
+	.mdc-data-table__cell,
+	.mdc-data-table__header-cell {
+		padding-left: 0px;
+	}
+
+	.mat-mdc-cell {
+		background: $table-cell-background;
+		@include typography.paragraph-regular-p4-xSmall;
+		text-align: left;
+		color: var(--foregrounds-750);
+	}
+}

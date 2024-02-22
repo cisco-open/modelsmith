@@ -1,0 +1,98 @@
+<p class="heading-primary-title title">Running</p>
+
+<ng-container [ngSwitch]="scriptDetails?.type">
+	<ms-running-animation
+		*ngSwitchCase="AlgorithmType.QUANTIZATION"
+		[animationType]="AnimationType.QUANTIZATION"></ms-running-animation>
+	<ms-running-animation
+		*ngSwitchCase="AlgorithmType.PRUNING"
+		[animationType]="AnimationType.PRUNING"></ms-running-animation>
+	<ms-running-animation
+		*ngSwitchCase="AlgorithmType.MACHINE_UNLEARNING"
+		[animationType]="AnimationType.PRUNING"></ms-running-animation>
+</ng-container>
+
+<mat-card class="ms-card running-prunning">
+	<div class="training-status mb-2">
+		<div class="status-bar">
+			<div>
+				<div class="runnning-title-container">
+					<div class="model-name heading-sub-section-title">Algorithm: {{ scriptDetails?.algKey || 'None' }}</div>
+					<div class="ml-2" *ngIf="isScriptActive">
+						<button mat-raised-button color="warn" matTooltip="Stop current process." (click)="runStopScript()">
+							Stop
+						</button>
+					</div>
+				</div>
+				<div class="mt-2 flex">
+					<div>
+						<mat-slide-toggle color="primary" (change)="toggleTooltip($event)" [disabled]="!scriptDetails?.algKey">
+							Enable tooltips
+						</mat-slide-toggle>
+					</div>
+					<div class="flex">
+						<mat-slide-toggle
+							class="ml-2"
+							color="primary"
+							(change)="toggleZoom($event)"
+							[disabled]="!scriptDetails?.algKey">
+							Enable zoom
+						</mat-slide-toggle>
+						<div class="ml-1">
+							<mat-icon
+								fontSet="ms"
+								fontIcon="icon-Info"
+								matTooltip="Use mouse wheel to zoom in/out. Select an area with the mouse to zoom into a specific region."></mat-icon>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="metrics">
+			<div class="metric accuracy">
+				<div class="metric-value">—</div>
+				<div class="metric-name paragraph-semibold-p2-large-emphasis">Accuracy</div>
+			</div>
+			<div class="metric loss">
+				<div class="metric-value">—</div>
+				<div class="metric-name paragraph-semibold-p2-large-emphasis">Loss</div>
+			</div>
+			<div class="metric sparsity" *ngIf="isSparsityVisible">
+				<div class="metric-value">—</div>
+				<div class="metric-name paragraph-semibold-p2-large-emphasis">Sparsity</div>
+			</div>
+			<div class="metric testing">
+				<div class="metric-value">—</div>
+				<div class="metric-name paragraph-semibold-p2-large-emphasis">Test</div>
+			</div>
+		</div>
+	</div>
+
+	<ng-container *ngIf="isChartVisible; else noChartData">
+		<ng-container [ngSwitch]="scriptDetails?.type">
+			<ms-running-quantization-charts *ngSwitchCase="AlgorithmType.QUANTIZATION"></ms-running-quantization-charts>
+			<ms-running-pruning-charts *ngSwitchCase="AlgorithmType.PRUNING"></ms-running-pruning-charts>
+			<ms-running-machine-unlearning-charts
+				*ngSwitchCase="AlgorithmType.MACHINE_UNLEARNING"></ms-running-machine-unlearning-charts>
+		</ng-container>
+	</ng-container>
+
+	<ng-template #noChartData>
+		<ms-empty-state
+			title="No Chart Data Available"
+			message="Please run the appropriate script to generate chart data."></ms-empty-state>
+	</ng-template>
+</mat-card>
+
+<ng-container *ngIf="scriptDetails?.type === AlgorithmType.MACHINE_UNLEARNING">
+	<div class="mt-2">
+		<ms-running-statistics></ms-running-statistics>
+	</div>
+</ng-container>
+
+<div class="mt-4">
+	<button mat-raised-button color="primary" (click)="goToPreviousPage()">
+		<mat-icon fontSet="ms" fontIcon="icon-ArrowLeft"></mat-icon>
+		Go back
+	</button>
+</div>

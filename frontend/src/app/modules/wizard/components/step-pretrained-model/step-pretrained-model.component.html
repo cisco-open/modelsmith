@@ -1,0 +1,6 @@
+<p class="heading-primary-title">Do you have a pre-trained model?</p>
+<ms-card-selector [options]="['Yes', 'No']" (selectedOption)="trackSelection($event)"> </ms-card-selector>
+
+<div class="mt-4">
+	<button mat-raised-button color="primary" (click)="handleSelection()" [disabled]="!selectedOption">Next</button>
+</div>

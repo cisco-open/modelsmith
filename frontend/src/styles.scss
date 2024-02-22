@@ -1,0 +1,15 @@
+@use './app/styles/theme/ms-theme-material-config';
+@use './app/styles/base/base';
+
+// Need only the utilities from tailwindcss
+@import 'tailwindcss/utilities';
+
+html,
+body {
+	height: 100%;
+	background-color: var(--backgrounds-100);
+}
+
+body {
+	margin: 0;
+}

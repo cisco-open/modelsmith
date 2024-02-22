@@ -1,0 +1,6 @@
+@use '../../base/typography';
+@use 'sass:map';
+
+.ms-mat-menu {
+	--mat-menu-item-label-text-size: 0.875rem;
+}

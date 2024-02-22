@@ -1,0 +1,26 @@
+<div class="banner">
+	<div class="banner-left-container">
+		<div [ngSwitch]="data.notificationType" class="banner-content">
+			<ng-template [ngSwitchCase]="NotificationTypes.SUCCESS">
+				<mat-icon fontSet="ms" fontIcon="icon-CheckCircle" class="mat-success"></mat-icon>
+			</ng-template>
+			<ng-template [ngSwitchCase]="NotificationTypes.INFO">
+				<mat-icon fontSet="ms" fontIcon="icon-Info" class="mat-primary"></mat-icon>
+			</ng-template>
+			<ng-template [ngSwitchCase]="NotificationTypes.ERROR">
+				<mat-icon class="mat-error">error_outline</mat-icon>
+			</ng-template>
+			<ng-template [ngSwitchCase]="NotificationTypes.WARNING">
+				<mat-icon class="mat-warn">warning</mat-icon>
+			</ng-template>
+		</div>
+	</div>
+
+	<div class="banner-middle-container">
+		<div>{{ data.message }}</div>
+	</div>
+
+	<div class="banner-right-container">
+		<mat-icon class="mat-gray" (click)="bannerRef.dismiss()">clear</mat-icon>
+	</div>
+</div>

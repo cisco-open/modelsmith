@@ -1,0 +1,21 @@
+.title {
+	margin-bottom: 13px;
+}
+
+.project-settings-wrapper {
+	display: flex;
+	justify-content: space-between;
+	gap: 20px;
+	height: 100%;
+
+	.left {
+		display: flex;
+		flex-direction: column;
+		width: 45%;
+		gap: 20px;
+	}
+
+	.right {
+		width: 55%;
+	}
+}

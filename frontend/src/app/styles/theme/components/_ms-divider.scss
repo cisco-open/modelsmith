@@ -1,0 +1,10 @@
+.mat-divider {
+	border-color: var(--foregrounds-300) !important;
+}
+
+.vertical-divider {
+	height: 100%;
+	width: 1px;
+	background-color: var(--backgrounds-50);
+	margin: 0 12px;
+}

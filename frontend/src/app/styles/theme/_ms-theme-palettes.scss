@@ -1,0 +1,162 @@
+/**
+ * 🎨 Color Palette Description:
+ *
+ * - 🏆 Primary: Predominantly used across app screens and components.
+ * - 🌸 Accent: Interactive elements such as buttons, action buttons, text fields, etc.
+ * - ✅ Success: Indication for successful actions.
+ * - ⚠️ Warning: Indication for cautionary actions.
+ * - 🛑 Error: Indication for erroneous actions.
+ * - 🖤 Backgrounds: Colors for elements like disabled buttons, dialogs, tooltips, cards, tables, etc.
+ * - 🤍 Foregrounds: Typically for texts, icons, or strokes. Serves as contrast for background colors.
+ *
+ * Guidelines:
+ * - ➡️ Colors can be accessed using CSS custom properties. Example: var(--primary-500).
+ * - ➡️ Default shade: 500. Shades closer to 100 are lighter; those closer to 900 are darker.
+ * - ➡️ If no color suffices, add your own color within the defined palettes.
+ * - ➡️ Direct RGBA with CSS custom properties don't work. For example, rgba(var(--primary-500),.5). 
+ *       Hence, separate values for alpha are defined, e.g., 300-alpha: rgba(14, 33, 97, 0.5).
+ */
+
+$ms-theme-variables: (
+	primary: (
+		50: #e3f3ff,
+		100: #bce0ff,
+		200: #91cdff,
+		300: #65b9ff,
+		400: #42aaff,
+		500: #239bff,
+		600: #228df2,
+		700: #2774d9,
+		// 800 = BASE
+		800: #1d69cc,
+		900: #184aad,
+		contrast: (
+			50: white,
+			100: white,
+			200: white,
+			300: white,
+			400: white,
+			500: white,
+			600: white,
+			700: white,
+			800: white,
+			900: white
+		)
+	),
+	accent: (
+		50: #ebedff,
+		100: #cac1ef,
+		200: #a798e5,
+		300: #816fdb,
+		// 400 = BASE
+		400: #6250d4,
+		500: #3b33cc,
+		600: #2c2ec6,
+		700: #0527bd,
+		800: #0022b6,
+		900: #0018a8,
+		contrast: (
+			50: white,
+			100: white,
+			200: white,
+			300: white,
+			400: white,
+			500: white,
+			600: white,
+			700: white,
+			800: white,
+			900: white
+		)
+	),
+	complementary: (
+		50: #fce5ee,
+		100: #f8bed5,
+		200: #f595b9,
+		300: #f26b9e,
+		400: #ef4c87,
+		500: #ee3272,
+		600: #dc2f6e,
+		700: #c62c68,
+		// 800 = BASE
+		800: #b02863,
+		900: #8a2259
+	),
+	success: (
+		50: #d7f6ee,
+		100: #9ae9d3,
+		200: #40dab6,
+		300: #00c899,
+		400: #00b885,
+		500: #00a873,
+		600: #009a66,
+		700: #008956,
+		800: #007948,
+		900: #005c2c
+	),
+	warning: (
+		100: #fff4dd,
+		200: #ffe9bb,
+		300: #ffdf99,
+		400: #ffd477,
+		500: #ffc955,
+		600: #cca144,
+		700: #997933,
+		800: #665022,
+		900: #332811
+	),
+	error: (
+		100: #ffdee2,
+		200: #febdc5,
+		300: #fe9ba9,
+		400: #fd7a8c,
+		500: #f44336,
+		600: #ca4759,
+		700: #983543,
+		800: #65242c,
+		900: #331216
+	),
+	backgrounds: (
+		50: #ffffff,
+		80: #fafafa,
+		// 100 = BASE
+		100: #f6f6f6,
+		200: #f1f1f1,
+		300: #e5e5e5,
+		400: #c2c2c2,
+		500: #a4a4a4,
+		600: #7a7a7a,
+		700: #666666,
+		800: #474747,
+		900: #000000
+	),
+	foregrounds: (
+		50: #f5fcff,
+		100: #f0f8ff,
+		150: #f0f1f2,
+		200: #ebf3fd,
+		300: #e1e4e8,
+		400: #c1c8d3,
+		500: #a3abb4,
+		550: #889099,
+		600: #7e868f,
+		650: #79818a,
+		// 700 = BASE
+		700: #656c75,
+		750: #596069,
+		800: #23282e,
+		900: #242a32
+	),
+	tooltip: #373c42,
+	terminal-color: #d0d4d9,
+	login-title: #27a7de,
+	header: (
+		left: #3fd9b6,
+		right: #28a9dc
+	),
+	metrics: (
+		sparsity: #29aadc,
+		accuracy: #40dab7,
+		loss: #b02863,
+		testing: #f1c40f
+	)
+);

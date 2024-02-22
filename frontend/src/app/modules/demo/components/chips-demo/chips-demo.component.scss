@@ -1,0 +1,32 @@
+@use '../demo-styles.scss';
+
+.mat-standard-chip {
+	transition: box-shadow 280ms cubic-bezier(0.4, 0, 0.2, 1);
+	display: inline-flex;
+	padding: 7px 12px;
+	border-radius: 16px;
+	align-items: center;
+	cursor: default;
+	min-height: 32px;
+	height: 1px;
+}
+
+::ng-deep .mat-chip-list-wrapper .mat-chip.mat-standard-chip {
+	margin: 4px;
+}
+
+.example-box.cdk-drag-animating {
+	transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.example-chip .cdk-drop-list-dragging {
+	transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.example-chip-list {
+	width: 100%;
+}
+
+mat-chip {
+	max-width: 200px;
+}

@@ -1,0 +1,49 @@
+.training-status {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+
+	.status-bar {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+	}
+
+	.runnning-title-container {
+		display: flex;
+		align-items: center;
+	}
+
+	.metrics {
+		display: flex;
+		gap: 10px;
+		.metric {
+			display: flex;
+			gap: 10px;
+
+			.metric-value {
+				font-size: 1.25rem;
+			}
+
+			&.sparsity .metric-value {
+				font-weight: 700;
+				color: var(--metrics-sparsity);
+			}
+
+			&.accuracy .metric-value {
+				font-weight: 700;
+				color: var(--metrics-accuracy);
+			}
+
+			&.loss .metric-value {
+				font-weight: 700;
+				color: var(--metrics-loss);
+			}
+
+			&.testing .metric-value {
+				font-weight: 700;
+				color: var(--metrics-testing);
+			}
+		}
+	}
+}

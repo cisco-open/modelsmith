@@ -1,0 +1,32 @@
+<h1>Checkboxes</h1>
+<div class="line">
+	<mat-divider></mat-divider>
+</div>
+
+<mat-card class="ms-card">
+	<section>
+		<mat-checkbox>Check me!</mat-checkbox>
+		<mat-checkbox [disabled]="true">Disabled</mat-checkbox>
+	</section>
+
+	<section>
+		<span>
+			<mat-checkbox
+				[checked]="allComplete"
+				[color]="task.color"
+				[indeterminate]="someComplete()"
+				(change)="setAll($event.checked)">
+				{{ task.name }}
+			</mat-checkbox>
+		</span>
+		<span>
+			<ul class="list-none">
+				<li *ngFor="let subtask of task.subtasks">
+					<mat-checkbox [(ngModel)]="subtask.completed" [color]="subtask.color" (ngModelChange)="updateAllComplete()">
+						{{ subtask.name }}
+					</mat-checkbox>
+				</li>
+			</ul>
+		</span>
+	</section>
+</mat-card>

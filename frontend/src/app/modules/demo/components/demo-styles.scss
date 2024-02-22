@@ -1,0 +1,30 @@
+.title {
+	font-size: 18px;
+	font-weight: 700;
+	margin-bottom: 20px;
+}
+
+.subtitle {
+	font-weight: 600;
+	margin-bottom: 20px;
+}
+
+.parent {
+	display: grid;
+	column-gap: 10px;
+	row-gap: 20px;
+
+	@for $i from 2 through 10 {
+		&.items-per-row-#{$i} {
+			grid-template-columns: repeat($i, 1fr);
+		}
+	}
+}
+
+.line {
+	margin: 20px 0;
+}
+
+.description {
+	margin: 20px 0;
+}

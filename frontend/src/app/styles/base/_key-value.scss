@@ -1,0 +1,23 @@
+@use 'typography';
+
+.key-value-container {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 18px;
+}
+
+.key-value-pair {
+	display: flex;
+	flex-direction: row;
+	gap: 4px;
+}
+
+.key-value-key {
+	flex-basis: 30%;
+	@include typography.paragraph-semibold-p3-default-emphasis;
+}
+
+.key-value-value {
+	flex-grow: 1;
+	@include typography.paragraph-regular-p3-default;
+}

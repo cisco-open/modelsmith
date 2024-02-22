@@ -1,0 +1,322 @@
+<h1>Form Fields</h1>
+
+<div class="line">
+	<mat-divider></mat-divider>
+</div>
+
+<form [formGroup]="form">
+	<div class="section">
+		<div class="section">
+			<h2>Default</h2>
+
+			<div class="parent items-per-row-5">
+				<div class="form-field-container">
+					<mat-label> Default </mat-label>
+					<mat-form-field>
+						<input msErrorDisplay matInput formControlName="default" />
+					</mat-form-field>
+				</div>
+
+				<div class="form-field-container ms-white-form-field">
+					<mat-label> Default White </mat-label>
+					<mat-form-field>
+						<input msErrorDisplay matInput formControlName="default" />
+					</mat-form-field>
+				</div>
+
+				<div class="form-field-container">
+					<mat-label> Prefilled </mat-label>
+					<mat-form-field>
+						<input msErrorDisplay matInput formControlName="prefilled" />
+					</mat-form-field>
+				</div>
+
+				<div class="form-field-container">
+					<mat-label> Disabled </mat-label>
+					<mat-form-field>
+						<input msErrorDisplay matInput formControlName="disabled" />
+					</mat-form-field>
+				</div>
+				<div class="form-field-container">
+					<mat-label> Prefilled & disabled </mat-label>
+					<mat-form-field>
+						<input msErrorDisplay matInput formControlName="prefilledDisabled" />
+					</mat-form-field>
+				</div>
+				<div class="form-field-container">
+					<mat-label> Error </mat-label>
+					<mat-form-field>
+						<input msErrorDisplay matInput formControlName="error" />
+					</mat-form-field>
+				</div>
+			</div>
+
+			<div class="line">
+				<mat-divider></mat-divider>
+			</div>
+		</div>
+
+		<h2>Appearance Outline</h2>
+
+		<div class="parent items-per-row-5">
+			<div class="form-field-container">
+				<mat-form-field appearance="outline">
+					<mat-label>Default</mat-label>
+					<input matInput msErrorDisplay placeholder="Default" formControlName="default" />
+				</mat-form-field>
+			</div>
+
+			<div class="form-field-container">
+				<mat-form-field appearance="outline">
+					<mat-label> Prefilled </mat-label>
+					<input matInput msErrorDisplay placeholder="Prefilled" formControlName="prefilled" />
+				</mat-form-field>
+			</div>
+
+			<div class="form-field-container">
+				<mat-form-field appearance="outline">
+					<mat-label> Disabled </mat-label>
+					<input matInput msErrorDisplay placeholder="Disabled" formControlName="disabled" />
+				</mat-form-field>
+			</div>
+			<div class="form-field-container">
+				<mat-form-field appearance="outline">
+					<mat-label> Prefilled & disabled </mat-label>
+					<input matInput msErrorDisplay placeholder="Prefilled and Disabled" formControlName="prefilledDisabled" />
+				</mat-form-field>
+			</div>
+			<div class="form-field-container">
+				<mat-form-field appearance="outline">
+					<mat-label> Error </mat-label>
+					<input matInput placeholder="Error" formControlName="error" />
+					<mat-error>Test</mat-error>
+				</mat-form-field>
+			</div>
+		</div>
+
+		<div class="line">
+			<mat-divider></mat-divider>
+		</div>
+	</div>
+
+	<div class="section">
+		<h2>Appearance Fill & Float Label</h2>
+
+		<div class="parent items-per-row-5">
+			<div class="form-field-container">
+				<mat-form-field appearance="fill" floatLabel="always">
+					<mat-label> Default </mat-label>
+					<input msErrorDisplay matInput formControlName="default" />
+				</mat-form-field>
+			</div>
+
+			<div>
+				<mat-form-field appearance="fill" floatLabel="always">
+					<mat-label> Prefilled </mat-label>
+					<input msErrorDisplay matInput formControlName="prefilled" />
+				</mat-form-field>
+			</div>
+
+			<div class="form-field-container">
+				<mat-form-field appearance="fill" floatLabel="always">
+					<mat-label> Disabled </mat-label>
+					<input msErrorDisplay matInput formControlName="disabled" />
+				</mat-form-field>
+			</div>
+			<div class="form-field-container">
+				<mat-form-field appearance="fill" floatLabel="always">
+					<mat-label> Prefilled & disabled </mat-label>
+					<input msErrorDisplay matInput formControlName="prefilledDisabled" />
+				</mat-form-field>
+			</div>
+			<div class="form-field-container">
+				<mat-form-field appearance="fill" floatLabel="always">
+					<mat-label> Error </mat-label>
+					<input msErrorDisplay matInput formControlName="error" />
+				</mat-form-field>
+			</div>
+		</div>
+
+		<div class="line">
+			<mat-divider></mat-divider>
+		</div>
+	</div>
+
+	<div class="section">
+		<h2>Appearance Outline & Label Auto</h2>
+
+		<div class="parent items-per-row-5">
+			<div class="form-field-container">
+				<mat-form-field appearance="outline" floatLabel="auto">
+					<mat-label> Default </mat-label>
+					<input msErrorDisplay matInput formControlName="default" />
+				</mat-form-field>
+			</div>
+
+			<div class="form-field-container">
+				<mat-form-field appearance="outline" floatLabel="auto">
+					<mat-label> Prefilled </mat-label>
+					<input msErrorDisplay matInput formControlName="prefilled" />
+				</mat-form-field>
+			</div>
+
+			<div class="form-field-container">
+				<mat-form-field appearance="outline" floatLabel="auto">
+					<mat-label> Disabled </mat-label>
+					<input msErrorDisplay matInput formControlName="disabled" />
+				</mat-form-field>
+			</div>
+			<div class="form-field-container">
+				<mat-form-field appearance="outline" floatLabel="auto">
+					<mat-label> Prefilled & disabled </mat-label>
+					<input msErrorDisplay matInput formControlName="prefilledDisabled" />
+				</mat-form-field>
+			</div>
+			<div class="form-field-container">
+				<mat-form-field appearance="outline" floatLabel="auto">
+					<mat-label> Error </mat-label>
+					<input msErrorDisplay matInput formControlName="error" />
+				</mat-form-field>
+			</div>
+		</div>
+
+		<div class="line">
+			<mat-divider></mat-divider>
+		</div>
+	</div>
+
+	<div class="section">
+		<h2>Inputs with Validators</h2>
+
+		<div class="parent items-per-row-5">
+			<div class="form-field-container">
+				<mat-form-field floatLabel="always">
+					<mat-label>Required </mat-label>
+					<input msErrorDisplay matInput formControlName="required" />
+				</mat-form-field>
+			</div>
+			<div></div>
+			<div></div>
+		</div>
+
+		<div class="line">
+			<mat-divider></mat-divider>
+		</div>
+	</div>
+
+	<div class="section">
+		<h2>Textarea</h2>
+
+		<div class="parent items-per-row-5">
+			<div class="form-field-container">
+				<mat-form-field floatLabel="always">
+					<mat-label>Default prefilled</mat-label>
+					<textarea rows="4" matInput formControlName="textarea" msErrorDisplay></textarea>
+				</mat-form-field>
+			</div>
+			<div class="form-field-container">
+				<mat-form-field floatLabel="always">
+					<mat-label>Prefilled</mat-label>
+					<textarea rows="4" matInput formControlName="textareaPrefilled" msErrorDisplay></textarea>
+				</mat-form-field>
+			</div>
+			<div class="form-field-container">
+				<mat-form-field floatLabel="always">
+					<mat-label>Disabled</mat-label>
+					<textarea rows="4" matInput formControlName="textareaDisabled" msErrorDisplay></textarea>
+				</mat-form-field>
+			</div>
+			<div class="form-field-container">
+				<mat-form-field floatLabel="always">
+					<mat-label>Prefilled and disabled</mat-label>
+					<textarea rows="4" matInput formControlName="textareaPrefilledAndDisabled" msErrorDisplay></textarea>
+				</mat-form-field>
+			</div>
+
+			<div class="form-field-container">
+				<mat-form-field floatLabel="always">
+					<mat-label>Error</mat-label>
+					<textarea rows="4" matInput formControlName="textareaError" msErrorDisplay></textarea>
+				</mat-form-field>
+			</div>
+		</div>
+
+		<div class="line">
+			<mat-divider></mat-divider>
+		</div>
+	</div>
+
+	<div class="section">
+		<h2>Dropdowns</h2>
+
+		<div class="parent items-per-row-5">
+			<div class="form-field-container">
+				<mat-label> Default</mat-label>
+				<mat-form-field appearance="outline">
+					<mat-select formControlName="dropdown" placeholder="Select a value">
+						<mat-option value="option1">Option 1</mat-option>
+						<mat-option value="option2">Option 2</mat-option>
+						<mat-option value="option3">Option 3</mat-option>
+						<mat-option value="option4">Option 4</mat-option>
+						<mat-option value="option5">Option 5</mat-option>
+					</mat-select>
+				</mat-form-field>
+			</div>
+			<div class="form-field-container">
+				<mat-label> Preselected </mat-label>
+				<mat-form-field appearance="outline">
+					<mat-select formControlName="dropdownPreselected" placeholder="Select a value">
+						<mat-option value="option1">Option 1</mat-option>
+						<mat-option value="option2">Option 2</mat-option>
+						<mat-option value="option3">Option 3</mat-option>
+						<mat-option value="option4">Option 4</mat-option>
+						<mat-option value="option5">Option 5</mat-option>
+					</mat-select>
+				</mat-form-field>
+			</div>
+			<div class="form-field-container">
+				<mat-label> Disabled </mat-label>
+				<mat-form-field appearance="outline">
+					<mat-select formControlName="dropdownDisabled" placeholder="Select a value">
+						<mat-option value="option1">Option 1</mat-option>
+						<mat-option value="option2">Option 2</mat-option>
+						<mat-option value="option3">Option 3</mat-option>
+						<mat-option value="option4">Option 4</mat-option>
+						<mat-option value="option5">Option 5</mat-option>
+					</mat-select>
+				</mat-form-field>
+			</div>
+			<div class="form-field-container">
+				<mat-label> Preselected and disabled </mat-label>
+				<mat-form-field appearance="outline">
+					<mat-select formControlName="dropdownPreselectedAndDisabled">
+						<mat-option value="option1">Option 1</mat-option>
+						<mat-option value="option2">Option 2</mat-option>
+						<mat-option value="option3">Option 3</mat-option>
+						<mat-option value="option4">Option 4</mat-option>
+						<mat-option value="option5">Option 5</mat-option>
+					</mat-select>
+				</mat-form-field>
+			</div>
+		</div>
+
+		<div class="line">
+			<mat-divider></mat-divider>
+		</div>
+	</div>
+
+	<div class="section">
+		<div class="parent items-per-row-6">
+			<div class="form-field-container">
+				<mat-label>Password toggle</mat-label>
+				<mat-form-field appearance="outline">
+					<input matInput msPasswordToggle msErrorDisplay placeholder="Default" formControlName="default" />
+				</mat-form-field>
+			</div>
+		</div>
+
+		<div class="line">
+			<mat-divider></mat-divider>
+		</div>
+	</div>
+</form>

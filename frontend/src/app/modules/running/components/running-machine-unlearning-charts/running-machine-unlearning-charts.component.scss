@@ -1,0 +1,17 @@
+.charts {
+	.ms-chart-display {
+		display: flex;
+
+		&.sparsity-chart {
+			flex-direction: column;
+		}
+
+		.epochs {
+			flex: 0 0 70%;
+		}
+
+		.testing {
+			flex: 0 0 30%;
+		}
+	}
+}

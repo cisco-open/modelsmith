@@ -1,0 +1,59 @@
+@use '@angular/material' as mat;
+
+.parent-container {
+	overflow: hidden;
+	height: 300px;
+	border-radius: 10px;
+	margin-bottom: 10px;
+	position: relative;
+
+	@include mat.elevation(2, rgba(0, 0, 0, 0.2));
+}
+
+dotlottie-player {
+	width: 100%;
+	height: auto;
+	object-fit: cover;
+	position: absolute;
+	top: 50%;
+	left: 0;
+	transform: translateY(-50%);
+}
+
+:host(.pruning) {
+	.parent-container {
+		background-color: #b2ddff;
+	}
+
+	@media (max-width: 1000px) {
+		.parent-container {
+			height: 180px;
+		}
+	}
+
+	@media (min-width: 1200px) {
+		dotlottie-player {
+			width: 900px;
+			left: calc((100% - 900px) / 2);
+		}
+	}
+}
+
+:host(.quant) {
+	.parent-container {
+		background-color: #1649a8;
+	}
+
+	@media (max-width: 1000px) {
+		.parent-container {
+			height: 180px;
+		}
+	}
+
+	@media (min-width: 1100px) {
+		dotlottie-player {
+			width: 900px;
+			left: calc((100% - 900px) / 2);
+		}
+	}
+}

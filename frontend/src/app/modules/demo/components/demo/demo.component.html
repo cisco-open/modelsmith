@@ -1,0 +1,25 @@
+<div class="main-container">
+	<div class="content routes">
+		<mat-button-toggle-group vertical="true">
+			<mat-button-toggle [routerLink]="[RoutesList.DEMO]"> Buttons </mat-button-toggle>
+			<mat-button-toggle [routerLink]="[RoutesList.DEMO.TYPOGRAPHY]"> Typograpghy </mat-button-toggle>
+			<mat-button-toggle [routerLink]="[RoutesList.DEMO.FORM_FIELDS]"> Form Fields </mat-button-toggle>
+			<mat-button-toggle [routerLink]="[RoutesList.DEMO.CHECKBOXES]"> Checkboxes </mat-button-toggle>
+			<mat-button-toggle [routerLink]="[RoutesList.DEMO.MENU]"> Menu </mat-button-toggle>
+			<mat-button-toggle [routerLink]="[RoutesList.DEMO.TABLE]"> Tables </mat-button-toggle>
+			<mat-button-toggle [routerLink]="[RoutesList.DEMO.ICONS]"> Icons </mat-button-toggle>
+			<mat-button-toggle [routerLink]="[RoutesList.DEMO.CARDS]"> Cards </mat-button-toggle>
+			<mat-button-toggle [routerLink]="[RoutesList.DEMO.CHIPS]"> Chips </mat-button-toggle>
+			<mat-button-toggle [routerLink]="[RoutesList.DEMO.NOTIFICATIONS]"> Notifications </mat-button-toggle>
+			<mat-button-toggle [routerLink]="[RoutesList.DEMO.WIZARD]"> Wizard </mat-button-toggle>
+		</mat-button-toggle-group>
+
+		<button mat-raised-button color="primary" class="mt-2" [routerLink]="['/' + RoutesList.AUTH.ROOT]">
+			Back to login
+		</button>
+	</div>
+
+	<div class="content">
+		<router-outlet></router-outlet>
+	</div>
+</div>

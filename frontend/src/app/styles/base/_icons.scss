@@ -1,0 +1,50 @@
+@forward './modelsmith-icons/modelsmith-icons-style.css';
+
+$icons-primary: var(--primary-800);
+$icons-accent: var(--accent-400);
+$icons-complementary: var(--complementary-800);
+$icons-gray: var(--foregrounds-600);
+$icons-success: var(--success-500);
+$icons-warn: var(--warning-500);
+$icons-error: var(--error-500);
+$icons-white: var(--backgrounds-50);
+
+@mixin mat-icons($color) {
+	color: $color !important;
+}
+
+mat-icon {
+	font-size: 1.5rem;
+
+	&.mat-primary {
+		@include mat-icons($icons-primary);
+	}
+
+	&.mat-complementary {
+		@include mat-icons($icons-complementary);
+	}
+
+	&.mat-gray {
+		@include mat-icons($icons-gray);
+	}
+
+	&.mat-white {
+		@include mat-icons($icons-white);
+	}
+
+	&.mat-accent {
+		@include mat-icons($icons-accent);
+	}
+
+	&.mat-success {
+		@include mat-icons($icons-success);
+	}
+
+	&.mat-warn {
+		@include mat-icons($icons-warn);
+	}
+
+	&.mat-error {
+		@include mat-icons($icons-error);
+	}
+}

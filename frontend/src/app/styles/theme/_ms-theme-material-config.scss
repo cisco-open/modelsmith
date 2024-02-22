@@ -1,0 +1,6 @@
+@use '@angular/material' as mat;
+@use './ms-theme-common' as common;
+@use './components/ms-components';
+
+@include mat.core();
+@include mat.typography-hierarchy(common.$ms-typography, 'body');

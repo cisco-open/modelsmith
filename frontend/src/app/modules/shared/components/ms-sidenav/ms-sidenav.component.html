@@ -1,0 +1,36 @@
+<div class="sidenav-wrapper">
+	<div class="switch" (click)="toggleMode()">
+		<div class="left">
+			<mat-icon fontSet="ms" fontIcon="icon-User"></mat-icon>
+		</div>
+		<div class="right">
+			<div class="paragraph-semibold-p3-default-emphasis">
+				{{ currentMode === Modes.GUIDED ? 'Guided mode' : 'Expert mode' }}
+			</div>
+			<div class="paragraph-regular-p4-small switch-button">
+				{{ currentMode === Modes.GUIDED ? 'Switch to expert mode' : 'Switch to guided mode' }}
+				<mat-icon class="switch-icon" fontSet="ms" fontIcon="icon-ArrowRight"></mat-icon>
+			</div>
+		</div>
+	</div>
+
+	<ng-container *ngIf="currentMode === Modes.GUIDED; else expertModeBlock">
+		<div class="sidenav-items-wrapper" *ngFor="let item of SidenavConstants.guided; trackBy: trackByRoute">
+			<ms-sidenav-item [item]="item" itemStyle="grey"></ms-sidenav-item>
+		</div>
+	</ng-container>
+
+	<ng-template #expertModeBlock>
+		<div class="sidenav-items-wrapper" *ngFor="let item of SidenavConstants.expert; trackBy: trackByRoute">
+			<ms-sidenav-item [item]="item" itemStyle="grey"></ms-sidenav-item>
+		</div>
+	</ng-template>
+
+	<div class="mt-5">
+		<mat-divider></mat-divider>
+	</div>
+
+	<div class="sidenav-items-wrapper" *ngFor="let item of SidenavConstants.common">
+		<ms-sidenav-item [item]="item" itemStyle="accent"></ms-sidenav-item>
+	</div>
+</div>

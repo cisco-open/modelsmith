@@ -1,0 +1,38 @@
+@use '../../../../styles/base/typography';
+
+.sidenav-item {
+	padding: 8px;
+	display: flex;
+	cursor: pointer;
+
+	.item-icon {
+		display: flex;
+		align-items: center;
+	}
+
+	.item-label {
+		display: flex;
+		align-items: center;
+		margin-left: 10px;
+	}
+
+	&.active-route .item-label {
+		@include typography.paragraph-bold-p3-small-bold;
+	}
+}
+
+:host[itemStyle='grey'] .sidenav-item {
+	color: var(--foregrounds-750);
+
+	&.active-route {
+		.item-label {
+			color: var(--foregrounds-800);
+		}
+		background-color: var(--foregrounds-150);
+		border-radius: 8px;
+	}
+}
+
+:host[itemStyle='accent'] .sidenav-item {
+	color: var(--accent-400);
+}

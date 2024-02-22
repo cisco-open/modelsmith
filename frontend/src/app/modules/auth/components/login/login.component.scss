@@ -1,0 +1,44 @@
+@use '../../../../styles/base/typography';
+
+.login-container {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	height: 100%;
+
+	.logo-section {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+
+		width: 95%;
+		background: linear-gradient(to left, transparent, var(--backgrounds-50), transparent);
+		padding: 60px 30px;
+		text-align: center;
+
+		img {
+			max-width: 100%;
+			margin-bottom: 10px;
+		}
+
+		.login-title {
+			font-size: 2.5rem;
+			line-height: 3.359rem;
+			font-weight: 400;
+			color: var(--login-title);
+		}
+
+		.login-subtitle {
+			@include typography.paragraph-semibold-p3-default-emphasis;
+			color: var(--foregrounds-550);
+		}
+	}
+
+	.login-section {
+		margin-top: 20px;
+		width: 100%;
+		max-width: 400px;
+	}
+}

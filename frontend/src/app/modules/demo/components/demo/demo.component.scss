@@ -1,0 +1,24 @@
+.main-container {
+	display: grid;
+	grid-template-columns: repeat(12, 1fr);
+
+	.content {
+		position: -webkit-sticky; /* For Safari */
+		position: sticky;
+		top: 0;
+		align-self: flex-start;
+
+		grid-column: span 11;
+		padding: 14px 20px 0 20px;
+		width: 90%;
+	}
+
+	.routes {
+		grid-column: span 1;
+	}
+}
+
+.mat-button-toggle {
+	display: flex;
+	height: 40px;
+}

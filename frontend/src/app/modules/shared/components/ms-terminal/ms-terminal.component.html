@@ -1,0 +1,14 @@
+<div class="ms-terminal-wrapper">
+	<div class="top-terminal-section">
+		<div class="heading-section-title mb-1 flex items-center">Terminal</div>
+		<div>
+			<ms-terminal-toolbar
+				(clearTerminal)="clearTerminal()"
+				(scrollToTopTerminal)="scrollToTopTerminal()"
+				(scrollToBottomTerminal)="scrollToBottomTerminal()"></ms-terminal-toolbar>
+		</div>
+	</div>
+	<div class="terminal">
+		<div class="terminal-wrapper" #terminal></div>
+	</div>
+</div>

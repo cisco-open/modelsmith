@@ -1,0 +1,11 @@
+.parameters-card {
+	.parameters-wrapper {
+		max-height: 400px;
+		overflow: auto;
+		padding-right: 20px;
+
+		.parameter-divider {
+			margin-bottom: 20px;
+		}
+	}
+}

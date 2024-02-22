@@ -1,0 +1,15 @@
+<p class="heading-primary-title">Do you tolerate long PTQ time?</p>
+
+<mat-chip-set class="mt-2 mb-2">
+	<mat-chip class="ms-chip" color="accent" (click)="goToPreviousPage()"> Post-training quantization </mat-chip>
+</mat-chip-set>
+
+<ms-card-selector [options]="['Yes', 'No']" (selectedOption)="trackSelection($event)"> </ms-card-selector>
+
+<div class="mt-4">
+	<button mat-button class="mr-3" (click)="goToPreviousPage()">
+		<mat-icon fontSet="ms" fontIcon="icon-ArrowLeft"></mat-icon>
+		Previous
+	</button>
+	<button mat-raised-button color="primary" (click)="handleSelection()" [disabled]="!selectedOption">Next</button>
+</div>

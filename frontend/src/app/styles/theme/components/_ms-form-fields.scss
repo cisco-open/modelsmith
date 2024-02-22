@@ -1,0 +1,90 @@
+@use '../../base/typography';
+
+:root {
+	--mat-option-label-text-size: 0.75rem;
+	--mat-optgroup-label-text-size: 0.75rem;
+}
+
+.form-field-container {
+	display: flex;
+	flex-direction: column;
+
+	&.inline-container {
+		flex-direction: row;
+		align-items: center;
+	}
+
+	.mat-mdc-form-field-hint-wrapper,
+	.mat-mdc-form-field-error-wrapper {
+		padding: 0;
+	}
+
+	&.ms-white-form-field {
+		/* Firefox */
+		::placeholder {
+			color: var(--backgrounds-50) !important;
+			opacity: 1;
+		}
+		/* Edge 12 -18 */
+		::-ms-input-placeholder {
+			color: var(--backgrounds-50) !important;
+		}
+
+		mat-label {
+			color: var(--backgrounds-50);
+		}
+
+		.mat-mdc-text-field-wrapper {
+			background-color: transparent;
+
+			border: 1px solid var(--backgrounds-50);
+			&:hover {
+				border-color: var(--backgrounds-50);
+			}
+
+			.mdc-text-field__input {
+				color: var(--backgrounds-50);
+			}
+		}
+
+		mat-icon {
+			color: var(--backgrounds-50);
+		}
+	}
+
+	mat-label {
+		@include typography.paragraph-regular-p4-small;
+		color: var(--foregrounds-750);
+	}
+
+	mat-form-field {
+		.mat-mdc-form-field-icon-prefix > .mat-icon,
+		.mat-mdc-form-field-icon-suffix > .mat-icon {
+			padding: 8.5px;
+		}
+
+		.mdc-notched-outline {
+			display: none;
+		}
+
+		.mat-mdc-text-field-wrapper {
+			background-color: var(--backgrounds-50);
+
+			&.mdc-text-field--disabled {
+				background-color: var(--backgrounds-200);
+			}
+
+			border: 1px solid var(--foregrounds-550);
+			border-radius: 6px;
+			&:hover {
+				border-color: var(--foregrounds-800);
+			}
+
+			.mat-mdc-select-value,
+			.mdc-text-field__input {
+				@include typography.paragraph-regular-p3-default;
+				color: var(--foregrounds-550);
+			}
+		}
+	}
+}

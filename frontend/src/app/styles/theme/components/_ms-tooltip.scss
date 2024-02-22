@@ -1,0 +1,23 @@
+.mat-mdc-tooltip::before {
+	background-color: var(--tooltip);
+	height: 12px;
+	width: 12px;
+	rotate: 45deg;
+	right: 50% !important;
+	left: auto !important;
+	transform: translate(4px, -4px);
+}
+
+.mdc-tooltip__surface {
+	background-color: var(--tooltip) !important;
+}
+
+.mat-mdc-tooltip-panel-above .mat-mdc-tooltip::before {
+	top: auto;
+	bottom: -6px !important;
+}
+
+.mat-mdc-tooltip-panel-below .mat-mdc-tooltip::before {
+	top: -6px !important;
+	bottom: auto;
+}

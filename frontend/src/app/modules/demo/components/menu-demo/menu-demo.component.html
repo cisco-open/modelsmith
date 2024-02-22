@@ -1,0 +1,110 @@
+<div class="section">
+	<h2>Menu</h2>
+
+	<div class="parent items-per-row-2">
+		<div>
+			<button mat-button [matMenuTriggerFor]="animals">Animal index</button>
+			<mat-menu class="ms-mat-menu" #animals="matMenu">
+				<button mat-menu-item [matMenuTriggerFor]="vertebrates">
+					<mat-icon fontSet="ms" fontIcon="icon-User"></mat-icon>Vertebrates
+				</button>
+				<button mat-menu-item [matMenuTriggerFor]="invertebrates">
+					<mat-icon fontSet="ms" fontIcon="icon-User"></mat-icon>Invertebrates
+				</button>
+			</mat-menu>
+
+			<mat-menu class="ms-mat-menu" #vertebrates="matMenu">
+				<button mat-menu-item [matMenuTriggerFor]="fish">
+					<mat-icon fontSet="ms" fontIcon="icon-User"></mat-icon>Fishes
+				</button>
+				<button mat-menu-item [matMenuTriggerFor]="amphibians">
+					<mat-icon fontSet="ms" fontIcon="icon-User"></mat-icon>Amphibians
+				</button>
+				<button mat-menu-item [matMenuTriggerFor]="reptiles">
+					<mat-icon fontSet="ms" fontIcon="icon-User"></mat-icon>Reptiles
+				</button>
+				<button mat-menu-item><mat-icon fontSet="ms" fontIcon="icon-User"></mat-icon>Birds</button>
+				<button mat-menu-item><mat-icon fontSet="ms" fontIcon="icon-User"></mat-icon>Mammals</button>
+			</mat-menu>
+
+			<mat-menu class="ms-mat-menu" #invertebrates="matMenu">
+				<button mat-menu-item><mat-icon fontSet="ms" fontIcon="icon-User"></mat-icon>Insects</button>
+				<button mat-menu-item><mat-icon fontSet="ms" fontIcon="icon-User"></mat-icon>Molluscs</button>
+				<button mat-menu-item><mat-icon fontSet="ms" fontIcon="icon-User"></mat-icon>Crustaceans</button>
+				<button mat-menu-item><mat-icon fontSet="ms" fontIcon="icon-User"></mat-icon>Corals</button>
+				<button mat-menu-item><mat-icon fontSet="ms" fontIcon="icon-User"></mat-icon>Arachnids</button>
+				<button mat-menu-item><mat-icon fontSet="ms" fontIcon="icon-User"></mat-icon>Velvet worms</button>
+				<button mat-menu-item><mat-icon fontSet="ms" fontIcon="icon-User"></mat-icon>Horseshoe crabs</button>
+			</mat-menu>
+
+			<mat-menu class="ms-mat-menu" #fish="matMenu">
+				<button mat-menu-item><mat-icon fontSet="ms" fontIcon="icon-User"></mat-icon>Baikal oilfish</button>
+				<button mat-menu-item><mat-icon fontSet="ms" fontIcon="icon-User"></mat-icon>Bala shark</button>
+				<button mat-menu-item><mat-icon fontSet="ms" fontIcon="icon-User"></mat-icon>Ballan wrasse</button>
+				<button mat-menu-item><mat-icon fontSet="ms" fontIcon="icon-User"></mat-icon>Bamboo shark</button>
+				<button mat-menu-item><mat-icon fontSet="ms" fontIcon="icon-User"></mat-icon>Banded killifish</button>
+			</mat-menu>
+
+			<mat-menu class="ms-mat-menu" #amphibians="matMenu">
+				<button mat-menu-item><mat-icon fontSet="ms" fontIcon="icon-User"></mat-icon>Sonoran desert toad</button>
+				<button mat-menu-item><mat-icon fontSet="ms" fontIcon="icon-User"></mat-icon>Western toad</button>
+				<button mat-menu-item><mat-icon fontSet="ms" fontIcon="icon-User"></mat-icon>Arroyo toad</button>
+				<button mat-menu-item><mat-icon fontSet="ms" fontIcon="icon-User"></mat-icon>Yosemite toad</button>
+			</mat-menu>
+
+			<mat-menu class="ms-mat-menu" #reptiles="matMenu">
+				<button mat-menu-item><mat-icon fontSet="ms" fontIcon="icon-User"></mat-icon>Banded Day Gecko</button>
+				<button mat-menu-item><mat-icon fontSet="ms" fontIcon="icon-User"></mat-icon>Banded Gila Monster</button>
+				<button mat-menu-item><mat-icon fontSet="ms" fontIcon="icon-User"></mat-icon>Black Tree Monitor</button>
+				<button mat-menu-item><mat-icon fontSet="ms" fontIcon="icon-User"></mat-icon>Blue Spiny Lizard</button>
+				<button mat-menu-item disabled><mat-icon fontSet="ms" fontIcon="icon-User"></mat-icon>Velociraptor</button>
+			</mat-menu>
+		</div>
+
+		<div>
+			<button mat-button [matMenuTriggerFor]="menu">Menu</button>
+			<mat-menu class="ms-mat-menu" #menu="matMenu">
+				<button mat-menu-item><mat-icon fontSet="ms" fontIcon="icon-User"></mat-icon>Item 1</button>
+				<button mat-menu-item><mat-icon fontSet="ms" fontIcon="icon-User"></mat-icon>Item 2</button>
+			</mat-menu>
+		</div>
+	</div>
+
+	<div class="line">
+		<mat-divider></mat-divider>
+	</div>
+</div>
+
+<div class="section parent items-per-row-4">
+	<div>
+		<button mat-button [matMenuTriggerFor]="aboveMenu">Above</button>
+		<mat-menu class="ms-mat-menu" #aboveMenu="matMenu" yPosition="above" xPosition="after">
+			<button mat-menu-item>Item 1</button>
+			<button mat-menu-item>Item 2</button>
+		</mat-menu>
+	</div>
+	<div>
+		<button mat-button [matMenuTriggerFor]="belowMenu">Below</button>
+		<mat-menu class="ms-mat-menu" #belowMenu="matMenu" yPosition="below">
+			<button mat-menu-item>Item 1</button>
+			<button mat-menu-item>Item 2</button>
+		</mat-menu>
+	</div>
+	<div>
+		<button mat-button [matMenuTriggerFor]="beforeMenu">Before</button>
+		<mat-menu class="ms-mat-menu" #beforeMenu="matMenu" xPosition="before">
+			<button mat-menu-item>Item 1</button>
+			<button mat-menu-item>Item 2</button>
+		</mat-menu>
+	</div>
+	<div>
+		<button mat-button [matMenuTriggerFor]="afterMenu">After</button>
+		<mat-menu class="ms-mat-menu" #afterMenu="matMenu" xPosition="after">
+			<button mat-menu-item>Item 1</button>
+			<button mat-menu-item>Item 2</button>
+		</mat-menu>
+	</div>
+</div>
+<div class="line">
+	<mat-divider></mat-divider>
+</div>

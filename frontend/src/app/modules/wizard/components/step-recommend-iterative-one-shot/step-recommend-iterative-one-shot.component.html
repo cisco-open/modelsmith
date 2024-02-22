@@ -1,0 +1,25 @@
+<p class="heading-primary-title">Recommended Algorithm:</p>
+
+<mat-chip-set class="mt-2 mb-2">
+	<mat-chip class="ms-chip" color="accent" (click)="goToPretrainedPage()"> Pruning </mat-chip>
+	<mat-chip class="ms-chip" color="accent" (click)="goToPruningTimePage()"> Long pruning time </mat-chip>
+	<mat-chip class="ms-chip" color="accent" (click)="goToPreviousPage()"> Higher accuracy </mat-chip>
+</mat-chip-set>
+
+<ms-card-selector [options]="algorithms" (selectedOption)="trackSelection($event)"> </ms-card-selector>
+
+<div class="mt-4">
+	<button mat-button class="mr-3" (click)="goToPreviousPage()">
+		<mat-icon fontSet="ms" fontIcon="icon-ArrowLeft"></mat-icon>
+		Previous
+	</button>
+	<button
+		class="mr-3"
+		mat-raised-button
+		color="primary"
+		(click)="handleSelection()"
+		[disabled]="!selectedOption || wizardUtilsService.isScriptActive">
+		Run
+	</button>
+	<button mat-raised-button color="primary" (click)="goToChartPage()">View Chart</button>
+</div>

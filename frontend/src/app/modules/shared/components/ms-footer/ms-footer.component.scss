@@ -1,0 +1,27 @@
+@use '../../../../styles/base/typography';
+
+.footer-wrapper {
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+
+footer {
+	.footer-content {
+		@include typography.paragraph-regular-p4-small;
+		display: flex;
+		justify-content: space-between;
+	}
+}
+
+/* For Login and Splash Screen */
+:host[styleMode='fullWidth'] .footer-wrapper {
+	width: 100%;
+	position: absolute;
+	bottom: 30px;
+}
+
+/* For MsMainLayoutComponent */
+:host[styleMode='mainLayout'] .footer-wrapper {
+	position: relative;
+	bottom: 0;
+}

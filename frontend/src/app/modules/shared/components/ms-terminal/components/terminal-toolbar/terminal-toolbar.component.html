@@ -1,0 +1,17 @@
+<div class="buttons-wrapper">
+	<button mat-icon-button color="primary" matTooltip="Scroll to top" (click)="scrollToTopTerminal.emit()">
+		<mat-icon fontSet="ms" fontIcon="icon-ArrowUp"></mat-icon>
+	</button>
+
+	<button mat-icon-button color="primary" matTooltip="Scroll to bottom" (click)="scrollToBottomTerminal.emit()">
+		<mat-icon fontSet="ms" fontIcon="icon-ArrowDown"></mat-icon>
+	</button>
+
+	<button mat-icon-button color="primary" matTooltip="Clear terminal" (click)="clearTerminal.emit()">
+		<mat-icon> clear_all</mat-icon>
+	</button>
+
+	<button mat-icon-button color="warn" matTooltip="Stop current process." (click)="ctaStopScript()">
+		<mat-icon fontSet="ms" fontIcon="icon-X" class="mat-error"></mat-icon>
+	</button>
+</div>

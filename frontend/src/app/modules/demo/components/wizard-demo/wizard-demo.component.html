@@ -1,0 +1,51 @@
+<h1>Wizard</h1>
+<div class="line">
+	<mat-divider></mat-divider>
+</div>
+
+<br />
+
+<div class="section">
+	<mat-stepper class="ms-wizard" #stepper>
+		<mat-step>
+			<p class="heading-primary-title">Recommended Algorithm:</p>
+
+			<ms-card-selector
+				[options]="['Iterative Magnitude Pruning', 'One-shot Magnitude Pruning']"
+				(selectedOption)="handleSelected($event)">
+			</ms-card-selector>
+
+			<div class="mt-4">
+				<button mat-raised-button color="primary" matStepperNext>Next</button>
+			</div>
+		</mat-step>
+		<mat-step>
+			<p class="heading-primary-title">Do you want to have a similar or higher accuracy?</p>
+
+			<ms-card-selector [options]="['Yes', 'No']" (selectedOption)="handleSelected($event)"> </ms-card-selector>
+
+			<div class="mt-4">
+				<button mat-button class="mr-3" matStepperPrevious>
+					<mat-icon fontSet="ms" fontIcon="icon-ArrowLeft"></mat-icon>
+					Previous
+				</button>
+				<button mat-raised-button color="primary" matStepperNext>Next</button>
+			</div>
+		</mat-step>
+		<mat-step>
+			<p class="heading-primary-title">Example question?</p>
+
+			<ms-card-selector
+				[options]="['Option 1', 'Option 2', 'Option 3', 'Option 4']"
+				(selectedOption)="handleSelected($event)">
+			</ms-card-selector>
+
+			<div class="mt-4">
+				<button mat-button class="mr-3" matStepperPrevious>
+					<mat-icon fontSet="ms" fontIcon="icon-ArrowLeft"></mat-icon>
+					Previous
+				</button>
+			</div>
+		</mat-step>
+	</mat-stepper>
+</div>

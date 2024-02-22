@@ -1,0 +1,231 @@
+/**
+ * Rem Units and Styling Guide
+ * 
+ * The 'rem' (root-em) units define an element's font size in relation to the root element's size.
+ * By default, the root font size is set to 16px.
+ * 
+ * PX to REM Conversion Reference:
+ * - 10px: 0.625rem
+ * - 12px: 0.75rem
+ * - 14px: 0.875rem
+ * - 16px: 1rem (base)
+ * - 18px: 1.125rem
+ * - 20px: 1.25rem
+ * - 24px: 1.5rem
+ * - 30px: 1.875rem
+ * - 32px: 2rem
+ * 
+ * Conversion Utility: https://nekocalc.com/px-to-rem-converter
+ */
+
+html {
+	color: var(--foregrounds-800);
+}
+
+// Mixins for Typography
+
+// Heading/Primary title
+@mixin heading-primary-title {
+	font-family: 'Montserrat';
+	font-weight: 700;
+	font-size: 1.5rem;
+	line-height: 2.125rem;
+}
+
+.heading-primary-title {
+	@include heading-primary-title;
+}
+
+// Heading/Section title
+@mixin heading-section-title {
+	font-weight: 700;
+	font-size: 1.125rem;
+	line-height: 1.5em;
+}
+
+.heading-section-title {
+	@include heading-section-title;
+}
+
+@mixin paragraph-bold-p4-small-bold {
+	font-family: 'Inter';
+	font-weight: 700;
+	font-size: 0.75rem;
+	line-height: 1.125em;
+}
+
+.paragraph-bold-p4-small-bold {
+	@include paragraph-bold-p4-small-bold;
+}
+
+@mixin paragraph-monospace-p2-large {
+	font-size: 1rem;
+	line-height: 1.375rem;
+	font-weight: 400;
+}
+
+.paragraph-monospace-p2-large {
+	@include paragraph-monospace-p2-large;
+}
+
+// Heading/Sub-section title
+@mixin heading-sub-section-title {
+	font-size: 1rem;
+	line-height: 1.375rem;
+	font-weight: 700;
+}
+
+.heading-sub-section-title {
+	@include heading-sub-section-title;
+}
+
+@mixin paragraph-regular-p3-small {
+	font-family: 'Inter';
+	font-weight: 400;
+	font-size: 0.875;
+	line-height: 1.25rem;
+}
+
+.paragraph-regular-p3-small {
+	@include paragraph-regular-p3-small;
+}
+
+// Paragraph/Bold / P3 - Small Bold
+@mixin paragraph-bold-p3-small-bold {
+	font-family: 'Inter';
+	font-weight: 700;
+	font-size: 0.875rem;
+	line-height: 1.25rem;
+}
+
+.paragraph-bold-p3-small-bold {
+	@include paragraph-bold-p3-small-bold;
+}
+
+// Paragraph/Semibold/P2 - Large Emphasis
+@mixin paragraph-semibold-p2-large-emphasis {
+	font-family: 'Inter';
+	font-weight: 600;
+	font-size: 1rem;
+	line-height: 1.375rem;
+}
+
+.paragraph-semibold-p2-large-emphasis {
+	@include paragraph-semibold-p2-large-emphasis;
+}
+
+@mixin paragraph-semibold-p1-xlarge-emphasis {
+	font-family: 'Inter';
+	font-weight: 600;
+	font-size: 1.125rem;
+	line-height: 1.5rem;
+}
+
+.paragraph-semibold-p1-xlarge-emphasis {
+	@include paragraph-semibold-p1-xlarge-emphasis;
+}
+
+// Paragraph/Regular/P3 - Default
+@mixin paragraph-regular-p3-default {
+	font-family: 'Inter';
+	font-weight: 400;
+	font-size: 0.875rem;
+	line-height: 1.25rem;
+}
+
+.paragraph-regular-p3-default {
+	@include paragraph-regular-p3-default;
+}
+
+// Paragraph/Semibold/P3 - Default Emphasis
+@mixin paragraph-semibold-p3-default-emphasis {
+	font-family: 'Inter';
+	font-weight: 600;
+	font-size: 0.875rem;
+	line-height: 1.25rem;
+}
+
+.paragraph-semibold-p3-default-emphasis {
+	@include paragraph-semibold-p3-default-emphasis;
+}
+
+// Paragraph/Regular/P4 - Small
+@mixin paragraph-regular-p4-small {
+	font-family: 'Inter';
+	font-weight: 400;
+	font-size: 0.75rem;
+	line-height: 1.125rem;
+}
+
+.paragraph-regular-p4-small {
+	@include paragraph-regular-p4-small;
+}
+
+// Paragraph/Semibold/P3 - Small Emphasis
+@mixin paragraph-semibold-p3-small-emphasis {
+	font-family: 'Inter';
+	font-weight: 600;
+	font-size: 0.875rem;
+	line-height: 1.25rem;
+}
+
+.paragraph-semibold-p3-small-emphasis {
+	@include paragraph-semibold-p3-small-emphasis;
+}
+
+@mixin paragraph-semibold-p4-xSmall {
+	font-family: 'Inter';
+	font-size: 0.75rem;
+	line-height: 1.125rem;
+	font-weight: 400;
+}
+
+.paragraph-semibold-p4-xSmall {
+	@include paragraph-semibold-p4-xSmall;
+}
+
+@mixin paragraph-semibold-p4-xSmall-emphasis {
+	font-family: 'Inter';
+	font-size: 0.75rem;
+	line-height: 1.125rem;
+	font-weight: 600;
+}
+
+.paragraph-semibold-p4-xSmall-emphasis {
+	@include paragraph-semibold-p4-xSmall-emphasis;
+}
+
+@mixin paragraph-regular-p4-xSmall {
+	font-family: 'Inter';
+	font-size: 0.75rem;
+	line-height: 1.125rem;
+	font-weight: 400;
+	color: var(--foregrounds-750);
+}
+
+.paragraph-regular-p4-xSmall {
+	@include paragraph-regular-p4-xSmall;
+}
+
+@mixin paragraph-regular-p3-default {
+	font-family: 'Inter';
+	font-size: 0.875rem;
+	line-height: 1.25rem;
+	font-weight: 400;
+}
+
+.paragraph-regular-p3-default {
+	@include paragraph-regular-p3-default;
+}
+
+// Paragraph/Regular/P2 - Large
+@mixin paragraph-regular-p2-large {
+	font-family: 'Inter';
+	font-size: 1rem;
+	font-weight: 400;
+	line-height: 1.375rem;
+}
+
+.paragraph-regular-p2-large {
+	@include paragraph-regular-p2-large;
+}

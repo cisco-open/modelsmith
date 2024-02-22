@@ -1,0 +1,36 @@
+.sidenav-wrapper {
+	padding: 0 12px;
+
+	.switch {
+		width: 100;
+		display: flex;
+		cursor: pointer;
+
+		.left {
+			display: flex;
+			align-items: center;
+			color: var(--foregrounds-600);
+			margin-left: 8px;
+		}
+		.right {
+			margin-left: 10px;
+
+			.switch-button {
+				display: flex;
+				align-items: center;
+				color: var(--foregrounds-750);
+
+				.switch-icon {
+					margin-left: 5px;
+					font-size: 16px;
+					width: 16px;
+					height: 16px;
+				}
+			}
+		}
+	}
+
+	.sidenav-items-wrapper {
+		margin-top: 10px;
+	}
+}

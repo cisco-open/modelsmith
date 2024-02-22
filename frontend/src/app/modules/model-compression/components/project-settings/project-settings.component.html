@@ -1,0 +1,25 @@
+<p class="heading-primary-title title">Project Settings</p>
+
+<div class="project-settings-wrapper" [formGroup]="form">
+	<div class="left">
+		<ng-container [formGroup]="form">
+			<ms-panel-algorithm #panelAlgorithm formGroupName="algorithm"></ms-panel-algorithm>
+
+			<ng-container *ngIf="isQuantAlgorithmSelected">
+				<ms-panel-model formGroupName="model"></ms-panel-model>
+			</ng-container>
+
+			<ms-panel-parameters #panelParameters formArrayName="params"></ms-panel-parameters>
+		</ng-container>
+
+		<div>
+			<button mat-raised-button color="primary" (click)="submit()" [disabled]="isScriptActive || form.invalid">
+				Run
+			</button>
+			<button class="ml-2" mat-raised-button color="primary" (click)="goToChartPage()">View Chart</button>
+		</div>
+	</div>
+	<div class="right">
+		<ms-terminal></ms-terminal>
+	</div>
+</div>

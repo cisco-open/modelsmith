@@ -1,0 +1,53 @@
+<h1>Cards</h1>
+
+<div class="line">
+	<mat-divider></mat-divider>
+</div>
+
+<h2>Basic cards</h2>
+
+<div class="section">
+	<mat-card class="ms-card">
+		<p class="heading-sub-section-title">Card with text</p>
+
+		<p>
+			Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce et cursus eros, a ultricies massa. Morbi commodo
+			sapien magna, vitae facilisis erat blandit ac. Praesent vulputate nulla quis nibh consectetur euismod. Nulla justo
+			dolor, molestie vitae ultricies id, malesuada id tortor. Ut rutrum nisi enim. Pellentesque sed blandit tortor, id
+			fringilla turpis. In vel arcu nec urna dictum mollis ac sed sem. Integer orci eros, hendrerit a dui nec, auctor
+			mattis mi. Curabitur quis tempor ex.
+		</p>
+	</mat-card>
+</div>
+
+<br />
+
+<div class="section">
+	<mat-card class="ms-card">
+		<p class="heading-sub-section-title">Key Value Card</p>
+
+		<div class="key-value-pair">
+			<div class="key-value-key paragraph-semibold-p4-xSmall-emphasis">Key 1</div>
+			<div class="key-value-value paragraph-regular-p4-xSmall">Value 1</div>
+		</div>
+		<mat-divider></mat-divider>
+
+		<div class="key-value-pair">
+			<div class="key-value-key paragraph-semibold-p4-xSmall-emphasis">Key 2</div>
+			<div class="key-value-value paragraph-regular-p4-xSmall">Value 2</div>
+		</div>
+		<mat-divider></mat-divider>
+
+		<div class="key-value-pair">
+			<div class="key-value-key paragraph-semibold-p4-xSmall-emphasis">Key 1</div>
+			<div class="key-value-value paragraph-regular-p4-xSmall">Value 1</div>
+		</div>
+	</mat-card>
+</div>
+
+<br />
+
+<h2>Option Card Selector</h2>
+
+<ms-card-selector [options]="['Option 1', 'Option 2', 'Option 3']" (selectedOption)="handleSelected($event)">
+</ms-card-selector>
