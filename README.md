@@ -27,9 +27,9 @@ To get started with Modelsmith, follow these steps:
 
 ## FAQ
 
-### 1. How do I configure Modelsmith to run locally?
+### 1. How do I configure Modelsmith to run locally? [Read here](readme/configure-the-project-locally.md).
 
-For detailed instructions on how to configure Modelsmith to run locally on your machine, including utilizing your own GPU for running Python scripts, check the guide [here](readme/configure-the-project-locally.md).
+### 2. How do I configure Modelsmith to run on VM? [Read here](readme/configure_modelsmith_on_vm.md).
 
 ## Features
 
