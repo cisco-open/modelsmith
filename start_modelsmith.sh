@@ -7,6 +7,7 @@ NC="\033[0m" # No color
 
 # Absolute path to the project root directory
 PROJECT_ROOT="$(pwd)"
+TAIL_PID=""
 
 # Function to install dependencies if necessary
 install_dependencies() {
@@ -31,6 +32,9 @@ start_backend() {
     # Start the backend server using npm
     nohup npm run start:prod > "backend.log" 2>&1 &
     echo -e "${GREEN}Backend server started and logging to backend.log${NC}"
+
+    tail -f "backend.log" &
+    TAIL_PID=$!
 }
 
 # Function to start the frontend server (Express)
@@ -49,6 +53,10 @@ start_frontend() {
 # Function to perform cleanup
 cleanup() {
     echo -e "${GREEN}Stopping Backend and Frontend...${NC}"
+    if [ -n "$TAIL_PID" ]; then
+        kill "$TAIL_PID"
+        echo -e "${GREEN}Stopped tailing backend logs.${NC}"
+    fi
 }
 
 # Trap SIGINT, SIGTERM, and SIGHUP
