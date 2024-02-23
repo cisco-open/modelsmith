@@ -46,11 +46,12 @@ export abstract class ServiceCall<Response> {
 			this.mock = mock;
 		}
 
-		this.url =
-			environment.backendBaseUrl +
-			'/' +
-			(this.mock ? environment.apiUrl.replace('rest', 'mock') : environment.apiUrl) +
-			url;
+		this.url = '';
+		if (this.mock) {
+			this.url = `/mock${url}`;
+		} else {
+			this.url = `${environment.backendBaseUrl}/${environment.apiUrl}/${url}`;
+		}
 	}
 }
 
