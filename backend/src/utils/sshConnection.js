@@ -110,10 +110,10 @@ class SSHConnection {
 			});
 
 			stream.on('close', (code) => {
-				if (code === 0) {
-					onEnd();
-				} else {
+				if (code !== 0 && code !== null) {
 					onError(new Error(`Process exited with code ${code}`));
+				} else {
+					onEnd();
 				}
 			});
 		});
