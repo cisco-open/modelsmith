@@ -8,41 +8,12 @@ ModelSmith is developed by researchers and engineers working at Cisco Research.
 
 ## Table of Contents
 
-- [Features](#features)
-- [Prerequisities](#prerequisites)
 - [Getting Started](#getting-started)
-- [Usage](#usage)
+- [FAQ](#faq)
+- [Features](#features)
 - [Supported features](#supported-technologies)
 - [Contributions](#contributions)
 - [License](#license)
-
-## Features
-
-- **Frontend Server**: Modelsmith's frontend is built using Angular and is deployed as a production build to the 'frontend/server/modelsmith-build' folder. The frontend server, powered by Express.js, serves the web application in to users in optimized mode on port 4200.
-
-- **Backend Server**: Modelsmith includes a backend server built using Node.js, which serves as the core of the application. The backend server handles various tasks such as model optimization, deployment, and management. It is accessible on port 3000.
-
-## Prerequisites
-
-Before you can use this application, please ensure that you have the following installed on your system:
-
-- [Node.js](https://nodejs.org/) (v18.17.1 or higher)
-
-Node.js includes npm by default, so you don't need to install npm separately.
-
-If you don't have Node.js and npm installed, you can follow these steps to install them:
-
-**Node.js:**
-
-- Visit the [Node.js website](https://nodejs.org/).
-- Download the installer for your operating system.
-- Run the installer and follow the on-screen instructions.
-
-To verify that you have successfully installed Node.js and npm, you can run the following commands in your terminal:
-
-```bash
-node -v
-```
 
 ## Getting Started
 
@@ -54,25 +25,19 @@ To get started with Modelsmith, follow these steps:
    git clone https://github.com/your-username/modelsmith.git
    ```
 
-2. Navigate to the project's root directory:
+## FAQ
 
-   ```shell
-   cd modelsmith
-   ```
+### 1. How do I configure Modelsmith to run locally?
 
-3. Run start_modelsmith.sh to install project dependencies for both the frontend and backend and start both servers:
+For detailed instructions on how to configure Modelsmith to run locally on your machine, including utilizing your own GPU for running Python scripts, check the guide [here](readme/configure-the-project-locally.md).
 
-   ```bash
-   bash start_modelsmith.sh
-   ```
+## Features
 
-4. Access `http://localhost:4200` from the URLs in your web browser to start the app.
+- **Frontend Server**: Modelsmith's frontend is built using Angular and is deployed as a production build to the 'frontend/server/modelsmith-build' folder. The frontend server, powered by Express.js, serves the web application in to users in optimized mode on port 4200. It provides a user interface for interacting with the application.
 
-## Usage
+- **Backend Server**: Modelsmith includes a backend server built using Node.js, which serves as the core of the application. The backend server handles various tasks such as model optimization, deployment, and management. It is accessible on port 3000. The backend offers APIs and services to support the frontend's functionality and communicates with a VM for running the python scripts.
 
-- The frontend provides a user interface for interacting with the application.
-
-- The backend offers APIs and services to support the frontend's functionality and communicates with a VM for running the python scripts.
+- **Modelsmith Project - Python Files for Model Training**: This feature includes a comprehensive collection of Python scripts designed for the training of machine learning models. These scripts are fine-tuned for high efficiency and can be executed on local machines with GPU support or on virtual machines (VMs), offering flexibility for users to train models using their own hardware or cloud resources.
 
 ## Supported technologies
 
