@@ -32,8 +32,8 @@ pip3 install torch torchvision torchaudio --index-url https://download.pytorch.o
 
 ```
 # Start training with:
-python train.py
+python3 train.py
 
 # You can manually resume the training with:
-python train.py --resume --lr=0.01
+python3 train.py --resume --lr=0.01
 ```
