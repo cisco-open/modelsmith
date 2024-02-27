@@ -4,8 +4,8 @@
 
 ```
 # create and prepare a virtual environment
-conda create -n pruning python=3.9
-conda activate pruning
+conda create -n modelsmith python=3.9
+conda activate modelsmith
 pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
 ```
 
@@ -23,7 +23,9 @@ python basic-ptq-example.py --n_bits_w 8 --channel_wise --n_bits_a 8 --order tog
 python basic-minmax-ptq-example.py --data_path ./data --checkpoint_path ./models_checkpoints
 python brecq-example.py
 ```
+
 # Prune CIFAR10 with PyTorch
+
 ## Pruning
 
 ```

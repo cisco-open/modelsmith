@@ -34,19 +34,19 @@ read -p "Enter your choice: " choice
 
 case $choice in
   1)
-    echo -e "${GREEN}Updating the entire modelsmith project...${NC}"
-    ssh ${PRIMARY_SSH_USERNAME}@${PRIMARY_SSH_HOST} "rm -rf /home/${PRIMARY_SSH_USERNAME}/${MODELSMITH_PATH}/*"
-    scp -r ../modelsmith/* ${PRIMARY_SSH_USERNAME}@${PRIMARY_SSH_HOST}:/home/${PRIMARY_SSH_USERNAME}/${MODELSMITH_PATH}
+    echo -e "${GREEN}Updating the entire modelsmith project... (warning: this will update the entire folder in the VM but preserve data, checkpoint, and models_checkpoint folders)${NC}"
+    ssh ${PRIMARY_SSH_USERNAME}@${PRIMARY_SSH_HOST} "mkdir -p /home/${PRIMARY_SSH_USERNAME}/${MODELSMITH_PATH}"
+    rsync -avz --exclude 'data/' --exclude 'checkpoint/' --exclude 'models_checkpoint/' ../modelsmith/ ${PRIMARY_SSH_USERNAME}@${PRIMARY_SSH_HOST}:/home/${PRIMARY_SSH_USERNAME}/${MODELSMITH_PATH}
     ;;
   2)
     echo -e "${GREEN}Updating bash folder...${NC}"
-    ssh ${PRIMARY_SSH_USERNAME}@${PRIMARY_SSH_HOST} "rm -rf /home/${PRIMARY_SSH_USERNAME}/${MODELSMITH_PATH}/bash"
+    ssh ${PRIMARY_SSH_USERNAME}@${PRIMARY_SSH_HOST} "find /home/${PRIMARY_SSH_USERNAME}/${MODELSMITH_PATH}/bash -maxdepth 1 -type f -delete"
     scp -r ../modelsmith/bash ${PRIMARY_SSH_USERNAME}@${PRIMARY_SSH_HOST}:/home/${PRIMARY_SSH_USERNAME}/${MODELSMITH_PATH}
     ;;
   3)
     echo -e "${GREEN}Updating iterative_magnitude_pruning.py script...${NC}"
-    ssh ${PRIMARY_SSH_USERNAME}@${PRIMARY_SSH_HOST} "rm -f /home/${PRIMARY_SSH_USERNAME}/modelsmith/examples/iterative_magnitude_pruning.py"
-    scp ../modelsmith/examples/iterative_magnitude_pruning.py ${PRIMARY_SSH_USERNAME}@${PRIMARY_SSH_HOST}:/home/${PRIMARY_SSH_USERNAME}/${MODELSMITH_PATH}/examples
+    ssh ${PRIMARY_SSH_USERNAME}@${PRIMARY_SSH_HOST} "rm -f /home/${PRIMARY_SSH_USERNAME}/modelsmith/examples_pruning/iterative_magnitude_pruning.py"
+    scp ../modelsmith/examples_pruning/iterative_magnitude_pruning.py ${PRIMARY_SSH_USERNAME}@${PRIMARY_SSH_HOST}:/home/${PRIMARY_SSH_USERNAME}/${MODELSMITH_PATH}/examples
     ;;
   4)
     echo -e "${GREEN}Updating block_recon.py...${NC}"

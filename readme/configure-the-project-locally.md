@@ -30,8 +30,8 @@ To get started, you need to set up the Python environment for Modelsmith. This i
    Open a terminal and run the following commands:
 
    ```bash
-   conda create -n pruning python=3.9
-   conda activate pruning
+   conda create -n modelsmith python=3.9
+   conda activate modelsmith
    ```
 
 2. **Install PyTorch and Related Libraries**

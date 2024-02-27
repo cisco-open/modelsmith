@@ -139,7 +139,7 @@ function executePythonScript(path, algorithm, args = '', type) {
 	}
 
 	const scriptPath = `${process.env.MODELSMITH_PATH}/${path}`;
-	const cmd = `source ${process.env.CONDA_SH_PATH} && conda activate pruning && cd ${scriptPath} && ${PYTHON_COMMAND} ${algorithm} ${args}`;
+	const cmd = `source ${process.env.CONDA_SH_PATH} && conda activate modelsmith && cd ${scriptPath} && ${PYTHON_COMMAND} ${algorithm} ${args}`;
 	broadcastTerminal(`${PYTHON_COMMAND} ${algorithm} ${args}`);
 
 	// Use executeCommand for both local and VM execution

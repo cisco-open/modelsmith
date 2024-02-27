@@ -1,39 +1,42 @@
-// Data should be retrieved from a DB.
 const ALGORITHM_TYPES = require('./algorithmTypesConstants');
+
+const PRUNING_PATH = 'examples_pruning/';
+const QUANTIZATION_PATH = 'examples_quant/';
+const MACHINE_UNLEARNING_PATH = 'examples_unlearning/';
 
 const PRUNING_ALGORITHMS = {
 	IPG: {
-		path: 'examples/',
+		path: PRUNING_PATH,
 		type: ALGORITHM_TYPES.PRUNING,
 		fileName: 'init_pruning_grasp.py'
 	},
 	IPM: {
-		path: 'examples/',
+		path: PRUNING_PATH,
 		type: ALGORITHM_TYPES.PRUNING,
 		fileName: 'init_pruning_magnitude.py'
 	},
 	IPR: {
-		path: 'examples/',
+		path: PRUNING_PATH,
 		type: ALGORITHM_TYPES.PRUNING,
 		fileName: 'init_pruning_random.py'
 	},
 	IMP: {
-		path: 'examples/',
+		path: PRUNING_PATH,
 		type: ALGORITHM_TYPES.PRUNING,
 		fileName: 'iterative_magnitude_pruning.py'
 	},
 	OMP: {
-		path: 'examples/',
+		path: PRUNING_PATH,
 		type: ALGORITHM_TYPES.PRUNING,
 		fileName: 'oneshot_magnitude_pruning.py'
 	},
 	IPS: {
-		path: 'examples/',
+		path: PRUNING_PATH,
 		type: ALGORITHM_TYPES.PRUNING,
 		fileName: 'init_pruning_snip.py'
 	},
 	IPSY: {
-		path: 'examples/',
+		path: PRUNING_PATH,
 		type: ALGORITHM_TYPES.PRUNING,
 		fileName: 'init_pruning_synflow.py'
 	}
@@ -41,17 +44,17 @@ const PRUNING_ALGORITHMS = {
 
 const QUANT_ALGORITHMS = {
 	BPTQ: {
-		path: 'examples_quant/',
+		path: QUANTIZATION_PATH,
 		type: ALGORITHM_TYPES.QUANTIZATION,
 		fileName: 'basic-ptq-example.py'
 	},
 	BRECQ: {
-		path: 'examples_quant/',
+		path: QUANTIZATION_PATH,
 		type: ALGORITHM_TYPES.QUANTIZATION,
 		fileName: 'brecq-example.py'
 	},
 	MINMAXPTQ: {
-		path: 'examples_quant/',
+		path: QUANTIZATION_PATH,
 		type: ALGORITHM_TYPES.QUANTIZATION,
 		fileName: 'minmax-ptq-example.py'
 	}
@@ -59,7 +62,7 @@ const QUANT_ALGORITHMS = {
 
 const MACHINE_UNLEARNING_ALGORITHMS = {
 	MU: {
-		path: 'examples_unlearning/',
+		path: MACHINE_UNLEARNING_PATH,
 		type: ALGORITHM_TYPES.MACHINE_UNLEARNING,
 		fileName: 'main_forget.py'
 	}
@@ -67,7 +70,7 @@ const MACHINE_UNLEARNING_ALGORITHMS = {
 
 const TRAIN_ALGORITHMS = {
 	MUT: {
-		path: 'examples_unlearning/',
+		path: MACHINE_UNLEARNING_PATH,
 		type: ALGORITHM_TYPES.TRAIN,
 		fileName: 'train.py'
 	}

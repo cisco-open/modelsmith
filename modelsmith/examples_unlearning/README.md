@@ -2,12 +2,12 @@
 
 This is the code implementation for the Neurips 2023 paper [Model Sparsity Can Simplify Machine Unlearning](https://proceedings.neurips.cc/paper_files/paper/2023/file/a204aa68ab4e970e1ceccfb5b5cdc5e4-Paper-Conference.pdf) from MSU [OPTML Group](https://github.com/OPTML-Group) and [Cisco Research](https://research.cisco.com).
 
-## Environtment
+## Environment
 
 ```
 # create and prepare a virtual environment
-conda create -n pruning python=3.9
-conda activate pruning
+conda create -n modelsmith python=3.9
+conda activate modelsmith
 pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
 ```
 
