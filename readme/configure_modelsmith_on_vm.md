@@ -40,7 +40,7 @@ The initial phase involves preparing the VM environment for Modelsmith. Perform 
 4. **Install PyTorch and Related Libraries**: Install the necessary Python packages including PyTorch, torchvision, and torchaudio:
 
    ```bash
-   pip install torch torchvision torchaudio
+   pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/
    ```
 
 5. **Train the Models**: Navigate to the respective directories (`examples_quant`, `examples`, `examples_unlearning`) and execute the `train.py` scripts to train your models.

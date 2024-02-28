@@ -14,11 +14,12 @@ export class HttpErrorHandlingService {
 		switch (errorResponse.status) {
 			case 400:
 			case 404:
+			case 500:
 			case 503:
 				this.spawnNotification(errorMessage);
 				break;
 			default:
-				this.spawnNotification(errorResponse.error);
+				this.spawnNotification(errorMessage);
 				break;
 		}
 

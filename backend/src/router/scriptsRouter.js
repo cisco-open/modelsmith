@@ -5,7 +5,7 @@ const checkSshConnection = require('../middlewares/checkSshConnection');
 const checkIfNoScriptRunning = require('../middlewares/checkIfNoScriptRunning');
 const checkIfScriptRunning = require('../middlewares/checkIfScriptRunning');
 const ALGORITHMS = require('../constants/algorithmsConstants');
-const { BAD_REQUEST, OK, NOT_FOUND } = require('../constants/httpStatusCodes');
+const { BAD_REQUEST, OK, NOT_FOUND, INTERNAL_SERVER_ERROR } = require('../constants/httpStatusCodes');
 const logger = require('../utils/logger');
 const {
 	getScriptState,
@@ -51,33 +51,80 @@ router.post('/run-script', checkSshConnection, checkIfScriptRunning, (req, res) 
 	}
 
 	const { mergedParams, args } = buildArgsString(alg, params);
+	const { arch = '' } = req?.body?.params || {};
 
-	try {
-		executePythonScript(scriptDetails.path, scriptDetails.fileName, args, scriptDetails.type);
+	setActiveScriptDetails({
+		algKey: alg,
+		algorithm: scriptDetails,
+		params: mergedParams,
+		model: arch
+	});
 
-		const { arch = '' } = req?.body?.params || {};
+	changeAndBroadcastScriptState(ScriptState.RUNNING);
 
-		setActiveScriptDetails({
-			algKey: alg,
-			algorithm: scriptDetails,
-			params: mergedParams,
-			model: arch
+	executePythonScript(scriptDetails.path, scriptDetails.fileName, args, scriptDetails.type)
+		.then(() => {
+			res.status(OK).send({ message: 'Script execution ended successfully.' });
+
+			setActiveScriptDetails(null);
+			changeAndBroadcastScriptState(ScriptState.NOT_RUNNING);
+		})
+		.catch((error) => {
+			logger.error(`Error executing command: ${error}`);
+
+			setActiveScriptDetails(null);
+			changeAndBroadcastScriptState(ScriptState.ERROR);
+
+			res.status(INTERNAL_SERVER_ERROR).send({
+				error:
+					'The script has errors and failed to start automatically. Please try running the script manually from the terminal.'
+			});
 		});
-
-		changeAndBroadcastScriptState(ScriptState.RUNNING);
-		broadcastStatus();
-
-		res.status(OK).send({ error: 'Script execution started.' });
-	} catch (error) {
-		logger.error({ error: 'Error executing command:' }, error);
-
-		setActiveScriptDetails(null);
-		changeAndBroadcastScriptState(ScriptState.ERROR);
-		broadcastStatus('Error executing command.');
-
-		res.status(BAD_REQUEST).send({ error: 'Error executing the Python script.' });
-	}
 });
+
+function executePythonScript(path, algorithm, args = '', type) {
+	return new Promise((resolve, reject) => {
+		if (type === ALGORITHM_TYPES.PRUNING) {
+			pruningParserInstance.reset();
+		} else if (type === ALGORITHM_TYPES.QUANTIZATION) {
+			quantizationParserInstance.reset();
+		} else if (type === ALGORITHM_TYPES.MACHINE_UNLEARNING) {
+			machineUnlearningParserInstance.reset();
+		}
+
+		const scriptPath = `${process.env.MODELSMITH_PATH}/${path}`;
+		const cmd = `source ${process.env.CONDA_SH_PATH} && conda activate modelsmith && cd ${scriptPath} && ${PYTHON_COMMAND} ${algorithm} ${args}`;
+		broadcastTerminal(`${PYTHON_COMMAND} ${algorithm} ${args}`);
+
+		executeCommand(
+			cmd,
+			(data) => {
+				const formattedData = data.toString().replace(/\n/g, '\r\n');
+				broadcastTerminal(formattedData);
+
+				switch (type) {
+					case ALGORITHM_TYPES.PRUNING:
+						pruningParserInstance.parseLine(formattedData);
+						break;
+					case ALGORITHM_TYPES.QUANTIZATION:
+						quantizationParserInstance.parseLine(formattedData);
+						break;
+					case ALGORITHM_TYPES.MACHINE_UNLEARNING:
+						machineUnlearningParserInstance.parseLine(formattedData);
+						break;
+					default:
+						break;
+				}
+			},
+			() => {
+				resolve();
+			},
+			(error) => {
+				reject(error);
+			}
+		);
+	});
+}
 
 router.get('/script-status', (req, res) => {
 	const scriptStatus = getScriptState();
@@ -128,58 +175,6 @@ router.post('/stop-script', checkSshConnection, checkIfNoScriptRunning, (req, re
 		}
 	);
 });
-
-function executePythonScript(path, algorithm, args = '', type) {
-	if (type === ALGORITHM_TYPES.PRUNING) {
-		pruningParserInstance.reset();
-	} else if (type === ALGORITHM_TYPES.QUANTIZATION) {
-		quantizationParserInstance.reset();
-	} else if (type === ALGORITHM_TYPES.MACHINE_UNLEARNING) {
-		machineUnlearningParserInstance.reset();
-	}
-
-	const scriptPath = `${process.env.MODELSMITH_PATH}/${path}`;
-	const cmd = `source ${process.env.CONDA_SH_PATH} && conda activate modelsmith && cd ${scriptPath} && ${PYTHON_COMMAND} ${algorithm} ${args}`;
-	broadcastTerminal(`${PYTHON_COMMAND} ${algorithm} ${args}`);
-
-	// Use executeCommand for both local and VM execution
-	executeCommand(
-		cmd,
-		(data) => {
-			// onData
-			const formattedData = data.toString().replace(/\n/g, '\r\n');
-			broadcastTerminal(formattedData);
-
-			switch (type) {
-				case ALGORITHM_TYPES.PRUNING:
-					pruningParserInstance.parseLine(formattedData);
-					break;
-				case ALGORITHM_TYPES.QUANTIZATION:
-					quantizationParserInstance.parseLine(formattedData);
-					break;
-				case ALGORITHM_TYPES.MACHINE_UNLEARNING:
-					machineUnlearningParserInstance.parseLine(formattedData);
-					break;
-				default:
-					break;
-			}
-		},
-		() => {
-			setActiveScriptDetails(null);
-			if (getScriptState() === ScriptState.STOPPING) {
-				broadcastTerminal('Command stopped.');
-			} else {
-				broadcastTerminal('Command execution complete.');
-			}
-			changeAndBroadcastScriptState(ScriptState.NOT_RUNNING);
-			logger.info('Command execution complete.');
-		},
-		(error) => {
-			logger.error(`Error executing command: ${error}`);
-			broadcastStatus('Error executing command.');
-		}
-	);
-}
 
 function buildArgsString(alg, providedParams) {
 	const defaultParamsArray = ALGORITHM_PARAMETERS[alg] || [];
