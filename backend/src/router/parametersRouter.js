@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { OK, NOT_FOUND } = require('../constants/httpStatusCodes');
 const ALGORITHM_PARAMETERS = require('../constants/parametersConstants');
-const { getActiveScriptDetails } = require('../state/scriptState');
+const { getActiveScriptDetails, getPreviousScriptDetails } = require('../state/scriptState');
 
 /**
  * GET /parameters/:key route handler.
@@ -30,7 +30,7 @@ router.get('/parameters/:key', (req, res) => {
 	if (key in ALGORITHM_PARAMETERS) {
 		let parameters = ALGORITHM_PARAMETERS[key];
 
-		const activeScript = getActiveScriptDetails();
+		const activeScript = getActiveScriptDetails() || getPreviousScriptDetails();
 		if (activeScript && activeScript.algKey === key) {
 			parameters = parameters.map((param) => {
 				return {
