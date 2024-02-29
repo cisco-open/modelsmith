@@ -10,7 +10,7 @@ export const ScriptActions = createActionGroup({
 		'Call Script Failure': props<{ error: any }>(),
 		'Fetch Script Status': emptyProps(),
 		'Update Script Status': props<{ status: string }>(),
-		'Fetch Script Status Success': props<{ status: string; activeScript: ScriptDetails }>(),
+		'Fetch Script Status Success': props<{ status: string }>(),
 		'Fetch Script Status Failure': props<{ error: any }>(),
 		'Stop Script': emptyProps(),
 		'Stop Script Success': emptyProps(),

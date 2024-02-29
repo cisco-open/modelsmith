@@ -28,10 +28,9 @@ export const scriptReducer = createReducer(
 		...state,
 		error
 	})),
-	on(ScriptActions.fetchScriptStatusSuccess, (state, { status, activeScript }) => ({
+	on(ScriptActions.fetchScriptStatusSuccess, (state, { status }) => ({
 		...state,
 		scriptStatus: status as ScriptStatusEnum,
-		scriptDetails: activeScript,
 		error: null
 	})),
 	on(ScriptActions.fetchScriptStatusFailure, (state, { error }) => ({

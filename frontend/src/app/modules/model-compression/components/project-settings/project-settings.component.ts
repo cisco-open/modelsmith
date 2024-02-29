@@ -7,10 +7,10 @@ import { ScriptConfigsDto } from '../../../../services/client/models/script/scri
 import { FileActions } from '../../../../state/core/file/file.actions';
 import { ScriptActions } from '../../../../state/core/script/script.actions';
 import { RoutesList } from '../../../core/models/enums/routes-list.enum';
+import { BannerService } from '../../../core/services/banner.service';
 import { FileFacadeService } from '../../../core/services/file-facade.service';
 import { FileService } from '../../../core/services/file.service';
 import { ScriptFacadeService } from '../../../core/services/script-facade.service';
-import { BannerService } from '../../../core/services/banner.service';
 import { MsPanelParametersComponent } from '../../../shared/components/ms-panel-parameters/ms-panel-parameters.component';
 import { CUSTOM_MODEL } from '../../models/constants/supported-models.constants';
 import { AlgorithmType, determineAlgorithmType } from '../../models/enums/algorithms.enum';

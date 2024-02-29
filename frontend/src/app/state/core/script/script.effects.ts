@@ -31,8 +31,8 @@ export class ScriptEffects {
 			switchMap(() =>
 				this.apiClient.serviceCall(new GetScriptStatus()).pipe(
 					map((response: any) => {
-						const { status, activeScript } = response;
-						return ScriptActions.fetchScriptStatusSuccess({ status, activeScript });
+						const { status } = response;
+						return ScriptActions.fetchScriptStatusSuccess({ status });
 					}),
 					catchError((error) => of(ScriptActions.fetchScriptStatusFailure({ error })))
 				)

@@ -129,12 +129,6 @@ function executePythonScript(path, algorithm, args = '', type) {
 router.get('/script-status', (req, res) => {
 	const scriptStatus = getScriptState();
 	const response = { status: scriptStatus };
-	const activeDetails = getActiveScriptDetails();
-
-	if ((scriptStatus === ScriptState.RUNNING || scriptStatus === ScriptState.STOPPING) && activeDetails) {
-		const { algorithm, ...detailsWithoutAlgorithm } = activeDetails;
-		response.activeScript = detailsWithoutAlgorithm;
-	}
 
 	res.status(OK).send(response);
 });

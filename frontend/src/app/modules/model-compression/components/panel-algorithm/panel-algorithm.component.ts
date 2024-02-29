@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 import { AbstractControl, ControlContainer, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { of, switchMap, take } from 'rxjs';
+import { filter, skip, take } from 'rxjs';
 import { ScriptDetails } from '../../../../services/client/models/script/script-details.interface-dto';
+import { ScriptActions } from '../../../../state/core/script';
 import { ScriptFacadeService } from '../../../core/services/script-facade.service';
-import { isEmptyObject } from '../../../core/utils/core.utils';
 import {
 	DEFAULT_SELECTED_ALGORITHM,
 	PRUNING_ALGORITHMS_LIST,
@@ -50,26 +50,21 @@ export class PanelAlgorithmComponent {
 	 * the algorithm value to a default constant.
 	 */
 	private loadInitialData() {
-		this.scriptFacadeService.scriptStatus$
+		this.scriptFacadeService.dispatch(ScriptActions.getCurrentOrLastActiveScriptDetails());
+
+		this.scriptFacadeService.scriptDetails$
 			.pipe(
-				switchMap((status) => {
-					return isScriptActive(status)
-						? this.scriptFacadeService.scriptDetails$.pipe(take(1))
-						: of({ algKey: DEFAULT_SELECTED_ALGORITHM } as ScriptDetails);
-				}),
-				take(1)
+				skip(1),
+				take(1),
+				filter((scriptDetails): scriptDetails is ScriptDetails => !!scriptDetails?.algKey)
 			)
-			.subscribe((data: ScriptDetails | null) => {
-				if (isEmptyObject(data)) {
-					return;
-				}
+			.subscribe((scriptDetails: ScriptDetails) => {
+				const algorithmType = scriptDetails.type;
 
-				const algorithmType = data?.type;
-				const isPruningOrQuantization = 
-					algorithmType === AlgorithmType.PRUNING || 
-					algorithmType === AlgorithmType.QUANTIZATION;
+				const isPruningOrQuantization =
+					algorithmType === AlgorithmType.PRUNING || algorithmType === AlgorithmType.QUANTIZATION;
 
-				const initialAlgorithmValue = isPruningOrQuantization ? data!.algKey : DEFAULT_SELECTED_ALGORITHM;
+				const initialAlgorithmValue = isPruningOrQuantization ? scriptDetails!.algKey : DEFAULT_SELECTED_ALGORITHM;
 
 				this.setInitialAlgorithmValue(initialAlgorithmValue);
 			});
@@ -81,7 +76,7 @@ export class PanelAlgorithmComponent {
 
 	private initForm() {
 		this.form = this.fb.group({
-			[this.ALGORITHM_CONTROL_NAME]: ['', Validators.required]
+			[this.ALGORITHM_CONTROL_NAME]: [DEFAULT_SELECTED_ALGORITHM, Validators.required]
 		});
 
 		(this.controlContainer?.control?.parent as FormGroup)?.setControl(this.controlContainer.name as string, this.form);
