@@ -1,15 +1,22 @@
 import sys
-sys.path.append('..')
-
 import copy
 import os
 import argparse
-from collections import OrderedDict
-
 import torch
 import torch.nn as nn
 import torch.optim
 import torch.utils.data
+
+# Define directory paths
+script_dir = os.path.dirname(os.path.realpath(__file__))
+data_dir = os.path.join(script_dir, 'data')
+models_checkpoints_dir = os.path.join(script_dir, 'models_checkpoints')
+checkpoint_dir = os.path.join(script_dir, 'checkpoint')
+unlearn_dir = os.path.join(checkpoint_dir, 'unlearn')
+
+sys.path.append(os.path.join(script_dir, '..'))
+
+from collections import OrderedDict
 
 from models import *
 from utils.utils import progress_bar, train, test, setup_seed, setup_dataset
@@ -17,11 +24,10 @@ from utils import pruner
 from utils.impl import iterative_unlearn
 import time
 
-
 def main():
     arg_parser = argparse.ArgumentParser(description='PyTorch CIFAR10 Training and Unlearning')
-    arg_parser.add_argument('--save-dir', default='checkpoint/unlearn', type=str, help='save directory')
-    arg_parser.add_argument('--mask', default='checkpoint/ckpt.pth', type=str, help='pretrianed model path')
+    arg_parser.add_argument('--save-dir', default=unlearn_dir, type=str, help='save directory')
+    arg_parser.add_argument('--mask', default=checkpoint_dir + '/ckpt.pth', type=str, help='pretrianed model path')
     arg_parser.add_argument('--num-indexes-to-replace', default=4500, type=int, help='number of indexes to replace')
     arg_parser.add_argument('--alpha', default=5e-4, type=float, help='alpha, the l1 regularization coefficient')
     arg_parser.add_argument('--unlearn_lr', default=0.01, type=float, help='learning rate for unlearning')
@@ -35,7 +41,7 @@ def main():
     arg_parser.add_argument("--momentum", default=0.9, type=float, help="momentum")
     arg_parser.add_argument("--weight_decay", default=5e-4, type=float, help="weight decay")
     arg_parser.add_argument("--num_workers", type=int, default=4)
-    arg_parser.add_argument("--data", type=str, default="data", help="location of the data corpus")
+    arg_parser.add_argument("--data", type=str, default=data_dir, help="location of the data corpus")
     arg_parser.add_argument("--indexes_to_replace", type=list, default=None, help="Specific index data to forget")
     arg_parser.add_argument("--no-aug", action="store_true", default=False, help="No augmentation in training dataset (transformation).")
     arg_parser.add_argument("--workers", type=int, default=4, help="number of workers in dataloader")
@@ -142,84 +148,6 @@ def main():
             'eval': evaluation_result,
         }
     torch.save(state, os.path.join(args.save_dir, 'ckpt.pth'))
-
-    # for deprecated in ["MIA", "SVC_MIA", "SVC_MIA_forget"]:
-    #     if deprecated in evaluation_result:
-    #         evaluation_result.pop(deprecated)
-
-    # """forget efficacy MIA:
-    #     in distribution: retain
-    #     out of distribution: test
-    #     target: (, forget)"""
-    # if "SVC_MIA_forget_efficacy" not in evaluation_result:
-    #     test_len = len(test_loader.dataset)
-    #     forget_len = len(forget_dataset)
-    #     retain_len = len(retain_dataset)
-
-    #     utils.dataset_convert_to_test(retain_dataset, args)
-    #     utils.dataset_convert_to_test(forget_loader, args)
-    #     utils.dataset_convert_to_test(test_loader, args)
-
-    #     shadow_train = torch.utils.data.Subset(retain_dataset, list(range(test_len)))
-    #     shadow_train_loader = torch.utils.data.DataLoader(
-    #         shadow_train, batch_size=args.batch_size, shuffle=False
-    #     )
-
-    #     evaluation_result["SVC_MIA_forget_efficacy"] = evaluation.SVC_MIA(
-    #         shadow_train=shadow_train_loader,
-    #         shadow_test=test_loader,
-    #         target_train=None,
-    #         target_test=forget_loader,
-    #         model=model,
-    #     )
-    #     unlearn.save_unlearn_checkpoint(model, evaluation_result, args)
-
-    # """training privacy MIA:
-    #     in distribution: retain
-    #     out of distribution: test
-    #     target: (retain, test)"""
-    # if "SVC_MIA_training_privacy" not in evaluation_result:
-    #     test_len = len(test_loader.dataset)
-    #     retain_len = len(retain_dataset)
-    #     num = test_len // 2
-
-    #     utils.dataset_convert_to_test(retain_dataset, args)
-    #     utils.dataset_convert_to_test(forget_loader, args)
-    #     utils.dataset_convert_to_test(test_loader, args)
-
-    #     shadow_train = torch.utils.data.Subset(retain_dataset, list(range(num)))
-    #     target_train = torch.utils.data.Subset(
-    #         retain_dataset, list(range(num, retain_len))
-    #     )
-    #     shadow_test = torch.utils.data.Subset(test_loader.dataset, list(range(num)))
-    #     target_test = torch.utils.data.Subset(
-    #         test_loader.dataset, list(range(num, test_len))
-    #     )
-
-    #     shadow_train_loader = torch.utils.data.DataLoader(
-    #         shadow_train, batch_size=args.batch_size, shuffle=False
-    #     )
-    #     shadow_test_loader = torch.utils.data.DataLoader(
-    #         shadow_test, batch_size=args.batch_size, shuffle=False
-    #     )
-
-    #     target_train_loader = torch.utils.data.DataLoader(
-    #         target_train, batch_size=args.batch_size, shuffle=False
-    #     )
-    #     target_test_loader = torch.utils.data.DataLoader(
-    #         target_test, batch_size=args.batch_size, shuffle=False
-    #     )
-
-    #     evaluation_result["SVC_MIA_training_privacy"] = evaluation.SVC_MIA(
-    #         shadow_train=shadow_train_loader,
-    #         shadow_test=shadow_test_loader,
-    #         target_train=target_train_loader,
-    #         target_test=target_test_loader,
-    #         model=model,
-    #     )
-    #     unlearn.save_unlearn_checkpoint(model, evaluation_result, args)
-
-    # unlearn.save_unlearn_checkpoint(model, evaluation_result, args)
 
 def l1_regularization(model):
     params_vec = []
