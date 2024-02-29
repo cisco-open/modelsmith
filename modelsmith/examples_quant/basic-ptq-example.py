@@ -1,15 +1,18 @@
 import sys
 import os
 import argparse
-
-script_dir = os.path.dirname(os.path.realpath(__file__))
-sys.path.append(os.path.join(script_dir, '..'))
-
 import torch
 import torch.nn as nn
-
 import torchvision
 import torchvision.transforms as transforms
+
+# Define directory paths
+script_dir = os.path.dirname(os.path.realpath(__file__))
+data_dir = os.path.join(script_dir, 'data')
+models_checkpoints_dir = os.path.join(script_dir, 'models_checkpoints')
+checkpoint_dir = os.path.join(script_dir, 'checkpoint')
+
+sys.path.append(os.path.join(script_dir, '..'))
 
 import random
 import numpy as np
@@ -46,7 +49,7 @@ def seed_all(seed=1029):
     torch.backends.cudnn.benchmark = False
     torch.backends.cudnn.deterministic = True
 
-def prepare_data(dataset='cifar10', batch_size=128, workers=2, data_path='./data'):
+def prepare_data(dataset='cifar10', batch_size=128, workers=2):
     # Data
     print('==> Preparing data..', flush=True)
     transform_train = transforms.Compose([
@@ -64,36 +67,36 @@ def prepare_data(dataset='cifar10', batch_size=128, workers=2, data_path='./data
     if dataset == 'cifar10':
         print('==> Preparing cifar10..', flush=True)
         trainset = torchvision.datasets.CIFAR10(
-            root=data_path, train=True, download=True, transform=transform_train)
+            root=data_dir, train=True, download=True, transform=transform_train)
         trainloader = torch.utils.data.DataLoader(
             trainset, batch_size=batch_size, shuffle=True, num_workers=workers)
 
         testset = torchvision.datasets.CIFAR10(
-            root=data_path, train=False, download=True, transform=transform_test)
+            root=data_dir, train=False, download=True, transform=transform_test)
         testloader = torch.utils.data.DataLoader(
             testset, batch_size=batch_size, shuffle=False, num_workers=workers)
     elif dataset == 'cifar100':
         print('==> Preparing cifar100..', flush=True)
         trainset = torchvision.datasets.CIFAR100(
-            root=data_path, train=True, download=True, transform=transform_train)
+            root=data_dir, train=True, download=True, transform=transform_train)
         trainloader = torch.utils.data.DataLoader(
             trainset, batch_size=batch_size, shuffle=True, num_workers=workers)
 
         testset = torchvision.datasets.CIFAR100(
-            root=data_path, train=False, download=True, transform=transform_test)
+            root=data_dir, train=False, download=True, transform=transform_test)
         testloader = torch.utils.data.DataLoader(
             testset, batch_size=batch_size, shuffle=False, num_workers=workers)
     else:
         print('no corresponding datasets', flush=True)
     return trainloader, testloader
 
-def prepare_model(model_arch = 'resnet18', model_loading_path='./models_checkpoints'):
+def prepare_model(model_arch = 'resnet18'):
     # Model
     print('==> Building model..')
     if model_arch == 'resnet18':
         net = ResNet18()
         net = net.to(device)
-        checkpoint_path = os.path.join(script_dir, model_loading_path, 'resnet18.pt')
+        checkpoint_path = os.path.join(script_dir, models_checkpoints_dir, 'resnet18.pt')
         checkpoint = torch.load(checkpoint_path)
         from collections import OrderedDict
         new_state_dict = OrderedDict()
@@ -129,8 +132,6 @@ if __name__ == '__main__':
                         choices=['resnet18', 'resnet50', 'spring_resnet50', 'mobilenetv2', 'regnetx_600m', 'regnetx_3200m', 'mnasnet'])
     parser.add_argument('--batch_size', default=128, type=int, help='mini-batch size for data loader')
     parser.add_argument('--workers', default=4, type=int, help='number of workers for data loader')
-    parser.add_argument('--data_path', default='./data', type=str, help='path to dataset')
-    parser.add_argument('--checkpoint_path', default='./models_checkpoints', type=str, help='path to model checkpoint')
 
     # quantization parameters
     parser.add_argument('--n_bits_w', default=4, type=int, help='bitwidth for weight quantization')
@@ -173,8 +174,7 @@ if __name__ == '__main__':
 
     seed_all(args.seed)
     # build imagenet data loader
-    train_loader, test_loader = prepare_data(dataset=args.dataset, batch_size=args.batch_size, workers=args.workers,
-                                                    data_path=args.data_path)
+    train_loader, test_loader = prepare_data(dataset=args.dataset, batch_size=args.batch_size, workers=args.workers)
     # load model
     cnn = prepare_model()
     cnn.cuda()
@@ -245,4 +245,4 @@ if __name__ == '__main__':
 
     qnn.set_quant_state(weight_quant=True, act_quant=args.act_quant)
     criterion = nn.CrossEntropyLoss()
-    print('Full quantization (W{}A{}) accuracy: {}'.format(args.n_bits_w, args.n_bits_a, test(0, device, qnn, test_loader, criterion, best_acc)), flush=True)
+    print('Full quantization (W{}A{}) accuracy: {}'.format(args.n_bits_w, args.n_bits_a, test(0, device, qnn, test_loader, criterion, best_acc, checkpoint_dir)), flush=True)
