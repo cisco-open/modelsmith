@@ -26,9 +26,52 @@ node -v
 
 The initial phase involves preparing the VM environment for Modelsmith. Perform the following steps directly on your VM:
 
-1. **Copy the Modelsmith Project to the VM**: Transfer the Modelsmith project files to your VM. This can be done via SCP, FTP, or any file transfer method of your preference.
+1. **Copy the Modelsmith Project to the VM**: First, transfer the Modelsmith project files to your VM. This can be achieved using SCP (Secure Copy Protocol), FTP (File Transfer Protocol), or any file transfer method you prefer. Here's how you can do it with SCP, which securely transfers files between hosts on a network:
 
-2. **Install Miniconda**: Download and install Miniconda on the VM. Miniconda will manage the Python environment and dependencies required for Modelsmith.
+```bash
+scp -r /path/to/local/modelsmith user@vm_host:/path/to/remote/directory/
+```
+
+Replace:
+
+- `/path/to/local/modelsmith` with the actual path to your Modelsmith project on your local machine.
+- `user` with your username on the VM.
+- `vm_host` with the hostname or IP address of your VM.
+- `/path/to/remote/directory/` with the path on the VM where you want to store the Modelsmith project.
+
+2. **Install Miniconda**: Miniconda is a minimal installer for Conda, which is an open-source package management system and environment management system. Installing Miniconda on the VM will help manage the Python environment and dependencies required for the Modelsmith project. Here's how to download and install Miniconda:
+
+2.1. Download the Miniconda installer for Linux:
+
+```bash
+wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
+```
+
+2.2. Make the installer script executable:
+
+```bash
+chmod +x Miniconda3-latest-Linux-x86_64.sh
+```
+
+2.3. Run the installer script:
+
+```bash
+./Miniconda3-latest-Linux-x86_64.sh
+```
+
+Follow the on-screen prompts to complete the installation. It is generally safe to accept the default installation settings. Make sure to agree to initialize Miniconda by running `conda init`.
+
+2.4. After installation, restart your terminal or source your `.bashrc` file to make the `conda` command available:
+
+```bash
+source ~/.bashrc
+```
+
+2.5. Verify the installation by checking the Conda version:
+
+```bash
+conda --version
+```
 
 3. **Create and Activate a New Conda Environment**: With Miniconda installed, create a new Conda environment and activate it:
 
@@ -40,26 +83,26 @@ The initial phase involves preparing the VM environment for Modelsmith. Perform 
 4. **Install PyTorch and Related Libraries**: Install the necessary Python packages including PyTorch, torchvision, and torchaudio:
 
    ```bash
-   pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/
+   pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
    ```
 
-5. **Train the Models**: Navigate to the respective directories (`examples_quant`, `examples`, `examples_unlearning`) and execute the `train.py` scripts to train your models.
+5. **Train the Models**: Train your models located within the 'examples_quant', 'examples_pruning' and 'examples_unlearning' directories by specifying the number of epochs using the --epochs flag. Adjust the number of epochs as needed:
 
 - From `examples_quant` directory:
 
   ```python
-  python3 train.py
+  python3 modelsmith/examples_quant/train.py --epochs=1
   ```
 
-- From `examples` directory:
+- From `examples_pruning` directory:
 
   ```python
-  python3 train.py
+  python3 modelsmith/examples_pruning/train.py --epochs=1
   ```
 
 - From `examples_unlearning` directory:
   ```python
-  python3 train.py
+  python3 modelsmith/examples_unlearning/train.py --epochs=1
   ```
 
 ## Phase 2: Configure the Environment

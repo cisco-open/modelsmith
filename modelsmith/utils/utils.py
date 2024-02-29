@@ -58,7 +58,7 @@ def evaluate_accuracy_quant(device, net, testloader):
     acc = 100. * correct / total
     print('Accuracy: {:.2f}%'.format(acc))
 
-def test(epoch, device, net, testloader, criterion, best_acc):
+def test(epoch, device, net, testloader, criterion, best_acc, checkpoint_dir):
     print('Testing Phase Started', flush=True)
 
     net.eval()
@@ -90,9 +90,9 @@ def test(epoch, device, net, testloader, criterion, best_acc):
             'acc': acc,
             'epoch': epoch,
         }
-        if not os.path.isdir('checkpoint'):
-            os.mkdir('checkpoint')
-        torch.save(state, './checkpoint/ckpt.pth')
+        os.makedirs(checkpoint_dir, exist_ok=True) 
+        checkpoint_path = os.path.join(checkpoint_dir, 'ckpt.pth')
+        torch.save(state, checkpoint_path)
         best_acc = acc
 
 def progress_bar(current, total, msg=None):
