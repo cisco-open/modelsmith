@@ -3,6 +3,6 @@ import { ServiceCallGET } from '../service-call';
 
 export class GetCurrentPruningChartData extends ServiceCallGET<PruningProgress[]> {
 	constructor() {
-		super(`/current-pruning-chart-data`, undefined, undefined, false);
+		super(`current-pruning-chart-data`, undefined, undefined, false);
 	}
 }

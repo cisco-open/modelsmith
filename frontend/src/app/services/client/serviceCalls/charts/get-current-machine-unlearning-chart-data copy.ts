@@ -3,6 +3,6 @@ import { ServiceCallGET } from '../service-call';
 
 export class GetCurrentMachineUnlearningChartData extends ServiceCallGET<MachineUnlearningProgress[]> {
 	constructor() {
-		super(`/current-machine-unlearning-chart-data`, undefined, undefined, false);
+		super(`current-machine-unlearning-chart-data`, undefined, undefined, false);
 	}
 }

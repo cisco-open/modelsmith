@@ -15,11 +15,14 @@ export class NavigationService {
 			.pipe(filter((event: NavigationEvent): event is NavigationEnd => event instanceof NavigationEnd))
 			.subscribe((event: NavigationEnd) => {
 				this.history.push(event.urlAfterRedirects);
+
+				console.log(event);
 			});
 	}
 
-	goToPreviousPage(defaultRoute: string): void {
+	goToPreviousPage(defaultRoute: string = ''): void {
 		const previousUrl = this.getPreviousUrl();
+
 		if (previousUrl === '/') {
 			this.router.navigateByUrl(`/${defaultRoute}`);
 		} else {

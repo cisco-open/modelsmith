@@ -3,6 +3,6 @@ import { ServiceCallGET } from '../service-call';
 
 export class GetScriptStatus extends ServiceCallGET<ScriptStatusDto> {
 	constructor() {
-		super(`/script-status`, undefined, undefined, false);
+		super(`script-status`, undefined, undefined, false);
 	}
 }

@@ -9,6 +9,6 @@ export class PostUploadModel extends ServiceCallPOST<any> {
 		const formData = new FormData();
 		formData.append('file', file);
 
-		super(`/upload-model`, formData, false);
+		super(`upload-model`, formData, false);
 	}
 }

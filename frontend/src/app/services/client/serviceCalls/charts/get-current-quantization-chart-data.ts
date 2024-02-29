@@ -3,6 +3,6 @@ import { ServiceCallGET } from '../service-call';
 
 export class GetCurrentQuantizationChartData extends ServiceCallGET<QuantizationProgress[]> {
 	constructor() {
-		super(`/current-quantization-chart-data`, undefined, undefined, false);
+		super(`current-quantization-chart-data`, undefined, undefined, false);
 	}
 }

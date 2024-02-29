@@ -5,6 +5,6 @@ import { ServiceCallGET } from '../service-call';
 export class GetChartConfigurationSettings extends ServiceCallGET<ChartConfigurationSettingsDictionary> {
 	constructor(chartTypes: ChartTypeEnum[]) {
 		const queryString = `type=${chartTypes.join(',')}`;
-		super(`/chart-configuration-settings?${queryString}`, undefined, undefined, false);
+		super(`chart-configuration-settings?${queryString}`, undefined, undefined, false);
 	}
 }

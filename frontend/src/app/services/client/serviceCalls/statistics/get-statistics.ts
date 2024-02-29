@@ -3,6 +3,6 @@ import { ServiceCallGET } from '../service-call';
 
 export class GetStatistics extends ServiceCallGET<KeyValue<string>> {
 	constructor() {
-		super(`/statistics`, undefined, undefined, false);
+		super(`statistics`, undefined, undefined, false);
 	}
 }
