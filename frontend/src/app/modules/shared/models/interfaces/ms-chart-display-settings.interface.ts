@@ -62,6 +62,10 @@ export interface ChartDisplaySettings {
 	// It is used to apply consistent and meaningful color themes to the chart's datasets,
 	// enhancing the visual distinction between different data sets.
 	datasetColorSettingsKey?: ChartColorEnum;
+
+	// Determines whether chart lines should be displayed as stepped lines.
+	// When set to true, the chart line segments are rendered as stepped lines.
+	useSteppedLines?: boolean;
 }
 
 export const DEFAULT_Y_AXIS_GROWTH_OFFSET = 5;

@@ -16,13 +16,13 @@ from copy import deepcopy
 script_dir = os.path.dirname(os.path.realpath(__file__))
 data_dir = os.path.join(script_dir, 'data')
 models_checkpoints_dir = os.path.join(script_dir, 'models_checkpoints')
-checkpoint_dir = os.path.join(script_dir, 'checkpoint')  # Adjusted to use structured approach
+checkpoint_dir = os.path.join(script_dir, 'checkpoint') 
 
 sys.path.append(os.path.join(script_dir, '..'))
 
 from models import *
-from utils.utils import progress_bar, train, test
-from utils.pruner import pruning_model_random, check_sparsity, pruning_model, prune_model_custom, extract_mask, remove_prune
+from utils.utils import train, test
+from utils.pruner import check_sparsity, pruning_model, prune_model_custom, extract_mask, remove_prune
 
 def main():
     parser = argparse.ArgumentParser(description='Post-training pruning: iterative magnitude pruning (IMP)')

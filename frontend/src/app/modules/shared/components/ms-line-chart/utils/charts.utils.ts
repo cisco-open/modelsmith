@@ -143,7 +143,8 @@ export class ChartUtils {
 			pointHoverRadius: 0,
 			pointBackgroundColor: colorSetting.borderColor,
 			pointHoverBackgroundColor: colorSetting.borderColor,
-			pointHoverBorderColor: colorSetting.borderColor
+			pointHoverBorderColor: colorSetting.borderColor,
+			stepped: displaySettings.useSteppedLines || false
 		};
 	}
 }

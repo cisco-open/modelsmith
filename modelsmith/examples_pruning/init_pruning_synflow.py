@@ -20,8 +20,8 @@ checkpoint_dir = os.path.join(script_dir, 'checkpoint')
 sys.path.append(os.path.join(script_dir, '..'))
 
 from models import *
-from utils.utils import progress_bar, train, test
-from utils.pruner import pruning_model_random, check_sparsity, pruning_model, synflow_pruning
+from utils.utils import train, test
+from utils.pruner import check_sparsity, synflow_pruning
 
 def main():
     parser = argparse.ArgumentParser(description='Pruning at initialization with Synflow')

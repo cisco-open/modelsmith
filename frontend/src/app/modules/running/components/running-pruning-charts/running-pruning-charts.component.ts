@@ -132,7 +132,8 @@ export class RunningPruningChartsComponent implements OnInit {
 					zoomRangeLimits: {
 						max: 100
 					},
-					datasetColorSettingsKey: ChartColorEnum.BLUE
+					datasetColorSettingsKey: ChartColorEnum.BLUE,
+					useSteppedLines: true
 				};
 			});
 

@@ -26,7 +26,7 @@ const async = require('async');
 const { broadcastChart, MessageTopics, ChartsEventsTopics } = require('../services/websocketService');
 
 class PruningParser {
-	static pruningStateRegex = /pruning state (\d+)/;
+	static pruningStateRegex = /Pruning state (\d+)/;
 	static testingPhaseStartRegex = /Testing Phase Started/;
 	static testingPhaseEndRegex = /Testing Phase Ended/;
 	static epochRegex = /Epoch: (\d+)/;
