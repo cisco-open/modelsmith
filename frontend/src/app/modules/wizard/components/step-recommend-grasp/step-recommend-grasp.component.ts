@@ -48,6 +48,6 @@ export class StepRecommendGraspComponent {
 	}
 
 	goToChartPage() {
-		this.router.navigate([`${RoutesList.MODEL_COMPRESSION.ROOT}/${RoutesList.MODEL_COMPRESSION.RUNNING.ROOT}`]);
+		this.router.navigate([`${RoutesList.RUNNING.ROOT}`]);
 	}
 }

@@ -45,6 +45,10 @@ const routes: Routes = [
 				path: RoutesList.MACHINE_UNLEARNING.ROOT,
 				loadChildren: () =>
 					import('./modules/machine-unlearning/machine-unlearning.module').then((m) => m.MachineUnlearningModule)
+			},
+			{
+				path: RoutesList.RUNNING.ROOT,
+				loadChildren: () => import('./modules/running/running.module').then((m) => m.RunningModule)
 			}
 		]
 	}

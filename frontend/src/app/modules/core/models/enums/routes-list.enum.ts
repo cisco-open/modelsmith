@@ -10,16 +10,13 @@ export const RoutesList = {
 		ROOT: 'wizard'
 	},
 	MODEL_COMPRESSION: {
-		ROOT: 'project-settings',
-		RUNNING: {
-			ROOT: 'running'
-		}
+		ROOT: 'project-settings'
 	},
 	MACHINE_UNLEARNING: {
-		ROOT: 'machine-unlearning',
-		RUNNING: {
-			ROOT: 'running'
-		}
+		ROOT: 'machine-unlearning'
+	},
+	RUNNING: {
+		ROOT: 'running'
 	},
 	DEMO: {
 		ROOT: 'demo',

@@ -129,6 +129,6 @@ export class ProjectSettingsComponent implements OnInit {
 	}
 
 	goToChartPage() {
-		this.router.navigate([RoutesList.MODEL_COMPRESSION.RUNNING.ROOT], { relativeTo: this.route.parent });
+		this.router.navigate([RoutesList.RUNNING.ROOT]);
 	}
 }

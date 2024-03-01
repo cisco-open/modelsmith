@@ -92,6 +92,6 @@ export class MachineUnlearningComponent implements OnInit {
 	}
 
 	goToChartPage() {
-		this.router.navigate([RoutesList.MACHINE_UNLEARNING.RUNNING.ROOT], { relativeTo: this.route.parent });
+		this.router.navigate([RoutesList.RUNNING.ROOT]);
 	}
 }

@@ -4,13 +4,9 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { filter, skip, take } from 'rxjs';
 import { ScriptDetails } from '../../../../services/client/models/script/script-details.interface-dto';
 import { ScriptActions } from '../../../../state/core/script/script.actions';
-import { RoutesList } from '../../../core/models/enums/routes-list.enum';
 import { NavigationService } from '../../../core/services/navigation.service';
 import { ScriptFacadeService } from '../../../core/services/script-facade.service';
-import {
-	AlgorithmType,
-	MachineUnlearningAlgorithmsEnum
-} from '../../../model-compression/models/enums/algorithms.enum';
+import { AlgorithmType } from '../../../model-compression/models/enums/algorithms.enum';
 import { isScriptActive } from '../../../model-compression/models/enums/script-status.enum';
 import { ChartToolsGlobalSignalsService } from '../../../shared/components/ms-line-chart/services/chart-tools-global-signals.service';
 import { AnimationType } from '../../models/enums/animation-type.enum';
@@ -29,7 +25,7 @@ export class RunningComponent implements OnInit {
 	readonly AnimationType = AnimationType;
 
 	constructor(
-		private navigationService: NavigationService,
+		public navigationService: NavigationService,
 		private scriptFacadeService: ScriptFacadeService,
 		private chartToolsGlobalSignalsService: ChartToolsGlobalSignalsService
 	) {}
@@ -73,13 +69,5 @@ export class RunningComponent implements OnInit {
 
 	get isChartVisible(): boolean {
 		return !!this.scriptDetails?.algKey;
-	}
-
-	goToPreviousPage(): void {
-		if (this.scriptDetails?.algKey === MachineUnlearningAlgorithmsEnum.MU) {
-			this.navigationService.goToPreviousPage(RoutesList.MACHINE_UNLEARNING.ROOT);
-		} else {
-			this.navigationService.goToPreviousPage(RoutesList.MODEL_COMPRESSION.ROOT);
-		}
 	}
 }
