@@ -150,6 +150,8 @@ export class RunningPruningChartsComponent implements OnInit {
 					xAxisDataPointsCount: this.sparsityPruningChartSettings.pruningTimes! + 1
 				};
 				this.initialSparsityChartData = [{ datasetIndex: 0, values: [DEFAUlT_FIRST_SPARSITY_VALUE] }];
+
+				this.chartsFacadeService.dispatch(ChartActions.getCurrentPruningChartData());
 			});
 
 		this.chartsFacadeService.dispatch(
@@ -173,7 +175,5 @@ export class RunningPruningChartsComponent implements OnInit {
 				this.initialAccuracyTestingChartData = mapPruningChartData(data, MetricType.ACCURACY, true);
 				this.initialSparsityChartData = mapSparsityChartData(data);
 			});
-
-		this.chartsFacadeService.dispatch(ChartActions.getCurrentPruningChartData());
 	}
 }

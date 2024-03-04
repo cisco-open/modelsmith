@@ -122,6 +122,8 @@ export class RunningMachineUnlearningChartsComponent {
 					dynamicYAxisGrowthRoundFactor: 2,
 					datasetColorSettingsKey: ChartColorEnum.YELLOW
 				};
+
+				this.chartsFacadeService.dispatch(ChartActions.getCurrentMachineUnlearningChartData());
 			});
 
 		this.chartsFacadeService.dispatch(
@@ -145,7 +147,5 @@ export class RunningMachineUnlearningChartsComponent {
 				this.initialAccuracyTestingChartData = mapMachineUnlearningTestingData(data, MetricType.ACCURACY);
 				this.initialLossTestingChartData = mapMachineUnlearningTestingData(data, MetricType.LOSS);
 			});
-
-		this.chartsFacadeService.dispatch(ChartActions.getCurrentMachineUnlearningChartData());
 	}
 }
