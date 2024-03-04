@@ -12,8 +12,6 @@ export class NavigationService {
 			.pipe(filter((event: NavigationEvent): event is NavigationEnd => event instanceof NavigationEnd))
 			.subscribe((event: NavigationEnd) => {
 				this.history.push(event.urlAfterRedirects);
-
-				console.log(event);
 			});
 	}
 

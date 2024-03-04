@@ -18,7 +18,12 @@ import {
 	DEFAULT_NR_OF_STEPS_PER_TRAINING_EPOCH,
 	DEFAULT_PRUNING_CHART_DISPLAY_SETTINGS
 } from '../../../shared/models/interfaces/ms-chart-display-settings.interface';
-import { MetricType, mapPruningChartData, mapSparsityChartData } from '../../utils/process-charts-data.utils';
+import {
+	DEFAUlT_FIRST_SPARSITY_VALUE,
+	MetricType,
+	mapPruningChartData,
+	mapSparsityChartData
+} from '../../utils/process-charts-data.utils';
 
 @UntilDestroy()
 @Component({
@@ -32,23 +37,71 @@ export class RunningPruningChartsComponent implements OnInit {
 	// Loss
 	initialLossChartData: ChartDatasets[] = [];
 	lossPruningChartSettings: ChartConfigurationSettings = {};
-	lossChartDisplaySettings: ChartDisplaySettings = {};
+	lossChartDisplaySettings: ChartDisplaySettings = {
+		...DEFAULT_PRUNING_CHART_DISPLAY_SETTINGS,
+		yAxisMinimumValue: 0,
+		yAxisTickInterval: 2,
+		chartDataStructure: ChartDataStructure.MUlTI_PHASE_X_AXIS,
+		xAxisDataPointsCount: DEFAULT_NR_OF_STEPS_PER_EPOCH,
+		isYAxisDynamic: true,
+		dynamicYAxisGrowthOffset: 2,
+		datasetColorSettingsKey: ChartColorEnum.RED
+	};
 
 	initialLossTestingChartData: ChartDatasets[] = [];
-	testingLossChartDisplaySettings: ChartDisplaySettings = {};
+	testingLossChartDisplaySettings: ChartDisplaySettings = {
+		...DEFAULT_PRUNING_CHART_DISPLAY_SETTINGS,
+		yAxisMinimumValue: 0,
+		yAxisTickInterval: 2,
+		chartDataStructure: ChartDataStructure.MUlTI_PHASE_X_AXIS,
+		xAxisDataPointsCount: DEFAULT_NR_OF_STEPS_PER_TRAINING_EPOCH,
+		isYAxisDynamic: true,
+		dynamicYAxisGrowthOffset: 2,
+		datasetColorSettingsKey: ChartColorEnum.YELLOW
+	};
 
 	// Accuracy
 	initialAccuracyChartData: ChartDatasets[] = [];
 	accuracyPruningChartSettings: ChartConfigurationSettings = {};
-	accuracyChartDisplaySettings: ChartDisplaySettings = {};
+	accuracyChartDisplaySettings: ChartDisplaySettings = {
+		...DEFAULT_PRUNING_CHART_DISPLAY_SETTINGS,
+		chartDataStructure: ChartDataStructure.MUlTI_PHASE_X_AXIS,
+		xAxisDataPointsCount: DEFAULT_NR_OF_STEPS_PER_EPOCH,
+		yAxisMaximumValue: 100,
+		zoomRangeLimits: {
+			max: 100
+		},
+		datasetColorSettingsKey: ChartColorEnum.GREEN
+	};
 
 	initialAccuracyTestingChartData: ChartDatasets[] = [];
-	testingAccuracyChartDisplaySettings: ChartDisplaySettings = {};
+	testingAccuracyChartDisplaySettings: ChartDisplaySettings = {
+		...DEFAULT_PRUNING_CHART_DISPLAY_SETTINGS,
+		yAxisTickInterval: 20,
+		chartDataStructure: ChartDataStructure.MUlTI_PHASE_X_AXIS,
+		xAxisDataPointsCount: DEFAULT_NR_OF_STEPS_PER_TRAINING_EPOCH,
+		yAxisMaximumValue: 100,
+		zoomRangeLimits: {
+			max: 100
+		},
+		datasetColorSettingsKey: ChartColorEnum.YELLOW
+	};
 
 	// Sparsity
 	initialSparsityChartData: ChartDatasets[] = [];
 	sparsityPruningChartSettings: ChartConfigurationSettings = {};
-	sparsityChartDisplaySettings: ChartDisplaySettings = {};
+	sparsityChartDisplaySettings: ChartDisplaySettings = {
+		...DEFAULT_PRUNING_CHART_DISPLAY_SETTINGS,
+		xAxisLabelPrefix: 'Pruning',
+		isDatasetLabelVisible: false,
+		yAxisTickInterval: 100,
+		chartDataStructure: ChartDataStructure.SINGLE_PHASE_X_AXIS_SKIP_ONE,
+		zoomRangeLimits: {
+			max: 100
+		},
+		datasetColorSettingsKey: ChartColorEnum.BLUE,
+		useSteppedLines: true
+	};
 
 	constructor(private chartsFacadeService: ChartsFacadeService) {}
 
@@ -68,27 +121,12 @@ export class RunningPruningChartsComponent implements OnInit {
 				this.accuracyPruningChartSettings =
 					settings[ChartTypeEnum.ACCURACY_PRUNING] || ({} as ChartConfigurationSettings);
 				this.accuracyChartDisplaySettings = {
-					...DEFAULT_PRUNING_CHART_DISPLAY_SETTINGS,
-					chartDataStructure: ChartDataStructure.MUlTI_PHASE_X_AXIS,
-					xAxisDataPointsCount: DEFAULT_NR_OF_STEPS_PER_EPOCH,
-					xAxisRepetitionCount: Number(this.accuracyPruningChartSettings.epochs),
-					yAxisMaximumValue: 100,
-					zoomRangeLimits: {
-						max: 100
-					},
-					datasetColorSettingsKey: ChartColorEnum.GREEN
+					...this.accuracyChartDisplaySettings,
+					xAxisRepetitionCount: Number(this.accuracyPruningChartSettings.epochs)
 				};
 				this.testingAccuracyChartDisplaySettings = {
-					...DEFAULT_PRUNING_CHART_DISPLAY_SETTINGS,
-					yAxisTickInterval: 20,
-					chartDataStructure: ChartDataStructure.MUlTI_PHASE_X_AXIS,
-					xAxisDataPointsCount: DEFAULT_NR_OF_STEPS_PER_TRAINING_EPOCH,
-					xAxisRepetitionCount: Number(this.accuracyPruningChartSettings.epochs),
-					yAxisMaximumValue: 100,
-					zoomRangeLimits: {
-						max: 100
-					},
-					datasetColorSettingsKey: ChartColorEnum.YELLOW
+					...this.testingAccuracyChartDisplaySettings,
+					xAxisRepetitionCount: Number(this.accuracyPruningChartSettings.epochs)
 				};
 
 				this.lossPruningChartSettings = {
@@ -96,45 +134,22 @@ export class RunningPruningChartsComponent implements OnInit {
 					testingSteps: DEFAULT_NR_OF_STEPS_PER_TRAINING_EPOCH
 				};
 				this.lossChartDisplaySettings = {
-					...DEFAULT_PRUNING_CHART_DISPLAY_SETTINGS,
-					yAxisMinimumValue: 0,
-					yAxisTickInterval: 2,
-					chartDataStructure: ChartDataStructure.MUlTI_PHASE_X_AXIS,
-					xAxisDataPointsCount: DEFAULT_NR_OF_STEPS_PER_EPOCH,
-					xAxisRepetitionCount: Number(this.lossPruningChartSettings.epochs),
-					isYAxisDynamic: true,
-					dynamicYAxisGrowthOffset: 2,
-					datasetColorSettingsKey: ChartColorEnum.RED
+					...this.lossChartDisplaySettings,
+					xAxisRepetitionCount: Number(this.lossPruningChartSettings.epochs)
 				};
 				this.testingLossChartDisplaySettings = {
-					...DEFAULT_PRUNING_CHART_DISPLAY_SETTINGS,
-					yAxisMinimumValue: 0,
-					yAxisTickInterval: 2,
-					chartDataStructure: ChartDataStructure.MUlTI_PHASE_X_AXIS,
-					xAxisDataPointsCount: DEFAULT_NR_OF_STEPS_PER_TRAINING_EPOCH,
-					xAxisRepetitionCount: Number(this.lossPruningChartSettings.epochs),
-					isYAxisDynamic: true,
-					dynamicYAxisGrowthOffset: 2,
-					datasetColorSettingsKey: ChartColorEnum.YELLOW
+					...this.testingLossChartDisplaySettings,
+					xAxisRepetitionCount: Number(this.lossPruningChartSettings.epochs)
 				};
 
 				this.sparsityPruningChartSettings = {
 					...(settings[ChartTypeEnum.SPARSITY_PRUNING] || ({} as ChartConfigurationSettings))
 				} as ChartConfigurationSettings;
-
 				this.sparsityChartDisplaySettings = {
-					...DEFAULT_PRUNING_CHART_DISPLAY_SETTINGS,
-					xAxisLabelPrefix: 'Pruning',
-					isDatasetLabelVisible: false,
-					yAxisTickInterval: 100,
-					chartDataStructure: ChartDataStructure.SINGLE_PHASE_X_AXIS_SKIP_ONE,
-					xAxisDataPointsCount: this.sparsityPruningChartSettings.pruningTimes! + 1,
-					zoomRangeLimits: {
-						max: 100
-					},
-					datasetColorSettingsKey: ChartColorEnum.BLUE,
-					useSteppedLines: true
+					...this.sparsityChartDisplaySettings,
+					xAxisDataPointsCount: this.sparsityPruningChartSettings.pruningTimes! + 1
 				};
+				this.initialSparsityChartData = [{ datasetIndex: 0, values: [DEFAUlT_FIRST_SPARSITY_VALUE] }];
 			});
 
 		this.chartsFacadeService.dispatch(

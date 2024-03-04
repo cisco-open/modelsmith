@@ -82,6 +82,7 @@ export class MsLineChartComponent implements OnInit, OnChanges, OnDestroy {
 	}
 
 	ngOnChanges(changes: SimpleChanges) {
+		console.log(changes);
 		if (changes['settings'] && changes['settings'].currentValue) {
 			this.initializeChartSettings();
 		}
