@@ -13,6 +13,7 @@ import { coreReducers } from '../../state/core';
 import { AuthEffects } from '../../state/core/auth';
 import { ChartsEffects } from '../../state/core/charts';
 import { FileEffects } from '../../state/core/file';
+import { ModelsEffects } from '../../state/core/models/models.effects';
 import { ParametersEffects } from '../../state/core/parameters';
 import { ScriptActions, ScriptEffects } from '../../state/core/script';
 import { StatisticsEffects } from '../../state/core/statistics';
@@ -22,6 +23,7 @@ import { ModeSelectGuard } from './guards/mode-select.guard';
 import { RedirectIfAuthenticatedGuard } from './guards/redirect-if-authenticated.guard';
 import {
 	AuthFacadeService,
+	BannerService,
 	ChartsFacadeService,
 	ConfigsFacadeService,
 	FileFacadeService,
@@ -29,7 +31,6 @@ import {
 	NavigationService,
 	ParametersFacadeService,
 	ScriptFacadeService,
-	BannerService,
 	StatisticsFacadeService,
 	TerminalFacadeService,
 	WebsocketService
@@ -49,7 +50,8 @@ import {
 			ChartsEffects,
 			ParametersEffects,
 			TerminalEffects,
-			StatisticsEffects
+			StatisticsEffects,
+			ModelsEffects
 		])
 	],
 	providers: [

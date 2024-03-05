@@ -6,7 +6,6 @@ import { CLIENT } from '../../../app.tokens';
 import { BannerService } from '../../../modules/core/services/banner.service';
 import { Client } from '../../../services/client/client';
 import { PostUploadModel } from '../../../services/client/serviceCalls/upload-file/post-upload-file';
-import { ModelActions } from '../../model-compression/models/models.actions';
 import { ScriptActions } from '../script/script.actions';
 import { FileActions } from './file.actions';
 
@@ -38,11 +37,7 @@ export class FileEffects {
 				return this.apiClient.serviceCall(new PostUploadModel(action.file)).pipe(
 					switchMap((data) => {
 						this.bannerService.showSuccess('File uploaded successfully.');
-						return [
-							FileActions.uploadFileSuccess({ data }),
-							ModelActions.loadModels(),
-							ScriptActions.callScript({ configs: action.configs })
-						];
+						return [FileActions.uploadFileSuccess({ data }), ScriptActions.callScript({ configs: action.configs })];
 					}),
 					catchError((error) => of(FileActions.uploadFileFailure({ error })))
 				);

@@ -2,14 +2,15 @@ import { Injectable } from '@angular/core';
 import { Action, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { AuthState } from '../../../state/core/auth';
-import { selectModels } from '../../../state/model-compression/models/models.selector';
+import { selectModelsByType } from '../../../state/core/models/models.selector';
+import { AlgorithmType } from '../models/enums/algorithms.enum';
 
 @Injectable()
 export class ModelsFacadeService {
-	models$: Observable<string[] | undefined>;
+	constructor(private store: Store<AuthState>) {}
 
-	constructor(private store: Store<AuthState>) {
-		this.models$ = this.store.select(selectModels);
+	getModelsByType(algorithmType: AlgorithmType): Observable<string[] | undefined> {
+		return this.store.select(selectModelsByType(algorithmType));
 	}
 
 	dispatch(action: Action) {

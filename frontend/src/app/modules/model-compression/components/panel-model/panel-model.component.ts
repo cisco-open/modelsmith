@@ -2,11 +2,12 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { AbstractControl, ControlContainer, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Observable } from 'rxjs';
-import { map, startWith } from 'rxjs/operators';
-import { ModelActions } from '../../../../state/model-compression/models/models.actions';
+import { filter, map, startWith, take } from 'rxjs/operators';
+import { ModelsActions } from '../../../../state/core/models/models.actions';
 import { FileService } from '../../../core/services/file.service';
 import { ScriptFacadeService } from '../../../core/services/script-facade.service';
 import { CUSTOM_MODEL } from '../../models/constants/supported-models.constants';
+import { AlgorithmType } from '../../models/enums/algorithms.enum';
 import { isScriptActive } from '../../models/enums/script-status.enum';
 import { ModelsFacadeService } from '../../services/models-facade.service';
 
@@ -44,27 +45,31 @@ export class PanelModelComponent implements OnInit {
 
 	ngOnInit() {
 		this.initializeForm();
-		this.loadModelsAndListenToChanges();
+		this.loadModels(AlgorithmType.QUANTIZATION);
 
 		this.listenToModelChanges();
 		this.listenToScriptStateChanges();
 
 		this.filteredModels = this.searchModel.valueChanges.pipe(
+			untilDestroyed(this),
 			startWith(''),
 			map((value) => this.filterModels(value))
 		);
 	}
 
-	private loadModelsAndListenToChanges() {
-		this.modelsFacadeService.dispatch(ModelActions.loadModels());
+	private loadModels(algorithmType: AlgorithmType) {
+		this.modelsFacadeService
+			.getModelsByType(algorithmType)
+			.pipe(
+				filter((models): models is string[] => !!models && models.length > 0),
+				take(1)
+			)
+			.subscribe((models: string[]) => {
+				this.models = models;
+				this.searchModel.setValue('');
+			});
 
-		this.modelsFacadeService.models$.pipe(untilDestroyed(this)).subscribe((models: string[] | undefined) => {
-			if (!models?.length) {
-				return;
-			}
-			this.models = models;
-			this.searchModel.setValue('');
-		});
+		this.modelsFacadeService.dispatch(ModelsActions.getModelsList({ algorithmType: algorithmType }));
 	}
 
 	private initializeForm(): void {
@@ -89,7 +94,6 @@ export class PanelModelComponent implements OnInit {
 	private listenToScriptStateChanges(): void {
 		this.scriptFacadeService.scriptStatus$.pipe(untilDestroyed(this)).subscribe((state) => {
 			isScriptActive(state) ? this.form.disable() : this.form.enable();
-			this.modelControl?.patchValue('resnet18');
 		});
 	}
 
