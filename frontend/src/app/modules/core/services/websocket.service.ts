@@ -6,6 +6,7 @@ import { StatisticsActions } from '../../../state/core/statistics';
 import { RECONNECT_DELAY } from '../models/constants/websocket.constants';
 import { WebsocketMessageTopics } from '../models/enums/websocket-message-types.enum';
 import { ChartsMessages } from '../models/interfaces/charts-messages.interface';
+import { TerminalMessage } from '../models/interfaces/terminal-message.interface';
 import { ScriptFacadeService } from './script-facade.service';
 import { StatisticsFacadeService } from './statistics-facade.service';
 
@@ -13,7 +14,7 @@ import { StatisticsFacadeService } from './statistics-facade.service';
 export class WebsocketService {
 	private socket!: WebSocket;
 
-	private terminalMessagesSubject = new Subject<string>();
+	private terminalMessagesSubject = new Subject<TerminalMessage>();
 	private chartsMessagesSubject = new Subject<ChartsMessages>();
 
 	@HostListener('window:beforeunload', ['$event'])
@@ -78,7 +79,7 @@ export class WebsocketService {
 		};
 	}
 
-	public get terminalMessages$(): Observable<string> {
+	public get terminalMessages$(): Observable<TerminalMessage> {
 		return this.terminalMessagesSubject.asObservable();
 	}
 

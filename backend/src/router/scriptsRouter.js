@@ -5,6 +5,7 @@ const checkSshConnection = require('../middlewares/checkSshConnection');
 const checkIfNoScriptRunning = require('../middlewares/checkIfNoScriptRunning');
 const checkIfScriptRunning = require('../middlewares/checkIfScriptRunning');
 const ALGORITHMS = require('../constants/algorithmsConstants');
+const MESSAGE_TYPES = require('../constants/messageTypes');
 const { BAD_REQUEST, OK, NOT_FOUND, INTERNAL_SERVER_ERROR } = require('../constants/httpStatusCodes');
 const logger = require('../utils/logger');
 const {
@@ -65,6 +66,7 @@ router.post('/run-script', checkSshConnection, checkIfScriptRunning, (req, res) 
 	executePythonScript(scriptDetails.path, scriptDetails.fileName, args, scriptDetails.type)
 		.then(() => {
 			res.status(OK).send({ message: 'Script execution ended successfully.' });
+			broadcastTerminal('Script execution ended successfully.', MESSAGE_TYPES.SUCCESS);
 
 			setActiveScriptDetails(null);
 			changeAndBroadcastScriptState(ScriptState.NOT_RUNNING);
@@ -75,11 +77,10 @@ router.post('/run-script', checkSshConnection, checkIfScriptRunning, (req, res) 
 			setActiveScriptDetails(null);
 			changeAndBroadcastScriptState(ScriptState.ERROR);
 
-			broadcastTerminal(error);
+			broadcastTerminal(error, MESSAGE_TYPES.ERROR);
 
 			res.status(INTERNAL_SERVER_ERROR).send({
-				error:
-					'The script has errors and failed to start automatically. Please try running the script manually from the terminal.'
+				error: 'The script has errors and failed to start automatically. Please check the terminal.'
 			});
 		});
 });

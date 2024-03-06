@@ -119,8 +119,6 @@ class SSHConnection {
 				if (code !== 0 && code !== null) {
 					const errorMessage = `Process exited with code ${code}` + (stderrData ? `: ${stderrData}` : '');
 					onError(errorMessage);
-				} else if (stderrData) {
-					onError(`Process completed with stderr output: ${stderrData}`);
 				} else {
 					onEnd();
 				}
