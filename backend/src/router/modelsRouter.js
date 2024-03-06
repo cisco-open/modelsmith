@@ -2,50 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { OK } = require('../constants/httpStatusCodes');
 
-const hardcodedModels = [
-	'DenseNet121',
-	'DenseNet169',
-	'DenseNet201',
-	'DenseNet161',
-	'densenet_cifar',
-	'SimpleDLA',
-	'DLA',
-	'DPN26',
-	'DPN92',
-	'EfficientNetB0',
-	'GoogLeNet',
-	'LeNet',
-	'MobileNet',
-	'mobilenetv2',
-	'PNASNetA',
-	'PNASNetB',
-	'PreActResNet18',
-	'PreActResNet34',
-	'PreActResNet50',
-	'PreActResNet101',
-	'PreActResNet152',
-	'RegNetX_200MF',
-	'RegNetX_400MF',
-	'RegNetY_400MF',
-	'resnet18',
-	'resnet34',
-	'resnet50',
-	'resnet101',
-	'resnet152',
-	'resnext50_32x4d',
-	'ResNeXt29_2x64d',
-	'ResNeXt29_4x64d',
-	'ResNeXt29_8x64d',
-	'ResNeXt29_32x4d',
-	'resnext101_32x8d',
-	'wide_resnet50_2',
-	'wide_resnet101_2',
-	'SENet18',
-	'ShuffleNetG2',
-	'ShuffleNetG3',
-	'ShuffleNetV2',
-	'VGG'
-];
+const hardcodedModels = ['resnet18'];
 
 router.get('/model-files', (req, res) => {
 	res.status(OK).send(hardcodedModels);
