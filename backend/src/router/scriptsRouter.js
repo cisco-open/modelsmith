@@ -75,6 +75,8 @@ router.post('/run-script', checkSshConnection, checkIfScriptRunning, (req, res) 
 			setActiveScriptDetails(null);
 			changeAndBroadcastScriptState(ScriptState.ERROR);
 
+			broadcastTerminal(error);
+
 			res.status(INTERNAL_SERVER_ERROR).send({
 				error:
 					'The script has errors and failed to start automatically. Please try running the script manually from the terminal.'

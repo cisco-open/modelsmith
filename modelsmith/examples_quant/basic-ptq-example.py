@@ -123,11 +123,9 @@ def prepare_model(model_arch = 'resnet18', device='cpu'):
         net.load_state_dict(new_state_dict)
         print(f"Loaded checkpoint for {model_arch} from {checkpoint_path}")
     except FileNotFoundError:
-        print(f"No checkpoint found for {model_arch} at {checkpoint_path}, initializing model with random weights.")
-        return net 
+        raise FileNotFoundError(f"No checkpoint found for {model_arch} at {checkpoint_path}. Please train the model first.")
     except KeyError:
-        print(f"Checkpoint for {model_arch} at {checkpoint_path} does not have the expected format.")
-        return None 
+        raise RuntimeError(f"Checkpoint for {model_arch} at {checkpoint_path} does not have the expected format. Please ensure the checkpoint is correct and try again.")
     
     return net
 

@@ -37,7 +37,9 @@ export class MsTerminalComponent implements OnInit, AfterViewInit, OnDestroy {
 	) {
 		this.websocketService.terminalMessages$.pipe(untilDestroyed(this)).subscribe((message) => {
 			if (this.displayWebSocketMessages) {
-				this.terminal.writeln(message);
+				message.split('\n').forEach((line) => {
+					this.terminal.writeln(line);
+				});
 			} else {
 				this.messagesBuffer.push(message);
 			}
