@@ -24,8 +24,6 @@ const pruningParserInstance = require('../parsers/pruningParser');
 const quantizationParserInstance = require('../parsers/quantizationParser');
 const machineUnlearningParserInstance = require('../parsers/machineUnlearningParser');
 
-const PYTHON_COMMAND = 'python3';
-
 router.get('/current-or-last-active-script-details', (_, res) => {
 	let script = getActiveScriptDetails() || getPreviousScriptDetails();
 
@@ -96,7 +94,7 @@ function executePythonScript(path, algorithm, args = '', type) {
 		}
 
 		const scriptPath = `${process.env.MODELSMITH_PATH}/${path}`;
-		const cmd = `source ${process.env.CONDA_SH_PATH} && conda activate modelsmith && cd ${scriptPath} && ${PYTHON_COMMAND} ${algorithm} ${args}`;
+		const cmd = `source ${process.env.CONDA_SH_PATH} && conda activate modelsmith && cd ${scriptPath} && python3 ${algorithm} ${args}`;
 		broadcastTerminal(`${PYTHON_COMMAND} ${algorithm} ${args}`);
 
 		executeCommand(
