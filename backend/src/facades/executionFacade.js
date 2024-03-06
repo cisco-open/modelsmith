@@ -47,8 +47,6 @@ function executeCommand(cmd, onData, onEnd = () => {}, onError = () => {}) {
 			if (code !== 0) {
 				const errorMessage = `Process exited with code ${code}` + (stderrData ? `: ${stderrData}` : '');
 				onError(errorMessage);
-			} else if (stderrData) {
-				onError(`Process completed with stderr output: ${stderrData}`);
 			} else {
 				onEnd();
 			}
