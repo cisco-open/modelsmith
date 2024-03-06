@@ -160,7 +160,7 @@ router.post('/stop-script', checkSshConnection, checkIfNoScriptRunning, (req, re
 			if (responseSent) return;
 			setScriptState(ScriptState.NOT_RUNNING);
 			setActiveScriptDetails(null);
-			broadcastTerminal('Script stopped successfully.');
+			broadcastTerminal('Script stopped successfully.', MESSAGE_TYPES.SUCCESS);
 			res.status(OK).send({ message: 'Script stopped successfully.' });
 			responseSent = true;
 		},
