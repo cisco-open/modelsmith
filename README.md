@@ -67,6 +67,13 @@ Yuzhang Shang
 
 Gaowen Liu
 
+## Contributing & Future Directions
+
+> We have several TODO's spread out throughout our files! We will continue working in these directions to improve BUFFALO, adjusting as needed based on our user's feedback
+
+We intend to add functionalities to the log analysis for unsupervised log analysis. 
+
+If you wish to contribute or suggest any additional funtionalities, please check out [Contributing Guidelines](/CONTRIBUTING.md)
 ## License
 
 [Apache License 2.0](LICENSE.md).
