@@ -69,7 +69,7 @@ Gaowen Liu
 
 ## Contributing & Future Directions
 
-> We have several TODO's spread out throughout our files! We will continue working in these directions to improve BUFFALO, adjusting as needed based on our user's feedback
+> We have several TODO's spread out throughout our files! We will continue working in these directions to improve ModelSmith, adjusting as needed based on our user's feedback
 
 We intend to add functionalities to the log analysis for unsupervised log analysis. 
 
