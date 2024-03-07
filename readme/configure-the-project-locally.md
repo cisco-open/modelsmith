@@ -42,12 +42,14 @@ To get started, you need to set up the Python environment for Modelsmith. This i
    ```
 
 3. **Train the Models**
-   While beeing in the pruning environment (conda activate pruning), navigate to each of the following directories and run the `train.py` script:
+   While beeing in the modelsmith environment (conda activate modelsmith), navigate to each of the following directories and run the `train.py` script with the epochs and arch parameters:
 
    - From `examples_quant` directory:
 
+     - Predefined models to train: resnet18, resnet34, resnet50, resnet101, resnet152, resnext50_32x4d, resnext101_32x8d, wide_resnet50_2, wide_resnet101_2
+
      ```python
-     python3 train.py
+     python3 modelsmith/examples_quant/train.py --arch=resnet18 --epochs=1
      ```
 
    - From `examples` directory:

@@ -95,7 +95,7 @@ function executePythonScript(path, algorithm, args = '', type) {
 
 		const scriptPath = `${process.env.MODELSMITH_PATH}/${path}`;
 		const cmd = `source ${process.env.CONDA_SH_PATH} && conda activate modelsmith && cd ${scriptPath} && python3 ${algorithm} ${args}`;
-		broadcastTerminal(`${PYTHON_COMMAND} ${algorithm} ${args}`);
+		broadcastTerminal(`python3 ${algorithm} ${args}`);
 
 		executeCommand(
 			cmd,

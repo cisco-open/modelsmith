@@ -19,14 +19,35 @@ checkpoint_dir = os.path.join(script_dir, 'checkpoint')
 sys.path.append(os.path.abspath(os.path.join(script_dir, '..', 'models')))
 sys.path.append(os.path.abspath(os.path.join(script_dir, '..', 'utils')))
 
-from resnet_quant import resnet18 as ResNet18
+from resnet_quant import (
+    resnet18,
+    resnet34,
+    resnet50,
+    resnet101,
+    resnet152,
+    resnext50_32x4d,
+    resnext101_32x8d,
+    wide_resnet50_2,
+    wide_resnet101_2
+)
+
 from utils import train, test
+
+def get_model(arch):
+    """
+    Dynamically import and return the network architecture based on the provided argument.
+    """
+    if arch in globals():
+        return globals()[arch]()
+    else:
+        raise ValueError(f"Unsupported model: {arch}")
 
 def main():
     parser = argparse.ArgumentParser(description='PyTorch CIFAR10 Training')
     parser.add_argument('--lr', default=0.1, type=float, help='learning rate')
     parser.add_argument('--resume', '-r', action='store_true', help='resume from checkpoint')
     parser.add_argument('--epochs', default=200, type=int, help='number of epochs to train')
+    parser.add_argument('--arch', default='resnet18', type=str, help='model name')
     args = parser.parse_args()
 
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
@@ -62,7 +83,7 @@ def main():
         testset, batch_size=100, shuffle=False, num_workers=2)
 
     print('==> Building model..')
-    net = ResNet18()
+    net = get_model(args.arch)
     net = net.to(device)
     if device == 'cuda':
         net = torch.nn.DataParallel(net)
@@ -94,7 +115,7 @@ def main():
         }
         torch.save(state, os.path.join(checkpoint_dir, 'latest_checkpoint.pth'))
 
-    torch.save(net.state_dict(), os.path.join(models_checkpoints_dir, 'resnet18.pt'))
+    torch.save(net.state_dict(), os.path.join(models_checkpoints_dir, f'{args.arch}.pt'))
 
 if __name__ == '__main__':
     main()
