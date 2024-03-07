@@ -1,3 +1,19 @@
+//    Copyright 2024 Cisco Systems, Inc. and its affiliates
+
+//   Licensed under the Apache License, Version 2.0 (the "License");
+//   you may not use this file except in compliance with the License.
+//   You may obtain a copy of the License at
+
+//        http://www.apache.org/licenses/LICENSE-2.0
+
+//   Unless required by applicable law or agreed to in writing, software
+//   distributed under the License is distributed on an "AS IS" BASIS,
+//   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//   See the License for the specific language governing permissions and
+//   limitations under the License.
+
+//   SPDX-License-Identifier: Apache-2.0
+
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -9,6 +25,7 @@ import {
 	NgxMatSelectSearchModule
 } from 'ngx-mat-select-search';
 import { MsBackgroundGradientComponent } from './components/ms-background-gradient/ms-background-gradient.component';
+import { MsBannerComponent } from './components/ms-banner/ms-banner.component';
 import { MsCardSelectorComponent } from './components/ms-card-selector/ms-card-selector.component';
 import { MsEmptyStateComponent } from './components/ms-empty-state/ms-empty-state.component';
 import { MsFileUploadComponent } from './components/ms-file-upload/ms-file-upload.component';
@@ -20,7 +37,6 @@ import { MsMainLayoutComponent } from './components/ms-main-layout/ms-main-layou
 import { MsPanelParametersComponent } from './components/ms-panel-parameters/ms-panel-parameters.component';
 import { MsSidenavItemComponent } from './components/ms-sidenav-item/ms-sidenav-item.component';
 import { MsSidenavComponent } from './components/ms-sidenav/ms-sidenav.component';
-import { MsBannerComponent } from './components/ms-banner/ms-banner.component';
 import { TerminalToolbarComponent } from './components/ms-terminal/components/terminal-toolbar/terminal-toolbar.component';
 import { MsTerminalComponent } from './components/ms-terminal/ms-terminal.component';
 import { MsUserNavigationComponent } from './components/ms-user-navigation/ms-user-navigation.component';

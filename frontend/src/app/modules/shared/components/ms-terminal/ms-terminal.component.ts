@@ -1,3 +1,19 @@
+//    Copyright 2024 Cisco Systems, Inc. and its affiliates
+
+//   Licensed under the Apache License, Version 2.0 (the "License");
+//   you may not use this file except in compliance with the License.
+//   You may obtain a copy of the License at
+
+//        http://www.apache.org/licenses/LICENSE-2.0
+
+//   Unless required by applicable law or agreed to in writing, software
+//   distributed under the License is distributed on an "AS IS" BASIS,
+//   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//   See the License for the specific language governing permissions and
+//   limitations under the License.
+
+//   SPDX-License-Identifier: Apache-2.0
+
 import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { skip, take } from 'rxjs';
@@ -69,7 +85,7 @@ export class MsTerminalComponent implements OnInit, AfterViewInit, OnDestroy {
 	private initializeTerminal(): void {
 		this.terminal.loadAddon(this.fitAddon);
 		this.terminal.open(this.terminalDiv.nativeElement);
-		this.terminal.writeln('Welcome to Modelsmith terminal!\r\n');
+		this.terminal.writeln('Welcome to ModelSmith terminal!\r\n');
 
 		this.setupResizeObserver();
 	}
