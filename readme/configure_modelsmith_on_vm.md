@@ -1,6 +1,6 @@
-# Configure Modelsmith on a VM
+# Configure ModelSmith on a VM
 
-This guide outlines the process of configuring Modelsmith to run on a Virtual Machine (VM), suitable for scenarios where leveraging cloud or remote computational resources is preferred. This setup allows for the utilization of VMs for running Python scripts and training machine learning models. The configuration process is similar to the local setup but requires some adjustments, particularly for environment setup and SSH configuration.
+This guide outlines the process of configuring ModelSmith to run on a Virtual Machine (VM), suitable for scenarios where leveraging cloud or remote computational resources is preferred. This setup allows for the utilization of VMs for running Python scripts and training machine learning models. The configuration process is similar to the local setup but requires some adjustments, particularly for environment setup and SSH configuration.
 
 ## Prerequisites
 
@@ -24,9 +24,9 @@ node -v
 
 ## Phase 1: Setup on the VM
 
-The initial phase involves preparing the VM environment for Modelsmith. Perform the following steps directly on your VM:
+The initial phase involves preparing the VM environment for ModelSmith. Perform the following steps directly on your VM:
 
-1. **Copy the Modelsmith Project to the VM**: First, transfer the Modelsmith project files to your VM. This can be achieved using SCP (Secure Copy Protocol), FTP (File Transfer Protocol), or any file transfer method you prefer. Here's how you can do it with SCP, which securely transfers files between hosts on a network:
+1. **Copy the ModelSmith Project to the VM**: First, transfer the ModelSmith project files to your VM. This can be achieved using SCP (Secure Copy Protocol), FTP (File Transfer Protocol), or any file transfer method you prefer. Here's how you can do it with SCP, which securely transfers files between hosts on a network:
 
 ```bash
 scp -r /path/to/local/modelsmith user@vm_host:/path/to/remote/directory/
@@ -34,12 +34,12 @@ scp -r /path/to/local/modelsmith user@vm_host:/path/to/remote/directory/
 
 Replace:
 
-- `/path/to/local/modelsmith` with the actual path to your Modelsmith project on your local machine.
+- `/path/to/local/modelsmith` with the actual path to your ModelSmith project on your local machine.
 - `user` with your username on the VM.
 - `vm_host` with the hostname or IP address of your VM.
-- `/path/to/remote/directory/` with the path on the VM where you want to store the Modelsmith project.
+- `/path/to/remote/directory/` with the path on the VM where you want to store the ModelSmith project.
 
-2. **Install Miniconda**: Miniconda is a minimal installer for Conda, which is an open-source package management system and environment management system. Installing Miniconda on the VM will help manage the Python environment and dependencies required for the Modelsmith project. Here's how to download and install Miniconda:
+2. **Install Miniconda**: Miniconda is a minimal installer for Conda, which is an open-source package management system and environment management system. Installing Miniconda on the VM will help manage the Python environment and dependencies required for the ModelSmith project. Here's how to download and install Miniconda:
 
 2.1. Download the Miniconda installer for Linux:
 
@@ -136,7 +136,7 @@ BACKUP_SSH_PRIVATE_KEY_PATH=myprivatekeypaty
 ### .env File Configuration for VM Explained
 
 - **PORT**: The port number where the backend server listens. (default = 3000)
-- **MODELSMITH_PATH**: The path to the Modelsmith project directory on the VM.
+- **MODELSMITH_PATH**: The path to the ModelSmith project directory on the VM.
 - **CONDA_SH_PATH**: Path to the Conda environment script on the VM.
 
 - **CONNECTION_TYPE**: Set to `VM` to indicate the project is configured to use virtual machines for model training.
@@ -151,9 +151,9 @@ BACKUP_SSH_PRIVATE_KEY_PATH=myprivatekeypaty
 
 ## Phase 3: Start the Project
 
-To start Modelsmith:
+To start ModelSmith:
 
 1. Execute the `start_modelsmith.sh` script to launch both the frontend and backend servers.
 2. Visit `http://localhost:4200` in your web browser to access the application.
 
-Successfully configuring Modelsmith on a VM allows you to leverage remote computational resources for training and deploying machine learning models.
+Successfully configuring ModelSmith on a VM allows you to leverage remote computational resources for training and deploying machine learning models.

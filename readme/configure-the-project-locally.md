@@ -1,6 +1,6 @@
-# Configure Modelsmith Locally
+# Configure ModelSmith Locally
 
-This guide will walk you through the process of configuring Modelsmith to run on your local machine, specifically for those who wish to utilize their own GPU for running the Python scripts. The configuration process is divided into three main phases.
+This guide will walk you through the process of configuring ModelSmith to run on your local machine, specifically for those who wish to utilize their own GPU for running the Python scripts. The configuration process is divided into three main phases.
 
 ## Prerequisites
 
@@ -22,9 +22,9 @@ To verify that you have successfully installed Node.js and npm, you can run the 
 node -v
 ```
 
-## Phase 1: Configure Modelsmith Python Environment
+## Phase 1: Configure ModelSmith Python Environment
 
-To get started, you need to set up the Python environment for Modelsmith. This involves creating a new Conda environment and installing the necessary packages. Follow these steps:
+To get started, you need to set up the Python environment for ModelSmith. This involves creating a new Conda environment and installing the necessary packages. Follow these steps:
 
 1. **Create and Activate a New Conda Environment**
    Open a terminal and run the following commands:
@@ -92,7 +92,7 @@ The `.env` file is crucial for defining environment-specific variables that conf
 
 - **PORT**: Specifies the port number on which the backend server will listen. For instance, `3000` indicates that the server will be accessible at `http://localhost:3000`.
 
-- **MODELSMITH_PATH**: Defines the path to the Modelsmith project directory. The example `../modelsmith` suggests that the Modelsmith directory is located one level up from the current directory.
+- **MODELSMITH_PATH**: Defines the path to the ModelSmith project directory. The example `../modelsmith` suggests that the ModelSmith directory is located one level up from the current directory.
 
 - **CONDA_SH_PATH**: Indicates the path to the Conda environment script. This path is necessary for the script to activate the Conda environment correctly. In the given example, `~/miniconda3/etc/profile.d/conda.sh` points to the Conda initialization script for Miniconda installations.
 
@@ -100,7 +100,7 @@ The `.env` file is crucial for defining environment-specific variables that conf
 
 ## Phase 3: Start the Project
 
-Finally, to start Modelsmith:
+Finally, to start ModelSmith:
 
 1. Run the `start_modelsmith.sh` script to start both the frontend and backend servers:
 
@@ -110,4 +110,4 @@ Finally, to start Modelsmith:
 
 2. Access the application by visiting `http://localhost:4200` in your web browser.
 
-Congratulations! You have successfully configured Modelsmith to run locally. Enjoy optimizing your machine learning models with the power of your GPU.
+Congratulations! You have successfully configured ModelSmith to run locally. Enjoy optimizing your machine learning models with the power of your GPU.

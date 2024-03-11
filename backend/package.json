@@ -1,7 +1,7 @@
 {
 	"name": "modelsmith-be",
 	"version": "1.0.0",
-	"description": "BE for Modelsmith",
+	"description": "BE for ModelSmith",
 	"main": "index.js",
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
