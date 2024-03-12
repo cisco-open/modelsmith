@@ -29,7 +29,8 @@ const MessageTopics = {
 
 const ChartsEventsTopics = {
 	UPDATE_TESTING: 'updateTesting',
-	UPDATE_LATEST_VALUE: 'updateLatestValue'
+	UPDATE_LATEST_VALUE: 'updateLatestValue',
+	ENHANCE_SINGLE_PHASE_X_AXIS: 'enhanceSinglePhaseXAxis'
 };
 
 // WebSocket setup

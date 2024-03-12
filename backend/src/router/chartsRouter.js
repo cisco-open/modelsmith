@@ -38,18 +38,31 @@ router.get('/chart-configuration-settings', (req, res) => {
 			alg: currentScript.algKey
 		};
 
-		if (currentScript.algorithm.type === ALGORITHM_TYPES.PRUNING) {
-			const pruningTimes = currentScript.params.pruning_times || 1;
+		switch (currentScript.algorithm.type) {
+			case ALGORITHM_TYPES.PRUNING:
+				const pruningTimes = currentScript.params.pruning_times || 1;
 
-			chartConfigurationSettings[chartType] = {
-				...chartConfigurationSettings[chartType],
-				pruningTimes: Number(pruningTimes),
-				epochs: currentScript.params.epochs
-			};
-		} else if (currentScript.algorithm.type === ALGORITHM_TYPES.MACHINE_UNLEARNING) {
-			chartConfigurationSettings[chartType] = {
-				epochs: currentScript.params.unlearn_epochs
-			};
+				chartConfigurationSettings[chartType] = {
+					...chartConfigurationSettings[chartType],
+					pruningTimes: Number(pruningTimes),
+					epochs: currentScript.params.epochs
+				};
+				break;
+
+			case ALGORITHM_TYPES.MACHINE_UNLEARNING:
+				chartConfigurationSettings[chartType] = {
+					epochs: currentScript.params.unlearn_epochs
+				};
+				break;
+
+			case ALGORITHM_TYPES.QUANTIZATION:
+				chartConfigurationSettings[chartType] = {
+					reconstructions: quantizationParserInstance?.reconstructions?.length || 1
+				};
+				break;
+
+			default:
+				break;
 		}
 	});
 

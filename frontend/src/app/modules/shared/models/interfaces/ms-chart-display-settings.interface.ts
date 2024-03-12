@@ -82,6 +82,11 @@ export interface ChartDisplaySettings {
 	// Determines whether chart lines should be displayed as stepped lines.
 	// When set to true, the chart line segments are rendered as stepped lines.
 	useSteppedLines?: boolean;
+
+	// Determines whether the X-axis is dynamic, enabling it to adjust based on the data being displayed.
+	// A dynamic X-axis can expand or contract to accommodate varying amounts of data points or to highlight specific data ranges.
+	// This is particularly useful for charts that need to adapt to data changes over time, ensuring that the visualization remains clear and informative.
+	isXAxisDynamic?: boolean;
 }
 
 export const DEFAULT_Y_AXIS_GROWTH_OFFSET = 5;

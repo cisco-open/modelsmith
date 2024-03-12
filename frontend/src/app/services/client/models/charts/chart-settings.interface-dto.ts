@@ -26,6 +26,7 @@ export interface ChartConfigurationSettings {
 	yAxisMin?: number;
 	yAxisMax?: number;
 	yStepSize?: number;
+	reconstructions?: number;
 }
 
 export type ChartConfigurationSettingsDictionary = { [key in ChartTypeEnum]?: ChartConfigurationSettings };
