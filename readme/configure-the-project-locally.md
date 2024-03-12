@@ -49,7 +49,7 @@ To get started, you need to set up the Python environment for ModelSmith. This i
      - Predefined models to train: resnet18, resnet34, resnet50, resnet101, resnet152, resnext50_32x4d, resnext101_32x8d, wide_resnet50_2, wide_resnet101_2
 
      ```python
-     python3 modelsmith/examples_quant/train.py --arch=resnet18 --epochs=1
+     python3 modelsmith/examples_quant/train.py --arch=resnet18 --epochs=100
      ```
 
    - From `examples` directory:
