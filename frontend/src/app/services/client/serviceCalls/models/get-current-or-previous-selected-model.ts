@@ -16,8 +16,8 @@
 
 import { ServiceCallGET } from '../service-call';
 
-export class GetModelsList extends ServiceCallGET<string[]> {
+export class GetCurrentOrPreviousSelectedModel extends ServiceCallGET<string> {
 	constructor(type: string) {
-		super(`models-list/${type}`, undefined, undefined, false);
+		super(`current-or-previous-selected-model/${type}`, undefined, undefined, false);
 	}
 }

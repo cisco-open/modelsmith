@@ -7,6 +7,7 @@ export const initialState: ModelsState = {
 	quantizationModels: [],
 	pruningModels: [],
 	machineUnlearningModels: [],
+	currentModel: '',
 	error: undefined
 };
 
@@ -25,6 +26,14 @@ export const modelsReducer = createReducer(
 		}
 	}),
 	on(ModelsActions.getModelsListFailure, (state, { error }) => ({
+		...state,
+		error
+	})),
+	on(ModelsActions.getCurrentOrPreviousSelectedModelSuccess, (state, { model }) => ({
+		...state,
+		currentModel: model
+	})),
+	on(ModelsActions.getCurrentOrPreviousSelectedModelFailure, (state, { error }) => ({
 		...state,
 		error
 	}))

@@ -17,13 +17,17 @@
 import { Injectable } from '@angular/core';
 import { Action, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { AuthState } from '../../../state/core/auth';
-import { selectModelsByType } from '../../../state/core/models/models.selector';
+import { selectCurrentModel, selectModelsByType } from '../../../state/core/models/models.selector';
+import { ModelsState } from '../../../state/core/models/models.state';
 import { AlgorithmType } from '../models/enums/algorithms.enum';
 
 @Injectable()
 export class ModelsFacadeService {
-	constructor(private store: Store<AuthState>) {}
+	currentModel$: Observable<string | undefined>;
+
+	constructor(private store: Store<ModelsState>) {
+		this.currentModel$ = this.store.select(selectCurrentModel);
+	}
 
 	getModelsByType(algorithmType: AlgorithmType): Observable<string[] | undefined> {
 		return this.store.select(selectModelsByType(algorithmType));

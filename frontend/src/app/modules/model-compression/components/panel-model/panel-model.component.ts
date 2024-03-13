@@ -18,10 +18,11 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { AbstractControl, ControlContainer, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Observable } from 'rxjs';
-import { filter, map, startWith, take } from 'rxjs/operators';
+import { filter, map, startWith } from 'rxjs/operators';
 import { ModelsActions } from '../../../../state/core/models/models.actions';
 import { FileService } from '../../../core/services/file.service';
 import { ScriptFacadeService } from '../../../core/services/script-facade.service';
+import { isEmptyObject } from '../../../core/utils/core.utils';
 import { CUSTOM_MODEL } from '../../models/constants/supported-models.constants';
 import { AlgorithmType } from '../../models/enums/algorithms.enum';
 import { isScriptActive } from '../../models/enums/script-status.enum';
@@ -61,6 +62,7 @@ export class PanelModelComponent implements OnInit {
 
 	ngOnInit() {
 		this.initializeForm();
+		this.loadInitialModel();
 		this.loadModels(AlgorithmType.QUANTIZATION);
 
 		this.listenToModelChanges();
@@ -73,19 +75,33 @@ export class PanelModelComponent implements OnInit {
 		);
 	}
 
+	private loadInitialModel() {
+		this.modelsFacadeService.currentModel$.pipe(untilDestroyed(this)).subscribe((model: string | undefined) => {
+			if (isEmptyObject(model)) {
+				return;
+			}
+
+			this.modelControl?.patchValue(model);
+		});
+
+		this.modelsFacadeService.dispatch(
+			ModelsActions.getCurrentOrPreviousSelectedModel({ algorithmType: AlgorithmType.QUANTIZATION })
+		);
+	}
+
 	private loadModels(algorithmType: AlgorithmType) {
 		this.modelsFacadeService
 			.getModelsByType(algorithmType)
 			.pipe(
 				filter((models): models is string[] => !!models && models.length > 0),
-				take(1)
+				untilDestroyed(this)
 			)
 			.subscribe((models: string[]) => {
 				this.models = models;
 				this.searchModel.setValue('');
 			});
 
-		this.modelsFacadeService.dispatch(ModelsActions.getModelsList({ algorithmType: algorithmType }));
+		this.modelsFacadeService.dispatch(ModelsActions.getModelsList({ algorithmType: AlgorithmType.QUANTIZATION }));
 	}
 
 	private initializeForm(): void {

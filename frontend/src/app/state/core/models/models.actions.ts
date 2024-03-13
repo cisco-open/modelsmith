@@ -6,6 +6,9 @@ export const ModelsActions = createActionGroup({
 	events: {
 		'Get Models List': props<{ algorithmType: AlgorithmType }>(),
 		'Get Models List Success': props<{ algorithmType: AlgorithmType; models: string[] }>(),
-		'Get Models List Failure': props<{ error: any }>()
+		'Get Models List Failure': props<{ error: any }>(),
+		'Get Current Or Previous Selected Model': props<{ algorithmType: AlgorithmType }>(),
+		'Get Current Or Previous Selected Model Success': props<{ model: string }>(),
+		'Get Current Or Previous Selected Model Failure': props<{ error: any }>()
 	}
 });

@@ -990,22 +990,6 @@ const MACHINE_UNLEARNING_PARAMETERS = {
 			help: 'Number of epochs for l1-sparse unlearning'
 		},
 		{
-			argName: 'save-dir',
-			defaultValue: 'checkpoint/unlearn',
-			inputType: 'text',
-			label: 'Save Directory',
-			placeholder: 'Enter save directory',
-			help: 'Specifies the directory where the model checkpoints will be saved.'
-		},
-		{
-			argName: 'mask',
-			defaultValue: 'checkpoint/ckpt.pth',
-			inputType: 'text',
-			label: 'Pretrained Model Path',
-			placeholder: 'Enter pretrained model path',
-			help: 'Path to the pretrained model that will be used as a starting point for unlearning.'
-		},
-		{
 			argName: 'num-indexes-to-replace',
 			defaultValue: 4500,
 			inputType: 'number',

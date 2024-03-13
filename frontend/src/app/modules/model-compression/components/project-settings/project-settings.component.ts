@@ -60,8 +60,8 @@ export class ProjectSettingsComponent implements OnInit {
 
 	ngOnInit() {
 		this.initForm();
-		this.listenToScriptStateChanges();
 		this.listenToAlgorithmPanelChanges();
+		this.listenToScriptStateChanges();
 	}
 
 	private listenToAlgorithmPanelChanges(): void {

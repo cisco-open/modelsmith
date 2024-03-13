@@ -18,6 +18,24 @@ const express = require('express');
 const router = express.Router();
 const { OK } = require('../constants/httpStatusCodes');
 const getModelsByType = require('../constants/modelsConstants');
+const { getActiveScriptDetails, getPreviousScriptDetails } = require('../state/scriptState');
+const ALGORITHM_TYPES = require('../constants/algorithmTypesConstants');
+
+router.get('/current-or-previous-selected-model/:type', (req, res) => {
+	const type = req.params.type;
+
+	const script = getActiveScriptDetails() || getPreviousScriptDetails();
+
+	let defaultValue = '';
+	if (type === ALGORITHM_TYPES.QUANTIZATION) {
+		defaultValue = 'resnet18';
+	}
+
+	const { params } = script || { params: { arch: defaultValue } };
+	const { arch } = params;
+
+	res.status(OK).send(JSON.stringify(arch));
+});
 
 router.get('/models-list/:type', (req, res) => {
 	const type = req.params.type;

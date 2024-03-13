@@ -15,3 +15,5 @@ export const selectModelsByType = (algorithmType: AlgorithmType) =>
 				return undefined;
 		}
 	});
+
+export const selectCurrentModel = createSelector(selectCoreState, (state) => state.models.currentModel);
