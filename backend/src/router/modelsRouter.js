@@ -20,6 +20,14 @@ const { OK } = require('../constants/httpStatusCodes');
 const getModelsByType = require('../constants/modelsConstants');
 const { getActiveScriptDetails, getPreviousScriptDetails } = require('../state/scriptState');
 const ALGORITHM_TYPES = require('../constants/algorithmTypesConstants');
+const { executeCommand } = require('../facades/executionFacade');
+const checkSshConnection = require('../middlewares/checkSshConnection');
+
+const CHECKPOINT_PATHS = {
+	[ALGORITHM_TYPES.QUANTIZATION]: `${process.env.MODELSMITH_PATH}/examples_quant/models_checkpoints`,
+	[ALGORITHM_TYPES.PRUNING]: `${process.env.MODELSMITH_PATH}/examples_pruning/models_checkpoints`,
+	[ALGORITHM_TYPES.MACHINE_UNLEARNING]: `${process.env.MODELSMITH_PATH}/examples_unlearning/models_checkpoints`
+};
 
 router.get('/current-or-previous-selected-model/:type', (req, res) => {
 	const type = req.params.type;
@@ -37,7 +45,31 @@ router.get('/current-or-previous-selected-model/:type', (req, res) => {
 	res.status(OK).send(JSON.stringify(arch));
 });
 
-router.get('/models-list/:type', (req, res) => {
+/**
+ * GET endpoint for retrieving a list of models filtered by a specific algorithm type ('type' parameter in the URL).
+ * Each model in the list includes a flag indicating whether it has been trained (isTrained).
+ *
+ * The function first checks if the requested model type exists by attempting to retrieve a predefined list
+ * of models associated with that type. If no models are found, a 404 Not Found status is returned with a message
+ * indicating that the model type was not found.
+ *
+ * If the model type is valid, it then constructs a file listing command based on a directory path that
+ * corresponds to the model type. This path is determined from a mapping (CHECKPOINT_PATHS) that associates
+ * algorithm types to their respective storage directories on the filesystem.
+ *
+ * The command executed lists all '.pt' files (PyTorch model files) in the designated directory. The output of this
+ * command is processed to extract the model names, which are then compared against the list of models for the
+ * requested type. For each model, a boolean flag 'isTrained' is set, indicating whether a corresponding '.pt' file
+ * exists in the directory.
+ *
+ * Finally, the function responds with a status of 200 OK and a JSON payload containing the list of models for the
+ * requested type, each annotated with its training status. In case of errors during command execution, a 500
+ * Internal Server Error status is returned with an error message.
+ *
+ * @param {Request} req - The HTTP request object, containing the 'type' parameter specifying the algorithm type.
+ * @param {Response} res - The HTTP response object used to send back the resulting data or error messages.
+ */
+router.get('/models-list/:type', checkSshConnection, (req, res) => {
 	const type = req.params.type;
 	const models = getModelsByType(type);
 
@@ -45,7 +77,37 @@ router.get('/models-list/:type', (req, res) => {
 		return res.status(404).send('Model type not found');
 	}
 
-	res.status(OK).send(models);
+	const directoryPath = CHECKPOINT_PATHS[type];
+	if (!directoryPath) {
+		return res.status(400).send('Invalid model type specified');
+	}
+
+	const listFilesCommand = `ls ${directoryPath}/*.pt`;
+
+	executeCommand(
+		listFilesCommand,
+		(output) => {
+			const files = output
+				.split('\n')
+				.filter((line) => line.trim() !== '')
+				.map((filename) => {
+					const match = filename.match(/([^\/]+)\.pt$/);
+					return match ? match[1] : null;
+				})
+				.filter((name) => name !== null);
+
+			const modelsWithTrainingInfo = models.map((modelName) => ({
+				name: modelName,
+				isTrained: files.includes(modelName)
+			}));
+
+			res.status(OK).send(modelsWithTrainingInfo);
+		},
+		() => {},
+		(error) => {
+			res.status(500).send(`Error listing model checkpoint files: ${error}`);
+		}
+	);
 });
 
 module.exports = router;

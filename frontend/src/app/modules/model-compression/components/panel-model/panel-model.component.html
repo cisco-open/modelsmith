@@ -27,8 +27,12 @@
 						</mat-option>
 
 						<ng-container *ngIf="filteredModels | async as models">
-							<mat-option *ngFor="let model of models; trackBy: trackByModel" [value]="model">
-								{{ model }}
+							<mat-option
+								*ngFor="let model of models; trackBy: trackByModel"
+								[value]="model.name"
+								[disabled]="!model.isTrained">
+								{{ model.name }}
+								<mat-icon *ngIf="!model.isTrained" class="mat-error" fontSet="ms" fontIcon="icon-X"></mat-icon>
 							</mat-option>
 							<mat-option *ngIf="models.length === 0" disabled>No results found</mat-option>
 						</ng-container>

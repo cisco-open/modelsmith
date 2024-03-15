@@ -14,7 +14,7 @@
 
 //   SPDX-License-Identifier: Apache-2.0
 
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
@@ -55,7 +55,8 @@ export class ProjectSettingsComponent implements OnInit {
 		private fileService: FileService,
 		private fileFacadeService: FileFacadeService,
 		private snackbarService: BannerService,
-		private router: Router
+		private router: Router,
+		private cdr: ChangeDetectorRef
 	) {}
 
 	ngOnInit() {
@@ -75,6 +76,7 @@ export class ProjectSettingsComponent implements OnInit {
 			)
 			.subscribe((algValue) => {
 				this.isQuantAlgorithmSelected = determineAlgorithmType(algValue) === AlgorithmType.QUANTIZATION;
+				this.cdr.detectChanges();
 			});
 	}
 

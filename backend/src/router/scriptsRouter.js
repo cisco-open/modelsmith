@@ -44,7 +44,7 @@ router.get('/current-or-last-active-script-details', (_, res) => {
 	let script = getActiveScriptDetails() || getPreviousScriptDetails();
 
 	if (!script) {
-		return res.status(NOT_FOUND).send();
+		return res.status(OK).send(JSON.stringify('No script has run yet.'));
 	}
 
 	let lastActiveScript = JSON.parse(JSON.stringify(script));

@@ -19,6 +19,7 @@ import { AbstractControl, ControlContainer, FormBuilder, FormControl, FormGroup,
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Observable } from 'rxjs';
 import { filter, map, startWith } from 'rxjs/operators';
+import { ModelDto } from '../../../../services/client/models/models/models.interface-dto';
 import { ModelsActions } from '../../../../state/core/models/models.actions';
 import { FileService } from '../../../core/services/file.service';
 import { ScriptFacadeService } from '../../../core/services/script-facade.service';
@@ -41,9 +42,9 @@ export class PanelModelComponent implements OnInit {
 	isCustomModelSelected: boolean = false;
 
 	searchModel = new FormControl();
-	filteredModels!: Observable<string[]>;
+	filteredModels!: Observable<ModelDto[]>;
 
-	models: string[] = [];
+	models: ModelDto[] = [];
 	customModel = CUSTOM_MODEL;
 
 	readonly MODEL_CONTROL_NAME: string = 'model';
@@ -63,7 +64,7 @@ export class PanelModelComponent implements OnInit {
 	ngOnInit() {
 		this.initializeForm();
 		this.loadInitialModel();
-		this.loadModels(AlgorithmType.QUANTIZATION);
+		this.fetchModels(AlgorithmType.QUANTIZATION);
 
 		this.listenToModelChanges();
 		this.listenToScriptStateChanges();
@@ -89,14 +90,14 @@ export class PanelModelComponent implements OnInit {
 		);
 	}
 
-	private loadModels(algorithmType: AlgorithmType) {
+	private fetchModels(algorithmType: AlgorithmType) {
 		this.modelsFacadeService
 			.getModelsByType(algorithmType)
 			.pipe(
-				filter((models): models is string[] => !!models && models.length > 0),
+				filter((models): models is ModelDto[] => !!models && models.length > 0),
 				untilDestroyed(this)
 			)
-			.subscribe((models: string[]) => {
+			.subscribe((models: ModelDto[]) => {
 				this.models = models;
 				this.searchModel.setValue('');
 			});
@@ -129,12 +130,12 @@ export class PanelModelComponent implements OnInit {
 		});
 	}
 
-	private filterModels(value: string): string[] {
+	private filterModels(value: string): ModelDto[] {
 		const filterValue = value.toLowerCase();
-		return this.models.filter((model) => model.toLowerCase().includes(filterValue));
+		return this.models.filter((model) => model.name.toLowerCase().includes(filterValue));
 	}
 
-	trackByModel(_: number, model: string): any {
-		return model;
+	trackByModel(_: number, model: ModelDto): any {
+		return model.name;
 	}
 }
