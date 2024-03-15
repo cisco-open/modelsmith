@@ -240,11 +240,32 @@ export class MsLineChartComponent implements OnInit, OnChanges, OnDestroy {
 						this.addLatestValueToChart(datasetIndex, loss);
 					}
 					break;
+				case ChartWebsocketMessageTypes.ENHANCE_SINGLE_PHASE_X_AXIS:
+					const { reconstructionIndex } = message.data as {
+						reconstructionIndex: number;
+					};
+
+					this.enhanceSinglePhaseXAxis(reconstructionIndex);
+					break;
 				default: {
 					break;
 				}
 			}
 		});
+	}
+
+	private enhanceSinglePhaseXAxis(reconstructionIndex: number) {
+		if (!this.settings.isXAxisDynamic) {
+			return;
+		}
+
+		const newLabel = `${this.settings.xAxisLabelPrefix} ${reconstructionIndex}`;
+		if (this.lineChartData.labels?.includes(newLabel)) {
+			return;
+		}
+
+		this.lineChartData.labels?.push(newLabel);
+		this.chart?.update();
 	}
 
 	private prependNewChartData(chartDatasets: ChartDatasets[]) {

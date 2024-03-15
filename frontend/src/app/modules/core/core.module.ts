@@ -29,6 +29,7 @@ import { coreReducers } from '../../state/core';
 import { AuthEffects } from '../../state/core/auth';
 import { ChartsEffects } from '../../state/core/charts';
 import { FileEffects } from '../../state/core/file';
+import { ModelsEffects } from '../../state/core/models/models.effects';
 import { ParametersEffects } from '../../state/core/parameters';
 import { ScriptActions, ScriptEffects } from '../../state/core/script';
 import { StatisticsEffects } from '../../state/core/statistics';
@@ -65,7 +66,8 @@ import {
 			ChartsEffects,
 			ParametersEffects,
 			TerminalEffects,
-			StatisticsEffects
+			StatisticsEffects,
+			ModelsEffects
 		])
 	],
 	providers: [

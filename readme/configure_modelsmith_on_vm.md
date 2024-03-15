@@ -86,23 +86,25 @@ conda --version
    pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
    ```
 
-5. **Train the Models**: Train your models located within the 'examples_quant', 'examples_pruning' and 'examples_unlearning' directories by specifying the number of epochs using the --epochs flag. Adjust the number of epochs as needed:
+5. **Train the Models**: While beeing in the modelsmith environment (conda activate modelsmith), train your models located within the 'examples_quant', 'examples_pruning' and 'examples_unlearning' directories by specifying the number of epochs using the --epochs flag and specify the model architecture using the --arch parameter.
 
 - From `examples_quant` directory:
 
+  - Predefined models to train: resnet18, resnet34, resnet50, resnet101, resnet152, resnext50_32x4d, resnext101_32x8d, wide_resnet50_2, wide_resnet101_2
+
   ```python
-  python3 modelsmith/examples_quant/train.py --epochs=1
+  python3 modelsmith/examples_quant/train.py --arch=resnet18 --epochs=100
   ```
 
 - From `examples_pruning` directory:
 
   ```python
-  python3 modelsmith/examples_pruning/train.py --epochs=1
+  python3 modelsmith/examples_pruning/train.py --epochs=100
   ```
 
 - From `examples_unlearning` directory:
   ```python
-  python3 modelsmith/examples_unlearning/train.py --epochs=1
+  python3 modelsmith/examples_unlearning/train.py --epochs=100
   ```
 
 ## Phase 2: Configure the Environment

@@ -17,42 +17,97 @@
 const express = require('express');
 const router = express.Router();
 const { OK } = require('../constants/httpStatusCodes');
+const getModelsByType = require('../constants/modelsConstants');
+const { getActiveScriptDetails, getPreviousScriptDetails } = require('../state/scriptState');
+const ALGORITHM_TYPES = require('../constants/algorithmTypesConstants');
+const { executeCommand } = require('../facades/executionFacade');
+const checkSshConnection = require('../middlewares/checkSshConnection');
 
-const hardcodedModels = ['resnet18'];
+const CHECKPOINT_PATHS = {
+	[ALGORITHM_TYPES.QUANTIZATION]: `${process.env.MODELSMITH_PATH}/examples_quant/models_checkpoints`,
+	[ALGORITHM_TYPES.PRUNING]: `${process.env.MODELSMITH_PATH}/examples_pruning/models_checkpoints`,
+	[ALGORITHM_TYPES.MACHINE_UNLEARNING]: `${process.env.MODELSMITH_PATH}/examples_unlearning/models_checkpoints`
+};
 
-router.get('/model-files', (req, res) => {
-	res.status(OK).send(hardcodedModels);
+router.get('/current-or-previous-selected-model/:type', (req, res) => {
+	const type = req.params.type;
+
+	const script = getActiveScriptDetails() || getPreviousScriptDetails();
+
+	let defaultValue = '';
+	if (type === ALGORITHM_TYPES.QUANTIZATION) {
+		defaultValue = 'resnet18';
+	}
+
+	const { params } = script || { params: { arch: defaultValue } };
+	const { arch } = params;
+
+	res.status(OK).send(JSON.stringify(arch));
 });
 
-// Dynamic solution postponed. Will take more time to figure out a good solution.
-// Will keep a hardcoded solution at this moment in time.
+/**
+ * GET endpoint for retrieving a list of models filtered by a specific algorithm type ('type' parameter in the URL).
+ * Each model in the list includes a flag indicating whether it has been trained (isTrained).
+ *
+ * The function first checks if the requested model type exists by attempting to retrieve a predefined list
+ * of models associated with that type. If no models are found, a 404 Not Found status is returned with a message
+ * indicating that the model type was not found.
+ *
+ * If the model type is valid, it then constructs a file listing command based on a directory path that
+ * corresponds to the model type. This path is determined from a mapping (CHECKPOINT_PATHS) that associates
+ * algorithm types to their respective storage directories on the filesystem.
+ *
+ * The command executed lists all '.pt' files (PyTorch model files) in the designated directory. The output of this
+ * command is processed to extract the model names, which are then compared against the list of models for the
+ * requested type. For each model, a boolean flag 'isTrained' is set, indicating whether a corresponding '.pt' file
+ * exists in the directory.
+ *
+ * Finally, the function responds with a status of 200 OK and a JSON payload containing the list of models for the
+ * requested type, each annotated with its training status. In case of errors during command execution, a 500
+ * Internal Server Error status is returned with an error message.
+ *
+ * @param {Request} req - The HTTP request object, containing the 'type' parameter specifying the algorithm type.
+ * @param {Response} res - The HTTP response object used to send back the resulting data or error messages.
+ */
+router.get('/models-list/:type', checkSshConnection, (req, res) => {
+	const type = req.params.type;
+	const models = getModelsByType(type);
 
-// router.get('/model-files', checkSshConnection, (req, res) => {
-// 	const listCommand = `find ${process.env.MODELS_PATH} -type f -name "*.py" ! -name "__init__.py"`;
+	if (models.length === 0) {
+		return res.status(404).send('Model type not found');
+	}
 
-// 	conn.exec(listCommand, (err, stream) => {
-// 		if (err) {
-// 			console.error(`Error listing directory: ${err}`);
-// 			return res.status(500).send({ message: 'Failed to list the directory.' });
-// 		}
+	const directoryPath = CHECKPOINT_PATHS[type];
+	if (!directoryPath) {
+		return res.status(400).send('Invalid model type specified');
+	}
 
-// 		let fileList = '';
-// 		stream.on('data', (data) => {
-// 			fileList += data.toString();
-// 		});
+	const listFilesCommand = `ls ${directoryPath}/*.pt`;
 
-// 		stream.on('close', (code) => {
-// 			if (code !== 0) {
-// 				console.error(`Error listing directory, exit code ${code}`);
-// 				return res.status(500).send({ message: 'Failed to list the directory.' });
-// 			}
+	executeCommand(
+		listFilesCommand,
+		(output) => {
+			const files = output
+				.split('\n')
+				.filter((line) => line.trim() !== '')
+				.map((filename) => {
+					const match = filename.match(/([^\/]+)\.pt$/);
+					return match ? match[1] : null;
+				})
+				.filter((name) => name !== null);
 
-// 			const filesArray = fileList.trim().split('\n');
-// 			const filteredFiles = filesArray.map((file) => path.basename(file).replace('.py', ''));
+			const modelsWithTrainingInfo = models.map((modelName) => ({
+				name: modelName,
+				isTrained: files.includes(modelName)
+			}));
 
-// 			res.status(200).send(filteredFiles);
-// 		});
-// 	});
-// });
+			res.status(OK).send(modelsWithTrainingInfo);
+		},
+		() => {},
+		(error) => {
+			res.status(500).send(`Error listing model checkpoint files: ${error}`);
+		}
+	);
+});
 
 module.exports = router;

@@ -14,7 +14,7 @@
 
 //   SPDX-License-Identifier: Apache-2.0
 
-import { createSelector } from '@ngrx/store';
-import { selectModelCompression } from '../model-compression.selector';
-
-export const selectModels = createSelector(selectModelCompression, (state) => state.models.models);
+export interface ModelDto {
+	name: string;
+	isTrained: boolean;
+}

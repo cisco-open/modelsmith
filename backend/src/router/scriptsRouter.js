@@ -1,10 +1,3 @@
-const express = require('express');
-const router = express.Router();
-const { broadcastTerminal, broadcastStatus } = require('../services/websocketService');
-const checkSshConnection = require('../middlewares/checkSshConnection');
-const checkIfNoScriptRunning = require('../middlewares/checkIfNoScriptRunning');
-const checkIfScriptRunning = require('../middlewares/checkIfScriptRunning');
-const ALGORITHMS = require('../constants/algorithmsConstants');
 //   Copyright 2024 Cisco Systems, Inc. and its affiliates
 
 //  Licensed under the Apache License, Version 2.0 (the "License");
@@ -21,6 +14,14 @@ const ALGORITHMS = require('../constants/algorithmsConstants');
 
 //  SPDX-License-Identifier: Apache-2.0
 
+const express = require('express');
+const router = express.Router();
+const { broadcastTerminal, broadcastStatus } = require('../services/websocketService');
+const checkSshConnection = require('../middlewares/checkSshConnection');
+const checkIfNoScriptRunning = require('../middlewares/checkIfNoScriptRunning');
+const checkIfScriptRunning = require('../middlewares/checkIfScriptRunning');
+const ALGORITHMS = require('../constants/algorithmsConstants');
+const MESSAGE_TYPES = require('../constants/messageTypes');
 const { BAD_REQUEST, OK, NOT_FOUND, INTERNAL_SERVER_ERROR } = require('../constants/httpStatusCodes');
 const logger = require('../utils/logger');
 const {
@@ -39,13 +40,11 @@ const pruningParserInstance = require('../parsers/pruningParser');
 const quantizationParserInstance = require('../parsers/quantizationParser');
 const machineUnlearningParserInstance = require('../parsers/machineUnlearningParser');
 
-const PYTHON_COMMAND = 'python3';
-
 router.get('/current-or-last-active-script-details', (_, res) => {
 	let script = getActiveScriptDetails() || getPreviousScriptDetails();
 
 	if (!script) {
-		return res.status(NOT_FOUND).send();
+		return res.status(OK).send(JSON.stringify('No script has run yet.'));
 	}
 
 	let lastActiveScript = JSON.parse(JSON.stringify(script));
@@ -81,6 +80,7 @@ router.post('/run-script', checkSshConnection, checkIfScriptRunning, (req, res) 
 	executePythonScript(scriptDetails.path, scriptDetails.fileName, args, scriptDetails.type)
 		.then(() => {
 			res.status(OK).send({ message: 'Script execution ended successfully.' });
+			broadcastTerminal('Script execution ended successfully.', MESSAGE_TYPES.SUCCESS);
 
 			setActiveScriptDetails(null);
 			changeAndBroadcastScriptState(ScriptState.NOT_RUNNING);
@@ -91,9 +91,10 @@ router.post('/run-script', checkSshConnection, checkIfScriptRunning, (req, res) 
 			setActiveScriptDetails(null);
 			changeAndBroadcastScriptState(ScriptState.ERROR);
 
+			broadcastTerminal(error, MESSAGE_TYPES.ERROR);
+
 			res.status(INTERNAL_SERVER_ERROR).send({
-				error:
-					'The script has errors and failed to start automatically. Please try running the script manually from the terminal.'
+				error: 'The script has errors and failed to start automatically. Please check the terminal.'
 			});
 		});
 });
@@ -109,8 +110,8 @@ function executePythonScript(path, algorithm, args = '', type) {
 		}
 
 		const scriptPath = `${process.env.MODELSMITH_PATH}/${path}`;
-		const cmd = `source ${process.env.CONDA_SH_PATH} && conda activate modelsmith && cd ${scriptPath} && ${PYTHON_COMMAND} ${algorithm} ${args}`;
-		broadcastTerminal(`${PYTHON_COMMAND} ${algorithm} ${args}`);
+		const cmd = `source ${process.env.CONDA_SH_PATH} && conda activate modelsmith && cd ${scriptPath} && python3 ${algorithm} ${args}`;
+		broadcastTerminal(`python3 ${algorithm} ${args}`);
 
 		executeCommand(
 			cmd,
@@ -173,7 +174,7 @@ router.post('/stop-script', checkSshConnection, checkIfNoScriptRunning, (req, re
 			if (responseSent) return;
 			setScriptState(ScriptState.NOT_RUNNING);
 			setActiveScriptDetails(null);
-			broadcastTerminal('Script stopped successfully.');
+			broadcastTerminal('Script stopped successfully.', MESSAGE_TYPES.SUCCESS);
 			res.status(OK).send({ message: 'Script stopped successfully.' });
 			responseSent = true;
 		},

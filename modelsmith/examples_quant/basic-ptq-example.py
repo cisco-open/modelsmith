@@ -21,6 +21,7 @@ import torch
 import torch.nn as nn
 import torchvision
 import torchvision.transforms as transforms
+from collections import OrderedDict
 
 # Define directory paths
 script_dir = os.path.dirname(os.path.realpath(__file__))
@@ -33,8 +34,17 @@ sys.path.append(os.path.join(script_dir, '..'))
 import random
 import numpy as np
 
-from models.resnet_quant import resnet18 as ResNet18
-from models.resnet_quant import resnet50 as ResNet50
+from models.resnet_quant import (
+    resnet18,
+    resnet34,
+    resnet50,
+    resnet101,
+    resnet152,
+    resnext50_32x4d,
+    resnext101_32x8d,
+    wide_resnet50_2,
+    wide_resnet101_2
+)
 
 from utils.utils import evaluate_accuracy_quant, test
 from utils.quant import (
@@ -106,26 +116,33 @@ def prepare_data(dataset='cifar10', batch_size=128, workers=2):
         print('no corresponding datasets', flush=True)
     return trainloader, testloader
 
-def prepare_model(model_arch = 'resnet18'):
-    # Model
-    print('==> Building model..')
-    if model_arch == 'resnet18':
-        net = ResNet18()
-        net = net.to(device)
-        checkpoint_path = os.path.join(script_dir, models_checkpoints_dir, 'resnet18.pt')
-        checkpoint = torch.load(checkpoint_path)
-        from collections import OrderedDict
+def prepare_model(model_arch = 'resnet18', device='cpu'):
+    print(f'==> Building model {model_arch}...')
+
+    if model_arch in globals():
+        model_constructor = globals()[model_arch]
+    else:
+        raise ValueError(f"No such model architecture: {model_arch}")
+
+    net = model_constructor()
+    net = net.to(device)
+
+    checkpoint_path = os.path.join(script_dir, models_checkpoints_dir, f'{model_arch}.pt')
+    try:
+        checkpoint = torch.load(checkpoint_path, map_location=device)
         new_state_dict = OrderedDict()
+
         for k, v in checkpoint.items():
             name = k[7:]
             new_state_dict[name] = v
+        
         net.load_state_dict(new_state_dict)
-        # net.eval()
-    elif model_arch == 'resnet50':
-        net = ResNet50()
-        net = net.to(device)
-    else:
-        print('no such model..', flush=True)
+        print(f"Loaded checkpoint for {model_arch} from {checkpoint_path}")
+    except FileNotFoundError:
+        raise FileNotFoundError(f"No checkpoint found for {model_arch} at {checkpoint_path}. Please train the model first.")
+    except KeyError:
+        raise RuntimeError(f"Checkpoint for {model_arch} at {checkpoint_path} does not have the expected format. Please ensure the checkpoint is correct and try again.")
+    
     return net
 
 def get_calibration_samples(train_loader, num_samples):
@@ -144,8 +161,7 @@ if __name__ == '__main__':
     # general parameters for data and model
     parser.add_argument('--seed', default=1005, type=int, help='random seed for results reproduction')
     parser.add_argument('--dataset', default='cifar10', type=str, help='dataset name', choices=['cifar10', 'cifar100'])
-    parser.add_argument('--arch', default='resnet18', type=str, help='model name',
-                        choices=['resnet18', 'resnet50', 'spring_resnet50', 'mobilenetv2', 'regnetx_600m', 'regnetx_3200m', 'mnasnet'])
+    parser.add_argument('--arch', default='resnet18', type=str, help='model name')
     parser.add_argument('--batch_size', default=128, type=int, help='mini-batch size for data loader')
     parser.add_argument('--workers', default=4, type=int, help='number of workers for data loader')
 
@@ -192,7 +208,7 @@ if __name__ == '__main__':
     # build imagenet data loader
     train_loader, test_loader = prepare_data(dataset=args.dataset, batch_size=args.batch_size, workers=args.workers)
     # load model
-    cnn = prepare_model()
+    cnn = prepare_model(args.arch)
     cnn.cuda()
     cnn.eval()
 

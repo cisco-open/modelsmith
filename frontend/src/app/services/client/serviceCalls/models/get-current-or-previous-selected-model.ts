@@ -14,8 +14,10 @@
 
 //   SPDX-License-Identifier: Apache-2.0
 
-import { modelsReducer } from './models/models.reducer';
+import { ServiceCallGET } from '../service-call';
 
-export const modelCompressionReducers = {
-	models: modelsReducer
-};
+export class GetCurrentOrPreviousSelectedModel extends ServiceCallGET<string> {
+	constructor(type: string) {
+		super(`current-or-previous-selected-model/${type}`, undefined, undefined, false);
+	}
+}

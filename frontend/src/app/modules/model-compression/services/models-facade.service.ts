@@ -17,15 +17,21 @@
 import { Injectable } from '@angular/core';
 import { Action, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { AuthState } from '../../../state/core/auth';
-import { selectModels } from '../../../state/model-compression/models/models.selector';
+import { ModelDto } from '../../../services/client/models/models/models.interface-dto';
+import { selectCurrentModel, selectModelsByType } from '../../../state/core/models/models.selector';
+import { ModelsState } from '../../../state/core/models/models.state';
+import { AlgorithmType } from '../models/enums/algorithms.enum';
 
 @Injectable()
 export class ModelsFacadeService {
-	models$: Observable<string[] | undefined>;
+	currentModel$: Observable<string | undefined>;
 
-	constructor(private store: Store<AuthState>) {
-		this.models$ = this.store.select(selectModels);
+	constructor(private store: Store<ModelsState>) {
+		this.currentModel$ = this.store.select(selectCurrentModel);
+	}
+
+	getModelsByType(algorithmType: AlgorithmType): Observable<ModelDto[] | undefined> {
+		return this.store.select(selectModelsByType(algorithmType));
 	}
 
 	dispatch(action: Action) {

@@ -14,9 +14,10 @@
 
 //   SPDX-License-Identifier: Apache-2.0
 
+import { TerminalMessage } from '../../../../modules/core/models/interfaces/terminal-message.interface';
 import { ServiceCallGET } from '../service-call';
 
-export class GetLatestMessages extends ServiceCallGET<string[]> {
+export class GetLatestMessages extends ServiceCallGET<TerminalMessage[]> {
 	constructor() {
 		super(`latest-messages`, undefined, undefined, false);
 	}

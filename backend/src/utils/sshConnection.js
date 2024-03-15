@@ -121,13 +121,20 @@ class SSHConnection {
 				return;
 			}
 
+			let stderrData = '';
+
 			stream.on('data', (data) => {
 				onData(data.toString());
 			});
 
+			stream.stderr.on('data', (data) => {
+				stderrData += data.toString();
+			});
+
 			stream.on('close', (code) => {
 				if (code !== 0 && code !== null) {
-					onError(new Error(`Process exited with code ${code}`));
+					const errorMessage = `Process exited with code ${code}` + (stderrData ? `: ${stderrData}` : '');
+					onError(errorMessage);
 				} else {
 					onEnd();
 				}

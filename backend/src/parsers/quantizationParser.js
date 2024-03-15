@@ -86,6 +86,13 @@ class QuantizationParser {
 		if (!inTestingPhase) {
 			this.currentReconstruction.totalSteps = totalSteps;
 
+			if (currentStep === 1) {
+				const reconstructionIndex = this.reconstructions.indexOf(this.currentReconstruction);
+				broadcastChart(`${MessageTopics.CHARTS_PREFIX}${ChartsEventsTopics.ENHANCE_SINGLE_PHASE_X_AXIS}`, {
+					reconstructionIndex
+				});
+			}
+
 			const stepInfo = { step: currentStep, loss };
 			this.currentReconstruction.steps.push(stepInfo);
 

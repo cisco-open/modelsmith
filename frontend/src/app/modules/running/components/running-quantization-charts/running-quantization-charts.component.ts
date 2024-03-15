@@ -20,9 +20,11 @@ import {
 	ChartDatasets,
 	QuantizationProgress
 } from '../../../../services/client/models/charts/chart-data.interface-dto';
+import { ChartConfigurationSettingsDictionary } from '../../../../services/client/models/charts/chart-settings.interface-dto';
 import { ChartActions } from '../../../../state/core/charts';
 import { ChartsFacadeService } from '../../../core/services/charts-facade.service';
 import { ChartColorEnum } from '../../../shared/models/enums/chart-color.enum';
+import { ChartTypeEnum } from '../../../shared/models/enums/chart-type.enum';
 import { RealtimeUpdateMetricEnum } from '../../../shared/models/enums/realtime-update-metric.enum';
 import {
 	ChartDataStructure,
@@ -70,8 +72,6 @@ export class RunningQuantizationChartsComponent {
 	accuracyChartDisplaySettings: ChartDisplaySettings = {
 		yAxisMaximumValue: 100,
 		yAxisMinimumValue: 0,
-		xAxisDataPointsCount: 10,
-		datasetLabelPrefix: 'Reconstruction:',
 		xAxisLabelPrefix: 'Recon.',
 		isDatasetLabelVisible: false,
 		isXAxisVisible: true,
@@ -80,7 +80,8 @@ export class RunningQuantizationChartsComponent {
 		zoomRangeLimits: {
 			max: 100
 		},
-		datasetColorSettingsKey: ChartColorEnum.GREEN
+		datasetColorSettingsKey: ChartColorEnum.GREEN,
+		isXAxisDynamic: true
 	};
 
 	accuracyTestingChartDisplaySettings: ChartDisplaySettings = {
@@ -100,7 +101,31 @@ export class RunningQuantizationChartsComponent {
 	constructor(private chartsFacadeService: ChartsFacadeService) {}
 
 	ngOnInit(): void {
+		this.loadChartSettings();
 		this.loadLatestChartsData();
+	}
+
+	private loadChartSettings() {
+		this.chartsFacadeService.settings$
+			.pipe(skip(1), take(1))
+			.subscribe((settings: ChartConfigurationSettingsDictionary | undefined) => {
+				if (!settings) {
+					return;
+				}
+
+				this.accuracyChartDisplaySettings = {
+					...this.accuracyChartDisplaySettings,
+					xAxisDataPointsCount: settings[ChartTypeEnum.ACCURACY_QUANTIZATION]?.reconstructions
+				};
+
+				this.chartsFacadeService.dispatch(ChartActions.getCurrentQuantizationChartData());
+			});
+
+		this.chartsFacadeService.dispatch(
+			ChartActions.getChartConfigurationSettings({
+				chartTypes: [ChartTypeEnum.ACCURACY_QUANTIZATION]
+			})
+		);
 	}
 
 	private loadLatestChartsData(): void {
@@ -111,8 +136,6 @@ export class RunningQuantizationChartsComponent {
 				take(1)
 			)
 			.subscribe((data) => this.processChartData(data));
-
-		this.chartsFacadeService.dispatch(ChartActions.getCurrentQuantizationChartData());
 	}
 
 	private processChartData(data: QuantizationProgress): void {

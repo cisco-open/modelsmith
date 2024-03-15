@@ -49,13 +49,28 @@ function executeCommand(cmd, onData, onEnd = () => {}, onError = () => {}) {
 	if (process.env.CONNECTION_TYPE === CONNECTION_TYPE.LOCAL) {
 		// RUN ON LOCAL MACHINE
 		const child = exec(cmd);
-		child.stdout.on('data', onData);
+		let stderrData = '';
+
+		child.stdout.on('data', (data) => {
+			onData(data.toString());
+		});
+
+		child.stderr.on('data', (data) => {
+			stderrData += data.toString();
+		});
+
 		child.on('close', (code) => {
 			if (code !== 0) {
-				onError(new Error(`Process exited with code ${code}`));
+				const errorMessage = `Process exited with code ${code}` + (stderrData ? `: ${stderrData}` : '');
+				onError(errorMessage);
 			} else {
 				onEnd();
 			}
+		});
+
+		child.on('error', (err) => {
+			// Handling process spawning errors
+			onError(`Failed to start subprocess: ${err.message}`);
 		});
 	} else {
 		// RUN ON VM

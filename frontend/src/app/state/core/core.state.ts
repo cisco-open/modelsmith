@@ -18,6 +18,7 @@ import { AuthState } from './auth';
 import { ChartsState } from './charts';
 import { ConfigsState } from './configs';
 import { FileState } from './file';
+import { ModelsState } from './models/models.state';
 import { ParametersState } from './parameters';
 import { ScriptState } from './script';
 import { StatisticsState } from './statistics';
@@ -32,4 +33,5 @@ export interface CoreState {
 	parameters: ParametersState;
 	terminal: TerminalState;
 	statistics: StatisticsState;
+	models: ModelsState;
 }

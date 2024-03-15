@@ -14,11 +14,10 @@
 
 //   SPDX-License-Identifier: Apache-2.0
 
-import { ScriptStatusDto } from '../../models/script/script-status.interface-dto';
 import { ServiceCallGET } from '../service-call';
 
-export class GetModels extends ServiceCallGET<ScriptStatusDto> {
-	constructor() {
-		super(`model-files`, undefined, undefined, false);
+export class GetModelsList extends ServiceCallGET<string[]> {
+	constructor(type: string) {
+		super(`models-list/${type}`, undefined, undefined, false);
 	}
 }

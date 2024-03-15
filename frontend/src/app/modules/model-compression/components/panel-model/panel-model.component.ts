@@ -18,11 +18,14 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { AbstractControl, ControlContainer, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Observable } from 'rxjs';
-import { map, startWith } from 'rxjs/operators';
-import { ModelActions } from '../../../../state/model-compression/models/models.actions';
+import { filter, map, startWith } from 'rxjs/operators';
+import { ModelDto } from '../../../../services/client/models/models/models.interface-dto';
+import { ModelsActions } from '../../../../state/core/models/models.actions';
 import { FileService } from '../../../core/services/file.service';
 import { ScriptFacadeService } from '../../../core/services/script-facade.service';
+import { isEmptyObject } from '../../../core/utils/core.utils';
 import { CUSTOM_MODEL } from '../../models/constants/supported-models.constants';
+import { AlgorithmType } from '../../models/enums/algorithms.enum';
 import { isScriptActive } from '../../models/enums/script-status.enum';
 import { ModelsFacadeService } from '../../services/models-facade.service';
 
@@ -39,9 +42,9 @@ export class PanelModelComponent implements OnInit {
 	isCustomModelSelected: boolean = false;
 
 	searchModel = new FormControl();
-	filteredModels!: Observable<string[]>;
+	filteredModels!: Observable<ModelDto[]>;
 
-	models: string[] = [];
+	models: ModelDto[] = [];
 	customModel = CUSTOM_MODEL;
 
 	readonly MODEL_CONTROL_NAME: string = 'model';
@@ -60,27 +63,46 @@ export class PanelModelComponent implements OnInit {
 
 	ngOnInit() {
 		this.initializeForm();
-		this.loadModelsAndListenToChanges();
+		this.loadInitialModel();
+		this.fetchModels(AlgorithmType.QUANTIZATION);
 
 		this.listenToModelChanges();
 		this.listenToScriptStateChanges();
 
 		this.filteredModels = this.searchModel.valueChanges.pipe(
+			untilDestroyed(this),
 			startWith(''),
 			map((value) => this.filterModels(value))
 		);
 	}
 
-	private loadModelsAndListenToChanges() {
-		this.modelsFacadeService.dispatch(ModelActions.loadModels());
-
-		this.modelsFacadeService.models$.pipe(untilDestroyed(this)).subscribe((models: string[] | undefined) => {
-			if (!models?.length) {
+	private loadInitialModel() {
+		this.modelsFacadeService.currentModel$.pipe(untilDestroyed(this)).subscribe((model: string | undefined) => {
+			if (isEmptyObject(model)) {
 				return;
 			}
-			this.models = models;
-			this.searchModel.setValue('');
+
+			this.modelControl?.patchValue(model);
 		});
+
+		this.modelsFacadeService.dispatch(
+			ModelsActions.getCurrentOrPreviousSelectedModel({ algorithmType: AlgorithmType.QUANTIZATION })
+		);
+	}
+
+	private fetchModels(algorithmType: AlgorithmType) {
+		this.modelsFacadeService
+			.getModelsByType(algorithmType)
+			.pipe(
+				filter((models): models is ModelDto[] => !!models && models.length > 0),
+				untilDestroyed(this)
+			)
+			.subscribe((models: ModelDto[]) => {
+				this.models = models;
+				this.searchModel.setValue('');
+			});
+
+		this.modelsFacadeService.dispatch(ModelsActions.getModelsList({ algorithmType: AlgorithmType.QUANTIZATION }));
 	}
 
 	private initializeForm(): void {
@@ -105,16 +127,15 @@ export class PanelModelComponent implements OnInit {
 	private listenToScriptStateChanges(): void {
 		this.scriptFacadeService.scriptStatus$.pipe(untilDestroyed(this)).subscribe((state) => {
 			isScriptActive(state) ? this.form.disable() : this.form.enable();
-			this.modelControl?.patchValue('resnet18');
 		});
 	}
 
-	private filterModels(value: string): string[] {
+	private filterModels(value: string): ModelDto[] {
 		const filterValue = value.toLowerCase();
-		return this.models.filter((model) => model.toLowerCase().includes(filterValue));
+		return this.models.filter((model) => model.name.toLowerCase().includes(filterValue));
 	}
 
-	trackByModel(_: number, model: string): any {
-		return model;
+	trackByModel(_: number, model: ModelDto): any {
+		return model.name;
 	}
 }

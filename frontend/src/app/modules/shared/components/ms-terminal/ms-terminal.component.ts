@@ -20,6 +20,8 @@ import { skip, take } from 'rxjs';
 import { Terminal } from 'xterm';
 import { FitAddon } from 'xterm-addon-fit';
 import { TerminalActions } from '../../../../state/core/terminal/terminal.actions';
+import { NotificationTypes } from '../../../core/models/enums/snackbar-types.enum';
+import { TerminalMessage } from '../../../core/models/interfaces/terminal-message.interface';
 import { TerminalFacadeService } from '../../../core/services/terminal-facade.service';
 import { WebsocketService } from '../../../core/services/websocket.service';
 
@@ -33,7 +35,7 @@ import { WebsocketService } from '../../../core/services/websocket.service';
 export class MsTerminalComponent implements OnInit, AfterViewInit, OnDestroy {
 	@ViewChild('terminal', { static: true }) terminalDiv!: ElementRef;
 
-	private messagesBuffer: string[] = [];
+	private messagesBuffer: TerminalMessage[] = [];
 	private displayWebSocketMessages = false;
 
 	private terminal: Terminal = new Terminal({
@@ -51,9 +53,12 @@ export class MsTerminalComponent implements OnInit, AfterViewInit, OnDestroy {
 		private websocketService: WebsocketService,
 		private terminalFacadeService: TerminalFacadeService
 	) {
-		this.websocketService.terminalMessages$.pipe(untilDestroyed(this)).subscribe((message) => {
+		this.websocketService.terminalMessages$.pipe(untilDestroyed(this)).subscribe((message: TerminalMessage) => {
+			const formattedMessage = this.formatMessageByType(message);
 			if (this.displayWebSocketMessages) {
-				this.terminal.writeln(message);
+				formattedMessage.split('\n').forEach((line) => {
+					this.terminal.writeln(line);
+				});
 			} else {
 				this.messagesBuffer.push(message);
 			}
@@ -65,21 +70,53 @@ export class MsTerminalComponent implements OnInit, AfterViewInit, OnDestroy {
 		this.loadLatestMessages();
 	}
 
-	private loadLatestMessages() {
-		this.terminalFacadeService.messages$.pipe(skip(1), take(1)).subscribe((messages) => {
-			messages.forEach((message) => this.terminal.writeln(message));
-			this.messagesBuffer.forEach((bufferedMessage) => this.terminal.writeln(bufferedMessage));
-			this.messagesBuffer = []; // Clear the buffer
-			this.displayWebSocketMessages = true; // Resume real-time WebSocket messages
-		});
-		this.terminalFacadeService.dispatch(TerminalActions.getLatestMessages());
-	}
-
 	ngAfterViewInit(): void {
 		setTimeout(() => {
 			this.adjustHeightToParent();
 		}, 0);
 		this.fitTerminalToContainer();
+	}
+
+	private loadLatestMessages() {
+		this.terminalFacadeService.messages$.pipe(skip(1), take(1)).subscribe((messages: TerminalMessage[]) => {
+			messages.forEach((messageObj: TerminalMessage) => {
+				const formattedMessage = this.formatMessageByType(messageObj);
+				formattedMessage.split('\n').forEach((line) => {
+					this.terminal.writeln(line);
+				});
+			});
+
+			this.messagesBuffer.forEach((bufferedMessageObj: TerminalMessage) => {
+				const formattedMessage = this.formatMessageByType(bufferedMessageObj);
+				formattedMessage.split('\n').forEach((line) => {
+					this.terminal.writeln(line);
+				});
+			});
+			this.messagesBuffer = [];
+			this.displayWebSocketMessages = true;
+		});
+		this.terminalFacadeService.dispatch(TerminalActions.getLatestMessages());
+	}
+
+	private formatMessageByType(message: TerminalMessage): string {
+		let colorCode = '';
+		switch (message.type) {
+			case NotificationTypes.ERROR:
+				colorCode = '\x1b[38;5;124m';
+				break;
+			case NotificationTypes.SUCCESS:
+				colorCode = '\x1b[38;5;22m';
+				break;
+			case NotificationTypes.WARNING:
+				colorCode = '\x1b[38;5;136m';
+				break;
+			case NotificationTypes.INFO:
+			default:
+				colorCode = '\x1b[38;5;0m';
+				break;
+		}
+
+		return `${colorCode}${message.data}\x1b[0m`;
 	}
 
 	private initializeTerminal(): void {

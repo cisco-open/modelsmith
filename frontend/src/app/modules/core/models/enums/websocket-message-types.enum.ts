@@ -23,5 +23,6 @@ export enum WebsocketMessageTopics {
 
 export enum ChartWebsocketMessageTypes {
 	UPDATE_TESTING = 'chart_updateTesting',
-	UPDATE_LATEST_VALUE = 'chart_updateLatestValue'
+	UPDATE_LATEST_VALUE = 'chart_updateLatestValue',
+	ENHANCE_SINGLE_PHASE_X_AXIS = 'chart_enhanceSinglePhaseXAxis'
 }

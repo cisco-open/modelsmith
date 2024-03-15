@@ -16,7 +16,7 @@
 
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { ScriptConfigsDto } from '../../../../services/client/models/script/script-configs.interface-dto';
 import { ScriptActions } from '../../../../state/core/script/script.actions';
@@ -45,8 +45,7 @@ export class MachineUnlearningComponent implements OnInit {
 	constructor(
 		private fb: FormBuilder,
 		private scriptFacadeService: ScriptFacadeService,
-		private router: Router,
-		private route: ActivatedRoute
+		private router: Router
 	) {}
 
 	ngOnInit() {
