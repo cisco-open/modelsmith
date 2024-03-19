@@ -21,11 +21,11 @@
 		<ng-container [formGroup]="form">
 			<ms-panel-algorithm #panelAlgorithm formGroupName="algorithm"></ms-panel-algorithm>
 
-			<ms-panel-model [form]="modelFormGroup" [algorithm]="selectedAlgorithm"></ms-panel-model>
+			<ms-panel-model formGroupName="model" [algorithm]="selectedAlgorithm"></ms-panel-model>
 
 			<ms-panel-parameters
 				#panelParameters
-				formArrayName="params"
+				formGroupName="params"
 				[algorithm]="selectedAlgorithm"></ms-panel-parameters>
 		</ng-container>
 

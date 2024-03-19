@@ -52,10 +52,6 @@ export class ProjectSettingsComponent implements OnInit {
 
 	selectedAlgorithm?: AlgorithmKey;
 
-	get modelFormGroup(): FormGroup {
-		return this.form.get('model') as FormGroup;
-	}
-
 	constructor(
 		private scriptFacadeService: ScriptFacadeService,
 		private fb: FormBuilder,

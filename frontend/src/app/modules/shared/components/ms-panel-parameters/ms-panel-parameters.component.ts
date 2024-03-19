@@ -81,18 +81,19 @@ export class MsPanelParametersComponent implements OnInit {
 		}
 	}
 
+	form!: FormGroup;
+
 	isScriptActive: boolean = false;
 	parameters: ParametersDto[] = [];
-	form!: FormGroup;
 
 	get parametersArray(): FormArray {
 		return this.form.get('parametersArray') as FormArray;
 	}
 
 	constructor(
-		private parametersFacadeService: ParametersFacadeService,
-		private controlContainer: ControlContainer,
 		private fb: FormBuilder,
+		private controlContainer: ControlContainer,
+		private parametersFacadeService: ParametersFacadeService,
 		private scriptFacadeService: ScriptFacadeService
 	) {}
 
@@ -106,6 +107,7 @@ export class MsPanelParametersComponent implements OnInit {
 		this.form = this.fb.group({
 			parametersArray: this.fb.array([])
 		});
+
 		(this.controlContainer?.control?.parent as FormGroup)?.setControl(this.controlContainer.name as string, this.form);
 	}
 
