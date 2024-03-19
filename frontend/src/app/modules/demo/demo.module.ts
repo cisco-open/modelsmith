@@ -17,6 +17,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { MsCardSelectorComponent } from '../shared/components/ms-card-selector/ms-card-selector.component';
 import { SharedModule } from '../shared/shared.module';
 import { ButtonsDemoComponent } from './components/buttons-demo/buttons-demo.component';
 import { CardsDemoComponent } from './components/cards-demo/cards-demo.component';
@@ -47,6 +48,6 @@ import { DemoRoutingModule } from './demo-routing.module';
 		MenuDemoComponent,
 		NotificationsDemoComponent
 	],
-	imports: [RouterModule, CommonModule, SharedModule, DemoRoutingModule]
+	imports: [RouterModule, CommonModule, SharedModule, DemoRoutingModule, MsCardSelectorComponent]
 })
 export class DemoModule {}

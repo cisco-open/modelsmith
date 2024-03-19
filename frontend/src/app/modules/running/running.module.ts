@@ -16,6 +16,7 @@
 
 import { CommonModule } from '@angular/common';
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
+import { MsEmptyStateComponent } from '../shared/components/ms-empty-state/ms-empty-state.component';
 import { SharedModule } from '../shared/shared.module';
 import { RunningAnimationComponent } from './components/running-animation/running-animation.component';
 import { RunningMachineUnlearningChartsComponent } from './components/running-machine-unlearning-charts/running-machine-unlearning-charts.component';
@@ -35,6 +36,6 @@ import { RunningRoutingModule } from './running-routing.module';
 		RunningAnimationComponent,
 		RunningStatisticsComponent
 	],
-	imports: [RunningRoutingModule, CommonModule, SharedModule]
+	imports: [RunningRoutingModule, CommonModule, SharedModule, MsEmptyStateComponent]
 })
 export class RunningModule {}

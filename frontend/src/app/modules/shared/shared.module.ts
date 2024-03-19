@@ -25,8 +25,6 @@ import {
 	NgxMatSelectSearchModule
 } from 'ngx-mat-select-search';
 import { MsBannerComponent } from './components/ms-banner/ms-banner.component';
-import { MsEmptyStateComponent } from './components/ms-empty-state/ms-empty-state.component';
-import { MsFileUploadComponent } from './components/ms-file-upload/ms-file-upload.component';
 import { MsFooterComponent } from './components/ms-footer/ms-footer.component';
 import { MsHeaderComponent } from './components/ms-header/ms-header.component';
 import { MsLineChartComponent } from './components/ms-line-chart/ms-line-chart.component';
@@ -41,6 +39,7 @@ import { ErrorDisplayDirective } from './forms/directives/error-display.directiv
 import { MaterialModule } from './modules/material.module';
 
 const COMPONENTS = [
+	MsBannerComponent,
 	MsErrorMessageComponent,
 	MsFooterComponent,
 	MsHeaderComponent,
@@ -48,11 +47,8 @@ const COMPONENTS = [
 	MsMainLayoutComponent,
 	MsSidenavComponent,
 	MsSidenavItemComponent,
-	MsBannerComponent,
-	MsFileUploadComponent,
 	MsLineChartComponent,
-	MsPanelParametersComponent,
-	MsEmptyStateComponent
+	MsPanelParametersComponent
 ];
 
 const DIRECTIVES = [ErrorDisplayDirective];

@@ -19,7 +19,8 @@ import { Component, Input } from '@angular/core';
 @Component({
 	selector: 'ms-empty-state',
 	templateUrl: './ms-empty-state.component.html',
-	styleUrls: ['./ms-empty-state.component.scss']
+	styleUrls: ['./ms-empty-state.component.scss'],
+	standalone: true
 })
 export class MsEmptyStateComponent {
 	@Input() title: string = '';
