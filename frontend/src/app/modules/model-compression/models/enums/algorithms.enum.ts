@@ -52,7 +52,7 @@ export enum TrainAlgorithmsEnum {
 	MUT = 'MUT'
 }
 
-export function determineAlgorithmType(algValue: string): AlgorithmType | null {
+export function determineAlgorithmType(algValue: AlgorithmKey): AlgorithmType | null {
 	if (Object.values(PruningAlgorithmsEnum).includes(algValue as PruningAlgorithmsEnum)) {
 		return AlgorithmType.PRUNING;
 	} else if (Object.values(QuantizationAlgorithmsEnum).includes(algValue as QuantizationAlgorithmsEnum)) {

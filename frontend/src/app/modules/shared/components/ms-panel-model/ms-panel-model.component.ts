@@ -14,38 +14,45 @@
 
 //   SPDX-License-Identifier: Apache-2.0
 
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { AbstractControl, ControlContainer, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Observable } from 'rxjs';
 import { filter, map, startWith } from 'rxjs/operators';
 import { ModelDto } from '../../../../services/client/models/models/models.interface-dto';
 import { ModelsActions } from '../../../../state/core/models/models.actions';
-import { FileService } from '../../../core/services/file.service';
+import { ModelsFacadeService } from '../../../core/services/models-facade.service';
 import { ScriptFacadeService } from '../../../core/services/script-facade.service';
 import { isEmptyObject } from '../../../core/utils/core.utils';
-import { CUSTOM_MODEL } from '../../models/constants/supported-models.constants';
-import { AlgorithmType } from '../../models/enums/algorithms.enum';
-import { isScriptActive } from '../../models/enums/script-status.enum';
-import { ModelsFacadeService } from '../../services/models-facade.service';
+import {
+	AlgorithmKey,
+	AlgorithmType,
+	determineAlgorithmType
+} from '../../../model-compression/models/enums/algorithms.enum';
+import { isScriptActive } from '../../../model-compression/models/enums/script-status.enum';
 
 @UntilDestroy()
 @Component({
 	selector: 'ms-panel-model',
-	templateUrl: './panel-model.component.html',
-	styleUrls: ['./panel-model.component.scss'],
+	templateUrl: './ms-panel-model.component.html',
+	styleUrls: ['./ms-panel-model.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class PanelModelComponent implements OnInit {
-	form!: FormGroup;
+export class MsPanelModelComponent implements OnInit, OnChanges {
+	@Input() algorithm?: AlgorithmKey;
 
-	isCustomModelSelected: boolean = false;
+	ngOnChanges(changes: SimpleChanges) {
+		if (changes['algorithm'] && changes['algorithm'].currentValue) {
+			this.configureModels(changes['algorithm'].currentValue as AlgorithmKey);
+		}
+	}
+
+	form!: FormGroup;
 
 	searchModel = new FormControl();
 	filteredModels!: Observable<ModelDto[]>;
 
 	models: ModelDto[] = [];
-	customModel = CUSTOM_MODEL;
 
 	readonly MODEL_CONTROL_NAME: string = 'model';
 
@@ -56,27 +63,28 @@ export class PanelModelComponent implements OnInit {
 	constructor(
 		private fb: FormBuilder,
 		private controlContainer: ControlContainer,
-		private fileService: FileService,
 		private modelsFacadeService: ModelsFacadeService,
 		private scriptFacadeService: ScriptFacadeService
 	) {}
 
 	ngOnInit() {
 		this.initializeForm();
-		this.loadInitialModel();
-		this.fetchModels(AlgorithmType.QUANTIZATION);
 
-		this.listenToModelChanges();
 		this.listenToScriptStateChanges();
-
-		this.filteredModels = this.searchModel.valueChanges.pipe(
-			untilDestroyed(this),
-			startWith(''),
-			map((value) => this.filterModels(value))
-		);
+		this.listenToSearchModelValueChanges();
 	}
 
-	private loadInitialModel() {
+	private configureModels(algorithm: AlgorithmKey) {
+		const algorithmType = determineAlgorithmType(algorithm);
+		if (!algorithmType) {
+			return;
+		}
+
+		this.fetchModels(algorithmType);
+		this.loadInitialModel(algorithmType);
+	}
+
+	private loadInitialModel(algorithmType: AlgorithmType) {
 		this.modelsFacadeService.currentModel$.pipe(untilDestroyed(this)).subscribe((model: string | undefined) => {
 			if (isEmptyObject(model)) {
 				return;
@@ -85,9 +93,7 @@ export class PanelModelComponent implements OnInit {
 			this.modelControl?.patchValue(model);
 		});
 
-		this.modelsFacadeService.dispatch(
-			ModelsActions.getCurrentOrPreviousSelectedModel({ algorithmType: AlgorithmType.QUANTIZATION })
-		);
+		this.modelsFacadeService.dispatch(ModelsActions.getCurrentOrPreviousSelectedModel({ algorithmType }));
 	}
 
 	private fetchModels(algorithmType: AlgorithmType) {
@@ -102,7 +108,7 @@ export class PanelModelComponent implements OnInit {
 				this.searchModel.setValue('');
 			});
 
-		this.modelsFacadeService.dispatch(ModelsActions.getModelsList({ algorithmType: AlgorithmType.QUANTIZATION }));
+		this.modelsFacadeService.dispatch(ModelsActions.getModelsList({ algorithmType }));
 	}
 
 	private initializeForm(): void {
@@ -113,21 +119,18 @@ export class PanelModelComponent implements OnInit {
 		(this.controlContainer?.control?.parent as FormGroup)?.setControl(this.controlContainer.name as string, this.form);
 	}
 
-	listenToModelChanges(): void {
-		this.modelControl?.valueChanges.pipe(untilDestroyed(this)).subscribe((selectedModelFileName) => {
-			if (selectedModelFileName === CUSTOM_MODEL) {
-				this.fileService.file = null;
-				this.isCustomModelSelected = true;
-			} else {
-				this.isCustomModelSelected = false;
-			}
-		});
-	}
-
 	private listenToScriptStateChanges(): void {
 		this.scriptFacadeService.scriptStatus$.pipe(untilDestroyed(this)).subscribe((state) => {
 			isScriptActive(state) ? this.form.disable() : this.form.enable();
 		});
+	}
+
+	private listenToSearchModelValueChanges() {
+		this.filteredModels = this.searchModel.valueChanges.pipe(
+			untilDestroyed(this),
+			startWith(''),
+			map((value) => this.filterModels(value))
+		);
 	}
 
 	private filterModels(value: string): ModelDto[] {

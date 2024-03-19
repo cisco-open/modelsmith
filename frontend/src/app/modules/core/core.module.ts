@@ -51,6 +51,7 @@ import {
 	TerminalFacadeService,
 	WebsocketService
 } from './services';
+import { ModelsFacadeService } from './services/models-facade.service';
 
 @NgModule({
 	imports: [
@@ -86,6 +87,7 @@ import {
 		ParametersFacadeService,
 		TerminalFacadeService,
 		StatisticsFacadeService,
+		ModelsFacadeService,
 		{
 			provide: CLIENT,
 			useFactory: (httpClient: HttpClient) => {

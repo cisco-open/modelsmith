@@ -37,6 +37,8 @@ router.get('/current-or-previous-selected-model/:type', (req, res) => {
 	let defaultValue = '';
 	if (type === ALGORITHM_TYPES.QUANTIZATION) {
 		defaultValue = 'resnet18';
+	} else if (type === ALGORITHM_TYPES.PRUNING) {
+		defaultValue = 'ResNet18';
 	}
 
 	const { params } = script || { params: { arch: defaultValue } };

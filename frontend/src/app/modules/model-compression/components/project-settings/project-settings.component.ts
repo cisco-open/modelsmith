@@ -14,22 +14,21 @@
 
 //   SPDX-License-Identifier: Apache-2.0
 
-import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { debounceTime, distinctUntilChanged, filter, map } from 'rxjs';
 import { ScriptConfigsDto } from '../../../../services/client/models/script/script-configs.interface-dto';
-import { FileActions } from '../../../../state/core/file/file.actions';
-import { ScriptActions } from '../../../../state/core/script/script.actions';
+import { ScriptActions } from '../../../../state/core/script';
 import { RoutesList } from '../../../core/models/enums/routes-list.enum';
 import { BannerService } from '../../../core/services/banner.service';
-import { FileFacadeService } from '../../../core/services/file-facade.service';
 import { FileService } from '../../../core/services/file.service';
 import { ScriptFacadeService } from '../../../core/services/script-facade.service';
+import { isEmptyObject } from '../../../core/utils/core.utils';
 import { MsPanelParametersComponent } from '../../../shared/components/ms-panel-parameters/ms-panel-parameters.component';
 import { CUSTOM_MODEL } from '../../models/constants/supported-models.constants';
-import { AlgorithmType, determineAlgorithmType } from '../../models/enums/algorithms.enum';
+import { AlgorithmKey, AlgorithmType } from '../../models/enums/algorithms.enum';
 import { isScriptActive } from '../../models/enums/script-status.enum';
 import { sanitizeFilename } from '../../utils/sanitize-file-name.utils';
 import { PanelAlgorithmComponent } from '../panel-algorithm/panel-algorithm.component';
@@ -43,20 +42,22 @@ import { PanelAlgorithmComponent } from '../panel-algorithm/panel-algorithm.comp
 export class ProjectSettingsComponent implements OnInit {
 	form!: FormGroup;
 
+	readonly AlgorithmType: typeof AlgorithmType = AlgorithmType;
+
 	@ViewChild('panelParameters', { static: false }) panelParametersComponent!: MsPanelParametersComponent;
 	@ViewChild('algorithmPanel', { static: false }) algorithmParametersComponent!: PanelAlgorithmComponent;
 
 	isScriptActive: boolean = false;
 	isQuantAlgorithmSelected: boolean = false;
 
+	selectedAlgorithm?: AlgorithmKey;
+
 	constructor(
 		private scriptFacadeService: ScriptFacadeService,
 		private fb: FormBuilder,
 		private fileService: FileService,
-		private fileFacadeService: FileFacadeService,
 		private snackbarService: BannerService,
-		private router: Router,
-		private cdr: ChangeDetectorRef
+		private router: Router
 	) {}
 
 	ngOnInit() {
@@ -75,8 +76,7 @@ export class ProjectSettingsComponent implements OnInit {
 				untilDestroyed(this)
 			)
 			.subscribe((algValue) => {
-				this.isQuantAlgorithmSelected = determineAlgorithmType(algValue) === AlgorithmType.QUANTIZATION;
-				this.cdr.detectChanges();
+				this.selectedAlgorithm = algValue;
 			});
 	}
 
@@ -101,14 +101,11 @@ export class ProjectSettingsComponent implements OnInit {
 	}
 
 	submit() {
-		if (this.isQuantAlgorithmSelected) {
-			this.handleQuantizationCase();
-		} else {
-			this.handlePruningCase();
+		if (isEmptyObject(this.selectedAlgorithm)) {
+			this.snackbarService.showError('Select an algorithm before running a script.');
+			return;
 		}
-	}
 
-	handleQuantizationCase() {
 		const { algorithm, model: modelPanel } = this.form.getRawValue();
 		const { model } = modelPanel;
 
@@ -125,21 +122,6 @@ export class ProjectSettingsComponent implements OnInit {
 				...this.panelParametersComponent.parametersFormatted,
 				arch: modelName
 			}
-		};
-
-		if (model === CUSTOM_MODEL) {
-			this.fileFacadeService.dispatch(FileActions.uploadFileAndCallScript({ file: this.fileService.file, configs }));
-		} else {
-			this.scriptFacadeService.dispatch(ScriptActions.callScript({ configs }));
-		}
-	}
-
-	handlePruningCase() {
-		const { algorithm } = this.form.getRawValue();
-
-		const configs: ScriptConfigsDto = {
-			...algorithm,
-			params: this.panelParametersComponent.parametersFormatted
 		};
 
 		this.scriptFacadeService.dispatch(ScriptActions.callScript({ configs }));

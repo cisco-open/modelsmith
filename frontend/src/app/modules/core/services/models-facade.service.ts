@@ -20,7 +20,7 @@ import { Observable } from 'rxjs';
 import { ModelDto } from '../../../services/client/models/models/models.interface-dto';
 import { selectCurrentModel, selectModelsByType } from '../../../state/core/models/models.selector';
 import { ModelsState } from '../../../state/core/models/models.state';
-import { AlgorithmType } from '../models/enums/algorithms.enum';
+import { AlgorithmType } from '../../model-compression/models/enums/algorithms.enum';
 
 @Injectable()
 export class ModelsFacadeService {

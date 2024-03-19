@@ -31,6 +31,7 @@ import { MsPanelParametersComponent } from './components/ms-panel-parameters/ms-
 import { MsSidenavItemComponent } from './components/ms-sidenav/components/ms-sidenav-item/ms-sidenav-item.component';
 import { MsSidenavComponent } from './components/ms-sidenav/ms-sidenav.component';
 import { MsUserNavigationComponent } from './components/ms-user-navigation/ms-user-navigation.component';
+import { MsPanelModelComponent } from './components/ms-panel-model/ms-panel-model.component';
 import { MaterialModule } from './modules/material.module';
 import { MsFormsModule } from './modules/ms-forms/ms-forms.module';
 
@@ -42,7 +43,8 @@ const COMPONENTS = [
 	MsMainLayoutComponent,
 	MsSidenavComponent,
 	MsSidenavItemComponent,
-	MsPanelParametersComponent
+	MsPanelParametersComponent,
+	MsPanelModelComponent
 ];
 
 @NgModule({

@@ -21,9 +21,7 @@
 		<ng-container [formGroup]="form">
 			<ms-panel-algorithm #panelAlgorithm formGroupName="algorithm"></ms-panel-algorithm>
 
-			<ng-container *ngIf="isQuantAlgorithmSelected">
-				<ms-panel-model formGroupName="model"></ms-panel-model>
-			</ng-container>
+			<ms-panel-model formGroupName="model" [algorithm]="selectedAlgorithm"></ms-panel-model>
 
 			<ms-panel-parameters #panelParameters formArrayName="params"></ms-panel-parameters>
 		</ng-container>

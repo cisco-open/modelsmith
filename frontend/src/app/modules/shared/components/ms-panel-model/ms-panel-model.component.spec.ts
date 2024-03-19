@@ -16,17 +16,17 @@
 
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PanelModelComponent } from './panel-model.component';
+import { MsPanelModelComponent } from './ms-ms-panel-model.component';
 
-describe('PanelModelComponent', () => {
-	let component: PanelModelComponent;
-	let fixture: ComponentFixture<PanelModelComponent>;
+describe('MsPanelModelComponent', () => {
+	let component: MsPanelModelComponent;
+	let fixture: ComponentFixture<MsPanelModelComponent>;
 
 	beforeEach(() => {
 		TestBed.configureTestingModule({
-			declarations: [PanelModelComponent]
+			declarations: [MsPanelModelComponent]
 		});
-		fixture = TestBed.createComponent(PanelModelComponent);
+		fixture = TestBed.createComponent(MsPanelModelComponent);
 		component = fixture.componentInstance;
 		fixture.detectChanges();
 	});
