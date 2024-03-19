@@ -12,7 +12,17 @@ const QUANTIZATION_MODELS = [
 	'wide_resnet101_2'
 ];
 
-const PRUNING_MODELS = [];
+const PRUNING_MODELS = [
+	'ResNet18',
+	'ResNet34',
+	'ResNet50',
+	'ResNet101',
+	'ResNet152',
+	'VGG11',
+	'VGG13',
+	'VGG16',
+	'VGG19'
+];
 
 const MACHINE_UNLEARNING_MODELS = [];
 

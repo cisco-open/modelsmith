@@ -976,6 +976,48 @@ const PRUNING_PARAMETERS = {
 			placeholder: 'Enter rewinding epoch',
 			help: 'rewinding epoch'
 		}
+	],
+	IPMB: [
+		{
+			argName: 'lr',
+			defaultValue: 0.1,
+			inputType: 'number',
+			label: 'Learning Rate',
+			placeholder: 'Enter learning rate',
+			help: 'learning rate'
+		},
+		{
+			argName: 'pruning_ratio',
+			defaultValue: 0.99,
+			inputType: 'number',
+			label: 'Pruning Ratio',
+			placeholder: 'Enter pruning ratio',
+			help: 'pruning ratio'
+		},
+		{
+			argName: 'epochs',
+			defaultValue: 1,
+			inputType: 'number',
+			label: 'Number of Epochs',
+			placeholder: 'Enter number of epochs',
+			help: 'number of epochs'
+		},
+		{
+			argName: 'best_acc',
+			defaultValue: 0,
+			inputType: 'number',
+			label: 'Best Test Accuracy',
+			placeholder: 'Enter best test accuracy',
+			help: 'best test accuracy'
+		},
+		{
+			argName: 'start_epoch',
+			defaultValue: 0,
+			inputType: 'number',
+			label: 'Start Epoch',
+			placeholder: 'Enter start epoch',
+			help: 'start epoch'
+		}
 	]
 };
 

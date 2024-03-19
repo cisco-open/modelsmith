@@ -35,12 +35,7 @@ import {
 	DEFAULT_NR_OF_STEPS_PER_TRAINING_EPOCH,
 	DEFAULT_PRUNING_CHART_DISPLAY_SETTINGS
 } from '../../../shared/standalone/ms-line-chart/models/interfaces/ms-chart-display-settings.interface';
-import {
-	DEFAUlT_FIRST_SPARSITY_VALUE,
-	MetricType,
-	mapPruningChartData,
-	mapSparsityChartData
-} from '../../utils/process-charts-data.utils';
+import { MetricType, mapPruningChartData, mapSparsityChartData } from '../../utils/process-charts-data.utils';
 
 @UntilDestroy()
 @Component({
@@ -166,7 +161,6 @@ export class RunningPruningChartsComponent implements OnInit {
 					...this.sparsityChartDisplaySettings,
 					xAxisDataPointsCount: this.sparsityPruningChartSettings.pruningTimes! + 1
 				};
-				this.initialSparsityChartData = [{ datasetIndex: 0, values: [DEFAUlT_FIRST_SPARSITY_VALUE] }];
 
 				this.chartsFacadeService.dispatch(ChartActions.getCurrentPruningChartData());
 			});

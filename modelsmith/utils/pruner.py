@@ -37,6 +37,21 @@ def pruning_model(model, px):
         amount=px,
     )
 
+def pruning_model_both(model, px):
+    print('start unstructured pruning considering both conv and linear')
+    parameters_to_prune =[]
+    for name,m in model.named_modules():
+        if isinstance(m, nn.Conv2d) or isinstance(m, nn.Linear):
+            parameters_to_prune.append((m,'weight'))
+
+    parameters_to_prune = tuple(parameters_to_prune)
+
+    prune.global_unstructured(
+        parameters_to_prune,
+        pruning_method=prune.L1Unstructured,
+        amount=px,
+    )
+
 def pruning_model_random(model, px):
 
     parameters_to_prune =[]
@@ -88,6 +103,20 @@ def check_sparsity(model):
 
     print('* remain weight = ', 100*(1-zero_sum/sum_list),'%', flush=True)
     
+    return 100*(1-zero_sum/sum_list)
+
+def check_sparsity_both(model):
+
+    sum_list = 0
+    zero_sum = 0
+
+    for name,m in model.named_modules():
+        if isinstance(m, nn.Conv2d) or isinstance(m, nn.Linear):
+            sum_list = sum_list+float(m.weight.nelement())
+            zero_sum = zero_sum+float(torch.sum(m.weight == 0))  
+
+    print('* remain weight = ', 100*(1-zero_sum/sum_list),'%')
+
     return 100*(1-zero_sum/sum_list)
 
 def check_sparsity_mask(mask_dict):

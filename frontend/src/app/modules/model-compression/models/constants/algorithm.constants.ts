@@ -23,7 +23,8 @@ export const PRUNING_ALGORITHMS_LIST: { key: PruningAlgorithmsEnum; value: strin
 	{ key: PruningAlgorithmsEnum.IMP, value: 'Iterative Magnitude Pruning' },
 	{ key: PruningAlgorithmsEnum.OMP, value: 'One-shot Magnitude Pruning' },
 	{ key: PruningAlgorithmsEnum.IPS, value: 'Init Pruning Snip' },
-	{ key: PruningAlgorithmsEnum.IPSY, value: 'Init Pruning Synflow' }
+	{ key: PruningAlgorithmsEnum.IPSY, value: 'Init Pruning Synflow' },
+	{ key: PruningAlgorithmsEnum.IPMB, value: 'Init Pruning Magnitude Both' }
 ];
 
 export const QUANTIZATION_ALGORITHMS_LIST: { key: QuantizationAlgorithmsEnum; value: string }[] = [

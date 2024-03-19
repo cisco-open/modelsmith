@@ -98,8 +98,10 @@ conda --version
 
 - From `examples_pruning` directory:
 
+  - Predefined models to train: ResNet18, ResNet34, ResNet50, ResNet101, ResNet152, VGG11, VGG13, VGG16, VGG19
+
   ```python
-  python3 modelsmith/examples_pruning/train.py --epochs=100
+  python3 modelsmith/examples_pruning/train.py --arch=ResNet18 --epochs=100
   ```
 
 - From `examples_unlearning` directory:

@@ -55,6 +55,11 @@ const PRUNING_ALGORITHMS = {
 		path: PRUNING_PATH,
 		type: ALGORITHM_TYPES.PRUNING,
 		fileName: 'init_pruning_synflow.py'
+	},
+	IPMB: {
+		path: PRUNING_PATH,
+		type: ALGORITHM_TYPES.PRUNING,
+		fileName: 'init_pruning_magnitude_both.py'
 	}
 };
 

@@ -40,7 +40,8 @@ export enum PruningAlgorithmsEnum {
 	IMP = 'IMP',
 	OMP = 'OMP',
 	IPS = 'IPS',
-	IPSY = 'IPSY'
+	IPSY = 'IPSY',
+	IPMB = 'IPMB'
 }
 
 export enum MachineUnlearningAlgorithmsEnum {

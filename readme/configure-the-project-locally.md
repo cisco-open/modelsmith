@@ -52,15 +52,17 @@ To get started, you need to set up the Python environment for ModelSmith. This i
      python3 modelsmith/examples_quant/train.py --arch=resnet18 --epochs=100
      ```
 
-   - From `examples` directory:
+   - From `examples_pruning` directory:
+
+     - Predefined models to train: ResNet18, ResNet34, ResNet50, ResNet101, ResNet152, VGG11, VGG13, VGG16, VGG19
 
      ```python
-     python3 train.py
+     python3 modelsmith/examples_pruning/train.py --arch=ResNet18 --epochs=100
      ```
 
    - From `examples_unlearning` directory:
      ```python
-     python3 train.py
+     python3 modelsmith/examples_unlearning/train.py --epochs=100
      ```
 
 ## Phase 2: Run the Environment Setup Script
