@@ -24,9 +24,7 @@ import {
 	MatSelectSearchOptions,
 	NgxMatSelectSearchModule
 } from 'ngx-mat-select-search';
-import { MsBackgroundGradientComponent } from './components/ms-background-gradient/ms-background-gradient.component';
 import { MsBannerComponent } from './components/ms-banner/ms-banner.component';
-import { MsCardSelectorComponent } from './components/ms-card-selector/ms-card-selector.component';
 import { MsEmptyStateComponent } from './components/ms-empty-state/ms-empty-state.component';
 import { MsFileUploadComponent } from './components/ms-file-upload/ms-file-upload.component';
 import { MsFooterComponent } from './components/ms-footer/ms-footer.component';
@@ -43,10 +41,8 @@ import { ErrorDisplayDirective } from './forms/directives/error-display.directiv
 import { MaterialModule } from './modules/material.module';
 
 const COMPONENTS = [
-	MsCardSelectorComponent,
 	MsErrorMessageComponent,
 	MsFooterComponent,
-	MsBackgroundGradientComponent,
 	MsHeaderComponent,
 	MsUserNavigationComponent,
 	MsMainLayoutComponent,

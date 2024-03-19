@@ -14,12 +14,16 @@
 
 //   SPDX-License-Identifier: Apache-2.0
 
+import { NgFor } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
 	selector: 'ms-card-selector',
 	templateUrl: './ms-card-selector.component.html',
-	styleUrls: ['./ms-card-selector.component.scss']
+	styleUrls: ['./ms-card-selector.component.scss'],
+	standalone: true,
+	imports: [NgFor, MatCardModule]
 })
 export class MsCardSelectorComponent {
 	@Input() options: string[] = [];
