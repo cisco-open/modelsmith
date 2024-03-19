@@ -24,13 +24,16 @@ import { NotificationTypes } from '../../../core/models/enums/snackbar-types.enu
 import { TerminalMessage } from '../../../core/models/interfaces/terminal-message.interface';
 import { TerminalFacadeService } from '../../../core/services/terminal-facade.service';
 import { WebsocketService } from '../../../core/services/websocket.service';
+import { MsTerminalToolbarComponent } from './components/terminal-toolbar/terminal-toolbar.component';
 
 @UntilDestroy()
 @Component({
 	selector: 'ms-terminal',
 	templateUrl: './ms-terminal.component.html',
 	styleUrls: ['./ms-terminal.component.scss'],
-	encapsulation: ViewEncapsulation.None
+	encapsulation: ViewEncapsulation.None,
+	standalone: true,
+	imports: [MsTerminalToolbarComponent]
 })
 export class MsTerminalComponent implements OnInit, AfterViewInit, OnDestroy {
 	@ViewChild('terminal', { static: true }) terminalDiv!: ElementRef;

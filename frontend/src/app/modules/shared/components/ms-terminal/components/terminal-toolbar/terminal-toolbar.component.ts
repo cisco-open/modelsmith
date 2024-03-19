@@ -15,15 +15,20 @@
 //   SPDX-License-Identifier: Apache-2.0
 
 import { Component, EventEmitter, Output } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { ScriptActions } from '../../../../../../state/core/script/script.actions';
 import { ScriptFacadeService } from '../../../../../core/services/script-facade.service';
 
 @Component({
 	selector: 'ms-terminal-toolbar',
 	templateUrl: './terminal-toolbar.component.html',
-	styleUrls: ['./terminal-toolbar.component.scss']
+	styleUrls: ['./terminal-toolbar.component.scss'],
+	standalone: true,
+	imports: [MatButtonModule, MatIconModule, MatTooltipModule]
 })
-export class TerminalToolbarComponent {
+export class MsTerminalToolbarComponent {
 	@Output() clearTerminal = new EventEmitter<string>();
 	@Output() scrollToTopTerminal = new EventEmitter<string>();
 	@Output() scrollToBottomTerminal = new EventEmitter<string>();

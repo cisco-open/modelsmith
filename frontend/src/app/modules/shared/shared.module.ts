@@ -37,8 +37,6 @@ import { MsMainLayoutComponent } from './components/ms-main-layout/ms-main-layou
 import { MsPanelParametersComponent } from './components/ms-panel-parameters/ms-panel-parameters.component';
 import { MsSidenavItemComponent } from './components/ms-sidenav/components/ms-sidenav-item/ms-sidenav-item.component';
 import { MsSidenavComponent } from './components/ms-sidenav/ms-sidenav.component';
-import { TerminalToolbarComponent } from './components/ms-terminal/components/terminal-toolbar/terminal-toolbar.component';
-import { MsTerminalComponent } from './components/ms-terminal/ms-terminal.component';
 import { MsUserNavigationComponent } from './components/ms-user-navigation/ms-user-navigation.component';
 import { MsErrorMessageComponent } from './forms/components/ms-error-message/ms-error-message.component';
 import { ErrorDisplayDirective } from './forms/directives/error-display.directive';
@@ -54,9 +52,7 @@ const COMPONENTS = [
 	MsMainLayoutComponent,
 	MsSidenavComponent,
 	MsSidenavItemComponent,
-	MsTerminalComponent,
 	MsBannerComponent,
-	TerminalToolbarComponent,
 	MsFileUploadComponent,
 	MsLineChartComponent,
 	MsPanelParametersComponent,

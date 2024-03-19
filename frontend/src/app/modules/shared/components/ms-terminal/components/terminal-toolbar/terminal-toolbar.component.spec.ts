@@ -16,17 +16,17 @@
 
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TerminalToolbarComponent } from './terminal-toolbar.component';
+import { MsTerminalToolbarComponent } from './terminal-toolbar.component';
 
 describe('TerminalToolbarComponent', () => {
-	let component: TerminalToolbarComponent;
-	let fixture: ComponentFixture<TerminalToolbarComponent>;
+	let component: MsTerminalToolbarComponent;
+	let fixture: ComponentFixture<MsTerminalToolbarComponent>;
 
 	beforeEach(() => {
 		TestBed.configureTestingModule({
-			declarations: [TerminalToolbarComponent]
+			declarations: [MsTerminalToolbarComponent]
 		});
-		fixture = TestBed.createComponent(TerminalToolbarComponent);
+		fixture = TestBed.createComponent(MsTerminalToolbarComponent);
 		component = fixture.componentInstance;
 		fixture.detectChanges();
 	});

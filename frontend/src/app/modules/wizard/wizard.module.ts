@@ -16,6 +16,7 @@
 
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { MsTerminalComponent } from '../shared/components/ms-terminal/ms-terminal.component';
 import { SharedModule } from '../shared/shared.module';
 import { StepHigherAccuracyComponent } from './components/step-higher-accuracy/step-higher-accuracy.component';
 import { StepPretrainedModelComponent } from './components/step-pretrained-model/step-pretrained-model.component';
@@ -47,7 +48,7 @@ import { WizardRoutingModule } from './wizard-routing.module';
 		StepRecommendBasicPtqComponent,
 		StepRecommendMinmaxComponent
 	],
-	imports: [CommonModule, SharedModule, WizardRoutingModule],
+	imports: [CommonModule, SharedModule, WizardRoutingModule, MsTerminalComponent],
 	providers: [WizardUtilsService]
 })
 export class WizardModule {}
