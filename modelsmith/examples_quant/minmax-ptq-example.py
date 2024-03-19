@@ -25,7 +25,6 @@ import torchvision.transforms as transforms
 # Define directory paths
 script_dir = os.path.dirname(os.path.realpath(__file__))
 data_dir = os.path.join(script_dir, 'data')
-models_checkpoints_dir = os.path.join(script_dir, 'models_checkpoints')
 checkpoint_dir = os.path.join(script_dir, 'checkpoint')
 
 sys.path.append(os.path.join(script_dir, '..'))
@@ -33,9 +32,7 @@ sys.path.append(os.path.join(script_dir, '..'))
 import random
 import numpy as np
 
-from models.resnet_quant import resnet18 as ResNet18
-from models.resnet_quant import resnet50 as ResNet50
-
+from utils.model_utils import prepare_model
 from utils.utils import evaluate_accuracy_quant, test
 from utils.quant import (
     block_reconstruction,
@@ -106,29 +103,6 @@ def prepare_data(dataset='cifar10', batch_size=128, workers=2):
         print('no corresponding datasets', flush=True)
     return trainloader, testloader
 
-def prepare_model(model_arch = 'resnet18'):
-    # Model
-    print('==> Building model..', flush=True)
-    if model_arch == 'resnet18':
-        net = ResNet18()
-        net = net.to(device)
-        checkpoint_path = os.path.join(script_dir, models_checkpoints_dir, 'resnet18.pt')
-        checkpoint = torch.load(checkpoint_path)
-        # checkpoint = torch.load('/data/shangyuzhang/efficientAI-master/examples_quant/models_checkpoints/resnet18.pt')
-        from collections import OrderedDict
-        new_state_dict = OrderedDict()
-        for k, v in checkpoint.items():
-            name = k[7:]
-            new_state_dict[name] = v
-        net.load_state_dict(new_state_dict)
-        # net.eval()
-    elif model_arch == 'resnet50':
-        net = ResNet50()
-        net = net.to(device)
-    else:
-        print('no such model..', flush=True)
-    return net
-
 def get_calibration_samples(train_loader, num_samples):
     train_data, target = [], []
     for batch in train_loader:
@@ -193,7 +167,7 @@ if __name__ == '__main__':
     # build imagenet data loader
     train_loader, test_loader = prepare_data(dataset=args.dataset, batch_size=args.batch_size, workers=args.workers)
     # load model
-    cnn = prepare_model()
+    cnn = prepare_model(args.arch)
     cnn.cuda()
     cnn.eval()
 
