@@ -14,10 +14,10 @@
 
 //   SPDX-License-Identifier: Apache-2.0
 
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
 import { ControlContainer, FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { debounceTime, distinctUntilChanged, map, skip, startWith, switchMap, take, tap } from 'rxjs';
+import { map, skip } from 'rxjs';
 import { ParametersDto } from '../../../../services/client/models/parameters/parameter.interface-dto';
 import { ScriptArguments } from '../../../../services/client/models/script/script-arguments.interface-dto';
 import { ParameterActions } from '../../../../state/core/parameters/parameters.actions';
@@ -26,6 +26,7 @@ import { RoutesList } from '../../../core/models/enums/routes-list.enum';
 import { ParametersFacadeService } from '../../../core/services/parameters-facade.service';
 import { ScriptFacadeService } from '../../../core/services/script-facade.service';
 import { DEFAULT_SELECTED_ALGORITHM } from '../../../model-compression/models/constants/algorithm.constants';
+import { AlgorithmKey } from '../../../model-compression/models/enums/algorithms.enum';
 import { isScriptActive } from '../../../model-compression/models/enums/script-status.enum';
 
 /**
@@ -70,9 +71,17 @@ import { isScriptActive } from '../../../model-compression/models/enums/script-s
 export class MsPanelParametersComponent implements OnInit {
 	readonly RoutesList = RoutesList;
 
-	isScriptActive: boolean = false;
-	alg: string = DEFAULT_SELECTED_ALGORITHM;
+	@Input() algorithm?: AlgorithmKey;
+	private alg: AlgorithmKey = DEFAULT_SELECTED_ALGORITHM;
 
+	ngOnChanges(changes: SimpleChanges) {
+		if (changes['algorithm'] && changes['algorithm'].currentValue) {
+			this.alg = changes['algorithm'].currentValue;
+			this.loadParametersForAlgorithm(this.alg);
+		}
+	}
+
+	isScriptActive: boolean = false;
 	parameters: ParametersDto[] = [];
 	form!: FormGroup;
 
@@ -88,53 +97,25 @@ export class MsPanelParametersComponent implements OnInit {
 	) {}
 
 	ngOnInit() {
+		this.initializeForm();
+
+		this.listenToScriptStateChanges();
+	}
+
+	private initializeForm(): void {
 		this.form = this.fb.group({
 			parametersArray: this.fb.array([])
 		});
 		(this.controlContainer?.control?.parent as FormGroup)?.setControl(this.controlContainer.name as string, this.form);
-
-		this.listenToScriptStateChanges();
-		this.listenToAlgorithmChanges();
 	}
 
-	/**
-	 * Subscribes to changes in the selected algorithm and updates the parameters accordingly,
-	 * including an initial load of parameters on component initialization.
-	 *
-	 * This function employs the RxJS 'startWith' operator to handle both the initial load and
-	 * subsequent changes to the 'algorithm.alg' field in the form. Upon component initialization,
-	 * 'startWith' emits the current value of 'algorithm.alg' (or a default value if it's not set),
-	 * triggering the loading of the initial set of parameters. After the initial load, this function
-	 * continues to listen for any changes made to the 'algorithm.alg' field. When a change is detected,
-	 * it dispatches an action to load the new parameters corresponding to the selected algorithm.
-	 *
-	 * The parameters state is then observed to update the form array with the latest parameters, ensuring
-	 * that the form consistently reflects the parameters associated with the currently selected algorithm.
-	 * By using 'startWith', we efficiently combine the initial data loading with the reactive update mechanism,
-	 * resulting in a streamlined and more maintainable approach. This method also helps in minimizing
-	 * redundant code and avoids the flickering effect caused by delayed data loading.
-	 */
-	private listenToAlgorithmChanges(): void {
-		const algorithmControl = this.form.parent!.get('algorithm.alg');
-		const initialValue = algorithmControl?.value || DEFAULT_SELECTED_ALGORITHM;
+	private loadParametersForAlgorithm(algorithm: AlgorithmKey): void {
+		this.parametersFacadeService.dispatch(ParameterActions.loadParameters({ arg: algorithm }));
 
-		this.form
-			.parent!.get('algorithm.alg')
-			?.valueChanges.pipe(
-				startWith(initialValue),
-				debounceTime(50),
-				distinctUntilChanged(),
-				tap((algValue) => {
-					this.alg = algValue;
-					this.parametersFacadeService.dispatch(ParameterActions.loadParameters({ arg: algValue }));
-				}),
-				switchMap(() =>
-					this.parametersFacadeService.parameters$.pipe(
-						map((state: ParametersState) => state[this.alg]?.data || []),
-						skip(1), // Skip the first emission, which might be the old or default value
-						take(1) // Then take the next emission, which should be the updated value
-					)
-				),
+		this.parametersFacadeService.parameters$
+			.pipe(
+				map((state: ParametersState) => state[algorithm]?.data || []),
+				skip(1),
 				untilDestroyed(this)
 			)
 			.subscribe((newParameters) => {

@@ -14,7 +14,7 @@
 
 //   SPDX-License-Identifier: Apache-2.0
 
-import { PruningAlgorithmsEnum, QuantizationAlgorithmsEnum } from '../enums/algorithms.enum';
+import { AlgorithmKey, PruningAlgorithmsEnum, QuantizationAlgorithmsEnum } from '../enums/algorithms.enum';
 
 export const PRUNING_ALGORITHMS_LIST: { key: PruningAlgorithmsEnum; value: string }[] = [
 	{ key: PruningAlgorithmsEnum.IPG, value: 'GraSP pruning' },
@@ -35,7 +35,7 @@ export const QUANTIZATION_ALGORITHMS_LIST: { key: QuantizationAlgorithmsEnum; va
 
 export const ALL_ALGORITHMS = [...PRUNING_ALGORITHMS_LIST, ...QUANTIZATION_ALGORITHMS_LIST];
 
-export const DEFAULT_SELECTED_ALGORITHM = PruningAlgorithmsEnum.IMP;
+export const DEFAULT_SELECTED_ALGORITHM: AlgorithmKey = PruningAlgorithmsEnum.IMP;
 
 export const getSpecificAlgorithmOptions = (keys: string[]): string[] => {
 	return ALL_ALGORITHMS.filter((algorithm) => keys.includes(algorithm.key)).map((algorithm) => algorithm.value);

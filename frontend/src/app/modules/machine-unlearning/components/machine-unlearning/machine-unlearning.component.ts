@@ -36,6 +36,8 @@ import { MsPanelParametersComponent } from '../../../shared/components/ms-panel-
 	styleUrls: ['./machine-unlearning.component.scss']
 })
 export class MachineUnlearningComponent implements OnInit {
+	readonly MachineUnlearningAlgorithmsEnum: typeof MachineUnlearningAlgorithmsEnum = MachineUnlearningAlgorithmsEnum;
+
 	isScriptActive: boolean = false;
 
 	@ViewChild('panelParameters', { static: false }) panelParametersComponent!: MsPanelParametersComponent;

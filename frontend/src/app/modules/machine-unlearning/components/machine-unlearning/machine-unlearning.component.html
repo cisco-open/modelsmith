@@ -19,7 +19,10 @@
 <div class="machine-unlearning-wrapper" [formGroup]="form">
 	<div class="left">
 		<ng-container [formGroup]="form">
-			<ms-panel-parameters #panelParameters formArrayName="params"></ms-panel-parameters>
+			<ms-panel-parameters
+				#panelParameters
+				formArrayName="params"
+				[algorithm]="MachineUnlearningAlgorithmsEnum.MU"></ms-panel-parameters>
 		</ng-container>
 
 		<div>

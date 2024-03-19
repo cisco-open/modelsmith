@@ -15,7 +15,7 @@
 //   SPDX-License-Identifier: Apache-2.0
 
 import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { AbstractControl, ControlContainer, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Observable } from 'rxjs';
 import { filter, map, startWith } from 'rxjs/operators';
@@ -40,14 +40,13 @@ import { isScriptActive } from '../../../model-compression/models/enums/script-s
 })
 export class MsPanelModelComponent implements OnInit, OnChanges {
 	@Input() algorithm?: AlgorithmKey;
+	@Input() form!: FormGroup;
 
 	ngOnChanges(changes: SimpleChanges) {
 		if (changes['algorithm'] && changes['algorithm'].currentValue) {
 			this.configureModels(changes['algorithm'].currentValue as AlgorithmKey);
 		}
 	}
-
-	form!: FormGroup;
 
 	searchModel = new FormControl();
 	filteredModels!: Observable<ModelDto[]>;
@@ -62,7 +61,6 @@ export class MsPanelModelComponent implements OnInit, OnChanges {
 
 	constructor(
 		private fb: FormBuilder,
-		private controlContainer: ControlContainer,
 		private modelsFacadeService: ModelsFacadeService,
 		private scriptFacadeService: ScriptFacadeService
 	) {}
@@ -113,10 +111,8 @@ export class MsPanelModelComponent implements OnInit, OnChanges {
 
 	private initializeForm(): void {
 		this.form = this.fb.group({
-			[this.MODEL_CONTROL_NAME]: new FormControl('', Validators.required)
+			[this.MODEL_CONTROL_NAME]: ['', Validators.required]
 		});
-
-		(this.controlContainer?.control?.parent as FormGroup)?.setControl(this.controlContainer.name as string, this.form);
 	}
 
 	private listenToScriptStateChanges(): void {

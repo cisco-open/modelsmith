@@ -52,16 +52,21 @@ export class ProjectSettingsComponent implements OnInit {
 
 	selectedAlgorithm?: AlgorithmKey;
 
+	get modelFormGroup(): FormGroup {
+		return this.form.get('model') as FormGroup;
+	}
+
 	constructor(
 		private scriptFacadeService: ScriptFacadeService,
 		private fb: FormBuilder,
 		private fileService: FileService,
 		private snackbarService: BannerService,
 		private router: Router
-	) {}
+	) {
+		this.initForm();
+	}
 
 	ngOnInit() {
-		this.initForm();
 		this.listenToAlgorithmPanelChanges();
 		this.listenToScriptStateChanges();
 	}
