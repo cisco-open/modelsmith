@@ -16,8 +16,8 @@
 
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { MsTerminalComponent } from '../shared/components/ms-terminal/ms-terminal.component';
 import { SharedModule } from '../shared/shared.module';
+import { MsTerminalComponent } from '../shared/standalone/ms-terminal/ms-terminal.component';
 import { MachineUnlearningComponent } from './components/machine-unlearning/machine-unlearning.component';
 import { MachineUnlearningRoutingModule } from './machine-unlearning-routing.module';
 

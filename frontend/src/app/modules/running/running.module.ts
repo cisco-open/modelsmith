@@ -16,8 +16,10 @@
 
 import { CommonModule } from '@angular/common';
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
-import { MsEmptyStateComponent } from '../shared/components/ms-empty-state/ms-empty-state.component';
 import { SharedModule } from '../shared/shared.module';
+import { MsEmptyStateComponent } from '../shared/standalone/ms-empty-state/ms-empty-state.component';
+import { MsLineChartComponent } from '../shared/standalone/ms-line-chart/ms-line-chart.component';
+import { ChartToolsGlobalSignalsService } from '../shared/standalone/ms-line-chart/services/chart-tools-global-signals.service';
 import { RunningAnimationComponent } from './components/running-animation/running-animation.component';
 import { RunningMachineUnlearningChartsComponent } from './components/running-machine-unlearning-charts/running-machine-unlearning-charts.component';
 import { RunningPruningChartsComponent } from './components/running-pruning-charts/running-pruning-charts.component';
@@ -36,6 +38,7 @@ import { RunningRoutingModule } from './running-routing.module';
 		RunningAnimationComponent,
 		RunningStatisticsComponent
 	],
-	imports: [RunningRoutingModule, CommonModule, SharedModule, MsEmptyStateComponent]
+	imports: [RunningRoutingModule, CommonModule, SharedModule, MsEmptyStateComponent, MsLineChartComponent],
+	providers: [ChartToolsGlobalSignalsService]
 })
 export class RunningModule {}

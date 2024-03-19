@@ -16,13 +16,13 @@
 
 import { Chart, ChartConfiguration } from 'chart.js';
 import zoomPlugin from 'chartjs-plugin-zoom';
-import { chartColorsSettings } from '../../../models/constants/chart-color-settings.constants';
+import { chartColorsSettings } from '../models/constants/chart-color-settings.constants';
 import {
 	ChartDisplaySettings,
 	DEFAULT_DATASET_COLOR_SETTINGS_KEY,
 	DEFAULT_NR_OF_STEPS_PER_EPOCH,
 	DEFAULT_TOTAL_EPOCHS_NR
-} from '../../../models/interfaces/ms-chart-display-settings.interface';
+} from '../models/interfaces/ms-chart-display-settings.interface';
 
 export class ChartUtils {
 	static registerZoomPlugin() {

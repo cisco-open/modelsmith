@@ -14,7 +14,7 @@
 
 //   SPDX-License-Identifier: Apache-2.0
 
-import { ChartTypeEnum } from '../../../../modules/shared/models/enums/chart-type.enum';
+import { ChartTypeEnum } from '../../../../modules/shared/standalone/ms-line-chart/models/enums/chart-type.enum';
 import { ChartConfigurationSettingsDictionary } from '../../models/charts/chart-settings.interface-dto';
 import { ServiceCallGET } from '../service-call';
 

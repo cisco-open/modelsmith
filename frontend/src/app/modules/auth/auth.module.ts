@@ -16,9 +16,9 @@
 
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { MsBackgroundGradientComponent } from '../shared/components/ms-background-gradient/ms-background-gradient.component';
-import { PasswordToggleDirective } from '../shared/directives/password-toggle.directive';
 import { SharedModule } from '../shared/shared.module';
+import { MsBackgroundGradientComponent } from '../shared/standalone/ms-background-gradient/ms-background-gradient.component';
+import { PasswordToggleDirective } from '../shared/standalone/password-toggle.directive';
 import { AuthRoutingModule } from './auth-routing.module';
 import { LoginComponent } from './components/login/login.component';
 

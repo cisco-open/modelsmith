@@ -14,15 +14,14 @@
 
 //   SPDX-License-Identifier: Apache-2.0
 
-import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { SharedModule } from '../shared/shared.module';
-import { MsBackgroundGradientComponent } from '../shared/standalone/ms-background-gradient/ms-background-gradient.component';
-import { ModeSelectComponent } from './components/mode-select/mode-select.component';
-import { ModeSelectRoutingModule } from './mode-select-routing.module';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MsErrorMessageComponent } from './components/ms-error-message/ms-error-message.component';
+import { ErrorDisplayDirective } from './directives/error-display.directive';
 
 @NgModule({
-	declarations: [ModeSelectComponent],
-	imports: [ModeSelectRoutingModule, SharedModule, CommonModule, MsBackgroundGradientComponent]
+	imports: [MatFormFieldModule],
+	declarations: [MsErrorMessageComponent, ErrorDisplayDirective],
+	exports: [MsErrorMessageComponent, ErrorDisplayDirective]
 })
-export class ModeSelectModule {}
+export class MsFormsModule {}

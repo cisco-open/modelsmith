@@ -36,7 +36,7 @@ export class MsCardSelectorComponent {
 		this.selectedOption.emit(this.activeCard);
 	}
 
-	trackByOption(index: number, option: string): string {
+	trackByOption(_: number, option: string): string {
 		return option;
 	}
 }

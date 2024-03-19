@@ -24,16 +24,17 @@ import {
 } from '../../../../services/client/models/charts/chart-settings.interface-dto';
 import { ChartActions } from '../../../../state/core/charts';
 import { ChartsFacadeService } from '../../../core/services/charts-facade.service';
-import { ChartColorEnum } from '../../../shared/models/enums/chart-color.enum';
-import { ChartTypeEnum } from '../../../shared/models/enums/chart-type.enum';
-import { RealtimeUpdateMetricEnum } from '../../../shared/models/enums/realtime-update-metric.enum';
+
+import { ChartColorEnum } from '../../../shared/standalone/ms-line-chart/models/enums/chart-color.enum';
+import { ChartTypeEnum } from '../../../shared/standalone/ms-line-chart/models/enums/chart-type.enum';
+import { RealtimeUpdateMetricEnum } from '../../../shared/standalone/ms-line-chart/models/enums/realtime-update-metric.enum';
 import {
 	ChartDataStructure,
 	ChartDisplaySettings,
 	DEFAULT_NR_OF_STEPS_PER_EPOCH,
 	DEFAULT_NR_OF_STEPS_PER_TRAINING_EPOCH,
 	DEFAULT_PRUNING_CHART_DISPLAY_SETTINGS
-} from '../../../shared/models/interfaces/ms-chart-display-settings.interface';
+} from '../../../shared/standalone/ms-line-chart/models/interfaces/ms-chart-display-settings.interface';
 import {
 	DEFAUlT_FIRST_SPARSITY_VALUE,
 	MetricType,

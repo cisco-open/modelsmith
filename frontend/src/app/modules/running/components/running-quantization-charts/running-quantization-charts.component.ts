@@ -23,13 +23,14 @@ import {
 import { ChartConfigurationSettingsDictionary } from '../../../../services/client/models/charts/chart-settings.interface-dto';
 import { ChartActions } from '../../../../state/core/charts';
 import { ChartsFacadeService } from '../../../core/services/charts-facade.service';
-import { ChartColorEnum } from '../../../shared/models/enums/chart-color.enum';
-import { ChartTypeEnum } from '../../../shared/models/enums/chart-type.enum';
-import { RealtimeUpdateMetricEnum } from '../../../shared/models/enums/realtime-update-metric.enum';
+
+import { ChartColorEnum } from '../../../shared/standalone/ms-line-chart/models/enums/chart-color.enum';
+import { ChartTypeEnum } from '../../../shared/standalone/ms-line-chart/models/enums/chart-type.enum';
+import { RealtimeUpdateMetricEnum } from '../../../shared/standalone/ms-line-chart/models/enums/realtime-update-metric.enum';
 import {
 	ChartDataStructure,
 	ChartDisplaySettings
-} from '../../../shared/models/interfaces/ms-chart-display-settings.interface';
+} from '../../../shared/standalone/ms-line-chart/models/interfaces/ms-chart-display-settings.interface';
 import { MetricType, mapQuantizationTestingData, mapReconstructionData } from '../../utils/process-charts-data.utils';
 
 @Component({

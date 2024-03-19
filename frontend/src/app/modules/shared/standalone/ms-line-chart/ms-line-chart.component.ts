@@ -27,7 +27,7 @@ import {
 } from '@angular/core';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Chart, ChartConfiguration, ChartType } from 'chart.js';
-import { BaseChartDirective } from 'ng2-charts';
+import { BaseChartDirective, NgChartsModule } from 'ng2-charts';
 import { delay } from 'rxjs';
 import { ChartDatasets } from '../../../../services/client/models/charts/chart-data.interface-dto';
 import { ChartWebsocketMessageTypes } from '../../../core/models/enums/websocket-message-types.enum';
@@ -36,14 +36,15 @@ import { ScriptFacadeService } from '../../../core/services/script-facade.servic
 import { WebsocketService } from '../../../core/services/websocket.service';
 import { isEmptyObject } from '../../../core/utils/core.utils';
 import { isScriptActive } from '../../../model-compression/models/enums/script-status.enum';
-import { RealtimeUpdateMetricEnum } from '../../models/enums/realtime-update-metric.enum';
+
+import { RealtimeUpdateMetricEnum } from './models/enums/realtime-update-metric.enum';
 import {
 	ChartDataStructure,
 	ChartDisplaySettings,
 	DEFAULT_Y_AXIS_GROWTH_OFFSET,
 	DEFAULT_Y_AXIS_GROWTH_ROUND_FACTOR
-} from '../../models/interfaces/ms-chart-display-settings.interface';
-import { ChartsRealtimeUpdateValues } from '../../models/interfaces/ms-charts-realtime-update-values.interface';
+} from './models/interfaces/ms-chart-display-settings.interface';
+import { ChartsRealtimeUpdateValues } from './models/interfaces/ms-charts-realtime-update-values.interface';
 import { ChartToolsGlobalSignalsService } from './services/chart-tools-global-signals.service';
 import { ChartUtils } from './utils/charts.utils';
 
@@ -58,7 +59,9 @@ import { ChartUtils } from './utils/charts.utils';
 	selector: 'ms-line-chart',
 	templateUrl: './ms-line-chart.component.html',
 	styleUrls: ['./ms-line-chart.component.scss'],
-	changeDetection: ChangeDetectionStrategy.OnPush
+	changeDetection: ChangeDetectionStrategy.OnPush,
+	standalone: true,
+	imports: [NgChartsModule]
 })
 export class MsLineChartComponent implements OnInit, OnChanges, OnDestroy {
 	@Input() data: ChartDatasets[] = [];

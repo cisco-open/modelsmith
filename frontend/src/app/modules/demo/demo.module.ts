@@ -17,8 +17,8 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { MsCardSelectorComponent } from '../shared/components/ms-card-selector/ms-card-selector.component';
 import { SharedModule } from '../shared/shared.module';
+import { MsCardSelectorComponent } from '../shared/standalone/ms-card-selector/ms-card-selector.component';
 import { ButtonsDemoComponent } from './components/buttons-demo/buttons-demo.component';
 import { CardsDemoComponent } from './components/cards-demo/cards-demo.component';
 import { CheckboxesDemoComponent } from './components/checkboxes-demo/checkboxes-demo.component';

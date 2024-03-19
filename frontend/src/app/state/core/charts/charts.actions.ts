@@ -15,7 +15,7 @@
 //   SPDX-License-Identifier: Apache-2.0
 
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
-import { ChartTypeEnum } from '../../../modules/shared/models/enums/chart-type.enum';
+import { ChartTypeEnum } from '../../../modules/shared/standalone/ms-line-chart/models/enums/chart-type.enum';
 import {
 	MachineUnlearningProgress,
 	PruningProgress,

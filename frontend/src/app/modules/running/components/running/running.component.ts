@@ -24,7 +24,7 @@ import { NavigationService } from '../../../core/services/navigation.service';
 import { ScriptFacadeService } from '../../../core/services/script-facade.service';
 import { AlgorithmType } from '../../../model-compression/models/enums/algorithms.enum';
 import { isScriptActive } from '../../../model-compression/models/enums/script-status.enum';
-import { ChartToolsGlobalSignalsService } from '../../../shared/components/ms-line-chart/services/chart-tools-global-signals.service';
+import { ChartToolsGlobalSignalsService } from '../../../shared/standalone/ms-line-chart/services/chart-tools-global-signals.service';
 import { AnimationType } from '../../models/enums/animation-type.enum';
 
 @UntilDestroy()

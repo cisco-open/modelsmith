@@ -16,9 +16,9 @@
 
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { MsCardSelectorComponent } from '../shared/components/ms-card-selector/ms-card-selector.component';
-import { MsTerminalComponent } from '../shared/components/ms-terminal/ms-terminal.component';
 import { SharedModule } from '../shared/shared.module';
+import { MsCardSelectorComponent } from '../shared/standalone/ms-card-selector/ms-card-selector.component';
+import { MsTerminalComponent } from '../shared/standalone/ms-terminal/ms-terminal.component';
 import { StepHigherAccuracyComponent } from './components/step-higher-accuracy/step-higher-accuracy.component';
 import { StepPretrainedModelComponent } from './components/step-pretrained-model/step-pretrained-model.component';
 import { StepPruningTimeComponent } from './components/step-pruning-time/step-pruning-time.component';

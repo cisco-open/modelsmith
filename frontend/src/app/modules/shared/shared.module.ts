@@ -18,7 +18,6 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { NgChartsModule } from 'ng2-charts';
 import {
 	MAT_SELECTSEARCH_DEFAULT_OPTIONS,
 	MatSelectSearchOptions,
@@ -27,33 +26,24 @@ import {
 import { MsBannerComponent } from './components/ms-banner/ms-banner.component';
 import { MsFooterComponent } from './components/ms-footer/ms-footer.component';
 import { MsHeaderComponent } from './components/ms-header/ms-header.component';
-import { MsLineChartComponent } from './components/ms-line-chart/ms-line-chart.component';
-import { ChartToolsGlobalSignalsService } from './components/ms-line-chart/services/chart-tools-global-signals.service';
 import { MsMainLayoutComponent } from './components/ms-main-layout/ms-main-layout.component';
 import { MsPanelParametersComponent } from './components/ms-panel-parameters/ms-panel-parameters.component';
 import { MsSidenavItemComponent } from './components/ms-sidenav/components/ms-sidenav-item/ms-sidenav-item.component';
 import { MsSidenavComponent } from './components/ms-sidenav/ms-sidenav.component';
 import { MsUserNavigationComponent } from './components/ms-user-navigation/ms-user-navigation.component';
-import { MsErrorMessageComponent } from './forms/components/ms-error-message/ms-error-message.component';
-import { ErrorDisplayDirective } from './forms/directives/error-display.directive';
 import { MaterialModule } from './modules/material.module';
+import { MsFormsModule } from './modules/ms-forms/ms-forms.module';
 
 const COMPONENTS = [
 	MsBannerComponent,
-	MsErrorMessageComponent,
 	MsFooterComponent,
 	MsHeaderComponent,
 	MsUserNavigationComponent,
 	MsMainLayoutComponent,
 	MsSidenavComponent,
 	MsSidenavItemComponent,
-	MsLineChartComponent,
 	MsPanelParametersComponent
 ];
-
-const DIRECTIVES = [ErrorDisplayDirective];
-
-const SHARED_DECLARATIONS = [...COMPONENTS, ...DIRECTIVES];
 
 @NgModule({
 	imports: [
@@ -63,9 +53,9 @@ const SHARED_DECLARATIONS = [...COMPONENTS, ...DIRECTIVES];
 		FormsModule,
 		ReactiveFormsModule,
 		NgxMatSelectSearchModule,
-		NgChartsModule
+		MsFormsModule
 	],
-	declarations: [...SHARED_DECLARATIONS],
+	declarations: [...COMPONENTS],
 	providers: [
 		{
 			provide: MAT_SELECTSEARCH_DEFAULT_OPTIONS,
@@ -73,9 +63,8 @@ const SHARED_DECLARATIONS = [...COMPONENTS, ...DIRECTIVES];
 				placeholderLabel: 'Search...',
 				noEntriesFoundLabel: 'No matching entries found...'
 			}
-		},
-		ChartToolsGlobalSignalsService
+		}
 	],
-	exports: [...SHARED_DECLARATIONS, MaterialModule, FormsModule, ReactiveFormsModule, NgxMatSelectSearchModule]
+	exports: [...COMPONENTS, MaterialModule, FormsModule, ReactiveFormsModule, NgxMatSelectSearchModule, MsFormsModule]
 })
 export class SharedModule {}

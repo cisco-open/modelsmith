@@ -16,8 +16,8 @@
 
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { MsTerminalComponent } from '../shared/components/ms-terminal/ms-terminal.component';
 import { SharedModule } from '../shared/shared.module';
+import { MsTerminalComponent } from '../shared/standalone/ms-terminal/ms-terminal.component';
 import { PanelAlgorithmComponent } from './components/panel-algorithm/panel-algorithm.component';
 import { PanelModelComponent } from './components/panel-model/panel-model.component';
 import { ProjectSettingsComponent } from './components/project-settings/project-settings.component';
