@@ -27,21 +27,46 @@ import torchvision
 import torchvision.transforms as transforms
 
 script_dir = os.path.dirname(os.path.abspath(__file__))
+
 data_dir = os.path.join(script_dir, 'data')
 models_checkpoints_dir = os.path.join(script_dir, 'models_checkpoints')
-checkpoint_dir = os.path.join(script_dir, 'checkpoint')
+checkpoint_dir = os.path.join(script_dir, 'checkpoint') 
 
 sys.path.append(os.path.abspath(os.path.join(script_dir, '..', 'models')))
 sys.path.append(os.path.abspath(os.path.join(script_dir, '..', 'utils')))
 
-from resnet import ResNet18
+from resnet import (
+    ResNet18,
+    ResNet34,
+    ResNet50,
+    ResNet101,
+    ResNet152,
+)
+
+from vgg import (
+    VGG11,
+    VGG13,
+    VGG16,
+    VGG19,
+)
+
 from utils import train, test
+
+def get_model(arch):
+    """
+    Dynamically import and return the network architecture based on the provided argument.
+    """
+    if arch in globals():
+        return globals()[arch]()
+    else:
+        raise ValueError(f"Unsupported model: {arch}")
 
 def main():
     parser = argparse.ArgumentParser(description='PyTorch CIFAR10 Training for Pruning')
     parser.add_argument('--lr', default=0.1, type=float, help='learning rate')
     parser.add_argument('--resume', '-r', action='store_true', help='resume from checkpoint')
     parser.add_argument('--epochs', default=200, type=int, help='number of epochs to train')
+    parser.add_argument('--arch', default='ResNet18', type=str, help='Model name')
     args = parser.parse_args()
 
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
@@ -74,7 +99,7 @@ def main():
 
     # Model
     print('==> Building model..')
-    net = ResNet18()
+    net = get_model(args.arch)
     net = net.to(device)
     if device == 'cuda':
         net = torch.nn.DataParallel(net)
@@ -97,6 +122,8 @@ def main():
         train(epoch, device, net, trainloader, optimizer, criterion)
         test(epoch, device, net, testloader, criterion, best_acc, checkpoint_dir)
         scheduler.step()
+    
+    torch.save(net.state_dict(), os.path.join(models_checkpoints_dir, f'{args.arch}.pt'))
 
 if __name__ == '__main__':
     main()

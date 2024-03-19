@@ -35,7 +35,7 @@ checkpoint_dir = os.path.join(script_dir, 'checkpoint')
 
 sys.path.append(os.path.join(script_dir, '..'))
 
-from models import *
+from utils.model_utils import prepare_model
 from utils.utils import progress_bar, train, test
 from utils.pruner import pruning_model_random, check_sparsity, pruning_model, snip_pruning
 
@@ -47,6 +47,8 @@ def main():
     parser.add_argument('--device', default='cuda' if torch.cuda.is_available() else 'cpu', type=str, help='device to use')
     parser.add_argument('--best_acc', default=0, type=float, help='best test accuracy')
     parser.add_argument('--start_epoch', default=0, type=int, help='start epoch')
+    parser.add_argument('--arch', default='ResNet18', type=str, help='Model name')
+    
     args = parser.parse_args()
 
     device = args.device
@@ -79,8 +81,7 @@ def main():
 
     # Model
     print('==> Building model..', flush=True)
-    net = ResNet18()
-    net = net.to(device)
+    net = prepare_model(args.arch, device)
 
     # Prune
     snip_pruning(net, args.pruning_ratio, trainloader, num_class=10)

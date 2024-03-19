@@ -63,7 +63,7 @@ def main():
     parser.add_argument('--lr', default=0.1, type=float, help='learning rate')
     parser.add_argument('--resume', '-r', action='store_true', help='resume from checkpoint')
     parser.add_argument('--epochs', default=200, type=int, help='number of epochs to train')
-    parser.add_argument('--arch', default='resnet18', type=str, help='model name')
+    parser.add_argument('--arch', default='ResNet18', type=str, help='Model name')
     args = parser.parse_args()
 
     device = 'cuda' if torch.cuda.is_available() else 'cpu'

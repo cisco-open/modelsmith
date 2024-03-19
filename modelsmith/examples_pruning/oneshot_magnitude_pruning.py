@@ -36,7 +36,7 @@ checkpoint_dir = os.path.join(script_dir, 'checkpoint')
 
 sys.path.append(os.path.join(script_dir, '..'))
 
-from models import *
+from utils.model_utils import prepare_model
 from utils.utils import train, test
 from utils.pruner import check_sparsity, pruning_model, prune_model_custom, extract_mask, remove_prune
 
@@ -50,6 +50,7 @@ def main():
     parser.add_argument('--rewinding_epoch', default=1, type=int, help='rewinding epoch')
     parser.add_argument('--best_acc', default=0, type=float, help='best test accuracy')
     parser.add_argument('--save_dir', default=checkpoint_dir, type=str, help='directory to save checkpoints')
+    parser.add_argument('--arch', default='ResNet18', type=str, help='Model name')
 
     args = parser.parse_known_args()[0]
 
@@ -80,8 +81,7 @@ def main():
 
     # Model setup
     print('==> Building model..')
-    net = ResNet18()
-    net = net.to(device)
+    net = prepare_model(args.arch, device)
 
     criterion = nn.CrossEntropyLoss()
     optimizer = optim.SGD(net.parameters(), lr=args.lr, momentum=0.9, weight_decay=5e-4)

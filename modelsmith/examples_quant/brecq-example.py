@@ -120,7 +120,7 @@ if __name__ == '__main__':
     # general parameters for data and model
     parser.add_argument('--seed', default=1005, type=int, help='random seed for results reproduction')
     parser.add_argument('--dataset', default='cifar10', type=str, help='dataset name', choices=['cifar10', 'cifar100'])
-    parser.add_argument('--arch', default='resnet18', type=str, help='model name')
+    parser.add_argument('--arch', default='resnet18', type=str, help='Model name')
     parser.add_argument('--batch_size', default=128, type=int, help='mini-batch size for data loader')
     parser.add_argument('--workers', default=4, type=int, help='number of workers for data loader')
 
@@ -171,7 +171,7 @@ if __name__ == '__main__':
     # build imagenet data loader
     train_loader, test_loader = prepare_data(dataset=args.dataset, batch_size=args.batch_size, workers=args.workers)
     # load model
-    cnn = prepare_model(args.arch)
+    cnn = prepare_model(args.arch, device)
     cnn.cuda()
     cnn.eval()
 
