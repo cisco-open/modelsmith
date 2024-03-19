@@ -15,7 +15,7 @@
 //   SPDX-License-Identifier: Apache-2.0
 
 import { Component, Input } from '@angular/core';
-import { SidenavItem } from '../../../core/models/interfaces/sidenav.interface';
+import { SidenavItem } from '../../../../../core/models/interfaces/sidenav.interface';
 
 @Component({
 	selector: 'ms-sidenav-item',

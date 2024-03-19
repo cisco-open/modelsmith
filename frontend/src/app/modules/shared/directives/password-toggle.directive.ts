@@ -18,7 +18,8 @@ import { Directive, ElementRef, OnInit, Renderer2, ViewContainerRef } from '@ang
 import { MatIcon } from '@angular/material/icon';
 
 @Directive({
-	selector: '[msPasswordToggle]'
+	selector: '[msPasswordToggle]',
+	standalone: true
 })
 export class PasswordToggleDirective implements OnInit {
 	private isHidden = true;

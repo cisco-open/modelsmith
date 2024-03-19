@@ -35,12 +35,11 @@ import { MsLineChartComponent } from './components/ms-line-chart/ms-line-chart.c
 import { ChartToolsGlobalSignalsService } from './components/ms-line-chart/services/chart-tools-global-signals.service';
 import { MsMainLayoutComponent } from './components/ms-main-layout/ms-main-layout.component';
 import { MsPanelParametersComponent } from './components/ms-panel-parameters/ms-panel-parameters.component';
-import { MsSidenavItemComponent } from './components/ms-sidenav-item/ms-sidenav-item.component';
+import { MsSidenavItemComponent } from './components/ms-sidenav/components/ms-sidenav-item/ms-sidenav-item.component';
 import { MsSidenavComponent } from './components/ms-sidenav/ms-sidenav.component';
 import { TerminalToolbarComponent } from './components/ms-terminal/components/terminal-toolbar/terminal-toolbar.component';
 import { MsTerminalComponent } from './components/ms-terminal/ms-terminal.component';
 import { MsUserNavigationComponent } from './components/ms-user-navigation/ms-user-navigation.component';
-import { PasswordToggleDirective } from './directives/password-toggle.directive';
 import { MsErrorMessageComponent } from './forms/components/ms-error-message/ms-error-message.component';
 import { ErrorDisplayDirective } from './forms/directives/error-display.directive';
 import { MaterialModule } from './modules/material.module';
@@ -64,7 +63,7 @@ const COMPONENTS = [
 	MsEmptyStateComponent
 ];
 
-const DIRECTIVES = [ErrorDisplayDirective, PasswordToggleDirective];
+const DIRECTIVES = [ErrorDisplayDirective];
 
 const SHARED_DECLARATIONS = [...COMPONENTS, ...DIRECTIVES];
 
