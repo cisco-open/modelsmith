@@ -16,7 +16,7 @@
 
 import { Injectable } from '@angular/core';
 import { Action, Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
+import { Observable, skip } from 'rxjs';
 import { ModelDto } from '../../../services/client/models/models/models.interface-dto';
 import { selectCurrentModel, selectModelsByType } from '../../../state/core/models/models.selector';
 import { ModelsState } from '../../../state/core/models/models.state';
@@ -27,7 +27,7 @@ export class ModelsFacadeService {
 	currentModel$: Observable<string | undefined>;
 
 	constructor(private store: Store<ModelsState>) {
-		this.currentModel$ = this.store.select(selectCurrentModel);
+		this.currentModel$ = this.store.select(selectCurrentModel).pipe(skip(1));
 	}
 
 	getModelsByType(algorithmType: AlgorithmType): Observable<ModelDto[] | undefined> {

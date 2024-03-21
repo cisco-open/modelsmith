@@ -21,3 +21,15 @@ export const generateRandomID = (): number => {
 export function isEmptyObject(obj: any): boolean {
 	return Object.prototype.toString.call(obj) === '[object Object]' && Object.keys(obj).length === 0;
 }
+
+export function isNil(obj: any): boolean {
+	return obj === null || obj === undefined;
+}
+
+export function isNilOrEmptyString(obj: any): boolean {
+	return obj === null || obj === undefined || obj === '';
+}
+
+export function isEmptyArray(obj: any): boolean {
+	return Array.isArray(obj) && obj.length === 0;
+}

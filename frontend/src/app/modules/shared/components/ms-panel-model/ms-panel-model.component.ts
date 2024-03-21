@@ -18,12 +18,12 @@ import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit, SimpleCha
 import { AbstractControl, ControlContainer, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Observable } from 'rxjs';
-import { filter, map, skip, startWith, take } from 'rxjs/operators';
+import { first, map, startWith } from 'rxjs/operators';
 import { ModelDto } from '../../../../services/client/models/models/models.interface-dto';
 import { ModelsActions } from '../../../../state/core/models/models.actions';
 import { ModelsFacadeService } from '../../../core/services/models-facade.service';
 import { ScriptFacadeService } from '../../../core/services/script-facade.service';
-import { isEmptyObject } from '../../../core/utils/core.utils';
+import { isEmptyArray, isNilOrEmptyString } from '../../../core/utils/core.utils';
 import {
 	AlgorithmKey,
 	AlgorithmType,
@@ -86,11 +86,7 @@ export class MsPanelModelComponent implements OnInit, OnChanges {
 
 	private loadInitialModel(algorithmType: AlgorithmType) {
 		this.modelsFacadeService.currentModel$
-			.pipe(
-				skip(1),
-				take(1),
-				filter((model): model is string => model !== undefined && !isEmptyObject(model))
-			)
+			.pipe(first((model): model is string => !isNilOrEmptyString(model)))
 			.subscribe((model: string) => {
 				this.modelControl?.patchValue(model);
 			});
@@ -102,9 +98,8 @@ export class MsPanelModelComponent implements OnInit, OnChanges {
 		this.modelsFacadeService
 			.getModelsByType(algorithmType)
 			.pipe(
-				filter((models): models is ModelDto[] => !!models && models.length > 0),
-				map((models) => [...models].sort((a, b) => Number(b.isTrained) - Number(a.isTrained))),
-				take(1)
+				first((models): models is ModelDto[] => !isEmptyArray(models)),
+				map((models) => [...models].sort((a, b) => Number(b.isTrained) - Number(a.isTrained)))
 			)
 			.subscribe((models: ModelDto[]) => {
 				this.models = models;
