@@ -18,7 +18,7 @@ import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit, SimpleCha
 import { AbstractControl, ControlContainer, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Observable } from 'rxjs';
-import { filter, map, startWith } from 'rxjs/operators';
+import { filter, map, skip, startWith, take } from 'rxjs/operators';
 import { ModelDto } from '../../../../services/client/models/models/models.interface-dto';
 import { ModelsActions } from '../../../../state/core/models/models.actions';
 import { ModelsFacadeService } from '../../../core/services/models-facade.service';
@@ -85,7 +85,7 @@ export class MsPanelModelComponent implements OnInit, OnChanges {
 	}
 
 	private loadInitialModel(algorithmType: AlgorithmType) {
-		this.modelsFacadeService.currentModel$.pipe(untilDestroyed(this)).subscribe((model: string | undefined) => {
+		this.modelsFacadeService.currentModel$.pipe(skip(1), take(1)).subscribe((model: string | undefined) => {
 			if (isEmptyObject(model)) {
 				return;
 			}
@@ -102,7 +102,7 @@ export class MsPanelModelComponent implements OnInit, OnChanges {
 			.pipe(
 				filter((models): models is ModelDto[] => !!models && models.length > 0),
 				map((models) => [...models].sort((a, b) => Number(b.isTrained) - Number(a.isTrained))),
-				untilDestroyed(this)
+				take(1)
 			)
 			.subscribe((models: ModelDto[]) => {
 				this.models = models;
