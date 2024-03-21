@@ -16,7 +16,7 @@
 
 import { Injectable } from '@angular/core';
 import { Action, Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
+import { Observable, skip } from 'rxjs';
 import { ScriptDetails } from '../../../services/client/models/script/script-details.interface-dto';
 import { selectScriptDetails, selectScriptStatus } from '../../../state/core/script/script.selector';
 import { ScriptState } from '../../../state/core/script/script.state';
@@ -29,7 +29,7 @@ export class ScriptFacadeService {
 
 	constructor(private store: Store<ScriptState>) {
 		this.scriptStatus$ = this.store.select(selectScriptStatus);
-		this.scriptDetails$ = this.store.select(selectScriptDetails);
+		this.scriptDetails$ = this.store.select(selectScriptDetails).pipe(skip(1));
 	}
 
 	dispatch(action: Action) {

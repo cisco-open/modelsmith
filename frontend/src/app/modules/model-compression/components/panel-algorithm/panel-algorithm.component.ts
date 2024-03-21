@@ -17,7 +17,7 @@
 import { Component } from '@angular/core';
 import { AbstractControl, ControlContainer, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { filter, skip, take } from 'rxjs';
+import { filter, take } from 'rxjs';
 import { ScriptDetails } from '../../../../services/client/models/script/script-details.interface-dto';
 import { ScriptActions } from '../../../../state/core/script';
 import { ScriptFacadeService } from '../../../core/services/script-facade.service';
@@ -66,11 +66,8 @@ export class PanelAlgorithmComponent {
 	 * the algorithm value to a default constant.
 	 */
 	private loadInitialData() {
-		this.scriptFacadeService.dispatch(ScriptActions.getCurrentOrLastActiveScriptDetails());
-
 		this.scriptFacadeService.scriptDetails$
 			.pipe(
-				skip(1),
 				take(1),
 				filter((scriptDetails): scriptDetails is ScriptDetails => !!scriptDetails?.algKey)
 			)
@@ -82,12 +79,10 @@ export class PanelAlgorithmComponent {
 
 				const initialAlgorithmValue = isPruningOrQuantization ? scriptDetails!.algKey : DEFAULT_SELECTED_ALGORITHM;
 
-				this.setInitialAlgorithmValue(initialAlgorithmValue);
+				this.algorithmFormControl?.setValue(initialAlgorithmValue);
 			});
-	}
 
-	private setInitialAlgorithmValue(algorithm: string): void {
-		this.algorithmFormControl?.setValue(algorithm, { emitEvent: true });
+		this.scriptFacadeService.dispatch(ScriptActions.getCurrentOrLastActiveScriptDetails());
 	}
 
 	private initForm() {

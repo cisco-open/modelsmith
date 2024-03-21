@@ -77,6 +77,7 @@ export class ProjectSettingsComponent implements OnInit {
 				untilDestroyed(this)
 			)
 			.subscribe((algValue) => {
+				console.log(algValue);
 				this.selectedAlgorithm = algValue;
 			});
 	}
