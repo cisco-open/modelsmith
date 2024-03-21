@@ -18,7 +18,6 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { MsBannerComponent } from './components/ms-banner/ms-banner.component';
 import { MsFooterComponent } from './components/ms-footer/ms-footer.component';
 import { MsHeaderComponent } from './components/ms-header/ms-header.component';
@@ -42,7 +41,6 @@ const COMPONENTS = [
 @NgModule({
 	imports: [CommonModule, RouterModule, MaterialModule, FormsModule, ReactiveFormsModule, MsFormsModule],
 	declarations: [...COMPONENTS],
-
-	exports: [...COMPONENTS, MaterialModule, FormsModule, ReactiveFormsModule, NgxMatSelectSearchModule, MsFormsModule]
+	exports: [...COMPONENTS, MaterialModule, FormsModule, ReactiveFormsModule, MsFormsModule]
 })
 export class SharedModule {}
