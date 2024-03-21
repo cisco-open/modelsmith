@@ -22,6 +22,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
+import { MAT_SELECTSEARCH_DEFAULT_OPTIONS, MatSelectSearchOptions } from 'ngx-mat-select-search';
 import { CLIENT } from '../../app.tokens';
 import { ClientBackend } from '../../services/client/client-backend';
 import { AppHttpInterceptor } from '../../services/interceptor/app-http-interceptor';
@@ -94,6 +95,13 @@ import { ModelsFacadeService } from './services/models-facade.service';
 				return new ClientBackend(httpClient);
 			},
 			deps: [HttpClient]
+		},
+		{
+			provide: MAT_SELECTSEARCH_DEFAULT_OPTIONS,
+			useValue: <MatSelectSearchOptions>{
+				placeholderLabel: 'Search...',
+				noEntriesFoundLabel: 'No matching entries found...'
+			}
 		},
 		{ provide: HTTP_INTERCEPTORS, useClass: AppHttpInterceptor, multi: true }
 	]

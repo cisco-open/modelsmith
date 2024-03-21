@@ -17,6 +17,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { SharedModule } from '../shared/shared.module';
+import { MsPanelModelComponent } from '../shared/standalone/ms-panel-model/ms-panel-model.component';
 import { MsTerminalComponent } from '../shared/standalone/ms-terminal/ms-terminal.component';
 import { PanelAlgorithmComponent } from './components/panel-algorithm/panel-algorithm.component';
 import { ProjectSettingsComponent } from './components/project-settings/project-settings.component';
@@ -24,6 +25,6 @@ import { ModelCompressionRoutingModule } from './model-compression-routing.modul
 
 @NgModule({
 	declarations: [ProjectSettingsComponent, PanelAlgorithmComponent],
-	imports: [CommonModule, SharedModule, ModelCompressionRoutingModule, MsTerminalComponent]
+	imports: [CommonModule, SharedModule, ModelCompressionRoutingModule, MsTerminalComponent, MsPanelModelComponent]
 })
 export class ModelCompressionModule {}

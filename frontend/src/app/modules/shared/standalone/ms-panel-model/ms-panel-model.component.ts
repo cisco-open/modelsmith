@@ -14,9 +14,23 @@
 
 //   SPDX-License-Identifier: Apache-2.0
 
+import { CommonModule } from '@angular/common';
 import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, inject } from '@angular/core';
-import { AbstractControl, ControlContainer, FormControl, FormGroup, Validators } from '@angular/forms';
+import {
+	AbstractControl,
+	ControlContainer,
+	FormControl,
+	FormGroup,
+	FormsModule,
+	ReactiveFormsModule,
+	Validators
+} from '@angular/forms';
+import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatSelectModule } from '@angular/material/select';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { Observable } from 'rxjs';
 import { first, map, startWith } from 'rxjs/operators';
 import { ModelDto } from '../../../../services/client/models/models/models.interface-dto';
@@ -34,6 +48,17 @@ import { isScriptActive } from '../../../model-compression/models/enums/script-s
 @UntilDestroy()
 @Component({
 	selector: 'ms-panel-model',
+	standalone: true,
+	imports: [
+		FormsModule,
+		ReactiveFormsModule,
+		MatCardModule,
+		MatFormFieldModule,
+		MatSelectModule,
+		MatIconModule,
+		CommonModule,
+		NgxMatSelectSearchModule
+	],
 	templateUrl: './ms-panel-model.component.html',
 	styleUrls: ['./ms-panel-model.component.scss'],
 	viewProviders: [

@@ -18,11 +18,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import {
-	MAT_SELECTSEARCH_DEFAULT_OPTIONS,
-	MatSelectSearchOptions,
-	NgxMatSelectSearchModule
-} from 'ngx-mat-select-search';
+import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { MsBannerComponent } from './components/ms-banner/ms-banner.component';
 import { MsFooterComponent } from './components/ms-footer/ms-footer.component';
 import { MsHeaderComponent } from './components/ms-header/ms-header.component';
@@ -31,7 +27,6 @@ import { MsPanelParametersComponent } from './components/ms-panel-parameters/ms-
 import { MsSidenavItemComponent } from './components/ms-sidenav/components/ms-sidenav-item/ms-sidenav-item.component';
 import { MsSidenavComponent } from './components/ms-sidenav/ms-sidenav.component';
 import { MsUserNavigationComponent } from './components/ms-user-navigation/ms-user-navigation.component';
-import { MsPanelModelComponent } from './components/ms-panel-model/ms-panel-model.component';
 import { MaterialModule } from './modules/material.module';
 import { MsFormsModule } from './modules/ms-forms/ms-forms.module';
 
@@ -43,30 +38,13 @@ const COMPONENTS = [
 	MsMainLayoutComponent,
 	MsSidenavComponent,
 	MsSidenavItemComponent,
-	MsPanelParametersComponent,
-	MsPanelModelComponent
+	MsPanelParametersComponent
 ];
 
 @NgModule({
-	imports: [
-		CommonModule,
-		RouterModule,
-		MaterialModule,
-		FormsModule,
-		ReactiveFormsModule,
-		NgxMatSelectSearchModule,
-		MsFormsModule
-	],
+	imports: [CommonModule, RouterModule, MaterialModule, FormsModule, ReactiveFormsModule, MsFormsModule],
 	declarations: [...COMPONENTS],
-	providers: [
-		{
-			provide: MAT_SELECTSEARCH_DEFAULT_OPTIONS,
-			useValue: <MatSelectSearchOptions>{
-				placeholderLabel: 'Search...',
-				noEntriesFoundLabel: 'No matching entries found...'
-			}
-		}
-	],
+
 	exports: [...COMPONENTS, MaterialModule, FormsModule, ReactiveFormsModule, NgxMatSelectSearchModule, MsFormsModule]
 })
 export class SharedModule {}
