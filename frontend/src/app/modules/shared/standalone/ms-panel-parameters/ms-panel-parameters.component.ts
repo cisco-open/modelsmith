@@ -155,4 +155,8 @@ export class MsPanelParametersComponent implements OnInit {
 
 		return scriptArguments;
 	}
+
+	ngOnDestroy() {
+		this.parentFormGroup.removeControl(this.controlKey);
+	}
 }

@@ -106,6 +106,8 @@ export class MsPanelModelComponent implements OnInit, OnChanges, OnDestroy {
 
 		this.listenToScriptStateChanges();
 		this.listenToSearchModelValueChanges();
+
+		this.listenToCurrentModelChanges();
 	}
 
 	private configureModels(algorithm: AlgorithmKey) {
@@ -115,17 +117,16 @@ export class MsPanelModelComponent implements OnInit, OnChanges, OnDestroy {
 		}
 
 		this.fetchModels(algorithmType);
-		this.loadInitialModel(algorithmType);
+		this.modelsFacadeService.dispatch(ModelsActions.getCurrentOrPreviousSelectedModel({ algorithmType }));
 	}
 
-	private loadInitialModel(algorithmType: AlgorithmType) {
-		this.modelsFacadeService.currentModel$
-			.pipe(first((model): model is string => !isNilOrEmptyString(model)))
-			.subscribe((model: string) => {
-				this.modelControl?.patchValue(model);
-			});
-
-		this.modelsFacadeService.dispatch(ModelsActions.getCurrentOrPreviousSelectedModel({ algorithmType }));
+	private listenToCurrentModelChanges() {
+		this.modelsFacadeService.currentModel$.pipe(untilDestroyed(this)).subscribe((model: string | undefined) => {
+			if (isNilOrEmptyString(model)) {
+				return;
+			}
+			this.modelControl?.patchValue(model);
+		});
 	}
 
 	private fetchModels(algorithmType: AlgorithmType) {

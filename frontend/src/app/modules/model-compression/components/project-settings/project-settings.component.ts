@@ -66,7 +66,10 @@ export class ProjectSettingsComponent implements OnInit {
 		this.form.valueChanges
 			.pipe(
 				debounceTime(50),
-				map((formValue) => formValue.algorithm && formValue.algorithm.alg),
+				map(() => {
+					const formRawValue = this.form.getRawValue();
+					return formRawValue.algorithm && formRawValue.algorithm.alg;
+				}),
 				distinctUntilChanged(),
 				filter((algValue) => !!algValue),
 				untilDestroyed(this)

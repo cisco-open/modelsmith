@@ -30,21 +30,28 @@ const CHECKPOINT_PATHS = {
 };
 
 router.get('/current-or-previous-selected-model/:type', (req, res) => {
-	const type = req.params.type;
+	const requestedType = req.params.type;
 
 	const script = getActiveScriptDetails() || getPreviousScriptDetails();
 
-	let defaultValue = '';
-	if (type === ALGORITHM_TYPES.QUANTIZATION) {
-		defaultValue = 'resnet18';
-	} else if (type === ALGORITHM_TYPES.PRUNING) {
-		defaultValue = 'ResNet18';
+	const defaultValues = {
+		[ALGORITHM_TYPES.QUANTIZATION]: 'resnet18',
+		[ALGORITHM_TYPES.PRUNING]: 'ResNet18'
+	};
+
+	let archValue;
+
+	if (script) {
+		if (script.algorithm.type === requestedType) {
+			archValue = script.params.arch;
+		} else {
+			archValue = defaultValues[requestedType];
+		}
+	} else {
+		archValue = defaultValues[requestedType];
 	}
 
-	const { params } = script || { params: { arch: defaultValue } };
-	const { arch } = params;
-
-	res.status(OK).send(JSON.stringify(arch));
+	res.status(200).send(JSON.stringify(archValue));
 });
 
 /**
