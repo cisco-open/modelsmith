@@ -21,7 +21,6 @@ import {
 	ControlContainer,
 	FormControl,
 	FormGroup,
-	FormsModule,
 	ReactiveFormsModule,
 	Validators
 } from '@angular/forms';
@@ -50,7 +49,6 @@ import { isScriptActive } from '../../../model-compression/models/enums/script-s
 	selector: 'ms-panel-model',
 	standalone: true,
 	imports: [
-		FormsModule,
 		ReactiveFormsModule,
 		MatCardModule,
 		MatFormFieldModule,

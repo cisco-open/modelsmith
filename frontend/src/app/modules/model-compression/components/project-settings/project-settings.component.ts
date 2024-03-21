@@ -26,7 +26,7 @@ import { BannerService } from '../../../core/services/banner.service';
 import { FileService } from '../../../core/services/file.service';
 import { ScriptFacadeService } from '../../../core/services/script-facade.service';
 import { isEmptyObject } from '../../../core/utils/core.utils';
-import { MsPanelParametersComponent } from '../../../shared/components/ms-panel-parameters/ms-panel-parameters.component';
+import { MsPanelParametersComponent } from '../../../shared/standalone/ms-panel-parameters/ms-panel-parameters.component';
 import { CUSTOM_MODEL } from '../../models/constants/supported-models.constants';
 import { AlgorithmKey, AlgorithmType } from '../../models/enums/algorithms.enum';
 import { isScriptActive } from '../../models/enums/script-status.enum';
@@ -77,7 +77,6 @@ export class ProjectSettingsComponent implements OnInit {
 				untilDestroyed(this)
 			)
 			.subscribe((algValue) => {
-				console.log(algValue);
 				this.selectedAlgorithm = algValue;
 			});
 	}
@@ -96,8 +95,7 @@ export class ProjectSettingsComponent implements OnInit {
 
 	private initForm() {
 		this.form = this.fb.group({
-			algorithm: [],
-			params: []
+			algorithm: []
 		});
 	}
 

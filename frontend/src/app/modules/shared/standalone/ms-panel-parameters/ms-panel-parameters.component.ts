@@ -14,8 +14,15 @@
 
 //   SPDX-License-Identifier: Apache-2.0
 
-import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
-import { ControlContainer, FormArray, FormBuilder, FormGroup } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { Component, Input, OnInit, SimpleChanges, inject } from '@angular/core';
+import { ControlContainer, FormArray, FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { MatCardModule } from '@angular/material/card';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { map, skip } from 'rxjs';
 import { ParametersDto } from '../../../../services/client/models/parameters/parameter.interface-dto';
@@ -29,49 +36,34 @@ import { DEFAULT_SELECTED_ALGORITHM } from '../../../model-compression/models/co
 import { AlgorithmKey } from '../../../model-compression/models/enums/algorithms.enum';
 import { isScriptActive } from '../../../model-compression/models/enums/script-status.enum';
 
-/**
- * Usage Guide for MsPanelParametersComponent
- *
- * Displaying the Component:
- * - Ensure to pass 'formArrayName' from the parent to the child component.
- * - Example usage in a template:
- *   <ms-panel-parameters #panelParameters formArrayName="params"></ms-panel-parameters>
- *
- * Accessing Parameters:
- * - To access the parameters in your component class:
- *   1. Use '@ViewChild' to reference the MsPanelParametersComponent.
- *      @ViewChild('panelParameters', { static: false }) panelParametersComponent!: MsPanelParametersComponent;
- *   2. Retrieve the formatted parameters suitable for PYTHON configs using:
- *      this.panelParametersComponent.parametersFormatted
- *
- * Required Form Structure in Parent Component:
- * - The parent component should have a FormGroup that includes:
- *   - An 'algorithm' field (FormGroup) with a nested 'alg' FormControl field.
- *   - A 'params' field corresponding to the MsPanelParametersComponent.
- * - Example:
- *   this.form = this.fb.group({
- *     algorithm: this.fb.group({
- *       alg: ['']
- *     }),
- *     params: this.fb.array([]),
- *     // ... other fields as required
- *   });
- *
- * Note: The current implementation relies heavily on form structures,
- * specifically with direct references like this.form.parent!.get('algorithm.alg').
- * Consider refactoring for improved decoupling and flexibility, possibly by integrating a dedicated state management approach.
- */
-
 @UntilDestroy()
 @Component({
 	selector: 'ms-panel-parameters',
+	standalone: true,
+	imports: [
+		CommonModule,
+		MatInputModule,
+		ReactiveFormsModule,
+		MatCardModule,
+		MatFormFieldModule,
+		MatSelectModule,
+		MatTooltipModule,
+		MatCheckboxModule
+	],
 	templateUrl: './ms-panel-parameters.component.html',
-	styleUrls: ['./ms-panel-parameters.component.scss']
+	styleUrls: ['./ms-panel-parameters.component.scss'],
+	viewProviders: [
+		{
+			provide: ControlContainer,
+			useFactory: () => inject(ControlContainer, { skipSelf: true })
+		}
+	]
 })
 export class MsPanelParametersComponent implements OnInit {
-	readonly RoutesList = RoutesList;
-
+	@Input({ required: true }) controlKey = '';
 	@Input() algorithm?: AlgorithmKey;
+
+	readonly RoutesList = RoutesList;
 	private alg: AlgorithmKey = DEFAULT_SELECTED_ALGORITHM;
 
 	ngOnChanges(changes: SimpleChanges) {
@@ -81,13 +73,19 @@ export class MsPanelParametersComponent implements OnInit {
 		}
 	}
 
-	form!: FormGroup;
-
 	isScriptActive: boolean = false;
 	parameters: ParametersDto[] = [];
 
-	get parametersArray(): FormArray {
-		return this.form.get('parametersArray') as FormArray;
+	get parentFormGroup() {
+		return this.controlContainer.control as FormGroup;
+	}
+
+	get paramsFormGroup(): FormGroup {
+		return this.parentFormGroup.get(this.controlKey) as FormGroup;
+	}
+
+	get parametersFormArray(): FormArray {
+		return this.paramsFormGroup.get('parametersArray') as FormArray;
 	}
 
 	constructor(
@@ -99,16 +97,16 @@ export class MsPanelParametersComponent implements OnInit {
 
 	ngOnInit() {
 		this.initializeForm();
-
 		this.listenToScriptStateChanges();
 	}
 
 	private initializeForm(): void {
-		this.form = this.fb.group({
-			parametersArray: this.fb.array([])
-		});
-
-		(this.controlContainer?.control?.parent as FormGroup)?.setControl(this.controlContainer.name as string, this.form);
+		this.parentFormGroup.addControl(
+			this.controlKey,
+			new FormGroup({
+				parametersArray: new FormArray([])
+			})
+		);
 	}
 
 	private loadParametersForAlgorithm(algorithm: AlgorithmKey): void {
@@ -121,8 +119,7 @@ export class MsPanelParametersComponent implements OnInit {
 				untilDestroyed(this)
 			)
 			.subscribe((newParameters) => {
-				this.parameters = newParameters;
-				this.buildFormArray(this.parameters);
+				this.buildFormArray(newParameters);
 			});
 	}
 
@@ -133,23 +130,25 @@ export class MsPanelParametersComponent implements OnInit {
 	}
 
 	private buildFormArray(parameters: ParametersDto[]) {
-		this.parametersArray.clear();
+		this.parametersFormArray.clear();
 
 		parameters.forEach((param) => {
-			this.parametersArray.push(this.fb.control(param.defaultValue));
+			this.parametersFormArray.push(this.fb.control(param.defaultValue));
 		});
 
 		if (this.isScriptActive) {
-			this.form.disable();
+			this.paramsFormGroup.disable();
 		} else {
-			this.form.enable();
+			this.paramsFormGroup.enable();
 		}
+
+		this.parameters = parameters;
 	}
 
 	public get parametersFormatted(): ScriptArguments {
 		const scriptArguments: ScriptArguments = {};
 
-		const values = this.parametersArray.getRawValue();
+		const values = this.parametersFormArray.getRawValue();
 		this.parameters.forEach((param, index) => {
 			scriptArguments[param.argName] = values[index];
 		});

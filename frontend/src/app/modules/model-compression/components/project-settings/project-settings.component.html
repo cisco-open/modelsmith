@@ -23,10 +23,7 @@
 
 			<ms-panel-model controlKey="model" [algorithm]="selectedAlgorithm"></ms-panel-model>
 
-			<ms-panel-parameters
-				#panelParameters
-				formGroupName="params"
-				[algorithm]="selectedAlgorithm"></ms-panel-parameters>
+			<ms-panel-parameters #panelParameters controlKey="params" [algorithm]="selectedAlgorithm"></ms-panel-parameters>
 		</ng-container>
 
 		<div>

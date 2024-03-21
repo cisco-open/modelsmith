@@ -19,7 +19,7 @@
 	<p class="heading-sub-section-title">Parameters</p>
 
 	<div class="parameters-wrapper" *ngIf="parameters.length; else noParametersTemplate">
-		<form [formGroup]="form">
+		<ng-container [formGroupName]="controlKey">
 			<div formArrayName="parametersArray">
 				<ng-container *ngFor="let param of parameters; let i = index">
 					<!-- Text input for type 'text' or 'number' -->
@@ -53,7 +53,7 @@
 					</div>
 				</ng-container>
 			</div>
-		</form>
+		</ng-container>
 	</div>
 
 	<ng-template #noParametersTemplate>

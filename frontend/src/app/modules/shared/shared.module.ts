@@ -23,7 +23,6 @@ import { MsBannerComponent } from './components/ms-banner/ms-banner.component';
 import { MsFooterComponent } from './components/ms-footer/ms-footer.component';
 import { MsHeaderComponent } from './components/ms-header/ms-header.component';
 import { MsMainLayoutComponent } from './components/ms-main-layout/ms-main-layout.component';
-import { MsPanelParametersComponent } from './components/ms-panel-parameters/ms-panel-parameters.component';
 import { MsSidenavItemComponent } from './components/ms-sidenav/components/ms-sidenav-item/ms-sidenav-item.component';
 import { MsSidenavComponent } from './components/ms-sidenav/ms-sidenav.component';
 import { MsUserNavigationComponent } from './components/ms-user-navigation/ms-user-navigation.component';
@@ -37,8 +36,7 @@ const COMPONENTS = [
 	MsUserNavigationComponent,
 	MsMainLayoutComponent,
 	MsSidenavComponent,
-	MsSidenavItemComponent,
-	MsPanelParametersComponent
+	MsSidenavItemComponent
 ];
 
 @NgModule({

@@ -27,7 +27,7 @@ import {
 	TrainAlgorithmsEnum
 } from '../../../model-compression/models/enums/algorithms.enum';
 import { isScriptActive } from '../../../model-compression/models/enums/script-status.enum';
-import { MsPanelParametersComponent } from '../../../shared/components/ms-panel-parameters/ms-panel-parameters.component';
+import { MsPanelParametersComponent } from '../../../shared/standalone/ms-panel-parameters/ms-panel-parameters.component';
 
 @UntilDestroy()
 @Component({
@@ -72,8 +72,7 @@ export class MachineUnlearningComponent implements OnInit {
 			algorithm: this.fb.group({
 				alg: []
 			}),
-			model: [],
-			params: []
+			model: []
 		});
 
 		setTimeout(() => {
