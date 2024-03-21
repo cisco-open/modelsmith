@@ -85,13 +85,15 @@ export class MsPanelModelComponent implements OnInit, OnChanges {
 	}
 
 	private loadInitialModel(algorithmType: AlgorithmType) {
-		this.modelsFacadeService.currentModel$.pipe(skip(1), take(1)).subscribe((model: string | undefined) => {
-			if (isEmptyObject(model)) {
-				return;
-			}
-
-			this.modelControl?.patchValue(model);
-		});
+		this.modelsFacadeService.currentModel$
+			.pipe(
+				skip(1),
+				take(1),
+				filter((model): model is string => model !== undefined && !isEmptyObject(model))
+			)
+			.subscribe((model: string) => {
+				this.modelControl?.patchValue(model);
+			});
 
 		this.modelsFacadeService.dispatch(ModelsActions.getCurrentOrPreviousSelectedModel({ algorithmType }));
 	}

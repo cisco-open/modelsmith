@@ -19,7 +19,5 @@ export const generateRandomID = (): number => {
 };
 
 export function isEmptyObject(obj: any): boolean {
-	return (
-		obj && typeof obj === 'object' && !Array.isArray(obj) && Object.keys(obj).length === 0 && obj.constructor === Object
-	);
+	return Object.prototype.toString.call(obj) === '[object Object]' && Object.keys(obj).length === 0;
 }
