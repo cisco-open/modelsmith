@@ -101,6 +101,7 @@ export class MsPanelModelComponent implements OnInit, OnChanges {
 			.getModelsByType(algorithmType)
 			.pipe(
 				filter((models): models is ModelDto[] => !!models && models.length > 0),
+				map((models) => [...models].sort((a, b) => Number(b.isTrained) - Number(a.isTrained))),
 				untilDestroyed(this)
 			)
 			.subscribe((models: ModelDto[]) => {
