@@ -15,7 +15,7 @@
 //   SPDX-License-Identifier: Apache-2.0
 
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { debounceTime, distinctUntilChanged, filter, map } from 'rxjs';
@@ -39,7 +39,7 @@ import { sanitizeFilename } from '../../utils/sanitize-file-name.utils';
 	styleUrls: ['./project-settings.component.scss']
 })
 export class ProjectSettingsComponent implements OnInit {
-	form!: FormGroup;
+	form: FormGroup = new FormGroup({});
 
 	readonly AlgorithmType: typeof AlgorithmType = AlgorithmType;
 
@@ -52,13 +52,10 @@ export class ProjectSettingsComponent implements OnInit {
 
 	constructor(
 		private scriptFacadeService: ScriptFacadeService,
-		private fb: FormBuilder,
 		private fileService: FileService,
 		private snackbarService: BannerService,
 		private router: Router
-	) {
-		this.initForm();
-	}
+	) {}
 
 	ngOnInit() {
 		this.listenToAlgorithmPanelChanges();
@@ -88,12 +85,6 @@ export class ProjectSettingsComponent implements OnInit {
 			} else {
 				this.form.enable();
 			}
-		});
-	}
-
-	private initForm() {
-		this.form = this.fb.group({
-			algorithm: []
 		});
 	}
 

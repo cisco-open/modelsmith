@@ -14,8 +14,8 @@
 
 //   SPDX-License-Identifier: Apache-2.0
 
-import { Component } from '@angular/core';
-import { AbstractControl, ControlContainer, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, Input, inject } from '@angular/core';
+import { AbstractControl, ControlContainer, FormControl, FormGroup, Validators } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { filter, take } from 'rxjs';
 import { ScriptDetails } from '../../../../services/client/models/script/script-details.interface-dto';
@@ -33,22 +33,35 @@ import { isScriptActive } from '../../models/enums/script-status.enum';
 @Component({
 	selector: 'ms-panel-algorithm',
 	templateUrl: './panel-algorithm.component.html',
-	styleUrls: ['./panel-algorithm.component.scss']
+	styleUrls: ['./panel-algorithm.component.scss'],
+	viewProviders: [
+		{
+			provide: ControlContainer,
+			useFactory: () => inject(ControlContainer, { skipSelf: true })
+		}
+	]
 })
 export class PanelAlgorithmComponent {
-	form!: FormGroup;
+	@Input({ required: true }) controlKey = '';
 
 	readonly pruningAlgorithmsList = PRUNING_ALGORITHMS_LIST;
 	readonly quantAlgorithmsList = QUANTIZATION_ALGORITHMS_LIST;
 
 	readonly ALGORITHM_CONTROL_NAME: string = 'alg';
 
+	get parentFormGroup() {
+		return this.controlContainer.control as FormGroup;
+	}
+
+	get algorithmFormGroup(): FormGroup {
+		return this.parentFormGroup.get(this.controlKey) as FormGroup;
+	}
+
 	get algorithmFormControl(): AbstractControl | null {
-		return this.form.get(this.ALGORITHM_CONTROL_NAME);
+		return this.algorithmFormGroup.get(this.ALGORITHM_CONTROL_NAME);
 	}
 
 	constructor(
-		private fb: FormBuilder,
 		private controlContainer: ControlContainer,
 		private scriptFacadeService: ScriptFacadeService
 	) {}
@@ -86,19 +99,20 @@ export class PanelAlgorithmComponent {
 	}
 
 	private initForm() {
-		this.form = this.fb.group({
-			[this.ALGORITHM_CONTROL_NAME]: [DEFAULT_SELECTED_ALGORITHM, Validators.required]
-		});
-
-		(this.controlContainer?.control?.parent as FormGroup)?.setControl(this.controlContainer.name as string, this.form);
+		this.parentFormGroup.addControl(
+			this.controlKey,
+			new FormGroup({
+				[this.ALGORITHM_CONTROL_NAME]: new FormControl(DEFAULT_SELECTED_ALGORITHM, Validators.required)
+			})
+		);
 	}
 
 	private listenToScriptStateChanges(): void {
 		this.scriptFacadeService.scriptStatus$.pipe(untilDestroyed(this)).subscribe((state) => {
 			if (isScriptActive(state)) {
-				this.form.disable();
+				this.algorithmFormGroup.disable();
 			} else {
-				this.form.enable();
+				this.algorithmFormGroup.enable();
 			}
 		});
 	}

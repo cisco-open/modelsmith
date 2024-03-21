@@ -17,26 +17,24 @@
 <mat-card class="ms-card algorithm-card">
 	<p class="heading-sub-section-title">Algorithm</p>
 
-	<ng-container [formGroup]="form">
-		<div class="form-field-container">
-			<mat-form-field appearance="outline" subscriptSizing="dynamic">
-				<mat-select [formControlName]="ALGORITHM_CONTROL_NAME">
-					<mat-optgroup label="Pruning">
-						<mat-option
-							*ngFor="let algorithm of pruningAlgorithmsList; trackBy: trackByAlgorithmKey"
-							[value]="algorithm.key">
-							{{ algorithm.value }}
-						</mat-option>
-					</mat-optgroup>
-					<mat-optgroup label="Quantization">
-						<mat-option
-							*ngFor="let algorithm of quantAlgorithmsList; trackBy: trackByAlgorithmKey"
-							[value]="algorithm.key">
-							{{ algorithm.value }}
-						</mat-option>
-					</mat-optgroup>
-				</mat-select>
-			</mat-form-field>
-		</div>
-	</ng-container>
+	<div class="form-field-container" [formGroupName]="controlKey">
+		<mat-form-field appearance="outline" subscriptSizing="dynamic">
+			<mat-select [formControlName]="ALGORITHM_CONTROL_NAME">
+				<mat-optgroup label="Pruning">
+					<mat-option
+						*ngFor="let algorithm of pruningAlgorithmsList; trackBy: trackByAlgorithmKey"
+						[value]="algorithm.key">
+						{{ algorithm.value }}
+					</mat-option>
+				</mat-optgroup>
+				<mat-optgroup label="Quantization">
+					<mat-option
+						*ngFor="let algorithm of quantAlgorithmsList; trackBy: trackByAlgorithmKey"
+						[value]="algorithm.key">
+						{{ algorithm.value }}
+					</mat-option>
+				</mat-optgroup>
+			</mat-select>
+		</mat-form-field>
+	</div>
 </mat-card>

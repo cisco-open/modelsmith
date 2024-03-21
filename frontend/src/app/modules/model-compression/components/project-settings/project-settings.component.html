@@ -19,7 +19,7 @@
 <div class="project-settings-wrapper" [formGroup]="form">
 	<div class="left">
 		<ng-container [formGroup]="form">
-			<ms-panel-algorithm #panelAlgorithm formGroupName="algorithm"></ms-panel-algorithm>
+			<ms-panel-algorithm #panelAlgorithm controlKey="algorithm"></ms-panel-algorithm>
 
 			<ms-panel-model controlKey="model" [algorithm]="selectedAlgorithm"></ms-panel-model>
 
