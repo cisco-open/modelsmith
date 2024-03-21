@@ -14,8 +14,8 @@
 
 //   SPDX-License-Identifier: Apache-2.0
 
-import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { AbstractControl, ControlContainer, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, inject } from '@angular/core';
+import { AbstractControl, ControlContainer, FormControl, FormGroup, Validators } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Observable } from 'rxjs';
 import { first, map, startWith } from 'rxjs/operators';
@@ -36,9 +36,15 @@ import { isScriptActive } from '../../../model-compression/models/enums/script-s
 	selector: 'ms-panel-model',
 	templateUrl: './ms-panel-model.component.html',
 	styleUrls: ['./ms-panel-model.component.scss'],
-	changeDetection: ChangeDetectionStrategy.OnPush
+	viewProviders: [
+		{
+			provide: ControlContainer,
+			useFactory: () => inject(ControlContainer, { skipSelf: true })
+		}
+	]
 })
-export class MsPanelModelComponent implements OnInit, OnChanges {
+export class MsPanelModelComponent implements OnInit, OnChanges, OnDestroy {
+	@Input({ required: true }) controlKey = '';
 	@Input() algorithm?: AlgorithmKey;
 
 	ngOnChanges(changes: SimpleChanges) {
@@ -47,8 +53,6 @@ export class MsPanelModelComponent implements OnInit, OnChanges {
 		}
 	}
 
-	form!: FormGroup;
-
 	searchModel = new FormControl();
 	filteredModels!: Observable<ModelDto[]>;
 
@@ -56,12 +60,19 @@ export class MsPanelModelComponent implements OnInit, OnChanges {
 
 	readonly MODEL_CONTROL_NAME: string = 'model';
 
+	get parentFormGroup() {
+		return this.controlContainer.control as FormGroup;
+	}
+
+	get modelFormGroup(): FormGroup {
+		return this.parentFormGroup.get(this.controlKey) as FormGroup;
+	}
+
 	get modelControl(): AbstractControl | null {
-		return this.form.get(this.MODEL_CONTROL_NAME);
+		return this.modelFormGroup.get(this.MODEL_CONTROL_NAME);
 	}
 
 	constructor(
-		private fb: FormBuilder,
 		private controlContainer: ControlContainer,
 		private modelsFacadeService: ModelsFacadeService,
 		private scriptFacadeService: ScriptFacadeService
@@ -110,16 +121,17 @@ export class MsPanelModelComponent implements OnInit, OnChanges {
 	}
 
 	private initializeForm(): void {
-		this.form = this.fb.group({
-			[this.MODEL_CONTROL_NAME]: ['', Validators.required]
-		});
-
-		(this.controlContainer?.control?.parent as FormGroup)?.setControl(this.controlContainer.name as string, this.form);
+		this.parentFormGroup.addControl(
+			this.controlKey,
+			new FormGroup({
+				[this.MODEL_CONTROL_NAME]: new FormControl('', Validators.required)
+			})
+		);
 	}
 
 	private listenToScriptStateChanges(): void {
 		this.scriptFacadeService.scriptStatus$.pipe(untilDestroyed(this)).subscribe((state) => {
-			isScriptActive(state) ? this.form.disable() : this.form.enable();
+			isScriptActive(state) ? this.modelFormGroup.disable() : this.modelFormGroup.enable();
 		});
 	}
 
@@ -138,5 +150,9 @@ export class MsPanelModelComponent implements OnInit, OnChanges {
 
 	trackByModel(_: number, model: ModelDto): any {
 		return model.name;
+	}
+
+	ngOnDestroy() {
+		this.parentFormGroup.removeControl(this.controlKey);
 	}
 }

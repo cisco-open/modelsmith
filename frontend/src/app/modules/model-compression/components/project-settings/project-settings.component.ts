@@ -97,7 +97,6 @@ export class ProjectSettingsComponent implements OnInit {
 	private initForm() {
 		this.form = this.fb.group({
 			algorithm: [],
-			model: [],
 			params: []
 		});
 	}

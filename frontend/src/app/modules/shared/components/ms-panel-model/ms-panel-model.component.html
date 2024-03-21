@@ -17,28 +17,26 @@
 <mat-card class="ms-card model-card">
 	<p class="heading-sub-section-title">Model</p>
 
-	<ng-container [formGroup]="form">
-		<div class="form-field-container">
-			<mat-form-field appearance="outline" subscriptSizing="dynamic">
-				<mat-select formControlName="model" placeholder="Select a model...">
-					<mat-optgroup label="Predefined Models">
-						<mat-option>
-							<ngx-mat-select-search [formControl]="searchModel"> </ngx-mat-select-search>
-						</mat-option>
+	<div class="form-field-container" [formGroupName]="controlKey">
+		<mat-form-field appearance="outline" subscriptSizing="dynamic">
+			<mat-select formControlName="model" placeholder="Select a model...">
+				<mat-optgroup label="Predefined Models">
+					<mat-option>
+						<ngx-mat-select-search [formControl]="searchModel"> </ngx-mat-select-search>
+					</mat-option>
 
-						<ng-container *ngIf="filteredModels | async as models">
-							<mat-option
-								*ngFor="let model of models; trackBy: trackByModel"
-								[value]="model.name"
-								[disabled]="!model.isTrained">
-								{{ model.name }}
-								<mat-icon *ngIf="!model.isTrained" class="mat-error" fontSet="ms" fontIcon="icon-X"></mat-icon>
-							</mat-option>
-							<mat-option *ngIf="models.length === 0" disabled>No results found</mat-option>
-						</ng-container>
-					</mat-optgroup>
-				</mat-select>
-			</mat-form-field>
-		</div>
-	</ng-container>
+					<ng-container *ngIf="filteredModels | async as models">
+						<mat-option
+							*ngFor="let model of models; trackBy: trackByModel"
+							[value]="model.name"
+							[disabled]="!model.isTrained">
+							{{ model.name }}
+							<mat-icon *ngIf="!model.isTrained" class="mat-error" fontSet="ms" fontIcon="icon-X"></mat-icon>
+						</mat-option>
+						<mat-option *ngIf="models.length === 0" disabled>No results found</mat-option>
+					</ng-container>
+				</mat-optgroup>
+			</mat-select>
+		</mat-form-field>
+	</div>
 </mat-card>
