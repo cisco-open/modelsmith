@@ -31,7 +31,6 @@ import { CUSTOM_MODEL } from '../../models/constants/supported-models.constants'
 import { AlgorithmKey, AlgorithmType } from '../../models/enums/algorithms.enum';
 import { isScriptActive } from '../../models/enums/script-status.enum';
 import { sanitizeFilename } from '../../utils/sanitize-file-name.utils';
-import { PanelAlgorithmComponent } from '../panel-algorithm/panel-algorithm.component';
 
 @UntilDestroy()
 @Component({
@@ -45,7 +44,6 @@ export class ProjectSettingsComponent implements OnInit {
 	readonly AlgorithmType: typeof AlgorithmType = AlgorithmType;
 
 	@ViewChild('panelParameters', { static: false }) panelParametersComponent!: MsPanelParametersComponent;
-	@ViewChild('algorithmPanel', { static: false }) algorithmParametersComponent!: PanelAlgorithmComponent;
 
 	isScriptActive: boolean = false;
 	isQuantAlgorithmSelected: boolean = false;
