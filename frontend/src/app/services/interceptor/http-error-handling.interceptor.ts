@@ -34,6 +34,9 @@ export class HttpErrorHandlingService {
 			case 503:
 				this.spawnNotification(errorMessage);
 				break;
+			case 504:
+				this.spawnNotification(error);
+				break;
 			default:
 				this.spawnNotification(errorMessage);
 				break;
