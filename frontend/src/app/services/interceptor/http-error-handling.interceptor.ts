@@ -23,7 +23,7 @@ import { BannerService } from '../../modules/core/services/banner.service';
 export class HttpErrorHandlingService {
 	constructor(private bannerService: BannerService) {}
 
-	handleError(request: HttpRequest<any>, errorResponse: HttpErrorResponse): Observable<never> {
+	handleError(_: HttpRequest<any>, errorResponse: HttpErrorResponse): Observable<never> {
 		const error = errorResponse.error;
 		const { error: errorMessage } = error;
 

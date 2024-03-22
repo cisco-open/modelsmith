@@ -17,7 +17,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { filter, skip, take } from 'rxjs';
+import { filter, take } from 'rxjs';
 import { ScriptDetails } from '../../../../services/client/models/script/script-details.interface-dto';
 import { ScriptActions } from '../../../../state/core/script/script.actions';
 import { NavigationService } from '../../../core/services/navigation.service';
@@ -54,7 +54,6 @@ export class RunningComponent implements OnInit {
 		this.scriptFacadeService.dispatch(ScriptActions.getCurrentOrLastActiveScriptDetails());
 		this.scriptFacadeService.scriptDetails$
 			.pipe(
-				skip(1),
 				take(1),
 				filter((scriptDetails): scriptDetails is ScriptDetails => !!scriptDetails?.algKey)
 			)

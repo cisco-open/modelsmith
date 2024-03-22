@@ -35,10 +35,6 @@
 </button>
 
 <mat-menu class="ms-mat-menu" #menu="matMenu">
-	<button mat-menu-item [routerLink]="['/' + RoutesList.DEMO.ROOT]">
-		<mat-icon fontSet="ms" fontIcon="icon-Stack"></mat-icon>
-		Demo
-	</button>
 	<button mat-menu-item (click)="logout()">
 		<mat-icon fontSet="ms" fontIcon="icon-SignOut"></mat-icon>
 		Logout

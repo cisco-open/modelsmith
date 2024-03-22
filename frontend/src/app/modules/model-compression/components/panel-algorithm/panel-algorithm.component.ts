@@ -58,7 +58,7 @@ export class PanelAlgorithmComponent {
 	}
 
 	get algorithmFormControl(): AbstractControl | null {
-		return this.algorithmFormGroup.get(this.ALGORITHM_CONTROL_NAME);
+		return this.algorithmFormGroup?.get(this.ALGORITHM_CONTROL_NAME);
 	}
 
 	constructor(
