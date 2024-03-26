@@ -34,7 +34,7 @@ sys.path.append(os.path.join(script_dir, '..'))
 
 from collections import OrderedDict
 
-from models import *
+from utils.model_utils import prepare_model
 from utils.utils import progress_bar, train, test, setup_seed, setup_dataset
 from utils import pruner
 from utils.impl import iterative_unlearn
@@ -43,7 +43,6 @@ import time
 def main():
     arg_parser = argparse.ArgumentParser(description='PyTorch CIFAR10 Training and Unlearning')
     arg_parser.add_argument('--save-dir', default=unlearn_dir, type=str, help='save directory')
-    arg_parser.add_argument('--mask', default=checkpoint_dir + '/ckpt.pth', type=str, help='pretrianed model path')
     arg_parser.add_argument('--num-indexes-to-replace', default=4500, type=int, help='number of indexes to replace')
     arg_parser.add_argument('--alpha', default=5e-4, type=float, help='alpha, the l1 regularization coefficient')
     arg_parser.add_argument('--unlearn_lr', default=0.01, type=float, help='learning rate for unlearning')
@@ -64,7 +63,7 @@ def main():
     arg_parser.add_argument("--decreasing_lr", default="91,136", help="decreasing strategy")
     arg_parser.add_argument("--rewind_epoch", default=0, type=int, help="rewind checkpoint")
     arg_parser.add_argument("--imagenet_arch", action="store_true", help="architecture for imagenet size samples")
-    arg_parser.add_argument("--arch", type=str, default="resnet18", help="model architecture")
+    arg_parser.add_argument("--arch", type=str, default="ResNet18", help="model architecture")
     arg_parser.add_argument("--no-l1-epochs", default=0, type=int, help="non l1 epochs")
 
     args = arg_parser.parse_args()
@@ -77,8 +76,8 @@ def main():
         setup_seed(args.seed)
 
     seed = args.seed
-    model = ResNet18()
-    model = model.to(device)
+    net = prepare_model(args.arch, device)
+    net = net.to(device)
 
     # prepare dataset
     (
@@ -87,7 +86,7 @@ def main():
         test_loader,
         marked_loader,
     ) = setup_dataset(args)
-    model.cuda()
+    net.cuda()
 
     def replace_loader_dataset(
         dataset, batch_size=args.batch_size, seed=1, shuffle=True
@@ -130,17 +129,9 @@ def main():
 
     evaluation_result = None
 
+    pruner.check_sparsity(net)
 
-    checkpoint = torch.load(args.mask, map_location=device)
-    if "net" in checkpoint.keys():
-        checkpoint = checkpoint["net"]
-    if "state_dict" in checkpoint.keys():
-        checkpoint = checkpoint["state_dict"]
-    model.load_state_dict(checkpoint, strict=True)
-    pruner.check_sparsity(model)
-
-
-    FT_l1(unlearn_data_loaders, model, criterion, args)
+    FT_l1(unlearn_data_loaders, net, criterion, args)
 
     if evaluation_result is None:
         evaluation_result = {}
@@ -151,19 +142,13 @@ def main():
         accuracy = {}
         for index, (name, loader) in enumerate(unlearn_data_loaders.items()):
             print(f'Test: {index}', flush=True)
-            val_acc = validate(loader, model, criterion, args, test_index=index)
+            val_acc = validate(loader, net, criterion, args, test_index=index)
             accuracy[name] = val_acc
             print(f"Statistics: {name}_acc_test_{index}: {val_acc:.2f}", flush=True)
 
         evaluation_result["accuracy"] = accuracy
 
         print('Testing Phase Ended', flush=True)
-    
-    state = {
-            'state_dict': model.state_dict(),
-            'eval': evaluation_result,
-        }
-    torch.save(state, os.path.join(args.save_dir, 'ckpt.pth'))
 
 def l1_regularization(model):
     params_vec = []

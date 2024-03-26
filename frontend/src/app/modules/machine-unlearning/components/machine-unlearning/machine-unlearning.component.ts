@@ -22,10 +22,7 @@ import { ScriptConfigsDto } from '../../../../services/client/models/script/scri
 import { ScriptActions } from '../../../../state/core/script/script.actions';
 import { RoutesList } from '../../../core/models/enums/routes-list.enum';
 import { ScriptFacadeService } from '../../../core/services/script-facade.service';
-import {
-	MachineUnlearningAlgorithmsEnum,
-	TrainAlgorithmsEnum
-} from '../../../model-compression/models/enums/algorithms.enum';
+import { MachineUnlearningAlgorithmsEnum } from '../../../model-compression/models/enums/algorithms.enum';
 import { isScriptActive } from '../../../model-compression/models/enums/script-status.enum';
 import { MsPanelParametersComponent } from '../../../shared/standalone/ms-panel-parameters/ms-panel-parameters.component';
 
@@ -90,18 +87,6 @@ export class MachineUnlearningComponent implements OnInit {
 		const configs: ScriptConfigsDto = {
 			...algorithm,
 			params: this.panelParametersComponent.parametersFormatted
-		};
-
-		this.scriptFacadeService.dispatch(ScriptActions.callScript({ configs }));
-	}
-
-	retrainModel() {
-		if (this.isScriptActive) {
-			return;
-		}
-
-		const configs: ScriptConfigsDto = {
-			alg: TrainAlgorithmsEnum.MUT
 		};
 
 		this.scriptFacadeService.dispatch(ScriptActions.callScript({ configs }));
