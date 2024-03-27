@@ -24,7 +24,17 @@ const PRUNING_MODELS = [
 	'VGG19'
 ];
 
-const MACHINE_UNLEARNING_MODELS = [];
+const MACHINE_UNLEARNING_MODELS = [
+	'ResNet18',
+	'ResNet34',
+	'ResNet50',
+	'ResNet101',
+	'ResNet152',
+	'VGG11',
+	'VGG13',
+	'VGG16',
+	'VGG19'
+];
 
 function getModelsByType(type) {
 	switch (type) {

@@ -68,8 +68,7 @@ export class MachineUnlearningComponent implements OnInit {
 		this.form = this.fb.group({
 			algorithm: this.fb.group({
 				alg: []
-			}),
-			model: []
+			})
 		});
 
 		setTimeout(() => {
@@ -82,11 +81,15 @@ export class MachineUnlearningComponent implements OnInit {
 			return;
 		}
 
-		const { algorithm } = this.form.getRawValue();
+		const { algorithm, model: modelPanel } = this.form.getRawValue();
+		const { model } = modelPanel;
 
 		const configs: ScriptConfigsDto = {
 			...algorithm,
-			params: this.panelParametersComponent.parametersFormatted
+			params: {
+				...this.panelParametersComponent.parametersFormatted,
+				arch: model
+			}
 		};
 
 		this.scriptFacadeService.dispatch(ScriptActions.callScript({ configs }));

@@ -30,9 +30,11 @@ pip3 install torch torchvision torchaudio --index-url https://download.pytorch.o
 
 ## Training
 
+- Predefined models to train: ResNet18, ResNet34, ResNet50, ResNet101, ResNet152, VGG11, VGG13, VGG16, VGG19
+
 ```
 # Start training with:
-python3 train.py
+python3 train.py --arch=ResNet18 --epochs=100
 
 # You can manually resume the training with:
 python3 train.py --resume --lr=0.01

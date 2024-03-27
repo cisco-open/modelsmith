@@ -13,9 +13,11 @@ pip3 install torch torchvision torchaudio --index-url https://download.pytorch.o
 
 ## Training to get a pretrained model
 
+- Predefined models to train: ResNet18, ResNet34, ResNet50, ResNet101, ResNet152, VGG11, VGG13, VGG16, VGG19
+
 ```
 # Start training with:
-python train.py
+python train.py --arch=ResNet18 --epochs=100
 ```
 
 ## Sparse Unlearning
