@@ -96,11 +96,11 @@ export class MsPanelParametersComponent implements OnInit {
 	) {}
 
 	ngOnInit() {
-		this.initializeForm();
+		this.initForm();
 		this.listenToScriptStateChanges();
 	}
 
-	private initializeForm(): void {
+	private initForm(): void {
 		this.parentFormGroup.addControl(
 			this.controlKey,
 			new FormGroup({

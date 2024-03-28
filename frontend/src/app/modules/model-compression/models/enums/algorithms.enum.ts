@@ -1,5 +1,8 @@
 //    Copyright 2024 Cisco Systems, Inc. and its affiliates
 
+import { KeyValueObject } from '../../../../services/client/models/key-value/key-value.interface-dto';
+import { toTitleCase } from '../../../core/utils/core.utils';
+
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
 //   You may obtain a copy of the License at
@@ -27,6 +30,11 @@ export enum AlgorithmType {
 	TRAIN = 'train'
 }
 
+export const AlgorithmTypeKeyValue: KeyValueObject<string>[] = Object.entries(AlgorithmType).map(([key, value]) => ({
+	key: value,
+	value: toTitleCase(key)
+}));
+
 export enum QuantizationAlgorithmsEnum {
 	BPTQ = 'BPTQ',
 	BRECQ = 'BRECQ',
@@ -49,8 +57,16 @@ export enum MachineUnlearningAlgorithmsEnum {
 }
 
 export enum TrainAlgorithmsEnum {
-	MUT = 'MUT'
+	QUANTIZATION_TRAIN = 'Q_TRAIN',
+	PRUNING_TRAIN = 'P_TRAIN',
+	MACHINE_UNLEARNING_TRAIN = 'MU_TRAIN'
 }
+
+export const AlgorithmTypeTrainAlgoritmMap: any = {
+	[AlgorithmType.MACHINE_UNLEARNING]: TrainAlgorithmsEnum.MACHINE_UNLEARNING_TRAIN,
+	[AlgorithmType.PRUNING]: TrainAlgorithmsEnum.PRUNING_TRAIN,
+	[AlgorithmType.QUANTIZATION]: TrainAlgorithmsEnum.QUANTIZATION_TRAIN
+};
 
 export function determineAlgorithmType(algValue: AlgorithmKey): AlgorithmType | null {
 	if (Object.values(PruningAlgorithmsEnum).includes(algValue as PruningAlgorithmsEnum)) {

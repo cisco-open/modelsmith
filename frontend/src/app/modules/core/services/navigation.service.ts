@@ -24,11 +24,19 @@ export class NavigationService {
 	private history: string[] = [];
 
 	constructor(private router: Router) {
+		this.addInitialUrl();
+
 		this.router.events
 			.pipe(filter((event: NavigationEvent): event is NavigationEnd => event instanceof NavigationEnd))
 			.subscribe((event: NavigationEnd) => {
+				console.log(event.urlAfterRedirects);
 				this.history.push(event.urlAfterRedirects);
 			});
+	}
+
+	addInitialUrl() {
+		const initialUrl = this.router.url;
+		this.history.push(initialUrl);
 	}
 
 	goToPreviousPage(defaultRoute: string = RoutesList.MODEL_COMPRESSION.ROOT): void {

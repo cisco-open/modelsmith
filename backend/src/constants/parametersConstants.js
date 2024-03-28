@@ -1050,10 +1050,68 @@ const MACHINE_UNLEARNING_PARAMETERS = {
 	]
 };
 
+const TRAIN_PARAMETERS = {
+	P_TRAIN: [
+		{
+			argName: 'epochs',
+			defaultValue: 200,
+			inputType: 'number',
+			label: 'Epochs',
+			placeholder: 'Enter number of epochs',
+			help: 'Number of epochs for training the machine unlearning'
+		},
+		{
+			argName: 'lr',
+			defaultValue: 0.1,
+			inputType: 'number',
+			label: 'Learning Rate',
+			placeholder: 'Enter learning rate',
+			help: 'Learning rate'
+		}
+	],
+	Q_TRAIN: [
+		{
+			argName: 'epochs',
+			defaultValue: 200,
+			inputType: 'number',
+			label: 'Epochs',
+			placeholder: 'Enter number of epochs',
+			help: 'Number of epochs for training the machine unlearning'
+		},
+		{
+			argName: 'lr',
+			defaultValue: 0.1,
+			inputType: 'number',
+			label: 'Learning Rate',
+			placeholder: 'Enter learning rate',
+			help: 'Learning rate'
+		}
+	],
+	MU_TRAIN: [
+		{
+			argName: 'epochs',
+			defaultValue: 200,
+			inputType: 'number',
+			label: 'Epochs',
+			placeholder: 'Enter number of epochs',
+			help: 'Number of epochs for training the machine unlearning'
+		},
+		{
+			argName: 'lr',
+			defaultValue: 0.1,
+			inputType: 'number',
+			label: 'Learning Rate',
+			placeholder: 'Enter learning rate',
+			help: 'Learning rate'
+		}
+	]
+};
+
 const ALGORITHM_PARAMETERS = {
 	...QUANTIZATION_PARAMETERS,
 	...PRUNING_PARAMETERS,
-	...MACHINE_UNLEARNING_PARAMETERS
+	...MACHINE_UNLEARNING_PARAMETERS,
+	...TRAIN_PARAMETERS
 };
 
 module.exports = ALGORITHM_PARAMETERS;

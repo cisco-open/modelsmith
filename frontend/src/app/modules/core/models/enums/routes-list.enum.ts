@@ -34,6 +34,9 @@ export const RoutesList = {
 	RUNNING: {
 		ROOT: 'running'
 	},
+	MODEL_TRAINING: {
+		ROOT: 'model-training'
+	},
 	DEMO: {
 		ROOT: 'demo',
 		BUTTONS: 'buttons',

@@ -37,11 +37,7 @@ import { ModelsActions } from '../../../../state/core/models/models.actions';
 import { ModelsFacadeService } from '../../../core/services/models-facade.service';
 import { ScriptFacadeService } from '../../../core/services/script-facade.service';
 import { isEmptyArray, isNilOrEmptyString } from '../../../core/utils/core.utils';
-import {
-	AlgorithmKey,
-	AlgorithmType,
-	determineAlgorithmType
-} from '../../../model-compression/models/enums/algorithms.enum';
+import { AlgorithmType } from '../../../model-compression/models/enums/algorithms.enum';
 import { isScriptActive } from '../../../model-compression/models/enums/script-status.enum';
 
 @UntilDestroy()
@@ -68,11 +64,13 @@ import { isScriptActive } from '../../../model-compression/models/enums/script-s
 })
 export class MsPanelModelComponent implements OnInit, OnChanges, OnDestroy {
 	@Input({ required: true }) controlKey = '';
-	@Input() algorithm?: AlgorithmKey;
+	@Input({ required: true }) algorithmType?: AlgorithmType;
+	@Input() areNotTrainedItemsSelectable: boolean = false;
+	@Input() isInitialLoadForTrainTypeModels: boolean = false;
 
 	ngOnChanges(changes: SimpleChanges) {
-		if (changes['algorithm'] && changes['algorithm'].currentValue) {
-			this.configureModels(changes['algorithm'].currentValue as AlgorithmKey);
+		if (changes['algorithmType'] && changes['algorithmType'].currentValue) {
+			this.configureModels(changes['algorithmType'].currentValue as AlgorithmType);
 		}
 	}
 
@@ -110,14 +108,17 @@ export class MsPanelModelComponent implements OnInit, OnChanges, OnDestroy {
 		this.listenToCurrentModelChanges();
 	}
 
-	private configureModels(algorithm: AlgorithmKey) {
-		const algorithmType = determineAlgorithmType(algorithm);
+	private configureModels(algorithmType: AlgorithmType | null) {
 		if (!algorithmType) {
 			return;
 		}
 
 		this.fetchModels(algorithmType);
-		this.modelsFacadeService.dispatch(ModelsActions.getCurrentOrPreviousSelectedModel({ algorithmType }));
+		this.modelsFacadeService.dispatch(
+			ModelsActions.getCurrentOrPreviousSelectedModel({
+				algorithmType: this.isInitialLoadForTrainTypeModels ? AlgorithmType.TRAIN : algorithmType
+			})
+		);
 	}
 
 	private listenToCurrentModelChanges() {
@@ -125,6 +126,7 @@ export class MsPanelModelComponent implements OnInit, OnChanges, OnDestroy {
 			if (isNilOrEmptyString(model)) {
 				return;
 			}
+
 			this.modelControl?.patchValue(model);
 		});
 	}

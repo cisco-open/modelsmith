@@ -22,7 +22,7 @@ const checkIfNoScriptRunning = require('../middlewares/checkIfNoScriptRunning');
 const checkIfScriptRunning = require('../middlewares/checkIfScriptRunning');
 const ALGORITHMS = require('../constants/algorithmsConstants');
 const MESSAGE_TYPES = require('../constants/messageTypes');
-const { BAD_REQUEST, OK, NOT_FOUND, INTERNAL_SERVER_ERROR } = require('../constants/httpStatusCodes');
+const { BAD_REQUEST, OK, INTERNAL_SERVER_ERROR } = require('../constants/httpStatusCodes');
 const logger = require('../utils/logger');
 const {
 	getScriptState,
@@ -110,8 +110,8 @@ function executePythonScript(path, algorithm, args = '', type) {
 		}
 
 		const scriptPath = `${process.env.MODELSMITH_PATH}/${path}`;
-		const cmd = `source ${process.env.CONDA_SH_PATH} && conda activate modelsmith && cd ${scriptPath} && python3 ${algorithm} ${args}`;
-		broadcastTerminal(`python3 ${algorithm} ${args}`);
+		const cmd = `source ${process.env.CONDA_SH_PATH} && conda activate modelsmith && python3 ${scriptPath}${algorithm} ${args}`;
+		broadcastTerminal(`python3 ${scriptPath}${algorithm} ${args}`);
 
 		executeCommand(
 			cmd,

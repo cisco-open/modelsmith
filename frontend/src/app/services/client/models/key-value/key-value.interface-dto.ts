@@ -17,3 +17,8 @@
 export interface KeyValue<T> {
 	[key: string]: T;
 }
+
+export interface KeyValueObject<T> {
+	key: string;
+	value: T;
+}

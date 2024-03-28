@@ -1,4 +1,4 @@
-//    Copyright 2024 Cisco Systems, Inc. and its affiliates
+// Copyright 2024 Cisco Systems, Inc. and its affiliates
 
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -15,45 +15,66 @@
 //   SPDX-License-Identifier: Apache-2.0
 
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { debounceTime, distinctUntilChanged, filter, map } from 'rxjs';
 import { ScriptConfigsDto } from '../../../../services/client/models/script/script-configs.interface-dto';
-import { ScriptActions } from '../../../../state/core/script/script.actions';
+import { ScriptActions } from '../../../../state/core/script';
 import { RoutesList } from '../../../core/models/enums/routes-list.enum';
-import { ScriptFacadeService } from '../../../core/services/script-facade.service';
+import { BannerService, ScriptFacadeService } from '../../../core/services';
+import { isNil } from '../../../core/utils/core.utils';
 import {
 	AlgorithmType,
-	MachineUnlearningAlgorithmsEnum
+	AlgorithmTypeTrainAlgoritmMap,
+	TrainAlgorithmsEnum
 } from '../../../model-compression/models/enums/algorithms.enum';
 import { isScriptActive } from '../../../model-compression/models/enums/script-status.enum';
 import { MsPanelParametersComponent } from '../../../shared/standalone/ms-panel-parameters/ms-panel-parameters.component';
 
 @UntilDestroy()
 @Component({
-	selector: 'ms-machine-unlearning',
-	templateUrl: './machine-unlearning.component.html',
-	styleUrls: ['./machine-unlearning.component.scss']
+	selector: 'ms-model-training',
+	templateUrl: './model-training.component.html',
+	styleUrls: ['./model-training.component.scss']
 })
-export class MachineUnlearningComponent implements OnInit {
-	readonly AlgorithmType: typeof AlgorithmType = AlgorithmType;
-	readonly MachineUnlearningAlgorithmsEnum: typeof MachineUnlearningAlgorithmsEnum = MachineUnlearningAlgorithmsEnum;
-
-	isScriptActive: boolean = false;
+export class ModelTrainingComponent implements OnInit {
+	form: FormGroup = new FormGroup({});
 
 	@ViewChild('panelParameters', { static: false }) panelParametersComponent!: MsPanelParametersComponent;
 
-	form!: FormGroup;
+	isScriptActive: boolean = false;
+
+	selectedAlgorithmType: AlgorithmType = AlgorithmType.PRUNING;
+	selectedAlgorithmKey: TrainAlgorithmsEnum = TrainAlgorithmsEnum.PRUNING_TRAIN;
 
 	constructor(
-		private fb: FormBuilder,
 		private scriptFacadeService: ScriptFacadeService,
-		private router: Router
+		private router: Router,
+		private snackbarService: BannerService
 	) {}
 
 	ngOnInit() {
-		this.initForm();
+		this.listenToAlgorithmPanelChanges();
 		this.listenToScriptStateChanges();
+	}
+
+	private listenToAlgorithmPanelChanges(): void {
+		this.form.valueChanges
+			.pipe(
+				debounceTime(50),
+				map(() => {
+					const formRawValue = this.form.getRawValue();
+					return formRawValue.algorithmTypeGroup && formRawValue.algorithmTypeGroup.algorithmType;
+				}),
+				distinctUntilChanged(),
+				filter((algorithmType) => !!algorithmType),
+				untilDestroyed(this)
+			)
+			.subscribe((algorithmType: AlgorithmType) => {
+				this.selectedAlgorithmType = algorithmType;
+				this.selectedAlgorithmKey = AlgorithmTypeTrainAlgoritmMap[algorithmType];
+			});
 	}
 
 	private listenToScriptStateChanges(): void {
@@ -68,28 +89,16 @@ export class MachineUnlearningComponent implements OnInit {
 		});
 	}
 
-	private initForm() {
-		this.form = this.fb.group({
-			algorithm: this.fb.group({
-				alg: []
-			})
-		});
-
-		setTimeout(() => {
-			this.form.get('algorithm.alg')?.setValue(MachineUnlearningAlgorithmsEnum.MU);
-		}, 0);
-	}
-
 	submit() {
-		if (this.isScriptActive) {
+		if (isNil(this.selectedAlgorithmType)) {
+			this.snackbarService.showError('Select an algorithm before running a script.');
 			return;
 		}
-
-		const { algorithm, model: modelPanel } = this.form.getRawValue();
+		const { model: modelPanel } = this.form.getRawValue();
 		const { model } = modelPanel;
 
 		const configs: ScriptConfigsDto = {
-			...algorithm,
+			alg: this.selectedAlgorithmKey,
 			params: {
 				...this.panelParametersComponent.parametersFormatted,
 				arch: model

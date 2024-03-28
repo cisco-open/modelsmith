@@ -90,7 +90,17 @@ const MACHINE_UNLEARNING_ALGORITHMS = {
 };
 
 const TRAIN_ALGORITHMS = {
-	MUT: {
+	P_TRAIN: {
+		path: PRUNING_PATH,
+		type: ALGORITHM_TYPES.TRAIN,
+		fileName: 'train.py'
+	},
+	Q_TRAIN: {
+		path: QUANTIZATION_PATH,
+		type: ALGORITHM_TYPES.TRAIN,
+		fileName: 'train.py'
+	},
+	MU_TRAIN: {
 		path: MACHINE_UNLEARNING_PATH,
 		type: ALGORITHM_TYPES.TRAIN,
 		fileName: 'train.py'

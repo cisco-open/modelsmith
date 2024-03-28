@@ -25,10 +25,15 @@ import { RoutesList } from '../../../core/models/enums/routes-list.enum';
 import { BannerService } from '../../../core/services/banner.service';
 import { FileService } from '../../../core/services/file.service';
 import { ScriptFacadeService } from '../../../core/services/script-facade.service';
-import { isEmptyObject } from '../../../core/utils/core.utils';
+import { isNil } from '../../../core/utils/core.utils';
 import { MsPanelParametersComponent } from '../../../shared/standalone/ms-panel-parameters/ms-panel-parameters.component';
 import { CUSTOM_MODEL } from '../../models/constants/supported-models.constants';
-import { AlgorithmKey, AlgorithmType } from '../../models/enums/algorithms.enum';
+import {
+	AlgorithmKey,
+	AlgorithmType,
+	PruningAlgorithmsEnum,
+	determineAlgorithmType
+} from '../../models/enums/algorithms.enum';
 import { isScriptActive } from '../../models/enums/script-status.enum';
 import { sanitizeFilename } from '../../utils/sanitize-file-name.utils';
 
@@ -48,7 +53,8 @@ export class ProjectSettingsComponent implements OnInit {
 	isScriptActive: boolean = false;
 	isQuantAlgorithmSelected: boolean = false;
 
-	selectedAlgorithm?: AlgorithmKey;
+	selectedAlgorithm: AlgorithmKey = PruningAlgorithmsEnum.IMP;
+	selectedAlgorithmType: AlgorithmType = AlgorithmType.PRUNING;
 
 	constructor(
 		private scriptFacadeService: ScriptFacadeService,
@@ -71,11 +77,14 @@ export class ProjectSettingsComponent implements OnInit {
 					return formRawValue.algorithm && formRawValue.algorithm.alg;
 				}),
 				distinctUntilChanged(),
-				filter((algValue) => !!algValue),
+				filter((algValue) => !isNil(algValue)),
 				untilDestroyed(this)
 			)
 			.subscribe((algValue) => {
 				this.selectedAlgorithm = algValue;
+				this.selectedAlgorithmType = determineAlgorithmType(algValue)!;
+
+				console.log(this.selectedAlgorithmType);
 			});
 	}
 
@@ -92,7 +101,7 @@ export class ProjectSettingsComponent implements OnInit {
 	}
 
 	submit() {
-		if (isEmptyObject(this.selectedAlgorithm)) {
+		if (isNil(this.selectedAlgorithm)) {
 			this.snackbarService.showError('Select an algorithm before running a script.');
 			return;
 		}

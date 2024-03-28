@@ -1,0 +1,17 @@
+<mat-card class="ms-card parameters-card">
+	<p class="heading-sub-section-title">Algorithm Type</p>
+
+	<ng-container [formGroupName]="controlKey">
+		<div class="form-field-container">
+			<mat-form-field appearance="outline" subscriptSizing="dynamic">
+				<mat-select [formControlName]="ALGORITHM_TYPE_CONTROL_NAME">
+					<mat-option
+						*ngFor="let algorithmType of algorithmTypesOptions; trackBy: trackByAlgorithmType"
+						[value]="algorithmType.key">
+						{{ algorithmType.value }}
+					</mat-option>
+				</mat-select>
+			</mat-form-field>
+		</div>
+	</ng-container>
+</mat-card>

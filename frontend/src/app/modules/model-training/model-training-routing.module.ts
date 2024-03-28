@@ -1,4 +1,4 @@
-//    Copyright 2024 Cisco Systems, Inc. and its affiliates
+// Copyright 2024 Cisco Systems, Inc. and its affiliates
 
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -16,17 +16,17 @@
 
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { MachineUnlearningComponent } from './components/machine-unlearning/machine-unlearning.component';
+import { ModelTrainingComponent } from './components/model-training/model-training.component';
 
-const MACHINE_UNLEARNING_ROUTES: Routes = [
+const MODEL_TRAINING_ROUTES: Routes = [
 	{
 		path: '',
-		component: MachineUnlearningComponent
+		component: ModelTrainingComponent
 	}
 ];
 
 @NgModule({
-	imports: [RouterModule.forChild(MACHINE_UNLEARNING_ROUTES)],
+	imports: [RouterModule.forChild(MODEL_TRAINING_ROUTES)],
 	exports: [RouterModule]
 })
-export class MachineUnlearningRoutingModule {}
+export class ModelTrainingRoutingModule {}

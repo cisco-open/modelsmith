@@ -14,18 +14,19 @@
 
   SPDX-License-Identifier: Apache-2.0 -->
 
-<p class="heading-primary-title title">Machine Unlearning</p>
+<p class="heading-primary-title title">Model Training</p>
 
-<div class="page-wrapper" [formGroup]="form">
-	<div class="left">
-		<ng-container [formGroup]="form">
-			<ms-panel-model controlKey="model" [algorithmType]="AlgorithmType.MACHINE_UNLEARNING"></ms-panel-model>
+<div class="page-wrapper">
+	<div class="left" [formGroup]="form">
+		<ms-panel-algorithm-type controlKey="algorithmTypeGroup"></ms-panel-algorithm-type>
 
-			<ms-panel-parameters
-				#panelParameters
-				controlKey="params"
-				[algorithm]="MachineUnlearningAlgorithmsEnum.MU"></ms-panel-parameters>
-		</ng-container>
+		<ms-panel-model
+			[algorithmType]="selectedAlgorithmType"
+			controlKey="model"
+			[areNotTrainedItemsSelectable]="true"
+			[isInitialLoadForTrainTypeModels]="true"></ms-panel-model>
+
+		<ms-panel-parameters #panelParameters controlKey="params" [algorithm]="selectedAlgorithmKey"></ms-panel-parameters>
 
 		<div>
 			<button mat-raised-button color="primary" (click)="submit()" [disabled]="isScriptActive || form.invalid">
@@ -34,6 +35,7 @@
 			<button class="ml-2" mat-raised-button color="primary" (click)="goToChartPage()">View Chart</button>
 		</div>
 	</div>
+
 	<div class="right">
 		<ms-terminal></ms-terminal>
 	</div>

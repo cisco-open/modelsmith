@@ -65,6 +65,10 @@ const routes: Routes = [
 			{
 				path: RoutesList.RUNNING.ROOT,
 				loadChildren: () => import('./modules/running/running.module').then((m) => m.RunningModule)
+			},
+			{
+				path: RoutesList.MODEL_TRAINING.ROOT,
+				loadChildren: () => import('./modules/model-training/model-training.module').then((m) => m.ModelTrainingModule)
 			}
 		]
 	}

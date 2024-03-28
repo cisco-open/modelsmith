@@ -56,7 +56,7 @@ export class MsSidenavComponent implements OnInit {
 		}
 	}
 
-	trackByRoute(index: number, item: SidenavItem): string {
+	trackByRoute(_: number, item: SidenavItem): string {
 		return item.route;
 	}
 }

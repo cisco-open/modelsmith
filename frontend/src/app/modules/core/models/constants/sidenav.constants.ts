@@ -40,7 +40,7 @@ const expert: SidenavItem[] = [
 		icon: 'icon-GearSix'
 	},
 	{
-		route: 'machine-unlearning',
+		route: RoutesList.MACHINE_UNLEARNING.ROOT,
 		label: 'Machine Unlearning',
 		icon: 'icon-Systems-Manager'
 	},
@@ -53,6 +53,11 @@ const expert: SidenavItem[] = [
 		route: 'multi-modal',
 		label: 'Multi-modal',
 		icon: 'icon-Environmental'
+	},
+	{
+		route: RoutesList.MODEL_TRAINING.ROOT,
+		label: 'Model Training',
+		icon: 'icon-Inventory'
 	}
 ];
 

@@ -1,4 +1,4 @@
-//    Copyright 2024 Cisco Systems, Inc. and its affiliates
+// Copyright 2024 Cisco Systems, Inc. and its affiliates
 
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -14,19 +14,20 @@
 
 //   SPDX-License-Identifier: Apache-2.0
 
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import { MachineUnlearningComponent } from './components/machine-unlearning/machine-unlearning.component';
+.page-wrapper {
+	display: flex;
+	justify-content: space-between;
+	gap: 20px;
+	height: 100%;
 
-const MACHINE_UNLEARNING_ROUTES: Routes = [
-	{
-		path: '',
-		component: MachineUnlearningComponent
+	.left {
+		display: flex;
+		flex-direction: column;
+		width: 45%;
+		gap: 20px;
 	}
-];
 
-@NgModule({
-	imports: [RouterModule.forChild(MACHINE_UNLEARNING_ROUTES)],
-	exports: [RouterModule]
-})
-export class MachineUnlearningRoutingModule {}
+	.right {
+		width: 55%;
+	}
+}

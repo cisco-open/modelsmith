@@ -75,6 +75,7 @@ import { ModelsFacadeService } from './services/models-facade.service';
 	providers: [
 		WebsocketService,
 		AuthGuard,
+		NavigationService,
 		RedirectIfAuthenticatedGuard,
 		ModeSelectGuard,
 		BannerService,
@@ -83,7 +84,6 @@ import { ModelsFacadeService } from './services/models-facade.service';
 		AuthFacadeService,
 		FileService,
 		FileFacadeService,
-		NavigationService,
 		ChartsFacadeService,
 		ParametersFacadeService,
 		TerminalFacadeService,
@@ -110,7 +110,8 @@ export class CoreModule {
 	constructor(
 		@Optional() @SkipSelf() parent: CoreModule,
 		private registry: MatIconRegistry,
-		private scriptFacadeService: ScriptFacadeService
+		private scriptFacadeService: ScriptFacadeService,
+		private navigationService: NavigationService
 	) {
 		if (parent != null) {
 			throw new Error('Core Module already loaded.');

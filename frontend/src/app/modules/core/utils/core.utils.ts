@@ -33,3 +33,10 @@ export function isNilOrEmptyString(obj: any): boolean {
 export function isEmptyArray(obj: any): boolean {
 	return Array.isArray(obj) && obj.length === 0;
 }
+
+export const toTitleCase = (str: string) =>
+	str
+		.toLowerCase()
+		.split('_')
+		.map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+		.join(' ');

@@ -35,6 +35,7 @@
  * - caption (.mat-small or .mat-caption): Smaller body and hint text.
  * - button: Used for buttons and anchors.
  */
+
 $ms-typography: mat.define-rem-typography-config(
 	$font-family: 'Montserrat',
 	$headline-1: mat.define-typography-level(7rem, 7rem, 300, $letter-spacing: -0.05em),
@@ -101,6 +102,7 @@ $ms-typography: mat.define-rem-typography-config(
  * This approach allows for a flexible theming system where theme-related values are defined in one centralized location
  * and consumed throughout the application using the generated custom properties.
  */
+
 @mixin configure-root-theme-variables($theme-color-scheme) {
 	:root {
 		@include set-properties('', $theme-color-scheme);
@@ -123,6 +125,7 @@ $ms-typography: mat.define-rem-typography-config(
 	@include mat.snack-bar-theme($theme);
 	@include mat.tooltip-theme($theme);
 	@include mat.progress-bar-theme($theme);
+	@include mat.progress-spinner-theme($theme);
 	@include mat.slide-toggle-theme($theme);
 
 	@include mat.form-field-density(-4);

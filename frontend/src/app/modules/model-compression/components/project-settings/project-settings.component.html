@@ -16,12 +16,12 @@
 
 <p class="heading-primary-title title">Project Settings</p>
 
-<div class="project-settings-wrapper" [formGroup]="form">
+<div class="page-wrapper" [formGroup]="form">
 	<div class="left">
 		<ng-container [formGroup]="form">
 			<ms-panel-algorithm #panelAlgorithm controlKey="algorithm"></ms-panel-algorithm>
 
-			<ms-panel-model controlKey="model" [algorithm]="selectedAlgorithm"></ms-panel-model>
+			<ms-panel-model controlKey="model" [algorithmType]="selectedAlgorithmType"></ms-panel-model>
 
 			<ms-panel-parameters #panelParameters controlKey="params" [algorithm]="selectedAlgorithm"></ms-panel-parameters>
 		</ng-container>

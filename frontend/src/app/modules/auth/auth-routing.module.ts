@@ -19,7 +19,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { RoutesList } from '../core/models/enums/routes-list.enum';
 import { LoginComponent } from './components/login/login.component';
 
-export const AUTH_ROUTES: Routes = [
+const AUTH_ROUTES: Routes = [
 	{
 		path: '',
 		pathMatch: 'full',
