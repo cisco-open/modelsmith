@@ -27,14 +27,19 @@ import {
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
+import { RouterLink } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { Observable } from 'rxjs';
 import { first, map, startWith } from 'rxjs/operators';
 import { ModelDto } from '../../../../services/client/models/models/models.interface-dto';
 import { ModelsActions } from '../../../../state/core/models/models.actions';
+import { PageKey } from '../../../core/models/enums/page-key.enum';
+import { RoutesList } from '../../../core/models/enums/routes-list.enum';
 import { ModelsFacadeService } from '../../../core/services/models-facade.service';
+import { PageRunningScriptSpiningIndicatorService } from '../../../core/services/page-running-script-spinning-indicator.service';
 import { ScriptFacadeService } from '../../../core/services/script-facade.service';
 import { isEmptyArray, isNilOrEmptyString } from '../../../core/utils/core.utils';
 import { AlgorithmType } from '../../../model-compression/models/enums/algorithms.enum';
@@ -51,7 +56,9 @@ import { isScriptActive } from '../../../model-compression/models/enums/script-s
 		MatSelectModule,
 		MatIconModule,
 		CommonModule,
-		NgxMatSelectSearchModule
+		NgxMatSelectSearchModule,
+		RouterLink,
+		MatProgressSpinnerModule
 	],
 	templateUrl: './ms-panel-model.component.html',
 	styleUrls: ['./ms-panel-model.component.scss'],
@@ -67,6 +74,10 @@ export class MsPanelModelComponent implements OnInit, OnChanges, OnDestroy {
 	@Input({ required: true }) algorithmType?: AlgorithmType;
 	@Input() areNotTrainedItemsSelectable: boolean = false;
 	@Input() isInitialLoadForTrainTypeModels: boolean = false;
+	@Input() isTrainedModelsPageVisible: boolean = true;
+
+	readonly PageKey: typeof PageKey = PageKey;
+	readonly RoutesList: typeof RoutesList = RoutesList;
 
 	ngOnChanges(changes: SimpleChanges) {
 		if (changes['algorithmType'] && changes['algorithmType'].currentValue) {
@@ -96,7 +107,8 @@ export class MsPanelModelComponent implements OnInit, OnChanges, OnDestroy {
 	constructor(
 		private controlContainer: ControlContainer,
 		private modelsFacadeService: ModelsFacadeService,
-		private scriptFacadeService: ScriptFacadeService
+		private scriptFacadeService: ScriptFacadeService,
+		public pageRunningScriptSpiningIndicatorService: PageRunningScriptSpiningIndicatorService
 	) {}
 
 	ngOnInit() {

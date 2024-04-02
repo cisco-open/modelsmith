@@ -83,8 +83,6 @@ export class ProjectSettingsComponent implements OnInit {
 			.subscribe((algValue) => {
 				this.selectedAlgorithm = algValue;
 				this.selectedAlgorithmType = determineAlgorithmType(algValue)!;
-
-				console.log(this.selectedAlgorithmType);
 			});
 	}
 

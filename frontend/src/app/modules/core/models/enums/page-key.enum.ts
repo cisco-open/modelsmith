@@ -13,3 +13,10 @@
 //   limitations under the License.
 
 //   SPDX-License-Identifier: Apache-2.0
+
+export enum PageKey {
+	MODEL_COMPRESSION = 'MODEL_COMPRESSION',
+	MACHINE_UNLEARNING = 'MACHINE_UNLEARNING',
+	MODEL_TRAINING = 'MODEL_TRAINING',
+	NONE = 'NONE'
+}

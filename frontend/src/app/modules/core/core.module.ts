@@ -53,6 +53,7 @@ import {
 	WebsocketService
 } from './services';
 import { ModelsFacadeService } from './services/models-facade.service';
+import { PageRunningScriptSpiningIndicatorService } from './services/page-running-script-spinning-indicator.service';
 
 @NgModule({
 	imports: [
@@ -88,6 +89,7 @@ import { ModelsFacadeService } from './services/models-facade.service';
 		ParametersFacadeService,
 		TerminalFacadeService,
 		StatisticsFacadeService,
+		PageRunningScriptSpiningIndicatorService,
 		ModelsFacadeService,
 		{
 			provide: CLIENT,
@@ -111,11 +113,15 @@ export class CoreModule {
 		@Optional() @SkipSelf() parent: CoreModule,
 		private registry: MatIconRegistry,
 		private scriptFacadeService: ScriptFacadeService,
-		private navigationService: NavigationService
+		private navigationService: NavigationService,
+		private pageSpinningIndicatorService: PageRunningScriptSpiningIndicatorService
 	) {
-		if (parent != null) {
+		if (parent !== null) {
 			throw new Error('Core Module already loaded.');
 		}
+
+		this.navigationService.trackNavigationHistory();
+		this.pageSpinningIndicatorService.trackCurrentRunningPage();
 
 		this.registerModelSmithIcons();
 		this.scriptFacadeService.dispatch(ScriptActions.fetchScriptStatus());

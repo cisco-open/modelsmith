@@ -41,6 +41,10 @@ export class MsSidenavComponent implements OnInit {
 	) {}
 
 	ngOnInit(): void {
+		this.listenToCurrentModeChanges();
+	}
+
+	private listenToCurrentModeChanges() {
 		this.configFacadeService.currentMode$.pipe(untilDestroyed(this)).subscribe((currentMode) => {
 			this.currentMode = currentMode;
 		});

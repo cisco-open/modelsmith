@@ -21,8 +21,7 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { debounceTime, distinctUntilChanged, filter, map } from 'rxjs';
 import { ScriptConfigsDto } from '../../../../services/client/models/script/script-configs.interface-dto';
 import { ScriptActions } from '../../../../state/core/script';
-import { RoutesList } from '../../../core/models/enums/routes-list.enum';
-import { BannerService, ScriptFacadeService } from '../../../core/services';
+import { BannerService, NavigationService, ScriptFacadeService } from '../../../core/services';
 import { isNil } from '../../../core/utils/core.utils';
 import {
 	AlgorithmType,
@@ -49,6 +48,7 @@ export class ModelTrainingComponent implements OnInit {
 	selectedAlgorithmKey: TrainAlgorithmsEnum = TrainAlgorithmsEnum.PRUNING_TRAIN;
 
 	constructor(
+		public navigationService: NavigationService,
 		private scriptFacadeService: ScriptFacadeService,
 		private router: Router,
 		private snackbarService: BannerService
@@ -106,9 +106,5 @@ export class ModelTrainingComponent implements OnInit {
 		};
 
 		this.scriptFacadeService.dispatch(ScriptActions.callScript({ configs }));
-	}
-
-	goToChartPage() {
-		this.router.navigate([RoutesList.RUNNING.ROOT]);
 	}
 }

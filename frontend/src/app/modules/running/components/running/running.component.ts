@@ -22,6 +22,7 @@ import { ScriptDetails } from '../../../../services/client/models/script/script-
 import { ScriptActions } from '../../../../state/core/script/script.actions';
 import { NavigationService } from '../../../core/services/navigation.service';
 import { ScriptFacadeService } from '../../../core/services/script-facade.service';
+import { isEmptyObject, isNilOrEmptyString } from '../../../core/utils/core.utils';
 import { AlgorithmType } from '../../../model-compression/models/enums/algorithms.enum';
 import { isScriptActive } from '../../../model-compression/models/enums/script-status.enum';
 import { ChartToolsGlobalSignalsService } from '../../../shared/standalone/ms-line-chart/services/chart-tools-global-signals.service';
@@ -55,7 +56,7 @@ export class RunningComponent implements OnInit {
 		this.scriptFacadeService.scriptDetails$
 			.pipe(
 				take(1),
-				filter((scriptDetails): scriptDetails is ScriptDetails => !!scriptDetails?.algKey)
+				filter((scriptDetails): scriptDetails is ScriptDetails => !isNilOrEmptyString(scriptDetails?.algKey))
 			)
 			.subscribe((scriptDetails: ScriptDetails) => {
 				this.scriptDetails = scriptDetails;
@@ -83,6 +84,6 @@ export class RunningComponent implements OnInit {
 	}
 
 	get isChartVisible(): boolean {
-		return !!this.scriptDetails?.algKey;
+		return !isEmptyObject(this.scriptDetails?.algKey) && this.scriptDetails?.type !== AlgorithmType.TRAIN;
 	}
 }

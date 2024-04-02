@@ -15,7 +15,19 @@
   SPDX-License-Identifier: Apache-2.0 -->
 
 <mat-card class="ms-card model-card">
-	<p class="heading-sub-section-title">Model</p>
+	<div class="panel-title-wrapper">
+		<div class="heading-sub-section-title">Model</div>
+		<div *ngIf="isTrainedModelsPageVisible" class="train-models">
+			<a [routerLink]="['/' + RoutesList.MODEL_TRAINING.ROOT]">Train models</a>
+
+			<ng-container
+				*ngIf="pageRunningScriptSpiningIndicatorService.currentRunningPage$ | async as currentRunningPageKey">
+				<ng-container *ngIf="currentRunningPageKey === PageKey.MODEL_TRAINING">
+					<mat-spinner [diameter]="25" class="ml-2"></mat-spinner>
+				</ng-container>
+			</ng-container>
+		</div>
+	</div>
 
 	<div class="form-field-container" [formGroupName]="controlKey">
 		<mat-form-field appearance="outline" subscriptSizing="dynamic">

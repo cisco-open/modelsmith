@@ -21,6 +21,7 @@ import { filter, take } from 'rxjs';
 import { ScriptDetails } from '../../../../services/client/models/script/script-details.interface-dto';
 import { ScriptActions } from '../../../../state/core/script';
 import { ScriptFacadeService } from '../../../core/services/script-facade.service';
+import { isNilOrEmptyString } from '../../../core/utils/core.utils';
 import {
 	DEFAULT_SELECTED_ALGORITHM,
 	PRUNING_ALGORITHMS_LIST,
@@ -82,7 +83,7 @@ export class PanelAlgorithmComponent {
 		this.scriptFacadeService.scriptDetails$
 			.pipe(
 				take(1),
-				filter((scriptDetails): scriptDetails is ScriptDetails => !!scriptDetails?.algKey)
+				filter((scriptDetails): scriptDetails is ScriptDetails => !isNilOrEmptyString(scriptDetails?.algKey))
 			)
 			.subscribe((scriptDetails: ScriptDetails) => {
 				const algorithmType = scriptDetails.type;

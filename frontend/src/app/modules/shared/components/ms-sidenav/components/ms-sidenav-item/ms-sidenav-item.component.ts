@@ -14,15 +14,19 @@
 
 //   SPDX-License-Identifier: Apache-2.0
 
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { SidenavItem } from '../../../../../core/models/interfaces/sidenav.interface';
+import { PageRunningScriptSpiningIndicatorService } from '../../../../../core/services/page-running-script-spinning-indicator.service';
 
 @Component({
 	selector: 'ms-sidenav-item',
 	templateUrl: './ms-sidenav-item.component.html',
-	styleUrls: ['./ms-sidenav-item.component.scss']
+	styleUrls: ['./ms-sidenav-item.component.scss'],
+	changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MsSidenavItemComponent {
 	@Input() item!: SidenavItem;
 	@Input() itemStyle: 'accent' | 'grey' = 'accent';
+
+	constructor(public pageRunningScriptSpiningIndicatorService: PageRunningScriptSpiningIndicatorService) {}
 }

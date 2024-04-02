@@ -23,13 +23,14 @@ import { RoutesList } from '../models/enums/routes-list.enum';
 export class NavigationService {
 	private history: string[] = [];
 
-	constructor(private router: Router) {
+	constructor(private router: Router) {}
+
+	public trackNavigationHistory() {
 		this.addInitialUrl();
 
 		this.router.events
 			.pipe(filter((event: NavigationEvent): event is NavigationEnd => event instanceof NavigationEnd))
 			.subscribe((event: NavigationEnd) => {
-				console.log(event.urlAfterRedirects);
 				this.history.push(event.urlAfterRedirects);
 			});
 	}

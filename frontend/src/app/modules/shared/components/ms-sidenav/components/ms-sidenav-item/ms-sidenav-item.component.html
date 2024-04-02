@@ -20,5 +20,11 @@
 	</div>
 	<div class="item-label paragraph-semibold-p3-small-emphasis">
 		{{ item.label }}
+
+		<ng-container *ngIf="pageRunningScriptSpiningIndicatorService.currentRunningPage$ | async as currentRunningPageKey">
+			<ng-container *ngIf="currentRunningPageKey === item?.key">
+				<mat-spinner [diameter]="25" class="ml-2"></mat-spinner>
+			</ng-container>
+		</ng-container>
 	</div>
 </div>

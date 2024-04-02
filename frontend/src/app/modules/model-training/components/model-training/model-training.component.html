@@ -24,7 +24,8 @@
 			[algorithmType]="selectedAlgorithmType"
 			controlKey="model"
 			[areNotTrainedItemsSelectable]="true"
-			[isInitialLoadForTrainTypeModels]="true"></ms-panel-model>
+			[isInitialLoadForTrainTypeModels]="true"
+			[isTrainedModelsPageVisible]="false"></ms-panel-model>
 
 		<ms-panel-parameters #panelParameters controlKey="params" [algorithm]="selectedAlgorithmKey"></ms-panel-parameters>
 
@@ -32,7 +33,10 @@
 			<button mat-raised-button color="primary" (click)="submit()" [disabled]="isScriptActive || form.invalid">
 				Run
 			</button>
-			<button class="ml-2" mat-raised-button color="primary" (click)="goToChartPage()">View Chart</button>
+			<button class="ml-2" mat-stroked-button color="primary" (click)="navigationService.goToPreviousPage()">
+				<mat-icon fontSet="ms" fontIcon="icon-ArrowLeft"></mat-icon>
+				Go back
+			</button>
 		</div>
 	</div>
 

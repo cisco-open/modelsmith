@@ -14,6 +14,7 @@
 
 //   SPDX-License-Identifier: Apache-2.0
 
+import { PageKey } from '../enums/page-key.enum';
 import { RoutesList } from '../enums/routes-list.enum';
 import { Sidenav, SidenavItem } from '../interfaces/sidenav.interface';
 
@@ -37,12 +38,14 @@ const expert: SidenavItem[] = [
 	{
 		route: RoutesList.MODEL_COMPRESSION.ROOT,
 		label: 'Model Compression',
-		icon: 'icon-GearSix'
+		icon: 'icon-GearSix',
+		key: PageKey.MODEL_COMPRESSION
 	},
 	{
 		route: RoutesList.MACHINE_UNLEARNING.ROOT,
 		label: 'Machine Unlearning',
-		icon: 'icon-Systems-Manager'
+		icon: 'icon-Systems-Manager',
+		key: PageKey.MACHINE_UNLEARNING
 	},
 	{
 		route: 'model-specialization',
@@ -53,11 +56,6 @@ const expert: SidenavItem[] = [
 		route: 'multi-modal',
 		label: 'Multi-modal',
 		icon: 'icon-Environmental'
-	},
-	{
-		route: RoutesList.MODEL_TRAINING.ROOT,
-		label: 'Model Training',
-		icon: 'icon-Inventory'
 	}
 ];
 
