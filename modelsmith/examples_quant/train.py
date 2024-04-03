@@ -25,6 +25,7 @@ import torch.nn.functional as F
 import torch.backends.cudnn as cudnn
 import torchvision
 import torchvision.transforms as transforms
+import time
 
 script_dir = os.path.dirname(os.path.abspath(__file__))
 
@@ -47,7 +48,7 @@ from resnet_quant import (
     wide_resnet101_2
 )
 
-from utils import train, test
+from utils import train, test, save_training_metadata
 
 def get_model(arch):
     """
@@ -118,6 +119,8 @@ def main():
             best_acc = checkpoint['acc']
             start_epoch = checkpoint['epoch']
 
+    start_time = time.time() 
+
     for epoch in range(start_epoch, start_epoch + args.epochs):
         train(epoch, device, net, trainloader, optimizer, criterion)
         acc = test(epoch, device, net, testloader, criterion, best_acc, checkpoint_dir)
@@ -131,7 +134,18 @@ def main():
         }
         torch.save(state, os.path.join(checkpoint_dir, 'latest_checkpoint.pth'))
 
+    end_time = time.time()
+    training_duration_seconds = end_time - start_time
+
     torch.save(net.state_dict(), os.path.join(models_checkpoints_dir, f'{args.arch}.pt'))
+
+    additional_info = {
+        "epochs": args.epochs,
+        "learning_rate": args.lr,
+        "training_duration_seconds": round(training_duration_seconds, 2), 
+    }
+
+    save_training_metadata(models_checkpoints_dir, args.arch, additional_info)
 
 if __name__ == '__main__':
     main()

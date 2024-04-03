@@ -30,6 +30,8 @@ import random
 import copy
 from torch.utils.data import DataLoader
 
+import json
+from datetime import datetime
 
 from torchvision import transforms
 from torchvision.datasets import CIFAR10
@@ -385,3 +387,27 @@ def setup_dataset(args):
         setup_seed(args.train_seed)
 
         return train_full_loader, val_loader, test_loader, marked_loader
+
+def save_training_metadata(checkpoint_dir, arch, additional_info=None):
+    if additional_info is None:
+        additional_info = {}
+
+    model_file_path = os.path.join(checkpoint_dir, f'{arch}.pt')
+    model_file_size_bytes = os.path.getsize(model_file_path)
+    creation_date = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+    training_info = {
+        "model": arch,
+        "file_size_bytes": round(model_file_size_bytes, 2),  
+        "creation_date": creation_date,
+    }
+
+    training_info.update(additional_info)
+
+    json_file_name = f"{arch}_training_info.json"
+    json_file_path = os.path.join(checkpoint_dir, json_file_name)
+
+    with open(json_file_path, 'w') as json_file:
+        json.dump(training_info, json_file, indent=4)
+    
+    print(f"Training metadata saved to {json_file_path}")
