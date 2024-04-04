@@ -1,4 +1,4 @@
-//    Copyright 2024 Cisco Systems, Inc. and its affiliates
+//  Copyright 2024 Cisco Systems, Inc. and its affiliates
 
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -14,14 +14,15 @@
 
 //   SPDX-License-Identifier: Apache-2.0
 
-import { ModelMetadataDto } from '../../../services/client/models/models/model-metadata.interface-dto';
-import { ModelDto } from '../../../services/client/models/models/models.interface-dto';
+import { Component } from '@angular/core';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
-export interface ModelsState {
-	quantizationModels?: ModelDto[];
-	pruningModels?: ModelDto[];
-	machineUnlearningModels?: ModelDto[];
-	currentModel?: string;
-	modelMetadata?: ModelMetadataDto;
-	error?: any;
-}
+@Component({
+	selector: 'ms-spining-indicator',
+	templateUrl: './ms-spining-indicator.component.html',
+	styleUrls: ['./ms-spining-indicator.component.scss'],
+	standalone: true,
+	imports: [MatProgressSpinnerModule, MatTooltipModule]
+})
+export class MsSpiningIndicatorComponent {}

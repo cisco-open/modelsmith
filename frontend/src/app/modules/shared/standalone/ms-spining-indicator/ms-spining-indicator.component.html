@@ -14,17 +14,4 @@
 
   SPDX-License-Identifier: Apache-2.0 -->
 
-<div class="sidenav-item" [routerLink]="item.route" routerLinkActive="active-route">
-	<div class="item-icon">
-		<mat-icon fontSet="ms" [fontIcon]="item.icon"></mat-icon>
-	</div>
-	<div class="item-label paragraph-semibold-p3-small-emphasis">
-		{{ item.label }}
-
-		<ng-container *ngIf="pageRunningScriptSpiningIndicatorService.currentRunningPage$ | async as currentRunningPageKey">
-			<ng-container *ngIf="currentRunningPageKey === item?.key">
-				<ms-spining-indicator class="ml-2"></ms-spining-indicator>
-			</ng-container>
-		</ng-container>
-	</div>
-</div>
+<mat-spinner [diameter]="25" matTooltip="Task in progress"></mat-spinner>

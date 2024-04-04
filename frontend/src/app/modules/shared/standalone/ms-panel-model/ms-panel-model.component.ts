@@ -44,6 +44,7 @@ import { ScriptFacadeService } from '../../../core/services/script-facade.servic
 import { isEmptyArray, isNilOrEmptyString } from '../../../core/utils/core.utils';
 import { AlgorithmType } from '../../../model-compression/models/enums/algorithms.enum';
 import { isScriptActive } from '../../../model-compression/models/enums/script-status.enum';
+import { MsSpiningIndicatorComponent } from '../ms-spining-indicator/ms-spining-indicator.component';
 
 @UntilDestroy()
 @Component({
@@ -58,7 +59,8 @@ import { isScriptActive } from '../../../model-compression/models/enums/script-s
 		CommonModule,
 		NgxMatSelectSearchModule,
 		RouterLink,
-		MatProgressSpinnerModule
+		MatProgressSpinnerModule,
+		MsSpiningIndicatorComponent
 	],
 	templateUrl: './ms-panel-model.component.html',
 	styleUrls: ['./ms-panel-model.component.scss'],

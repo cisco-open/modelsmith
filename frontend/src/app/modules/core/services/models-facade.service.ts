@@ -17,17 +17,24 @@
 import { Injectable } from '@angular/core';
 import { Action, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
+import { ModelMetadataDto } from '../../../services/client/models/models/model-metadata.interface-dto';
 import { ModelDto } from '../../../services/client/models/models/models.interface-dto';
-import { selectCurrentModel, selectModelsByType } from '../../../state/core/models/models.selector';
+import {
+	selectCurrentModel,
+	selectModelMetadata,
+	selectModelsByType
+} from '../../../state/core/models/models.selector';
 import { ModelsState } from '../../../state/core/models/models.state';
 import { AlgorithmType } from '../../model-compression/models/enums/algorithms.enum';
 
 @Injectable()
 export class ModelsFacadeService {
 	currentModel$: Observable<string | undefined>;
+	modelMetadata$: Observable<ModelMetadataDto | undefined>;
 
 	constructor(private store: Store<ModelsState>) {
 		this.currentModel$ = this.store.select(selectCurrentModel);
+		this.modelMetadata$ = this.store.select(selectModelMetadata);
 	}
 
 	getModelsByType(algorithmType: AlgorithmType): Observable<ModelDto[] | undefined> {

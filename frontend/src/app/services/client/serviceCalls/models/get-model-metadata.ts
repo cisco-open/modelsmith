@@ -14,14 +14,12 @@
 
 //   SPDX-License-Identifier: Apache-2.0
 
-import { ModelMetadataDto } from '../../../services/client/models/models/model-metadata.interface-dto';
-import { ModelDto } from '../../../services/client/models/models/models.interface-dto';
+import { AlgorithmType } from '../../../../modules/model-compression/models/enums/algorithms.enum';
+import { ModelMetadataDto } from '../../models/models/model-metadata.interface-dto';
+import { ServiceCallGET } from '../service-call';
 
-export interface ModelsState {
-	quantizationModels?: ModelDto[];
-	pruningModels?: ModelDto[];
-	machineUnlearningModels?: ModelDto[];
-	currentModel?: string;
-	modelMetadata?: ModelMetadataDto;
-	error?: any;
+export class GetModelMetadata extends ServiceCallGET<ModelMetadataDto> {
+	constructor(algorithmType: AlgorithmType, model: string) {
+		super(`model-metadata/${algorithmType}/${model}`, undefined, undefined, false);
+	}
 }

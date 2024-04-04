@@ -22,10 +22,11 @@ import { MsPanelParametersComponent } from '../shared/standalone/ms-panel-parame
 import { MsTerminalComponent } from '../shared/standalone/ms-terminal/ms-terminal.component';
 import { ModelTrainingComponent } from './components/model-training/model-training.component';
 import { PanelAlgorithmTypeComponent } from './components/panel-algorithm-type/panel-algorithm-type.component';
+import { PanelModelMetadataComponent } from './components/panel-model-metadata/panel-model-metadata.component';
 import { ModelTrainingRoutingModule } from './model-training-routing.module';
 
 @NgModule({
-	declarations: [ModelTrainingComponent, PanelAlgorithmTypeComponent],
+	declarations: [ModelTrainingComponent, PanelAlgorithmTypeComponent, PanelModelMetadataComponent],
 	imports: [
 		CommonModule,
 		SharedModule,

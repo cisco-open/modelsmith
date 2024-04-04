@@ -121,4 +121,37 @@ router.get('/models-list/:type', checkSshConnection, (req, res) => {
 	);
 });
 
+router.get('/model-metadata/:type/:arch', checkSshConnection, (req, res) => {
+	const { type, arch } = req.params;
+	const directoryPath = CHECKPOINT_PATHS[type];
+
+	if (!directoryPath) {
+		return res.status(400).send('Invalid model type specified');
+	}
+
+	const metadataFilePath = `${directoryPath}/${arch}_training_info.json`;
+
+	const readJsonFileCommand = `cat ${metadataFilePath}`;
+
+	executeCommand(
+		readJsonFileCommand,
+		(output) => {
+			try {
+				const metadata = JSON.parse(output);
+				res.status(OK).send(metadata);
+			} catch (error) {
+				res.status(500).send(`Error parsing JSON content: ${error.message}`);
+			}
+		},
+		() => {},
+		(error) => {
+			if (error.includes('No such file or directory')) {
+				res.status(OK).send({});
+			} else {
+				res.status(500).send(`Error reading model metadata file: ${error}`);
+			}
+		}
+	);
+});
+
 module.exports = router;

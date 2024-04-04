@@ -27,6 +27,7 @@ import { MsSidenavComponent } from './components/ms-sidenav/ms-sidenav.component
 import { MsUserNavigationComponent } from './components/ms-user-navigation/ms-user-navigation.component';
 import { MaterialModule } from './modules/material.module';
 import { MsFormsModule } from './modules/ms-forms/ms-forms.module';
+import { MsSpiningIndicatorComponent } from './standalone/ms-spining-indicator/ms-spining-indicator.component';
 
 const COMPONENTS = [
 	MsBannerComponent,
@@ -39,7 +40,15 @@ const COMPONENTS = [
 ];
 
 @NgModule({
-	imports: [CommonModule, RouterModule, MaterialModule, FormsModule, ReactiveFormsModule, MsFormsModule],
+	imports: [
+		CommonModule,
+		RouterModule,
+		MaterialModule,
+		FormsModule,
+		ReactiveFormsModule,
+		MsFormsModule,
+		MsSpiningIndicatorComponent
+	],
 	declarations: [...COMPONENTS],
 	exports: [...COMPONENTS, MaterialModule, FormsModule, ReactiveFormsModule, MsFormsModule]
 })

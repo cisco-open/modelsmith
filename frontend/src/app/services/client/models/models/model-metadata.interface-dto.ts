@@ -1,4 +1,4 @@
-//    Copyright 2024 Cisco Systems, Inc. and its affiliates
+//  Copyright 2024 Cisco Systems, Inc. and its affiliates
 
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -14,14 +14,6 @@
 
 //   SPDX-License-Identifier: Apache-2.0
 
-import { ModelMetadataDto } from '../../../services/client/models/models/model-metadata.interface-dto';
-import { ModelDto } from '../../../services/client/models/models/models.interface-dto';
+import { KeyValue } from '../key-value/key-value.interface-dto';
 
-export interface ModelsState {
-	quantizationModels?: ModelDto[];
-	pruningModels?: ModelDto[];
-	machineUnlearningModels?: ModelDto[];
-	currentModel?: string;
-	modelMetadata?: ModelMetadataDto;
-	error?: any;
-}
+export interface ModelMetadataDto extends KeyValue<string | number> {}
