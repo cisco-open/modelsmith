@@ -16,13 +16,14 @@
 
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { Router } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { debounceTime, distinctUntilChanged, filter, map } from 'rxjs';
 import { ScriptConfigsDto } from '../../../../services/client/models/script/script-configs.interface-dto';
+import { ModelsActions } from '../../../../state/core/models/models.actions';
 import { ScriptActions } from '../../../../state/core/script';
 import { BannerService, NavigationService, ScriptFacadeService } from '../../../core/services';
-import { isNil } from '../../../core/utils/core.utils';
+import { ModelsFacadeService } from '../../../core/services/models-facade.service';
+import { isNil, isNilOrEmptyString } from '../../../core/utils/core.utils';
 import {
 	AlgorithmType,
 	AlgorithmTypeTrainAlgoritmMap,
@@ -50,13 +51,14 @@ export class ModelTrainingComponent implements OnInit {
 	constructor(
 		public navigationService: NavigationService,
 		private scriptFacadeService: ScriptFacadeService,
-		private router: Router,
-		private snackbarService: BannerService
+		private snackbarService: BannerService,
+		private modelsFacadeService: ModelsFacadeService
 	) {}
 
 	ngOnInit() {
 		this.listenToAlgorithmPanelChanges();
 		this.listenToScriptStateChanges();
+		this.listenToFormChangesToLoadModelMetadata();
 	}
 
 	private listenToAlgorithmPanelChanges(): void {
@@ -87,6 +89,26 @@ export class ModelTrainingComponent implements OnInit {
 				this.form.enable();
 			}
 		});
+	}
+
+	private listenToFormChangesToLoadModelMetadata() {
+		this.form.valueChanges
+			.pipe(
+				debounceTime(50),
+				map((formValue) => {
+					const algorithmType = formValue.algorithmTypeGroup?.algorithmType;
+					const model = formValue.model?.model;
+					return { algorithmType, model };
+				}),
+				distinctUntilChanged((prev, curr) => JSON.stringify(prev) === JSON.stringify(curr)),
+				filter(({ algorithmType, model }) => !isNilOrEmptyString(algorithmType) && !isNilOrEmptyString(model)),
+				untilDestroyed(this)
+			)
+			.subscribe(({ algorithmType, model }) => {
+				this.modelsFacadeService.dispatch(
+					ModelsActions.getModelMetadata({ algorithmType: algorithmType, modelName: model })
+				);
+			});
 	}
 
 	submit() {

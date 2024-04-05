@@ -29,8 +29,8 @@ import { AlgorithmType } from '../../model-compression/models/enums/algorithms.e
 
 @Injectable()
 export class ModelsFacadeService {
-	currentModel$: Observable<string | undefined>;
-	modelMetadata$: Observable<ModelMetadataDto | undefined>;
+	currentModel$: Observable<string>;
+	modelMetadata$: Observable<ModelMetadataDto>;
 
 	constructor(private store: Store<ModelsState>) {
 		this.currentModel$ = this.store.select(selectCurrentModel);

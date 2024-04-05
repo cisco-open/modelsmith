@@ -18,10 +18,10 @@ import { ModelMetadataDto } from '../../../services/client/models/models/model-m
 import { ModelDto } from '../../../services/client/models/models/models.interface-dto';
 
 export interface ModelsState {
-	quantizationModels?: ModelDto[];
-	pruningModels?: ModelDto[];
-	machineUnlearningModels?: ModelDto[];
-	currentModel?: string;
-	modelMetadata?: ModelMetadataDto;
-	error?: any;
+	quantizationModels: ModelDto[];
+	pruningModels: ModelDto[];
+	machineUnlearningModels: ModelDto[];
+	currentModel: string;
+	modelMetadata: ModelMetadataDto;
+	error: any;
 }

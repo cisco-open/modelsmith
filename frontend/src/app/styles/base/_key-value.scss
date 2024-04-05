@@ -17,23 +17,47 @@
 @use 'typography';
 
 .key-value-container {
+	gap: 12px;
+}
+
+.key-value-container.single {
 	display: grid;
-	grid-template-columns: repeat(3, 1fr);
-	gap: 18px;
+	grid-template-columns: repeat(1, 1fr);
+}
+
+.key-value-container.two-per-row {
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+}
+
+.key-value-container.flexible {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}
+
+.key-value-container.dense {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+
+	.key-value-pair {
+		flex-basis: calc(50% - 6px);
+		margin-bottom: 12px;
+	}
 }
 
 .key-value-pair {
 	display: flex;
-	flex-direction: row;
-	gap: 4px;
+	justify-content: space-between;
+	align-items: center;
 }
 
 .key-value-key {
-	flex-basis: 30%;
 	@include typography.paragraph-semibold-p3-default-emphasis;
 }
 
 .key-value-value {
-	flex-grow: 1;
 	@include typography.paragraph-regular-p3-default;
+	text-align: right;
+	flex: 0 1 auto;
 }

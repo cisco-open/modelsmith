@@ -1,4 +1,46 @@
-<mat-card class="ms-card model-card">
+<!-- Copyright 2024 Cisco Systems, Inc. and its affiliates
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+  SPDX-License-Identifier: Apache-2.0 -->
+
+<mat-card class="ms-card metadata-card">
 	<p class="heading-sub-section-title">Model Training Statistics</p>
-	TODO
+
+	<div class="metadata-wrapper" *ngIf="metadata | keyvalue; let items">
+		<div *ngIf="items.length > 0; else noMetadata" class="key-value-container single">
+			<div *ngFor="let item of items; let last = last">
+				<div class="key-value-pair">
+					<div class="key-value-key">{{ getCustomLabel(item.key) }}:</div>
+					<div class="key-value-value">
+						<ng-container [ngSwitch]="item.key">
+							<ng-container *ngSwitchCase="'file_size_bytes'">{{ item.value | adaptiveFileSize }}</ng-container>
+							<ng-container *ngSwitchCase="'creation_date'">{{ item.value | date: 'medium' }}</ng-container>
+							<ng-container *ngSwitchCase="'training_duration_seconds'">{{
+								item.value | readableDuration
+							}}</ng-container>
+							<ng-container *ngSwitchDefault>{{ item.value }}</ng-container>
+						</ng-container>
+					</div>
+				</div>
+				<div class="pt-2">
+					<mat-divider *ngIf="!last"></mat-divider>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<ng-template #noMetadata>
+		<ms-empty-state title="No metadata available"></ms-empty-state>
+	</ng-template>
 </mat-card>
