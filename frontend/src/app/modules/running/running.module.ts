@@ -26,6 +26,7 @@ import { RunningPruningChartsComponent } from './components/running-pruning-char
 import { RunningQuantizationChartsComponent } from './components/running-quantization-charts/running-quantization-charts.component';
 import { RunningStatisticsComponent } from './components/running-statistics/running-statistics.component';
 import { RunningComponent } from './components/running/running.component';
+import { ReadableStatisticsLabelPipe } from './pipes/readable-statistics-label.pipe';
 import { RunningRoutingModule } from './running-routing.module';
 
 @NgModule({
@@ -36,7 +37,8 @@ import { RunningRoutingModule } from './running-routing.module';
 		RunningQuantizationChartsComponent,
 		RunningMachineUnlearningChartsComponent,
 		RunningAnimationComponent,
-		RunningStatisticsComponent
+		RunningStatisticsComponent,
+		ReadableStatisticsLabelPipe
 	],
 	imports: [RunningRoutingModule, CommonModule, SharedModule, MsEmptyStateComponent, MsLineChartComponent],
 	providers: [ChartToolsGlobalSignalsService]

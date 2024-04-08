@@ -30,6 +30,11 @@
 	grid-template-columns: repeat(2, 1fr);
 }
 
+.key-value-container.three-per-row {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+}
+
 .key-value-container.flexible {
 	display: grid;
 	grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -46,7 +51,18 @@
 	}
 }
 
+@media (max-width: 768px) {
+	.key-value-container.dense .key-value-pair {
+		flex-basis: 100%;
+	}
+}
+
 .key-value-pair {
+	display: flex;
+	align-items: center;
+}
+
+.key-value-pair.space-between {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
@@ -58,6 +74,5 @@
 
 .key-value-value {
 	@include typography.paragraph-regular-p3-default;
-	text-align: right;
-	flex: 0 1 auto;
+	margin-left: 5px;
 }

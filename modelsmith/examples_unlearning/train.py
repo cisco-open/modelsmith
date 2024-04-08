@@ -130,7 +130,9 @@ def main():
     end_time = time.time()
     training_duration_seconds = end_time - start_time
     
-    torch.save(net.state_dict(), os.path.join(models_checkpoints_dir, f'{args.arch}.pt'))
+    model_path = os.path.join(models_checkpoints_dir, f'{args.arch}.pt')
+    torch.save(net.state_dict(), model_path)
+    print(f'Model saved to {model_path}')
 
     additional_info = {
         "epochs": args.epochs,

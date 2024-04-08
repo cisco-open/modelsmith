@@ -272,7 +272,7 @@ def validate(val_loader, model, criterion, args, test_index=None):
         progress_bar(i, len(val_loader), msg)
 
     if test_index is not None:
-        print(f"Statistics: valid_accuracy_test_{test_index}: {top1.avg:.3f}", flush=True)
+        print(f"valid_accuracy_test_{test_index}: {top1.avg:.3f}", flush=True)
     else:
         print(f"valid_accuracy: {top1.avg:.3f}", flush=True)
 

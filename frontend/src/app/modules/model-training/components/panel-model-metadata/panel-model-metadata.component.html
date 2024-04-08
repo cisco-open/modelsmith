@@ -20,7 +20,7 @@
 	<div class="metadata-wrapper" *ngIf="metadata | keyvalue; let items">
 		<div *ngIf="items.length > 0; else noMetadata" class="key-value-container single">
 			<div *ngFor="let item of items; let last = last">
-				<div class="key-value-pair">
+				<div class="key-value-pair space-between">
 					<div class="key-value-key">{{ getCustomLabel(item.key) }}:</div>
 					<div class="key-value-value">
 						<ng-container [ngSwitch]="item.key">
