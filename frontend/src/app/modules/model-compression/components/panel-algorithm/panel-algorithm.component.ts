@@ -17,7 +17,7 @@
 import { Component, Input, inject } from '@angular/core';
 import { AbstractControl, ControlContainer, FormControl, FormGroup, Validators } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { filter, take } from 'rxjs';
+import { filter, skip, take } from 'rxjs';
 import { ScriptDetails } from '../../../../services/client/models/script/script-details.interface-dto';
 import { ScriptActions } from '../../../../state/core/script';
 import { ScriptFacadeService } from '../../../core/services/script-facade.service';
@@ -82,6 +82,7 @@ export class PanelAlgorithmComponent {
 	private loadInitialData() {
 		this.scriptFacadeService.scriptDetails$
 			.pipe(
+				skip(1),
 				take(1),
 				filter((scriptDetails): scriptDetails is ScriptDetails => !isNilOrEmptyString(scriptDetails?.algKey))
 			)

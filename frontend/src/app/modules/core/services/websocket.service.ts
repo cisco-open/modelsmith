@@ -54,7 +54,7 @@ export class WebsocketService {
 			console.log('WebSocket connected!');
 		};
 
-		this.socket.onmessage = (message) => {
+		this.socket.onmessage = async (message) => {
 			const parsedMessage = JSON.parse(message.data);
 			const { topic = '', data } = parsedMessage;
 

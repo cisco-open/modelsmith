@@ -16,13 +16,14 @@
 
 import { createReducer, on } from '@ngrx/store';
 import { ScriptStatusEnum } from '../../../modules/model-compression/models/enums/script-status.enum';
+import { ScriptDetails } from '../../../services/client/models/script/script-details.interface-dto';
 import { ScriptActions } from './script.actions';
 import { ScriptState } from './script.state';
 
 export const initialState: ScriptState = {
-	scriptStatus: null,
-	scriptDetails: null,
-	error: null
+	scriptStatus: ScriptStatusEnum.NOT_RUNNING,
+	scriptDetails: {} as ScriptDetails,
+	error: ''
 };
 
 export const scriptReducer = createReducer(

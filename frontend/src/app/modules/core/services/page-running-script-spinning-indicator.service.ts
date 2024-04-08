@@ -15,7 +15,7 @@
 //   SPDX-License-Identifier: Apache-2.0
 
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, filter, map, switchMap, take, tap } from 'rxjs';
+import { BehaviorSubject, Observable, filter, map, skip, switchMap, take, tap } from 'rxjs';
 import { ScriptDetails } from '../../../services/client/models/script/script-details.interface-dto';
 import { ScriptActions } from '../../../state/core/script';
 import { AlgorithmType } from '../../model-compression/models/enums/algorithms.enum';
@@ -44,6 +44,7 @@ export class PageRunningScriptSpiningIndicatorService {
 				tap(() => this.scriptFacadeService.dispatch(ScriptActions.getCurrentOrLastActiveScriptDetails())),
 				switchMap(() =>
 					this.scriptFacadeService.scriptDetails$.pipe(
+						skip(1),
 						take(1),
 						filter((scriptDetails): scriptDetails is ScriptDetails => !isNilOrEmptyString(scriptDetails?.algKey))
 					)

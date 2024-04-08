@@ -32,8 +32,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { RouterLink } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
-import { Observable } from 'rxjs';
-import { first, map, startWith } from 'rxjs/operators';
+import { Observable, Subscription } from 'rxjs';
+import { filter, map, startWith } from 'rxjs/operators';
 import { ModelDto } from '../../../../services/client/models/models/models.interface-dto';
 import { ModelsActions } from '../../../../state/core/models/models.actions';
 import { PageKey } from '../../../core/models/enums/page-key.enum';
@@ -77,6 +77,8 @@ export class MsPanelModelComponent implements OnInit, OnChanges, OnDestroy {
 	@Input() areNotTrainedItemsSelectable: boolean = false;
 	@Input() isInitialLoadForTrainTypeModels: boolean = false;
 	@Input() isTrainedModelsPageVisible: boolean = true;
+
+	getModelsByTypeSubscription?: Subscription;
 
 	readonly PageKey: typeof PageKey = PageKey;
 	readonly RoutesList: typeof RoutesList = RoutesList;
@@ -127,7 +129,10 @@ export class MsPanelModelComponent implements OnInit, OnChanges, OnDestroy {
 			return;
 		}
 
-		this.fetchModels(algorithmType);
+		this.getModelsByTypeSubscription?.unsubscribe();
+		this.getModelsByTypeSubscription = this.subscribeToModelsListChanges(algorithmType);
+
+		this.modelsFacadeService.dispatch(ModelsActions.getModelsList({ algorithmType }));
 		this.modelsFacadeService.dispatch(
 			ModelsActions.getCurrentOrPreviousSelectedModel({
 				algorithmType: this.isInitialLoadForTrainTypeModels ? AlgorithmType.TRAIN : algorithmType
@@ -145,19 +150,17 @@ export class MsPanelModelComponent implements OnInit, OnChanges, OnDestroy {
 		});
 	}
 
-	private fetchModels(algorithmType: AlgorithmType) {
-		this.modelsFacadeService
+	private subscribeToModelsListChanges(algorithmType: AlgorithmType): Subscription {
+		return this.modelsFacadeService
 			.getModelsByType(algorithmType)
 			.pipe(
-				first((models): models is ModelDto[] => !isEmptyArray(models)),
+				filter((models): models is ModelDto[] => !isEmptyArray(models)),
 				map((models) => [...models].sort((a, b) => Number(b.isTrained) - Number(a.isTrained)))
 			)
 			.subscribe((models: ModelDto[]) => {
 				this.models = models;
 				this.searchModel.setValue('');
 			});
-
-		this.modelsFacadeService.dispatch(ModelsActions.getModelsList({ algorithmType }));
 	}
 
 	private initializeForm(): void {

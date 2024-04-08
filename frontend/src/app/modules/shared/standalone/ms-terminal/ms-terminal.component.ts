@@ -16,14 +16,20 @@
 
 import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { skip, take } from 'rxjs';
+import { firstValueFrom, skip, take } from 'rxjs';
 import { Terminal } from 'xterm';
 import { FitAddon } from 'xterm-addon-fit';
+import { KeyValue } from '../../../../services/client/models/key-value/key-value.interface-dto';
+import { ScriptDetails } from '../../../../services/client/models/script/script-details.interface-dto';
+import { ModelsActions } from '../../../../state/core/models/models.actions';
 import { TerminalActions } from '../../../../state/core/terminal/terminal.actions';
 import { NotificationTypes } from '../../../core/models/enums/snackbar-types.enum';
 import { TerminalMessage } from '../../../core/models/interfaces/terminal-message.interface';
+import { ScriptFacadeService } from '../../../core/services';
+import { ModelsFacadeService } from '../../../core/services/models-facade.service';
 import { TerminalFacadeService } from '../../../core/services/terminal-facade.service';
 import { WebsocketService } from '../../../core/services/websocket.service';
+import { AlgorithmType, TrainAlgorithmsEnum } from '../../../model-compression/models/enums/algorithms.enum';
 import { MsTerminalToolbarComponent } from './components/terminal-toolbar/terminal-toolbar.component';
 
 @UntilDestroy()
@@ -33,7 +39,8 @@ import { MsTerminalToolbarComponent } from './components/terminal-toolbar/termin
 	styleUrls: ['./ms-terminal.component.scss'],
 	encapsulation: ViewEncapsulation.None,
 	standalone: true,
-	imports: [MsTerminalToolbarComponent]
+	imports: [MsTerminalToolbarComponent],
+	providers: [ScriptFacadeService, ModelsFacadeService]
 })
 export class MsTerminalComponent implements OnInit, AfterViewInit, OnDestroy {
 	@ViewChild('terminal', { static: true }) terminalDiv!: ElementRef;
@@ -54,9 +61,19 @@ export class MsTerminalComponent implements OnInit, AfterViewInit, OnDestroy {
 
 	constructor(
 		private websocketService: WebsocketService,
-		private terminalFacadeService: TerminalFacadeService
+		private terminalFacadeService: TerminalFacadeService,
+		private scriptFacadeService: ScriptFacadeService,
+		private modelsFacadeService: ModelsFacadeService
 	) {
+		this.listenToIncommingMessages();
+	}
+
+	private listenToIncommingMessages() {
 		this.websocketService.terminalMessages$.pipe(untilDestroyed(this)).subscribe((message: TerminalMessage) => {
+			if (message?.data === 'Script execution ended successfully.') {
+				this.updateModelsListOnTrainAlgorithmCompletion();
+			}
+
 			const formattedMessage = this.formatMessageByType(message);
 			if (this.displayWebSocketMessages) {
 				formattedMessage.split('\n').forEach((line) => {
@@ -150,6 +167,27 @@ export class MsTerminalComponent implements OnInit, AfterViewInit, OnDestroy {
 			const heightCorrection = 170;
 			const parentHeight = parentElement.parentElement.offsetHeight - heightCorrection;
 			this.terminalDiv.nativeElement.style.height = `${parentHeight}px`;
+		}
+	}
+
+	private async updateModelsListOnTrainAlgorithmCompletion() {
+		const scriptDetails: ScriptDetails = await firstValueFrom(this.scriptFacadeService.scriptDetails$);
+		const algorithmMapping: KeyValue<AlgorithmType> = {
+			[TrainAlgorithmsEnum.MACHINE_UNLEARNING_TRAIN]: AlgorithmType.MACHINE_UNLEARNING,
+			[TrainAlgorithmsEnum.PRUNING_TRAIN]: AlgorithmType.PRUNING,
+			[TrainAlgorithmsEnum.QUANTIZATION_TRAIN]: AlgorithmType.QUANTIZATION
+		};
+
+		if (scriptDetails.algKey in algorithmMapping) {
+			this.modelsFacadeService.dispatch(
+				ModelsActions.getModelsList({ algorithmType: algorithmMapping[scriptDetails.algKey] })
+			);
+			this.modelsFacadeService.dispatch(
+				ModelsActions.getModelMetadata({
+					algorithmType: algorithmMapping[scriptDetails.algKey],
+					modelName: scriptDetails.model
+				})
+			);
 		}
 	}
 
