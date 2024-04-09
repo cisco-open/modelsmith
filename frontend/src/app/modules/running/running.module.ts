@@ -25,6 +25,7 @@ import { RunningMachineUnlearningChartsComponent } from './components/running-ma
 import { RunningPruningChartsComponent } from './components/running-pruning-charts/running-pruning-charts.component';
 import { RunningQuantizationChartsComponent } from './components/running-quantization-charts/running-quantization-charts.component';
 import { RunningStatisticsComponent } from './components/running-statistics/running-statistics.component';
+import { RunningStatusBarComponent } from './components/running-status-bar/running-status-bar.component';
 import { RunningComponent } from './components/running/running.component';
 import { ReadableStatisticsLabelPipe } from './pipes/readable-statistics-label.pipe';
 import { RunningRoutingModule } from './running-routing.module';
@@ -38,7 +39,8 @@ import { RunningRoutingModule } from './running-routing.module';
 		RunningMachineUnlearningChartsComponent,
 		RunningAnimationComponent,
 		RunningStatisticsComponent,
-		ReadableStatisticsLabelPipe
+		ReadableStatisticsLabelPipe,
+		RunningStatusBarComponent
 	],
 	imports: [RunningRoutingModule, CommonModule, SharedModule, MsEmptyStateComponent, MsLineChartComponent],
 	providers: [ChartToolsGlobalSignalsService]

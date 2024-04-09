@@ -37,8 +37,7 @@ router.get('/current-or-previous-selected-model/:type', (req, res) => {
 	const defaultValues = {
 		[ALGORITHM_TYPES.QUANTIZATION]: 'resnet18',
 		[ALGORITHM_TYPES.PRUNING]: 'ResNet18',
-		[ALGORITHM_TYPES.MACHINE_UNLEARNING]: 'ResNet18',
-		[ALGORITHM_TYPES.TRAIN]: 'ResNet18'
+		[ALGORITHM_TYPES.MACHINE_UNLEARNING]: 'ResNet18'
 	};
 
 	let archValue;

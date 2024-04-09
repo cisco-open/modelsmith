@@ -22,11 +22,22 @@
 			flex-direction: column;
 		}
 
+		&.sparsity-chart,
+		&.accuracy-chart,
+		&.loss-chart {
+			background-color: var(--backgrounds-80);
+			border-radius: 20px;
+			padding: 10px;
+			margin: 10px 0;
+		}
+
 		.epochs {
 			flex: 0 0 70%;
 		}
 
 		.testing {
+			border-left: 1px solid var(--foregrounds-300);
+			padding-left: 10px;
 			flex: 0 0 30%;
 		}
 	}

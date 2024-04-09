@@ -17,12 +17,16 @@
 <div class="charts">
 	<div class="ms-chart-display accuracy-chart">
 		<div class="reconstructions">
+			<p class="paragraph-bold-p3-small-bold p-2">Accuracy</p>
+
 			<ms-line-chart
 				[data]="initialAccuracyChartData"
 				[realtimeUpdateMetric]="RealtimeUpdateMetric.ACCURACY"
 				[settings]="accuracyChartDisplaySettings"></ms-line-chart>
 		</div>
 		<div class="testing">
+			<p class="paragraph-bold-p3-small-bold p-2">Accuracy Test</p>
+
 			<ms-line-chart
 				[data]="initialAccuracyTestingChartData"
 				[realtimeUpdateMetric]="RealtimeUpdateMetric.TESTING_ACCURACY"
@@ -32,12 +36,16 @@
 
 	<div class="ms-chart-display loss-chart">
 		<div class="reconstructions">
+			<p class="paragraph-bold-p3-small-bold p-2">Loss</p>
+
 			<ms-line-chart
 				[data]="initialLossChartData"
 				[realtimeUpdateMetric]="RealtimeUpdateMetric.LOSS"
 				[settings]="lossChartDisplaySettings"></ms-line-chart>
 		</div>
 		<div class="testing">
+			<p class="paragraph-bold-p3-small-bold p-2">Loss Test</p>
+
 			<ms-line-chart
 				[data]="initialLossTestingChartData"
 				[settings]="lossTestingChartDisplaySettings"

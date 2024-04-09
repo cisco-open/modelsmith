@@ -133,11 +133,7 @@ export class MsPanelModelComponent implements OnInit, OnChanges, OnDestroy {
 		this.getModelsByTypeSubscription = this.subscribeToModelsListChanges(algorithmType);
 
 		this.modelsFacadeService.dispatch(ModelsActions.getModelsList({ algorithmType }));
-		this.modelsFacadeService.dispatch(
-			ModelsActions.getCurrentOrPreviousSelectedModel({
-				algorithmType: this.isInitialLoadForTrainTypeModels ? AlgorithmType.TRAIN : algorithmType
-			})
-		);
+		this.modelsFacadeService.dispatch(ModelsActions.getCurrentOrPreviousSelectedModel({ algorithmType }));
 	}
 
 	private listenToCurrentModelChanges() {

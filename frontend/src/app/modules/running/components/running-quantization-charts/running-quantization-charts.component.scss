@@ -18,12 +18,23 @@
 	.ms-chart-display {
 		display: flex;
 
+		&.accuracy-chart,
+		&.loss-chart {
+			background-color: var(--backgrounds-80);
+			border-radius: 20px;
+			padding: 10px;
+			margin: 10px 0;
+		}
+
 		.reconstructions {
 			flex: 0 0 70%;
 		}
 
 		.testing {
-			flex: 0 0 30%;
+			border-left: 1px solid var(--foregrounds-300);
+			padding-left: 10px;
+			margin-left: 10px;
+			flex: 0 0 28.5%;
 		}
 	}
 }

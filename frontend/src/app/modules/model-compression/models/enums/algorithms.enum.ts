@@ -1,8 +1,4 @@
 //    Copyright 2024 Cisco Systems, Inc. and its affiliates
-
-import { KeyValueObject } from '../../../../services/client/models/key-value/key-value.interface-dto';
-import { toTitleCase } from '../../../core/utils/core.utils';
-
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
 //   You may obtain a copy of the License at
@@ -16,6 +12,9 @@ import { toTitleCase } from '../../../core/utils/core.utils';
 //   limitations under the License.
 
 //   SPDX-License-Identifier: Apache-2.0
+
+import { KeyValueObject } from '../../../../services/client/models/key-value/key-value.interface-dto';
+import { toTitleCase } from '../../../core/utils/core.utils';
 
 export type AlgorithmKey =
 	| PruningAlgorithmsEnum

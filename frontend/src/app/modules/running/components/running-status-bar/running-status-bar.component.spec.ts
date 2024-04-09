@@ -13,3 +13,25 @@
 //   limitations under the License.
 
 //   SPDX-License-Identifier: Apache-2.0
+
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+
+import { RunningStatusBarComponent } from './running-status-bar.component';
+
+describe('RunningStatusBarComponent', () => {
+	let component: RunningStatusBarComponent;
+	let fixture: ComponentFixture<RunningStatusBarComponent>;
+
+	beforeEach(() => {
+		TestBed.configureTestingModule({
+			declarations: [RunningStatusBarComponent]
+		});
+		fixture = TestBed.createComponent(RunningStatusBarComponent);
+		component = fixture.componentInstance;
+		fixture.detectChanges();
+	});
+
+	it('should create', () => {
+		expect(component).toBeTruthy();
+	});
+});

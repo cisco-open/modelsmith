@@ -27,7 +27,8 @@ import {
 	AlgorithmKey,
 	AlgorithmType,
 	AlgorithmTypeKeyValue,
-	TrainAlgorithmsEnum
+	TrainAlgorithmsEnum,
+	determineAlgorithmType
 } from '../../../model-compression/models/enums/algorithms.enum';
 import { isScriptActive } from '../../../model-compression/models/enums/script-status.enum';
 
@@ -94,6 +95,15 @@ export class PanelAlgorithmTypeComponent implements OnInit {
 					case TrainAlgorithmsEnum.QUANTIZATION_TRAIN: {
 						this.algorithmTypeFormControl.patchValue(AlgorithmType.QUANTIZATION);
 						break;
+					}
+					default: {
+						// Feature to display the current running algorithm model metadata
+						const algorithmType = determineAlgorithmType(algKey);
+						if (isNilOrEmptyString(algorithmType)) {
+							break;
+						}
+
+						this.algorithmTypeFormControl.patchValue(algorithmType);
 					}
 				}
 			});

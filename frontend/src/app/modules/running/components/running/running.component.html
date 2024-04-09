@@ -29,60 +29,7 @@
 </ng-container>
 
 <mat-card class="ms-card running-prunning">
-	<div class="training-status mb-2">
-		<div class="status-bar">
-			<div>
-				<div class="runnning-title-container">
-					<div class="model-name heading-sub-section-title">Algorithm: {{ scriptDetails?.algKey || 'None' }}</div>
-					<div class="ml-2" *ngIf="isScriptActive">
-						<button mat-raised-button color="warn" matTooltip="Stop current process." (click)="runStopScript()">
-							Stop
-						</button>
-					</div>
-				</div>
-				<div class="mt-2 flex">
-					<div>
-						<mat-slide-toggle color="primary" (change)="toggleTooltip($event)" [disabled]="!scriptDetails?.algKey">
-							Enable tooltips
-						</mat-slide-toggle>
-					</div>
-					<div class="flex">
-						<mat-slide-toggle
-							class="ml-2"
-							color="primary"
-							(change)="toggleZoom($event)"
-							[disabled]="!scriptDetails?.algKey">
-							Enable zoom
-						</mat-slide-toggle>
-						<div class="ml-1">
-							<mat-icon
-								fontSet="ms"
-								fontIcon="icon-Info"
-								matTooltip="Use mouse wheel or touchpad pinch to zoom in/out. Drag to select an area for specific zoom, or use touchpad gestures to navigate."></mat-icon>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="metrics">
-			<div class="metric accuracy">
-				<div class="metric-value">—</div>
-				<div class="metric-name paragraph-semibold-p2-large-emphasis">Accuracy</div>
-			</div>
-			<div class="metric loss">
-				<div class="metric-value">—</div>
-				<div class="metric-name paragraph-semibold-p2-large-emphasis">Loss</div>
-			</div>
-			<div class="metric sparsity" *ngIf="isSparsityVisible">
-				<div class="metric-value">—</div>
-				<div class="metric-name paragraph-semibold-p2-large-emphasis">Sparsity</div>
-			</div>
-			<div class="metric testing">
-				<div class="metric-value">—</div>
-				<div class="metric-name paragraph-semibold-p2-large-emphasis">Test</div>
-			</div>
-		</div>
-	</div>
+	<ms-running-status-bar></ms-running-status-bar>
 
 	<ng-container *ngIf="isChartVisible; else noChartData">
 		<ng-container [ngSwitch]="scriptDetails?.type">
