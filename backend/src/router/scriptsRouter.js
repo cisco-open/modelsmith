@@ -116,7 +116,7 @@ function executePythonScript(path, algorithm, args = '', type) {
 		executeCommand(
 			cmd,
 			(data) => {
-				const formattedData = data.toString().replace(/\n/g, '\r\n');
+				const formattedData = data.toString().replace(/\r\n/g, '');
 				broadcastTerminal(formattedData);
 
 				switch (type) {

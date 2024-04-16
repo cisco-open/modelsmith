@@ -91,7 +91,7 @@ def extract_mask(model_dict):
 
     return new_dict
 
-def check_sparsity(model):
+def check_sparsity(model, logger):
     
     sum_list = 0
     zero_sum = 0
@@ -101,7 +101,7 @@ def check_sparsity(model):
             sum_list = sum_list+float(m.weight.nelement())
             zero_sum = zero_sum+float(torch.sum(m.weight == 0))  
 
-    print('* remain weight = ', 100*(1-zero_sum/sum_list),'%', flush=True)
+    logger.log('* remain weight = {} %'.format(100 * (1 - zero_sum / sum_list)))
     
     return 100*(1-zero_sum/sum_list)
 

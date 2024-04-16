@@ -37,8 +37,8 @@ from torchvision import transforms
 from torchvision.datasets import CIFAR10
 
 # Training
-def train(epoch, device, net, trainloader, optimizer, criterion):
-    print('\nEpoch: %d' % epoch, flush=True)
+def train(epoch, device, net, trainloader, optimizer, criterion, logger):
+    logger.log(f'\nEpoch: {epoch}')
     net.train()
     train_loss = 0
     correct = 0
@@ -57,7 +57,7 @@ def train(epoch, device, net, trainloader, optimizer, criterion):
         correct += predicted.eq(targets).sum().item()
 
         progress_bar(batch_idx, len(trainloader), 'Loss: %.3f | Acc: %.3f%%'
-                     % (train_loss/(batch_idx+1), 100.*correct/total))  
+                     % (train_loss/(batch_idx+1), 100.*correct/total), logger)  
               
 def evaluate_accuracy_quant(device, net, testloader):
     net.eval()
@@ -76,8 +76,8 @@ def evaluate_accuracy_quant(device, net, testloader):
     acc = 100. * correct / total
     print('Accuracy: {:.2f}%'.format(acc))
 
-def test(epoch, device, net, testloader, criterion, best_acc, checkpoint_dir):
-    print('Testing Phase Started', flush=True)
+def test(epoch, device, net, testloader, criterion, best_acc, checkpoint_dir, logger):
+    logger.log('Testing Phase Started')
 
     net.eval()
     test_loss = 0
@@ -95,14 +95,14 @@ def test(epoch, device, net, testloader, criterion, best_acc, checkpoint_dir):
             correct += predicted.eq(targets).sum().item()
 
             progress_bar(batch_idx, len(testloader), 'Loss: %.3f | Acc: %.3f%% (%d/%d)'
-                         % (test_loss/(batch_idx+1), 100.*correct/total, correct, total))
+                         % (test_loss/(batch_idx+1), 100.*correct/total, correct, total), logger)
 
-    print('Testing Phase Ended', flush=True)
+    logger.log('Testing Phase Ended')
 
     # Save checkpoint.
     acc = 100.*correct/total
     if acc > best_acc:
-        print('Saving..', flush=True)
+        logger.log('Saving..')
         state = {
             'net': net.state_dict(),
             'acc': acc,
@@ -113,19 +113,18 @@ def test(epoch, device, net, testloader, criterion, best_acc, checkpoint_dir):
         torch.save(state, checkpoint_path)
         best_acc = acc
 
-def progress_bar(current, total, msg=None):
+def progress_bar(current, total, msg=None, logger=None):
     TOTAL_BAR_LENGTH = 25.
     last_time = time.time()
     begin_time = last_time
     if current == 0:
-        begin_time = time.time()  # Reset for new bar.
+        begin_time = time.time()  
 
     cur_len = int(TOTAL_BAR_LENGTH * current / total)
     rest_len = int(TOTAL_BAR_LENGTH - cur_len) - 1
 
     bar = '[' + '=' * cur_len + '>' + '.' * rest_len + ']'
 
-    # Append the current/total step info right after the progress bar
     step_info = ' %d/%d ' % (current+1, total)
     bar += step_info
 
@@ -145,9 +144,7 @@ def progress_bar(current, total, msg=None):
         bar += '\r'
     else:
         bar += '\n'
-
-    sys.stdout.write(bar)
-    sys.stdout.flush()
+    logger.log(bar)
 
 def format_time(seconds):
     days = int(seconds / 3600/24)
