@@ -26,20 +26,26 @@ import torch.optim as optim
 import torch.backends.cudnn as cudnn
 import torchvision
 import torchvision.transforms as transforms
+import time
 
 script_dir = os.path.dirname(os.path.realpath(__file__))
-
 data_dir = os.path.join(script_dir, 'data')
 models_checkpoints_dir = os.path.join(script_dir, 'models_checkpoints')
 checkpoint_dir = os.path.join(script_dir, 'checkpoint')
+run_records_dir = os.path.join(script_dir, 'run_records') 
 
 sys.path.append(os.path.join(script_dir, '..'))
 
 from utils.model_utils import prepare_model
 from utils.utils import train, test
 from utils.pruner import check_sparsity, grasp_pruning
+from utils.logger import RunLogger
+
+logger = RunLogger(log_directory=run_records_dir)
 
 def main():
+    start_time = time.time()
+
     parser = argparse.ArgumentParser(description='Pruning at initialization with Grasp')
     parser.add_argument('--lr', default=0.1, type=float, help='learning rate')
     parser.add_argument('--pruning_ratio', default=0.99, type=float, help='pruning ratio')
@@ -50,13 +56,14 @@ def main():
     parser.add_argument('--arch', default='ResNet18', type=str, help='Model name')
     
     args = parser.parse_args()
+    logger.set_parameters(vars(args)) 
 
     device = args.device
     best_acc = args.best_acc
     start_epoch = args.start_epoch
 
     # Preparing data
-    print('==> Preparing data..', flush=True)
+    logger.log('==> Preparing data..')
     transform_train = transforms.Compose([
         transforms.RandomCrop(32, padding=4),
         transforms.RandomHorizontalFlip(),
@@ -78,25 +85,31 @@ def main():
     testloader = torch.utils.data.DataLoader(testset, batch_size=100, shuffle=False, num_workers=2)
 
     # Building model
-    print('==> Building model..', flush=True)
-    net = prepare_model(args.arch, device)
+    logger.log('==> Building model..')
+    net = prepare_model(args.arch, device, logger)
 
     # Pruning
-    grasp_pruning(net, args.pruning_ratio, trainloader, num_class=10)
+    grasp_pruning(net, args.pruning_ratio, trainloader, num_class=10, logger=logger)
 
     criterion = nn.CrossEntropyLoss()
     optimizer = optim.SGD(net.parameters(), lr=args.lr, momentum=0.9, weight_decay=5e-4)
     scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=args.epochs)
 
-    print('# Start Pruning at initialization with Grasp #', flush=True)
+    logger.log('# Start Pruning at initialization with Grasp #')
 
     for epoch in range(start_epoch, start_epoch + args.epochs):
-        train(epoch, device, net, trainloader, optimizer, criterion)
-        test(epoch, device, net, testloader, criterion, best_acc, checkpoint_dir)
+        train(epoch, device, net, trainloader, optimizer, criterion, logger)
+        test(epoch, device, net, testloader, criterion, best_acc, checkpoint_dir, logger)
         scheduler.step()
 
-    check_sparsity(net)
-    print("Finished!", flush=True)
+    check_sparsity(net, logger)
+    logger.log("Finished!")
+    end_time = time.time()
+    logger.add_statistic("duration_seconds", end_time - start_time)
+    filename = f"IPG_{args.arch}"
+    saved_file_path = logger.save_run_record(filename) 
+
+    logger.log(f"History of the run saved to: {saved_file_path}")
 
 if __name__ == "__main__":
     main()

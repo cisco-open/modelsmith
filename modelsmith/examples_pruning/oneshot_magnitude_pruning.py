@@ -27,20 +27,28 @@ import torch.backends.cudnn as cudnn
 import torchvision
 import torchvision.transforms as transforms
 from copy import deepcopy
+import time
+
 
 # Define directory paths
 script_dir = os.path.dirname(os.path.realpath(__file__))
 data_dir = os.path.join(script_dir, 'data')
 models_checkpoints_dir = os.path.join(script_dir, 'models_checkpoints')
 checkpoint_dir = os.path.join(script_dir, 'checkpoint') 
+run_records_dir = os.path.join(script_dir, 'run_records') 
 
 sys.path.append(os.path.join(script_dir, '..'))
 
 from utils.model_utils import prepare_model
 from utils.utils import train, test
 from utils.pruner import check_sparsity, pruning_model, prune_model_custom, extract_mask, remove_prune
+from utils.logger import RunLogger
+
+logger = RunLogger(log_directory=run_records_dir)
 
 def main():
+    start_time = time.time()  
+
     parser = argparse.ArgumentParser(description='Post-training pruning: iterative magnitude pruning (IMP)')
     parser.add_argument('--lr', default=0.1, type=float, help='learning rate')
     parser.add_argument('--epochs', default=2, type=int, help='number of epochs for each training period')
@@ -53,12 +61,13 @@ def main():
     parser.add_argument('--arch', default='ResNet18', type=str, help='Model name')
 
     args = parser.parse_known_args()[0]
+    logger.set_parameters(vars(args)) 
 
     device = args.device
     best_acc = args.best_acc
 
     # Data preparation
-    print('==> Preparing data..')
+    logger.log('==> Preparing data..')
     transform_train = transforms.Compose([
         transforms.RandomCrop(32, padding=4),
         transforms.RandomHorizontalFlip(),
@@ -71,7 +80,7 @@ def main():
         transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010)),
     ])
 
-    os.makedirs(data_dir, exist_ok=True)  # Ensure data directory is created
+    os.makedirs(data_dir, exist_ok=True) 
 
     trainset = torchvision.datasets.CIFAR10(root=data_dir, train=True, download=True, transform=transform_train)
     trainloader = torch.utils.data.DataLoader(trainset, batch_size=128, shuffle=True, num_workers=2)
@@ -80,34 +89,34 @@ def main():
     testloader = torch.utils.data.DataLoader(testset, batch_size=100, shuffle=False, num_workers=2)
 
     # Model setup
-    print('==> Building model..')
-    net = prepare_model(args.arch, device)
+    logger.log('==> Building model..')
+    net = prepare_model(args.arch, device, logger)
 
     criterion = nn.CrossEntropyLoss()
     optimizer = optim.SGD(net.parameters(), lr=args.lr, momentum=0.9, weight_decay=5e-4)
     scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=args.epochs)
 
-    print('# Start Standard Training Oneshot Magnitude Pruning #')
+    logger.log('# Start Standard Training Oneshot Magnitude Pruning #')
 
     for state in range(args.pruning_times):
-        print('******************************************')
-        print(f'Pruning state {state}')
-        print('******************************************')
+        logger.log('******************************************')
+        logger.log(f'Pruning state {state}')
+        logger.log('******************************************')
 
         for epoch in range(args.epochs):
-            train(epoch, device, net, trainloader, optimizer, criterion)
+            train(epoch, device, net, trainloader, optimizer, criterion, logger)
             if state == 0 and (epoch + 1) == args.rewinding_epoch:
                 torch.save(net.state_dict(), os.path.join(args.save_dir, f'epoch_{epoch + 1}_rewind_weight.pt'))
                 rewind_init = deepcopy(net.state_dict())
-            test(epoch, device, net, testloader, criterion, best_acc, checkpoint_dir)  # Adjusted call to test
+            test(epoch, device, net, testloader, criterion, best_acc, checkpoint_dir, logger)  
             scheduler.step()
         
         # Model pruning and rewinding
-        pruning_model(net, args.pruning_ratio)
+        pruning_model(net, args.pruning_ratio, logger)
         current_mask = extract_mask(net.state_dict())
-        remove_prune(net)
+        remove_prune(net, logger)
         net.load_state_dict(rewind_init, strict=True)
-        prune_model_custom(net, current_mask)
+        prune_model_custom(net, current_mask, logger)
         
         optimizer = optim.SGD(net.parameters(), lr=args.lr, momentum=0.9, weight_decay=5e-4)
         scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=args.epochs)
@@ -115,10 +124,15 @@ def main():
         for _ in range(args.rewinding_epoch):
             scheduler.step()
 
-        check_sparsity(net)
-        
+        check_sparsity(net, logger)
 
-    print("Finished!")
+    logger.log("Finished!")
+    end_time = time.time()
+    logger.add_statistic("duration_seconds", end_time - start_time)
+    filename = f"OMP_{args.arch}"
+    saved_file_path = logger.save_run_record(filename) 
+
+    logger.log(f"History of the run saved to: {saved_file_path}")
 
 if __name__ == "__main__":
     main()

@@ -21,9 +21,8 @@ import torch.nn.utils.prune as prune
 from torch.nn import Conv2d
 from torch.autograd import grad
 
-def pruning_model(model, px):
-
-    print('start unstructured pruning')
+def pruning_model(model, px, logger):
+    logger.log('start unstructured pruning')
     parameters_to_prune =[]
     for name,m in model.named_modules():
         if isinstance(m, nn.Conv2d):
@@ -37,8 +36,8 @@ def pruning_model(model, px):
         amount=px,
     )
 
-def pruning_model_both(model, px):
-    print('start unstructured pruning considering both conv and linear')
+def pruning_model_both(model, px, logger):
+    logger.log('start unstructured pruning considering both conv and linear')
     parameters_to_prune =[]
     for name,m in model.named_modules():
         if isinstance(m, nn.Conv2d) or isinstance(m, nn.Linear):
@@ -67,16 +66,16 @@ def pruning_model_random(model, px):
         amount=px,
     )
 
-def prune_model_custom(model, mask_dict):
+def prune_model_custom(model, mask_dict, logger):
 
-    print('start unstructured pruning with custom mask', flush=True)
+    logger.log('start unstructured pruning with custom mask')
     for name,m in model.named_modules():
         if isinstance(m, nn.Conv2d):
             prune.CustomFromMask.apply(m, 'weight', mask=mask_dict[name+'.weight_mask'])
 
-def remove_prune(model):
+def remove_prune(model, logger):
     
-    print('remove pruning', flush=True)
+    logger.log('remove pruning')
     for name,m in model.named_modules():
         if isinstance(m, nn.Conv2d):
             prune.remove(m,'weight')
@@ -196,8 +195,8 @@ def grasp_importance_score(
     model.zero_grad()
     return score_dict
 
-def grasp_pruning(model, ratio, dataloader=None, num_class=10, sample_per_classes=25):
-    print('start grasp pruning', flush=True)
+def grasp_pruning(model, ratio, dataloader=None, num_class=10, sample_per_classes=25, logger=None):
+    logger.log('start grasp pruning')
     score_dict = grasp_importance_score(model, dataloader, num_class, sample_per_classes)
     prune.global_unstructured(
         parameters=score_dict.keys(),
@@ -228,8 +227,8 @@ def snip_importance_score(
     model.zero_grad()
     return score_dict
 
-def snip_pruning(model, ratio, dataloader=None, num_class=10, sample_per_classes=25):
-    print('start SNIP pruning', flush=True)
+def snip_pruning(model, ratio, dataloader=None, num_class=10, sample_per_classes=25, logger=None):
+    logger.log('start SNIP pruning')
     score_dict = snip_importance_score(model, dataloader, num_class, sample_per_classes)
     prune.global_unstructured(
         parameters=score_dict.keys(),
@@ -278,8 +277,8 @@ def synflow_importance_score(
     nonlinearize(model, signs)
     return score_dict
 
-def synflow_pruning(model, ratio, dataloader=None):
-    print('start synflow pruning', flush=True)
+def synflow_pruning(model, ratio, dataloader=None, logger=None):
+    logger.log('start synflow pruning')
     iteration_number = 100 # In SynFlow Paper, an iteration number of 100 performs well
     each_ratio = 1 - (1-ratio)**(1/iteration_number)
     for _ in range(iteration_number):

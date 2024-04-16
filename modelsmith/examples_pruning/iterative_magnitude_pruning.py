@@ -88,7 +88,7 @@ def main():
 
     # Model setup
     logger.log('==> Building model..')
-    net = prepare_model(args.arch, device)
+    net = prepare_model(args.arch, device, logger)
 
     criterion = nn.CrossEntropyLoss()
     optimizer = optim.SGD(net.parameters(), lr=args.lr, momentum=0.9, weight_decay=5e-4)
@@ -111,11 +111,11 @@ def main():
             scheduler.step()
 
         # Model pruning and rewinding
-        pruning_model(net, args.pruning_ratio)
+        pruning_model(net, args.pruning_ratio, logger)
         current_mask = extract_mask(net.state_dict())
-        remove_prune(net)
+        remove_prune(net, logger)
         net.load_state_dict(rewind_init, strict=True)
-        prune_model_custom(net, current_mask)
+        prune_model_custom(net, current_mask, logger)
 
         optimizer = optim.SGD(net.parameters(), lr=args.lr, momentum=0.9, weight_decay=5e-4)
         scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=args.epochs)

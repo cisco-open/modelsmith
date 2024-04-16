@@ -94,15 +94,15 @@ def test(epoch, device, net, testloader, criterion, best_acc, checkpoint_dir, lo
             total += targets.size(0)
             correct += predicted.eq(targets).sum().item()
 
-            progress_bar(batch_idx, len(testloader), 'Loss: %.3f | Acc: %.3f%% (%d/%d)'
-                         % (test_loss/(batch_idx+1), 100.*correct/total, correct, total), logger)
+            progress_bar(batch_idx, len(testloader), 'Loss: %.3f | Acc: %.3f%%'
+                                % (test_loss/(batch_idx+1), 100.*correct/total), logger)  
 
     logger.log('Testing Phase Ended')
 
     # Save checkpoint.
     acc = 100.*correct/total
     if acc > best_acc:
-        logger.log('Saving..')
+        logger.log('Saving...')
         state = {
             'net': net.state_dict(),
             'acc': acc,
@@ -129,9 +129,7 @@ def progress_bar(current, total, msg=None, logger=None):
     bar += step_info
 
     cur_time = time.time()
-    step_time = cur_time - last_time
     last_time = cur_time
-    tot_time = cur_time - begin_time
 
     L = ['']
     if msg:

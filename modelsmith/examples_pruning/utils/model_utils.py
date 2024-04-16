@@ -36,8 +36,8 @@ from collections import OrderedDict
 script_dir = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
 models_checkpoints_dir = os.path.join(script_dir, 'models_checkpoints')
 
-def prepare_model(model_arch = 'resnet18', device='cpu'):
-    print(f'==> Building model {model_arch}...')
+def prepare_model(model_arch = 'resnet18', device='cpu', logger=None):
+    logger.log(f'==> Building model {model_arch}...')
 
     if model_arch in globals():
         model_constructor = globals()[model_arch]
@@ -57,7 +57,7 @@ def prepare_model(model_arch = 'resnet18', device='cpu'):
             new_state_dict[name] = v
         
         net.load_state_dict(new_state_dict)
-        print(f"Loaded checkpoint for {model_arch} from {checkpoint_path}")
+        logger.log(f"Loaded checkpoint for {model_arch} from {checkpoint_path}")
     except FileNotFoundError:
         raise FileNotFoundError(f"No checkpoint found for {model_arch} at {checkpoint_path}. Please train the model first.")
     except KeyError:
