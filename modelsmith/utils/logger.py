@@ -13,13 +13,25 @@ class RunLogger:
 
     def log(self, message):
         print(message, flush=True)
-        self.messages.append(message)
+        self.messages.append(self.serialize_obj(message))
+
+    def serialize_obj(self, obj):
+        if isinstance(obj, dict):
+            return {k: self.serialize_obj(v) for k, v in obj.items()}
+        elif isinstance(obj, list):
+            return [self.serialize_obj(v) for v in obj]
+        elif hasattr(obj, "to_json"):
+            return obj.to_json()  
+        elif isinstance(obj, (str, int, float, bool)):
+            return obj
+        else:
+            return str(obj)
 
     def set_parameters(self, params):
-        self.parameters = params
+        self.parameters = self.serialize_obj(params)
 
     def add_statistic(self, key, value):
-        self.statistics[key] = value
+        self.statistics[key] = self.serialize_obj(value) 
 
     def save_run_record(self, filename):
         timestamp = time.strftime('%Y_%m_%d_%H:%M:%S')

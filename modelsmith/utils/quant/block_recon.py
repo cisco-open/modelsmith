@@ -29,7 +29,7 @@ def block_reconstruction(model: QuantModel, block: BaseQuantBlock, cali_data: to
                          batch_size: int = 32, iters: int = 20000, weight: float = 0.01, opt_mode: str = 'mse',
                          act_quant: bool = False, b_range: tuple = (20, 2),
                          warmup: float = 0.0, p: float = 2.0, lr: float = 4e-5, wwq: bool = True, waq: bool = True,
-                         order: str = 'together', input_prob: float = 1.0, keep_gpu: bool = True):
+                         order: str = 'together', input_prob: float = 1.0, keep_gpu: bool = True, logger=None):
     """
     Block reconstruction to optimize the output from each block.
 
@@ -119,7 +119,7 @@ def block_reconstruction(model: QuantModel, block: BaseQuantBlock, cali_data: to
         if i % 500 == 0:
             step = i // 500 
             msg = 'Loss: {:.3f}'.format(err.item())
-            progress_bar(step, iters // 500, msg)
+            progress_bar(step, iters // 500, msg, logger)
 
     # # test(0, device, qnn, test_loader, criterion, best_acc))
     # acc = test()

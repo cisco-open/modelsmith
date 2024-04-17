@@ -59,7 +59,7 @@ def train(epoch, device, net, trainloader, optimizer, criterion, logger):
         progress_bar(batch_idx, len(trainloader), 'Loss: %.3f | Acc: %.3f%%'
                      % (train_loss/(batch_idx+1), 100.*correct/total), logger)  
               
-def evaluate_accuracy_quant(device, net, testloader):
+def evaluate_accuracy_quant(device, net, testloader, logger):
     net.eval()
     correct = 0
     total = 0
@@ -74,7 +74,7 @@ def evaluate_accuracy_quant(device, net, testloader):
             correct += predicted.eq(targets).sum().item()
 
     acc = 100. * correct / total
-    print('Accuracy: {:.2f}%'.format(acc))
+    logger.log('Accuracy: {:.2f}%'.format(acc))
 
 def test(epoch, device, net, testloader, criterion, best_acc, checkpoint_dir, logger):
     logger.log('Testing Phase Started')

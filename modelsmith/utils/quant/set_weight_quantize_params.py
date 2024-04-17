@@ -41,8 +41,8 @@ def get_init(
     return cached_inps, cached_outs
 
 
-def set_weight_quantize_params(model):
-    print(f"set_weight_quantize_params", flush=True)
+def set_weight_quantize_params(model, logger):
+    logger.log(f"set_weight_quantize_params")
     for name, module in model.named_modules():
         if isinstance(module, QuantModule):
             module.weight_quantizer.set_inited(False)

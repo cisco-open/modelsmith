@@ -21,11 +21,13 @@ import torch
 import torch.nn as nn
 import torchvision
 import torchvision.transforms as transforms
+import time
 
 # Define directory paths
 script_dir = os.path.dirname(os.path.realpath(__file__))
 data_dir = os.path.join(script_dir, 'data')
 checkpoint_dir = os.path.join(script_dir, 'checkpoint')
+run_records_dir = os.path.join(script_dir, 'run_records') 
 
 sys.path.append(os.path.join(script_dir, '..'))
 
@@ -43,6 +45,9 @@ from utils.quant import (
     set_weight_quantize_params,
     set_act_quantize_params,
 )
+from utils.logger import RunLogger
+
+logger = RunLogger(log_directory=run_records_dir)
 
 #%%
 lr = 0.1
@@ -64,7 +69,7 @@ def seed_all(seed=1029):
 
 def prepare_data(dataset='cifar10', batch_size=128, workers=2):
     # Data
-    print('==> Preparing data..', flush=True)
+    logger.log('==> Preparing data..')
     transform_train = transforms.Compose([
         transforms.RandomCrop(32, padding=4),
         transforms.RandomHorizontalFlip(),
@@ -78,7 +83,7 @@ def prepare_data(dataset='cifar10', batch_size=128, workers=2):
     ])
 
     if dataset == 'cifar10':
-        print('==> Preparing cifar10..', flush=True)
+        logger.log('==> Preparing cifar10..')
         trainset = torchvision.datasets.CIFAR10(
             root=data_dir, train=True, download=True, transform=transform_train)
         trainloader = torch.utils.data.DataLoader(
@@ -89,7 +94,7 @@ def prepare_data(dataset='cifar10', batch_size=128, workers=2):
         testloader = torch.utils.data.DataLoader(
             testset, batch_size=batch_size, shuffle=False, num_workers=workers)
     elif dataset == 'cifar100':
-        print('==> Preparing cifar100..', flush=True)
+        logger.log('==> Preparing cifar100..')
         trainset = torchvision.datasets.CIFAR100(
             root=data_dir, train=True, download=True, transform=transform_train)
         trainloader = torch.utils.data.DataLoader(
@@ -100,7 +105,7 @@ def prepare_data(dataset='cifar10', batch_size=128, workers=2):
         testloader = torch.utils.data.DataLoader(
             testset, batch_size=batch_size, shuffle=False, num_workers=workers)
     else:
-        print('no corresponding datasets', flush=True)
+        logger.log('No corresponding datasets')
     return trainloader, testloader
 
 def get_calibration_samples(train_loader, num_samples):
@@ -113,6 +118,7 @@ def get_calibration_samples(train_loader, num_samples):
     return torch.cat(train_data, dim=0)[:num_samples], torch.cat(target, dim=0)[:num_samples]
 
 if __name__ == '__main__':
+    start_time = time.time()  
 
     parser = argparse.ArgumentParser(description='running parameters',
                                      formatter_class=argparse.ArgumentDefaultsHelpFormatter)
@@ -159,15 +165,16 @@ if __name__ == '__main__':
     parser.add_argument('--input_prob', default=1.0, type=float)
     
     args, unknown_args = parser.parse_known_args()
+    logger.set_parameters(vars(args)) 
 
     if unknown_args:
-        print(f"Warning: Unrecognized arguments {' '.join(unknown_args)}. These will be ignored.", flush=True)
+        logger.log(f"Warning: Unrecognized arguments {' '.join(unknown_args)}. These will be ignored.")
 
     seed_all(args.seed)
     # build imagenet data loader
     train_loader, test_loader = prepare_data(dataset=args.dataset, batch_size=args.batch_size, workers=args.workers)
     # load model
-    cnn = prepare_model(args.arch, device)
+    cnn = prepare_model(args.arch, device, logger)
     cnn.cuda()
     cnn.eval()
 
@@ -180,12 +187,12 @@ if __name__ == '__main__':
     qnn.cuda()
     qnn.eval()
     if not args.disable_8bit_head_stem:
-        print('Setting the first and the last layer to 8-bit', flush=True)
+        logger.log('Setting the first and the last layer to 8-bit')
         qnn.set_first_last_layer_to_8bit()
 
     qnn.disable_network_output_quantization()
-    print('check the model!', flush=True)
-    print(qnn, flush=True)
+    logger.log('check the model!')
+    logger.log(qnn)
     cali_data, cali_target = get_calibration_samples(train_loader, num_samples=args.num_samples)
     print(cali_data.shape, flush=True)
     device = next(qnn.parameters()).device
@@ -202,15 +209,15 @@ if __name__ == '__main__':
         set_act_quantize_params(qnn, cali_data=cali_data, awq=args.awq, order=args.order)
 
     '''init weight quantizer'''
-    set_weight_quantize_params(qnn)
+    set_weight_quantize_params(qnn, logger)
 
     def set_weight_act_quantize_params(module):
         if isinstance(module, QuantModule):
-            layer_reconstruction(qnn, module, **kwargs)
-            evaluate_accuracy_quant(device, qnn, test_loader)
+            layer_reconstruction(qnn, module, **kwargs, logger=logger)
+            evaluate_accuracy_quant(device, qnn, test_loader, logger=logger)
         elif isinstance(module, BaseQuantBlock):
-            block_reconstruction(qnn, module, **kwargs)
-            evaluate_accuracy_quant(device, qnn, test_loader)
+            block_reconstruction(qnn, module, **kwargs, logger=logger)
+            evaluate_accuracy_quant(device, qnn, test_loader, logger=logger)
         else:
             raise NotImplementedError
 
@@ -220,10 +227,10 @@ if __name__ == '__main__':
         """
         for name, module in model.named_children():
             if isinstance(module, QuantModule):
-                print('Reconstruction for layer {}'.format(name), flush=True)
+                logger.log('Reconstruction for layer {}'.format(name))
                 set_weight_act_quantize_params(module)
             elif isinstance(module, BaseQuantBlock):
-                print('Reconstruction for block {}'.format(name), flush=True)
+                logger.log('Reconstruction for block {}'.format(name))
                 set_weight_act_quantize_params(module)
             else:
                 recon_model(module)
@@ -236,4 +243,12 @@ if __name__ == '__main__':
 
     qnn.set_quant_state(weight_quant=True, act_quant=args.act_quant)
     criterion = nn.CrossEntropyLoss()
-    print('Full quantization (W{}A{}) accuracy: {}'.format(args.n_bits_w, args.n_bits_a, test(0, device, qnn, test_loader, criterion, best_acc, checkpoint_dir)), flush=True)
+    logger.log('Full quantization (W{}A{}) accuracy: {}'.format(args.n_bits_w, args.n_bits_a, test(0, device, qnn, test_loader, criterion, best_acc, checkpoint_dir, logger)))
+
+    logger.log("Finished!")
+    end_time = time.time()
+    logger.add_statistic("duration_seconds", end_time - start_time)
+    filename = f"MINMAXPTQ_{args.arch}"
+    saved_file_path = logger.save_run_record(filename) 
+
+    logger.log(f"History of the run saved to: {saved_file_path}")

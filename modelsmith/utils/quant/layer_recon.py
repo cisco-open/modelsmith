@@ -28,7 +28,7 @@ def layer_reconstruction(model: QuantModel, layer: QuantModule, cali_data: torch
                          batch_size: int = 32, iters: int = 20000, weight: float = 0.001, opt_mode: str = 'mse',
                          act_quant: bool = False, b_range: tuple = (20, 2),
                          warmup: float = 0.0, p: float = 2.0, lr: float = 4e-5, wwq: bool = True, waq: bool = True,
-                         order: str = 'together', input_prob: float = 1.0, keep_gpu: bool = True):
+                         order: str = 'together', input_prob: float = 1.0, keep_gpu: bool = True, logger=None):
     """
     Block reconstruction to optimize the output from each layer.
 
@@ -116,7 +116,7 @@ def layer_reconstruction(model: QuantModel, layer: QuantModule, cali_data: torch
         if i % 500 == 0:
             step = i // 500 
             msg = 'Loss: {:.3f}'.format(err.item())
-            progress_bar(step, iters // 500, msg)
+            progress_bar(step, iters // 500, msg, logger)
 
     torch.cuda.empty_cache()
 
