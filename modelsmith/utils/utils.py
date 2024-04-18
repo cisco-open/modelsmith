@@ -195,6 +195,7 @@ def cifar10_dataloaders(
     only_mark: bool = False,
     shuffle=True,
     no_aug=False,
+    logger=None
 ):
     if no_aug:
         train_transform = transforms.Compose(
@@ -218,11 +219,11 @@ def cifar10_dataloaders(
         ]
     )
 
-    print(
+    logger.log(
         "Dataset information: CIFAR-10\t 45000 images for training \t 5000 images for validation\t"
     )
-    print("10000 images for testing\t no normalize applied in data_transform")
-    print("Data augmentation = randomcrop(32,4) + randomhorizontalflip")
+    logger.log("10000 images for testing\t no normalize applied in data_transform")
+    logger.log("Data augmentation = randomcrop(32,4) + randomhorizontalflip")
 
     train_set = CIFAR10(data_dir, train=True, transform=train_transform, download=True)
 
@@ -360,10 +361,10 @@ def replace_class(
         print(f"Replacing indexes {indexes}")
     replace_indexes(dataset, indexes, seed, only_mark)
 
-def setup_dataset(args):
+def setup_dataset(args, logger):
     if args.dataset == "cifar10":
         train_full_loader, val_loader, _ = cifar10_dataloaders(
-            batch_size=args.batch_size, data_dir=args.data, num_workers=args.workers
+            batch_size=args.batch_size, data_dir=args.data, num_workers=args.workers, logger=logger
         )
         marked_loader, _, test_loader = cifar10_dataloaders(
             batch_size=args.batch_size,
@@ -376,6 +377,7 @@ def setup_dataset(args):
             only_mark=True,
             shuffle=True,
             no_aug=args.no_aug,
+            logger=logger
         )
         if args.train_seed is None:
             args.train_seed = args.seed

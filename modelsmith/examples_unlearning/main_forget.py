@@ -22,6 +22,7 @@ import torch
 import torch.nn as nn
 import torch.optim
 import torch.utils.data
+import time
 
 # Define directory paths
 script_dir = os.path.dirname(os.path.realpath(__file__))
@@ -29,18 +30,23 @@ data_dir = os.path.join(script_dir, 'data')
 models_checkpoints_dir = os.path.join(script_dir, 'models_checkpoints')
 checkpoint_dir = os.path.join(script_dir, 'checkpoint')
 unlearn_dir = os.path.join(checkpoint_dir, 'unlearn')
+run_records_dir = os.path.join(script_dir, 'run_records')
 
 sys.path.append(os.path.join(script_dir, '..'))
 
-from collections import OrderedDict
 
+from collections import OrderedDict
 from utils.model_utils import prepare_model
 from utils.utils import progress_bar, train, test, setup_seed, setup_dataset
 from utils import pruner
 from utils.impl import iterative_unlearn
-import time
+from utils.logger import RunLogger
+
+logger = RunLogger(log_directory=run_records_dir)
 
 def main():
+    start_time = time.time()  
+
     arg_parser = argparse.ArgumentParser(description='PyTorch CIFAR10 Training and Unlearning')
     arg_parser.add_argument('--save-dir', default=unlearn_dir, type=str, help='save directory')
     arg_parser.add_argument('--num-indexes-to-replace', default=4500, type=int, help='number of indexes to replace')
@@ -67,6 +73,7 @@ def main():
     arg_parser.add_argument("--no-l1-epochs", default=0, type=int, help="non l1 epochs")
 
     args = arg_parser.parse_args()
+    logger.set_parameters(vars(args)) 
 
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
 
@@ -76,7 +83,7 @@ def main():
         setup_seed(args.seed)
 
     seed = args.seed
-    net = prepare_model(args.arch, device)
+    net = prepare_model(args.arch, device, logger)
     net = net.to(device)
 
     # prepare dataset
@@ -85,7 +92,7 @@ def main():
         val_loader,
         test_loader,
         marked_loader,
-    ) = setup_dataset(args)
+    ) = setup_dataset(args, logger)
     net.cuda()
 
     def replace_loader_dataset(
@@ -108,7 +115,7 @@ def main():
     forget_loader = replace_loader_dataset(
         forget_dataset, seed=seed, shuffle=True
     )
-    print(len(forget_dataset), flush=True)
+    logger.log(len(forget_dataset))
     retain_dataset = copy.deepcopy(marked_loader.dataset)
     marked = retain_dataset.targets >= 0
     retain_dataset.data = retain_dataset.data[marked]
@@ -116,7 +123,7 @@ def main():
     retain_loader = replace_loader_dataset(
         retain_dataset, seed=seed, shuffle=True
     )
-    print(len(retain_dataset), flush=True)
+    logger.log(len(retain_dataset))
     assert len(forget_dataset) + len(retain_dataset) == len(
         train_loader_full.dataset
     )
@@ -129,7 +136,7 @@ def main():
 
     evaluation_result = None
 
-    pruner.check_sparsity(net)
+    pruner.check_sparsity(net, logger)
 
     FT_l1(unlearn_data_loaders, net, criterion, args)
 
@@ -137,18 +144,26 @@ def main():
         evaluation_result = {}
 
     if "new_accuracy" not in evaluation_result:
-        print('Testing Phase Started', flush=True)
+        logger.log('Testing Phase Started')
 
         accuracy = {}
         for index, (name, loader) in enumerate(unlearn_data_loaders.items()):
-            print(f'Test: {index}', flush=True)
+            logger.log(f'Test: {index}')
             val_acc = validate(loader, net, criterion, args, test_index=index)
             accuracy[name] = val_acc
-            print(f"Statistics: {name}_acc_test_{index}: {val_acc:.2f}", flush=True)
+            logger.log(f"Statistics: {name}_acc_test_{index}: {val_acc:.2f}")
 
         evaluation_result["accuracy"] = accuracy
 
-        print('Testing Phase Ended', flush=True)
+        logger.log('Testing Phase Ended')
+    
+    logger.log("Finished!")
+    end_time = time.time()
+    logger.add_statistic("duration_seconds", end_time - start_time)
+    filename = f"MU_{args.arch}"
+    saved_file_path = logger.save_run_record(filename) 
+
+    logger.log(f"History of the run saved to: {saved_file_path}")
 
 def l1_regularization(model):
     params_vec = []
@@ -203,9 +218,9 @@ def FT_iter(data_loaders, model, criterion, optimizer, epoch, args, with_l1=True
         top1.update(prec1.item(), image.size(0))
        
         msg = "Loss: {:.4f} | Acc: {:.3f}%".format(losses.val, top1.val)
-        progress_bar(i, len(train_loader), msg)
+        progress_bar(i, len(train_loader), msg, logger)
 
-    print("train_accuracy {top1.avg:.3f}".format(top1=top1), flush=True)
+    logger.log("train_accuracy {top1.avg:.3f}".format(top1=top1))
 
     return top1.avg
 
@@ -269,12 +284,12 @@ def validate(val_loader, model, criterion, args, test_index=None):
         top1.update(prec1.item(), image.size(0))
 
         msg = "Loss: {:.4f} | Acc: {:.3f}%".format(losses.val, top1.val)
-        progress_bar(i, len(val_loader), msg)
+        progress_bar(i, len(val_loader), msg, logger)
 
     if test_index is not None:
-        print(f"valid_accuracy_test_{test_index}: {top1.avg:.3f}", flush=True)
+        logger.log(f"valid_accuracy_test_{test_index}: {top1.avg:.3f}")
     else:
-        print(f"valid_accuracy: {top1.avg:.3f}", flush=True)
+        logger.log(f"valid_accuracy: {top1.avg:.3f}")
 
     return top1.avg
 
