@@ -69,6 +69,11 @@ const routes: Routes = [
 			{
 				path: RoutesList.MODEL_TRAINING.ROOT,
 				loadChildren: () => import('./modules/model-training/model-training.module').then((m) => m.ModelTrainingModule)
+			},
+			{
+				path: RoutesList.ALGORITHM_COMPARISON.ROOT,
+				loadChildren: () =>
+					import('./modules/algorithm-comparison/algorithm-comparison.module').then((m) => m.AlgorithmComparisonModule)
 			}
 		]
 	}

@@ -14,44 +14,19 @@
 
 //   SPDX-License-Identifier: Apache-2.0
 
-export const RoutesList = {
-	AUTH: {
-		ROOT: 'auth',
-		LOGIN: 'login'
-	},
-	MODE_SELECT: {
-		ROOT: 'mode-select'
-	},
-	WIZARD: {
-		ROOT: 'wizard'
-	},
-	MODEL_COMPRESSION: {
-		ROOT: 'project-settings'
-	},
-	MACHINE_UNLEARNING: {
-		ROOT: 'machine-unlearning'
-	},
-	RUNNING: {
-		ROOT: 'running'
-	},
-	MODEL_TRAINING: {
-		ROOT: 'model-training'
-	},
-	ALGORITHM_COMPARISON: {
-		ROOT: 'algorithm-comparison'
-	},
-	DEMO: {
-		ROOT: 'demo',
-		BUTTONS: 'buttons',
-		FORM_FIELDS: 'form-fields',
-		TABLE: 'table',
-		TYPOGRAPHY: 'typography',
-		ICONS: 'icons',
-		MENU: 'menu',
-		CARDS: 'cards',
-		WIZARD: 'wizard',
-		CHIPS: 'chips',
-		CHECKBOXES: 'checkboxes',
-		NOTIFICATIONS: 'notifications'
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { AlgorithmComparisonComponent } from './components/algorithm-comparison/algorithm-comparison.component';
+
+const ALGORITHM_COMPARISON_ROUTES: Routes = [
+	{
+		path: '',
+		component: AlgorithmComparisonComponent
 	}
-};
+];
+
+@NgModule({
+	imports: [RouterModule.forChild(ALGORITHM_COMPARISON_ROUTES)],
+	exports: [RouterModule]
+})
+export class AlgorithmComparisonRoutingModule {}

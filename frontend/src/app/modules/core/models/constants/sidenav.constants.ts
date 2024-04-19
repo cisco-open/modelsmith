@@ -56,6 +56,11 @@ const expert: SidenavItem[] = [
 		route: 'multi-modal',
 		label: 'Multi-modal',
 		icon: 'icon-Environmental'
+	},
+	{
+		route: RoutesList.ALGORITHM_COMPARISON.ROOT,
+		label: 'Algorithm Comparison',
+		icon: 'icon-Rocket'
 	}
 ];
 
