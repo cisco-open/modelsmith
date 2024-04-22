@@ -14,15 +14,26 @@
 
 //   SPDX-License-Identifier: Apache-2.0
 
-@forward './ms-buttons';
-@forward './ms-divider';
-@forward './ms-cards';
-@forward './ms-form-fields';
-@forward './ms-table';
-@forward './ms-wizard';
-@forward './ms-chips';
-@forward './ms-menu';
-@forward './ms-checkboxes';
-@forward './ms-tooltip';
-@forward './ms-snackbar';
-@forward './ms-drawer';
+import { OverlayRef } from '@angular/cdk/overlay';
+import { Observable, Subject } from 'rxjs';
+import { DrawerClose } from './models/drawer-config.interface';
+
+export class DrawerRef {
+	private afterClosedSubject = new Subject<any>();
+
+	constructor(private overlayRef: OverlayRef) {}
+
+	public backdropClick(): Observable<MouseEvent> {
+		return this.overlayRef.backdropClick();
+	}
+
+	public close(result?: DrawerClose) {
+		this.overlayRef.dispose();
+		this.afterClosedSubject.next(result);
+		this.afterClosedSubject.complete();
+	}
+
+	public afterClosed(): Observable<any> {
+		return this.afterClosedSubject.asObservable();
+	}
+}

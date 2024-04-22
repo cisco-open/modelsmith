@@ -14,15 +14,7 @@
 
 //   SPDX-License-Identifier: Apache-2.0
 
-@forward './ms-buttons';
-@forward './ms-divider';
-@forward './ms-cards';
-@forward './ms-form-fields';
-@forward './ms-table';
-@forward './ms-wizard';
-@forward './ms-chips';
-@forward './ms-menu';
-@forward './ms-checkboxes';
-@forward './ms-tooltip';
-@forward './ms-snackbar';
-@forward './ms-drawer';
+export enum DrawerActionTypeEnum {
+	ADD = 'add',
+	EDIT = 'edit'
+}

@@ -14,15 +14,21 @@
 
 //   SPDX-License-Identifier: Apache-2.0
 
-@forward './ms-buttons';
-@forward './ms-divider';
-@forward './ms-cards';
-@forward './ms-form-fields';
-@forward './ms-table';
-@forward './ms-wizard';
-@forward './ms-chips';
-@forward './ms-menu';
-@forward './ms-checkboxes';
-@forward './ms-tooltip';
-@forward './ms-snackbar';
-@forward './ms-drawer';
+import { OverlayConfig } from '@angular/cdk/overlay';
+import { DrawerActionTypeEnum } from './drawer-action-type.enum';
+import { DrawerStatus } from './drawer-status.enum';
+
+export interface DrawerConfig extends OverlayConfig {
+	data?: any;
+	title?: string;
+	showSaveButton?: boolean;
+	showDismissButton?: boolean;
+	saveButtonLabel?: string;
+	dismissButtonLabel?: string;
+	actionType?: DrawerActionTypeEnum;
+}
+
+export interface DrawerClose {
+	result?: any;
+	status: DrawerStatus;
+}

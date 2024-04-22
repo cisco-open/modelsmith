@@ -14,15 +14,9 @@
 
 //   SPDX-License-Identifier: Apache-2.0
 
-@forward './ms-buttons';
-@forward './ms-divider';
-@forward './ms-cards';
-@forward './ms-form-fields';
-@forward './ms-table';
-@forward './ms-wizard';
-@forward './ms-chips';
-@forward './ms-menu';
-@forward './ms-checkboxes';
-@forward './ms-tooltip';
-@forward './ms-snackbar';
-@forward './ms-drawer';
+export * from './component/ms-drawer.component';
+export * from './drawer.ref';
+export * from './drawer.tokens';
+export * from './models/drawer-config.interface';
+export * from './models/drawer-status.enum';
+export * from './service/drawer.service';
