@@ -52,6 +52,7 @@ export const RoutesList = {
 		WIZARD: 'wizard',
 		CHIPS: 'chips',
 		CHECKBOXES: 'checkboxes',
-		NOTIFICATIONS: 'notifications'
+		NOTIFICATIONS: 'notifications',
+		DRAWER: 'drawer'
 	}
 };

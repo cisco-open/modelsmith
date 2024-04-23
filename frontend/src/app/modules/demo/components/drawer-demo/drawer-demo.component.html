@@ -1,0 +1,109 @@
+<h1>Drawer</h1>
+
+<div class="section">
+	<h2>Description:</h2>
+
+	<p>Drawer Dialog it's opened using the drawer service. (ex. this.drawerService.open(COMPONENT, customData)</p>
+	<p>
+		Those are the custom data available for <b>drawer config:</b> <br />
+		<b>data?: any;</b> | Custom data that you would need to add from outside inside the dialog. <br />
+		<b>title?: string;</b> | Dialog title <br />
+		<b>showSaveButton?: boolean;</b> | Option to configure the show/hide of the save button. <br />
+		<b>showDismissButton?: boolean;</b> | Option to configure the show/hide of the dismiss button. <br />
+		<b>saveButtonLabel?: string;</b> | Option to configure the save button label.<br />
+		<b>dismissButtonLabel?: string;</b> | Option to configure the dismiss button label.<br />
+	</p>
+	<p>
+		On each drawer action an event it's emitted: If you click on the X icon, the event emitted it's DrawerStatus.CLOSE,
+		if you click on save the event emitted is DrawerStatus.SAVE, if you click on dismiss the event it's
+		DrawerStatus.DISMISS. By using this action on the actionEvent output event emitter, you can bind your function and
+		listen to events for your custom functionality.
+	</p>
+
+	<p>
+		Additionaly, you can change the templates of the header and footer and provide a totally custom implementation as
+		you would need it. Check the "alternative templates" examples
+	</p>
+</div>
+
+<div class="section">
+	<h2>Basic Drawers</h2>
+
+	<div class="parent items-per-row-5">
+		<div>Open simple drawer</div>
+		<div>Open Drawer with Injected Data</div>
+		<div>Open Drawer with Only One Button</div>
+		<div>Open Drawer with Disabled Buttons</div>
+		<div>Open Drawer with Customizable Width</div>
+
+		<div>
+			<button mat-raised-button (click)="openDrawer()">Open Drawer</button>
+		</div>
+		<div>
+			<button mat-raised-button (click)="openDrawerWithInjectedData()">Open Drawer</button>
+		</div>
+		<div>
+			<button mat-raised-button (click)="openDrawerWithOnlyOneButton()">Open Drawer</button>
+		</div>
+		<div>
+			<button mat-raised-button (click)="openDrawerWithDisabledButtons()">Open Drawer</button>
+		</div>
+		<div>
+			<button mat-raised-button (click)="openDrawerWithCustomizableWidth()">Open Drawer</button>
+		</div>
+	</div>
+
+	<div class="line">
+		<mat-divider></mat-divider>
+	</div>
+</div>
+
+<div class="section">
+	<h2>Alternative templates examples</h2>
+
+	<div class="parent items-per-row-5">
+		<div>Open Drawer with Alternative Header Template</div>
+		<div>Open Drawer with Alternative Actions Template</div>
+		<div></div>
+		<div></div>
+		<div></div>
+
+		<div>
+			<button mat-raised-button (click)="openDrawerWithAlternativeHeader()">Open Drawer</button>
+		</div>
+		<div>
+			<button mat-raised-button (click)="openDrawerWithAlternativeActions()">Open Drawer</button>
+		</div>
+		<div></div>
+		<div></div>
+		<div></div>
+	</div>
+
+	<div class="line">
+		<mat-divider></mat-divider>
+	</div>
+</div>
+
+<div class="section">
+	<h2>Drawers With Buttons Actions Check</h2>
+
+	<div class="parent items-per-row-5">
+		<div>Open Drawer with Buttons Actions</div>
+		<div></div>
+		<div></div>
+		<div></div>
+		<div></div>
+
+		<div>
+			<button mat-raised-button (click)="openDrawerWithButtonsActions()">Open Drawer</button>
+		</div>
+		<div></div>
+		<div></div>
+		<div></div>
+		<div></div>
+	</div>
+
+	<div class="line">
+		<mat-divider></mat-divider>
+	</div>
+</div>

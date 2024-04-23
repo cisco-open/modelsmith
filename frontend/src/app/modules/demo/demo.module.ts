@@ -19,11 +19,21 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { SharedModule } from '../shared/shared.module';
 import { MsCardSelectorComponent } from '../shared/standalone/ms-card-selector/ms-card-selector.component';
+import { MsDrawerComponent } from '../shared/standalone/ms-drawer';
 import { ButtonsDemoComponent } from './components/buttons-demo/buttons-demo.component';
 import { CardsDemoComponent } from './components/cards-demo/cards-demo.component';
 import { CheckboxesDemoComponent } from './components/checkboxes-demo/checkboxes-demo.component';
 import { ChipsDemoComponent } from './components/chips-demo/chips-demo.component';
 import { DemoComponent } from './components/demo/demo.component';
+import { DrawerBasicDemoComponent } from './components/drawer-demo/drawer-basic-demo/drawer-basic-demo.component';
+import { DrawerDemoComponent } from './components/drawer-demo/drawer-demo.component';
+import { DrawerWithAlternativeActionsTemplateComponent } from './components/drawer-demo/drawer-with-alternative-actions-template/drawer-with-alternative-actions-template.component';
+import { DrawerWithAlternativeHeaderTemplateComponent } from './components/drawer-demo/drawer-with-alternative-header-template/drawer-with-alternative-header-template.component';
+import { DrawerWithButtonsActionsComponent } from './components/drawer-demo/drawer-with-buttons-actions/drawer-with-buttons-actions.component';
+import { DrawerWithCustomizableWidthComponent } from './components/drawer-demo/drawer-with-customizable-width/drawer-with-customizable-width.component';
+import { DrawerWithDisabledButtonsActionsComponent } from './components/drawer-demo/drawer-with-disabled-buttons-actions/drawer-with-disabled-buttons-actions.component';
+import { DrawerWithInjectedDataComponent } from './components/drawer-demo/drawer-with-injected-data/drawer-with-injected-data.component';
+import { DrawerWithOnlyOneButtonComponent } from './components/drawer-demo/drawer-with-only-one-button/drawer-with-only-one-button.component';
 import { FormFieldsDemoComponent } from './components/form-fields-demo/form-fields-demo.component';
 import { IconsDemoComponent } from './components/icons-demo/icons-demo.component';
 import { MenuDemoComponent } from './components/menu-demo/menu-demo.component';
@@ -46,8 +56,17 @@ import { DemoRoutingModule } from './demo-routing.module';
 		ChipsDemoComponent,
 		CheckboxesDemoComponent,
 		MenuDemoComponent,
-		NotificationsDemoComponent
+		NotificationsDemoComponent,
+		DrawerDemoComponent,
+		DrawerBasicDemoComponent,
+		DrawerWithInjectedDataComponent,
+		DrawerWithAlternativeHeaderTemplateComponent,
+		DrawerWithDisabledButtonsActionsComponent,
+		DrawerWithOnlyOneButtonComponent,
+		DrawerWithAlternativeActionsTemplateComponent,
+		DrawerWithButtonsActionsComponent,
+		DrawerWithCustomizableWidthComponent
 	],
-	imports: [RouterModule, CommonModule, SharedModule, DemoRoutingModule, MsCardSelectorComponent]
+	imports: [RouterModule, CommonModule, SharedModule, DemoRoutingModule, MsCardSelectorComponent, MsDrawerComponent]
 })
 export class DemoModule {}

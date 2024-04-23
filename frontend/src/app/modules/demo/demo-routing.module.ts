@@ -22,6 +22,7 @@ import { CardsDemoComponent } from './components/cards-demo/cards-demo.component
 import { CheckboxesDemoComponent } from './components/checkboxes-demo/checkboxes-demo.component';
 import { ChipsDemoComponent } from './components/chips-demo/chips-demo.component';
 import { DemoComponent } from './components/demo/demo.component';
+import { DrawerDemoComponent } from './components/drawer-demo/drawer-demo.component';
 import { FormFieldsDemoComponent } from './components/form-fields-demo/form-fields-demo.component';
 import { IconsDemoComponent } from './components/icons-demo/icons-demo.component';
 import { MenuDemoComponent } from './components/menu-demo/menu-demo.component';
@@ -83,6 +84,10 @@ const routes: Routes = [
 			{
 				path: RoutesList.DEMO.WIZARD,
 				component: WizardDemoComponent
+			},
+			{
+				path: RoutesList.DEMO.DRAWER,
+				component: DrawerDemoComponent
 			}
 		]
 	}
