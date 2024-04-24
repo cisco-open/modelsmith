@@ -14,24 +14,14 @@
 
 //   SPDX-License-Identifier: Apache-2.0
 
-import { ChangeDetectionStrategy, Component, Inject, OnInit } from '@angular/core';
-import { DRAWER_DATA, DrawerConfig, DrawerRef } from '../../../../shared/standalone/ms-drawer';
+import { createActionGroup, props } from '@ngrx/store';
+import { AlgorithmType } from '../../../modules/model-compression/models/enums/algorithms.enum';
 
-@Component({
-	selector: 'ms-add-run-drawer',
-	templateUrl: './drawer-basic-demo.component.html',
-	styleUrls: ['./drawer-basic-demo.component.scss'],
-	changeDetection: ChangeDetectionStrategy.OnPush
-})
-export class DrawerBasicDemoComponent implements OnInit {
-	constructor(
-		private drawerRef: DrawerRef,
-		@Inject(DRAWER_DATA) public data: DrawerConfig
-	) {}
-
-	ngOnInit(): void {}
-
-	close() {
-		this.drawerRef.close();
+export const RunRecordsActions = createActionGroup({
+	source: '[Run Records -> Records]',
+	events: {
+		'Get Run Records List': props<{ algorithmType: AlgorithmType }>(),
+		'Get Run Records List Success': props<{ files: string[] }>(),
+		'Get Run Records List Failure': props<{ error: any }>()
 	}
-}
+});

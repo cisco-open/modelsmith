@@ -14,24 +14,24 @@
 
 //   SPDX-License-Identifier: Apache-2.0
 
-import { ChangeDetectionStrategy, Component, Inject, OnInit } from '@angular/core';
-import { DRAWER_DATA, DrawerConfig, DrawerRef } from '../../../../shared/standalone/ms-drawer';
+import { createReducer, on } from '@ngrx/store';
+import { RunRecordsActions } from './records.actions';
+import { RecordsState } from './records.state';
 
-@Component({
-	selector: 'ms-add-run-drawer',
-	templateUrl: './drawer-basic-demo.component.html',
-	styleUrls: ['./drawer-basic-demo.component.scss'],
-	changeDetection: ChangeDetectionStrategy.OnPush
-})
-export class DrawerBasicDemoComponent implements OnInit {
-	constructor(
-		private drawerRef: DrawerRef,
-		@Inject(DRAWER_DATA) public data: DrawerConfig
-	) {}
+export const initialState: RecordsState = {
+	files: [],
+	error: ''
+};
 
-	ngOnInit(): void {}
-
-	close() {
-		this.drawerRef.close();
-	}
-}
+export const recordsReducer = createReducer(
+	initialState,
+	on(RunRecordsActions.getRunRecordsListSuccess, (state, { files }) => ({
+		...state,
+		files,
+		error: null
+	})),
+	on(RunRecordsActions.getRunRecordsListFailure, (state, { error }) => ({
+		...state,
+		error
+	}))
+);

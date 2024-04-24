@@ -14,24 +14,6 @@
 
 //   SPDX-License-Identifier: Apache-2.0
 
-import { ChangeDetectionStrategy, Component, Inject, OnInit } from '@angular/core';
-import { DRAWER_DATA, DrawerConfig, DrawerRef } from '../../../../shared/standalone/ms-drawer';
-
-@Component({
-	selector: 'ms-add-run-drawer',
-	templateUrl: './drawer-basic-demo.component.html',
-	styleUrls: ['./drawer-basic-demo.component.scss'],
-	changeDetection: ChangeDetectionStrategy.OnPush
-})
-export class DrawerBasicDemoComponent implements OnInit {
-	constructor(
-		private drawerRef: DrawerRef,
-		@Inject(DRAWER_DATA) public data: DrawerConfig
-	) {}
-
-	ngOnInit(): void {}
-
-	close() {
-		this.drawerRef.close();
-	}
-}
+export * from './run-records.reducer';
+export * from './run-records.selector';
+export * from './run-records.state';

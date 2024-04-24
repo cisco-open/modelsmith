@@ -14,24 +14,20 @@
 
 //   SPDX-License-Identifier: Apache-2.0
 
-import { ChangeDetectionStrategy, Component, Inject, OnInit } from '@angular/core';
-import { DRAWER_DATA, DrawerConfig, DrawerRef } from '../../../../shared/standalone/ms-drawer';
+import { Injectable } from '@angular/core';
+import { Action, Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
+import { RecordsState, selectRecordsFiles } from '../../../state/run-records/records';
 
-@Component({
-	selector: 'ms-add-run-drawer',
-	templateUrl: './drawer-basic-demo.component.html',
-	styleUrls: ['./drawer-basic-demo.component.scss'],
-	changeDetection: ChangeDetectionStrategy.OnPush
-})
-export class DrawerBasicDemoComponent implements OnInit {
-	constructor(
-		private drawerRef: DrawerRef,
-		@Inject(DRAWER_DATA) public data: DrawerConfig
-	) {}
+@Injectable({ providedIn: 'root' })
+export class RecordsFacadeService {
+	files$: Observable<string[]>;
 
-	ngOnInit(): void {}
+	constructor(private store: Store<RecordsState>) {
+		this.files$ = this.store.select(selectRecordsFiles);
+	}
 
-	close() {
-		this.drawerRef.close();
+	dispatch(action: Action) {
+		this.store.dispatch(action);
 	}
 }
