@@ -45,7 +45,7 @@ function getConnectionStatus() {
  * @param {Function} onEnd Callback for handling the end of the command execution.
  * @param {Function} onError Callback for handling errors.
  */
-function executeCommand(cmd, onData, onEnd = () => {}, onError = () => {}) {
+function executeCommand(cmd, onData, onEnd = () => {}, onError = () => {}, accumulateOutput = false) {
 	if (process.env.CONNECTION_TYPE === CONNECTION_TYPE.LOCAL) {
 		// RUN ON LOCAL MACHINE
 		const child = exec(cmd);
@@ -73,8 +73,11 @@ function executeCommand(cmd, onData, onEnd = () => {}, onError = () => {}) {
 			onError(`Failed to start subprocess: ${err.message}`);
 		});
 	} else {
-		// RUN ON VM
-		sshConnection.exec(cmd, onData, onEnd, onError);
+		if (accumulateOutput) {
+			sshConnection.executeAndAccumulateOutput(cmd, onData, onEnd, onError);
+		} else {
+			sshConnection.exec(cmd, onData, onEnd, onError);
+		}
 	}
 }
 
