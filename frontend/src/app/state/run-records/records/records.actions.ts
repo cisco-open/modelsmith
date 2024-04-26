@@ -16,12 +16,16 @@
 
 import { createActionGroup, props } from '@ngrx/store';
 import { AlgorithmType } from '../../../modules/model-compression/models/enums/algorithms.enum';
+import { SummarizedRunRecordDto } from '../../../services/client/models/run-records/run-records.interface';
 
 export const RunRecordsActions = createActionGroup({
 	source: '[Run Records -> Records]',
 	events: {
-		'Get Run Records List': props<{ algorithmType: AlgorithmType }>(),
-		'Get Run Records List Success': props<{ files: string[] }>(),
-		'Get Run Records List Failure': props<{ error: any }>()
+		'Get Run Records Filenames': props<{ algorithmType: AlgorithmType }>(),
+		'Get Run Records Filenames Success': props<{ files: string[] }>(),
+		'Get Run Records Filenames Failure': props<{ error: any }>(),
+		'Get Run Record Summarized Data': props<{ algorithmType: string; filename: string }>(),
+		'Get Run Record Summarized Data Success': props<{ record: SummarizedRunRecordDto }>(),
+		'Get Run Record Summarized Data Failure': props<{ error: any }>()
 	}
 });

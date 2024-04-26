@@ -15,22 +15,33 @@
 //   SPDX-License-Identifier: Apache-2.0
 
 import { createReducer, on } from '@ngrx/store';
+import { SummarizedRunRecordDto } from '../../../services/client/models/run-records/run-records.interface';
 import { RunRecordsActions } from './records.actions';
 import { RecordsState } from './records.state';
 
 export const initialState: RecordsState = {
-	files: [],
+	filenames: [],
+	summarizedRecord: {} as SummarizedRunRecordDto,
 	error: ''
 };
 
 export const recordsReducer = createReducer(
 	initialState,
-	on(RunRecordsActions.getRunRecordsListSuccess, (state, { files }) => ({
+	on(RunRecordsActions.getRunRecordsFilenamesSuccess, (state, { files: filenames }) => ({
 		...state,
-		files,
+		filenames,
 		error: null
 	})),
-	on(RunRecordsActions.getRunRecordsListFailure, (state, { error }) => ({
+	on(RunRecordsActions.getRunRecordsFilenamesFailure, (state, { error }) => ({
+		...state,
+		error
+	})),
+	on(RunRecordsActions.getRunRecordSummarizedDataSuccess, (state, { record }) => ({
+		...state,
+		summarizedRecord: record,
+		error: null
+	})),
+	on(RunRecordsActions.getRunRecordSummarizedDataFailure, (state, { error }) => ({
 		...state,
 		error
 	}))

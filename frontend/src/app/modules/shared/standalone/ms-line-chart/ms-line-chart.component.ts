@@ -22,6 +22,7 @@ import {
 	OnChanges,
 	OnDestroy,
 	OnInit,
+	Optional,
 	SimpleChanges,
 	ViewChild
 } from '@angular/core';
@@ -34,7 +35,7 @@ import { ChartWebsocketMessageTypes } from '../../../core/models/enums/websocket
 import { ChartsMessages } from '../../../core/models/interfaces/charts-messages.interface';
 import { ScriptFacadeService } from '../../../core/services/script-facade.service';
 import { WebsocketService } from '../../../core/services/websocket.service';
-import { isEmptyObject } from '../../../core/utils/core.utils';
+import { isEmptyObject, isNilOrEmptyString } from '../../../core/utils/core.utils';
 import { isScriptActive } from '../../../model-compression/models/enums/script-status.enum';
 
 import { RealtimeUpdateMetricEnum } from './models/enums/realtime-update-metric.enum';
@@ -65,7 +66,7 @@ import { ChartUtils } from './utils/charts.utils';
 })
 export class MsLineChartComponent implements OnInit, OnChanges, OnDestroy {
 	@Input() data: ChartDatasets[] = [];
-	@Input() realtimeUpdateMetric!: RealtimeUpdateMetricEnum;
+	@Input() realtimeUpdateMetric?: RealtimeUpdateMetricEnum;
 
 	@Input() settings!: ChartDisplaySettings;
 
@@ -86,7 +87,7 @@ export class MsLineChartComponent implements OnInit, OnChanges, OnDestroy {
 	constructor(
 		private websocketService: WebsocketService,
 		private scriptFacadeService: ScriptFacadeService,
-		private chartToolsGlobalSignalsService: ChartToolsGlobalSignalsService
+		@Optional() private chartToolsGlobalSignalsService: ChartToolsGlobalSignalsService
 	) {}
 
 	ngOnInit() {
@@ -110,6 +111,10 @@ export class MsLineChartComponent implements OnInit, OnChanges, OnDestroy {
 	}
 
 	private listenToToolsSignals() {
+		if (!this.chartToolsGlobalSignalsService) {
+			return;
+		}
+
 		// Tooltips
 		this.chartToolsGlobalSignalsService.toggleTooltips$
 			.pipe(delay(100), untilDestroyed(this))
@@ -218,6 +223,10 @@ export class MsLineChartComponent implements OnInit, OnChanges, OnDestroy {
 
 	// Realtime Update Feature based on Websockets
 	private listenToChartWebsocketEvents(): void {
+		if (isNilOrEmptyString(this.realtimeUpdateMetric)) {
+			return;
+		}
+
 		this.websocketService.chartsMessages$.pipe(untilDestroyed(this)).subscribe((message: ChartsMessages) => {
 			switch (message.topic) {
 				case ChartWebsocketMessageTypes.UPDATE_LATEST_VALUE: {
@@ -359,13 +368,17 @@ export class MsLineChartComponent implements OnInit, OnChanges, OnDestroy {
 		if (this.updateIntervalId) clearInterval(this.updateIntervalId);
 	}
 
-	private resetTools(): void {
+	private resetGlobalTools(): void {
+		if (!this.chartToolsGlobalSignalsService) {
+			return;
+		}
+
 		this.chartToolsGlobalSignalsService.toggleTooltips = false;
 		this.chartToolsGlobalSignalsService.toggleZoom = false;
 	}
 
 	ngOnDestroy(): void {
-		this.resetTools();
+		this.resetGlobalTools();
 		this.stopAutoUpdate();
 	}
 }

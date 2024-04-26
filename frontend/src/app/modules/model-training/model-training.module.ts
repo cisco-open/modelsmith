@@ -22,6 +22,7 @@ import { MsPanelModelComponent } from '../shared/standalone/ms-panel-model/ms-pa
 import { MsPanelParametersComponent } from '../shared/standalone/ms-panel-parameters/ms-panel-parameters.component';
 import { MsTerminalComponent } from '../shared/standalone/ms-terminal/ms-terminal.component';
 import { AdaptiveFileSizePipe } from '../shared/standalone/pipes/adaptive-file-size.pipe';
+import { ParametersLabelPipe } from '../shared/standalone/pipes/parameters-label.pipe';
 import { ReadableDurationPipe } from '../shared/standalone/pipes/readable-duration.pipe';
 import { ModelTrainingComponent } from './components/model-training/model-training.component';
 import { PanelAlgorithmTypeComponent } from './components/panel-algorithm-type/panel-algorithm-type.component';
@@ -39,6 +40,7 @@ import { ModelTrainingRoutingModule } from './model-training-routing.module';
 		MsPanelParametersComponent,
 		AdaptiveFileSizePipe,
 		ReadableDurationPipe,
+		ParametersLabelPipe,
 		MsEmptyStateComponent
 	]
 })

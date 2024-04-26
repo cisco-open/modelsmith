@@ -14,10 +14,11 @@
 
 //   SPDX-License-Identifier: Apache-2.0
 
+import { SummarizedRunRecordDto } from '../../models/run-records/run-records.interface';
 import { ServiceCallGET } from '../service-call';
 
-export class GetRunRecordsList extends ServiceCallGET<string[]> {
-	constructor(type: string) {
-		super(`run-records-list/${type}`, undefined, undefined, false);
+export class GetRunRecordsSummarizedData extends ServiceCallGET<SummarizedRunRecordDto> {
+	constructor(type: string, filename: string) {
+		super(`run-records-summarized-data/${type}/${filename}`, undefined, undefined, false);
 	}
 }

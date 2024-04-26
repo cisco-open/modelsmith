@@ -87,7 +87,8 @@ export class ChartUtils {
 			plugins: {
 				tooltip: {
 					mode: 'index',
-					intersect: false
+					intersect: false,
+					enabled: settings.isTooltipsToolEnables
 				},
 				legend: {
 					display: settings.isDatasetLabelVisible

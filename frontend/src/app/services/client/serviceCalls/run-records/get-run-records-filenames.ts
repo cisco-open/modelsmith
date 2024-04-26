@@ -14,11 +14,10 @@
 
 //   SPDX-License-Identifier: Apache-2.0
 
-import { createSelector } from '@ngrx/store';
-import { selectRunRecordsState } from '../run-records.selector';
+import { ServiceCallGET } from '../service-call';
 
-export const selectRecordsState = createSelector(selectRunRecordsState, (state) => state.records);
-
-export const selectRecordsFilenames = createSelector(selectRecordsState, (state) => state.filenames);
-
-export const selectSummarizedRecord = createSelector(selectRecordsState, (state) => state.summarizedRecord);
+export class GetRunRecordsFilenames extends ServiceCallGET<string[]> {
+	constructor(type: string) {
+		super(`run-records-filenames/${type}`, undefined, undefined, false);
+	}
+}

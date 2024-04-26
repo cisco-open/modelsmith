@@ -1,5 +1,7 @@
 //    Copyright 2024 Cisco Systems, Inc. and its affiliates
 
+import { SummarizedRunRecordDto } from '../../../services/client/models/run-records/run-records.interface';
+
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
 //   You may obtain a copy of the License at
@@ -15,6 +17,7 @@
 //   SPDX-License-Identifier: Apache-2.0
 
 export interface RecordsState {
-	files: string[];
+	filenames: string[];
+	summarizedRecord: SummarizedRunRecordDto;
 	error: any;
 }

@@ -25,5 +25,66 @@
 				</mat-select>
 			</mat-form-field>
 		</div>
+
+		<ng-container *ngIf="!!summarizedRecord; else noData">
+			<mat-divider></mat-divider>
+
+			<div class="form-field-container mt-4">
+				<mat-label>Set run name</mat-label>
+				<mat-form-field appearance="outline">
+					<input matInput formControlName="runName" placeholder="Set run name" />
+				</mat-form-field>
+			</div>
+
+			<mat-card *ngIf="summarizedRecord?.statistics | keyvalue; let items" class="ms-card record-wrapper mb-4">
+				<p class="paragraph-bold-p3-small-bold mb-4">Statistics</p>
+
+				<div *ngFor="let item of items; let last = last" class="key-value-container single">
+					<div class="key-value-pair space-between">
+						<div class="key-value-key">{{ item.key | parametersLabel }}:</div>
+						<div class="key-value-value">
+							<ng-container [ngSwitch]="item.key">
+								<ng-container *ngSwitchCase="'duration_seconds'">{{ item.value | readableDuration }}</ng-container>
+								<ng-container *ngSwitchDefault>{{ item.value }}</ng-container>
+							</ng-container>
+						</div>
+					</div>
+					<div *ngIf="!last" class="pt-2">
+						<mat-divider></mat-divider>
+					</div>
+				</div>
+			</mat-card>
+
+			<mat-card *ngIf="summarizedRecord?.parameters | keyvalue; let items" class="ms-card record-wrapper mb-4">
+				<div class="paragraph-bold-p3-small-bold mb-4">Parameters</div>
+				<div *ngFor="let item of items; let last = last" class="key-value-container single">
+					<div class="key-value-pair space-between">
+						<div class="key-value-key">{{ item.key | parametersLabel }}:</div>
+						<div class="key-value-value">
+							{{ item.value }}
+						</div>
+					</div>
+					<div *ngIf="!last" class="pt-2">
+						<mat-divider></mat-divider>
+					</div>
+				</div>
+			</mat-card>
+
+			<mat-card *ngIf="!!summarizedRecord?.lastRunTestingAccuracyData" class="ms-card record-wrapper">
+				<div class="testing">
+					<p class="paragraph-bold-p3-small-bold p-2">Last Epoch Run Accuracy Test</p>
+					<ms-line-chart
+						[data]="lastRunAccuracyTestingChartData"
+						[settings]="testingAccuracyChartDisplaySettings"></ms-line-chart>
+				</div>
+			</mat-card>
+		</ng-container>
 	</form>
 </ms-drawer>
+
+<ng-template #noData>
+	<ms-empty-state
+		title="Awaiting Run Record Selection"
+		message="Select a run record from the dropdown to view details and statistics.">
+	</ms-empty-state>
+</ng-template>

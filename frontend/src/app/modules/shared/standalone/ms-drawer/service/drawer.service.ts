@@ -21,7 +21,7 @@ import { DrawerRef } from '../drawer.ref';
 import { DRAWER_DATA } from '../drawer.tokens';
 import { DrawerConfig } from '../models/drawer-config.interface';
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class DrawerService {
 	constructor(
 		private overlay: Overlay,

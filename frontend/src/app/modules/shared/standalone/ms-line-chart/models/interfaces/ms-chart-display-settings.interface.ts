@@ -87,6 +87,9 @@ export interface ChartDisplaySettings {
 	// A dynamic X-axis can expand or contract to accommodate varying amounts of data points or to highlight specific data ranges.
 	// This is particularly useful for charts that need to adapt to data changes over time, ensuring that the visualization remains clear and informative.
 	isXAxisDynamic?: boolean;
+
+	// Use this to configure the enable the view of the tooltips.
+	isTooltipsToolEnables?: boolean;
 }
 
 export const DEFAULT_Y_AXIS_GROWTH_OFFSET = 5;

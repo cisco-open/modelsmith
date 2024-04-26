@@ -21,7 +21,7 @@
 		<div *ngIf="items.length > 0; else noMetadata" class="key-value-container single">
 			<div *ngFor="let item of items; let last = last">
 				<div class="key-value-pair space-between">
-					<div class="key-value-key">{{ getCustomLabel(item.key) }}:</div>
+					<div class="key-value-key">{{ item.key | parametersLabel }}:</div>
 					<div class="key-value-value">
 						<ng-container [ngSwitch]="item.key">
 							<ng-container *ngSwitchCase="'file_size_bytes'">{{ item.value | adaptiveFileSize }}</ng-container>
@@ -33,8 +33,8 @@
 						</ng-container>
 					</div>
 				</div>
-				<div class="pt-2">
-					<mat-divider *ngIf="!last"></mat-divider>
+				<div *ngIf="!last" class="pt-2">
+					<mat-divider></mat-divider>
 				</div>
 			</div>
 		</div>

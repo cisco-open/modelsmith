@@ -19,19 +19,33 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, of, switchMap } from 'rxjs';
 import { CLIENT } from '../../../app.tokens';
 import { Client } from '../../../services/client/client';
-import { GetRunRecordsList } from '../../../services/client/serviceCalls/run-records/get-run-records-list';
+import { GetRunRecordsFilenames } from '../../../services/client/serviceCalls/run-records/get-run-records-filenames';
+import { GetRunRecordsSummarizedData } from '../../../services/client/serviceCalls/run-records/get-run-records-summarized-data';
 import { RunRecordsActions } from './records.actions';
 
 @Injectable()
 export class RecordsEffects {
-	getRunRecordsList$ = createEffect(() =>
+	getRunRecordsFilenames$ = createEffect(() =>
 		this.actions$.pipe(
-			ofType(RunRecordsActions.getRunRecordsList),
+			ofType(RunRecordsActions.getRunRecordsFilenames),
 			switchMap((action) => {
 				const { algorithmType } = action;
-				return this.apiClient.serviceCall(new GetRunRecordsList(algorithmType)).pipe(
-					map((files: any) => RunRecordsActions.getRunRecordsListSuccess({ files })),
-					catchError((error) => of(RunRecordsActions.getRunRecordsListFailure({ error })))
+				return this.apiClient.serviceCall(new GetRunRecordsFilenames(algorithmType)).pipe(
+					map((files: any) => RunRecordsActions.getRunRecordsFilenamesSuccess({ files })),
+					catchError((error) => of(RunRecordsActions.getRunRecordsFilenamesFailure({ error })))
+				);
+			})
+		)
+	);
+
+	getRunRecordSummarizedData$ = createEffect(() =>
+		this.actions$.pipe(
+			ofType(RunRecordsActions.getRunRecordSummarizedData),
+			switchMap((action) => {
+				const { algorithmType, filename } = action;
+				return this.apiClient.serviceCall(new GetRunRecordsSummarizedData(algorithmType, filename)).pipe(
+					map((record: any) => RunRecordsActions.getRunRecordSummarizedDataSuccess({ record })),
+					catchError((error) => of(RunRecordsActions.getRunRecordSummarizedDataFailure({ error })))
 				);
 			})
 		)
