@@ -22,7 +22,7 @@ To get started with ModelSmith, follow these steps:
 1. Clone the repository to your local machine:
 
    ```shell
-   git clone https://github.com/your-username/modelsmith.git
+   git clone https://github.com/cisco-open/modelsmith.git
    ```
 
 ## FAQ
@@ -71,9 +71,10 @@ Gaowen Liu
 
 > We have several TODO's spread out throughout our files! We will continue working in these directions to improve ModelSmith, adjusting as needed based on our user's feedback
 
-We intend to add functionalities to the log analysis for unsupervised log analysis. 
+We intend to add functionalities to the log analysis for unsupervised log analysis.
 
 If you wish to contribute or suggest any additional funtionalities, please check out [Contributing Guidelines](/CONTRIBUTING.md)
+
 ## License
 
 [Apache License 2.0](LICENSE.md).
