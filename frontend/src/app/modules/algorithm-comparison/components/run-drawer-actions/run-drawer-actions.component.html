@@ -15,7 +15,7 @@
   SPDX-License-Identifier: Apache-2.0
    -->
 
-<ms-drawer [isSaveDisabled]="form.invalid">
+<ms-drawer [isSaveDisabled]="form.invalid" (actionEvent)="save($event)">
 	<form [formGroup]="form">
 		<div class="form-field-container">
 			<mat-label> Select run record</mat-label>

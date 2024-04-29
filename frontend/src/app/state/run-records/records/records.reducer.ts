@@ -15,13 +15,13 @@
 //   SPDX-License-Identifier: Apache-2.0
 
 import { createReducer, on } from '@ngrx/store';
-import { SummarizedRunRecordDto } from '../../../services/client/models/run-records/run-records.interface';
+import { SummarizedRunRecord } from '../../../services/client/models/run-records/run-records.interface';
 import { RunRecordsActions } from './records.actions';
 import { RecordsState } from './records.state';
 
 export const initialState: RecordsState = {
 	filenames: [],
-	summarizedRecord: {} as SummarizedRunRecordDto,
+	summarizedRecord: {} as SummarizedRunRecord,
 	error: ''
 };
 

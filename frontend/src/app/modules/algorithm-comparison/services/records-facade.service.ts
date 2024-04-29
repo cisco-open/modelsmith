@@ -17,13 +17,13 @@
 import { Injectable } from '@angular/core';
 import { Action, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { SummarizedRunRecordDto } from '../../../services/client/models/run-records/run-records.interface';
+import { SummarizedRunRecord } from '../../../services/client/models/run-records/run-records.interface';
 import { RecordsState, selectRecordsFilenames, selectSummarizedRecord } from '../../../state/run-records/records';
 
 @Injectable()
 export class RecordsFacadeService {
 	filenames$: Observable<string[]>;
-	summarizedRecord$: Observable<SummarizedRunRecordDto>;
+	summarizedRecord$: Observable<SummarizedRunRecord>;
 
 	constructor(private store: Store<RecordsState>) {
 		this.filenames$ = this.store.select(selectRecordsFilenames);

@@ -27,7 +27,7 @@ export class DrawerWithDisabledButtonsActionsComponent implements OnInit {
 
 	constructor(
 		private drawerRef: DrawerRef,
-		@Inject(DRAWER_DATA) public data: any
+		@Inject(DRAWER_DATA) public drawerConfig: any
 	) {}
 
 	ngOnInit(): void {}

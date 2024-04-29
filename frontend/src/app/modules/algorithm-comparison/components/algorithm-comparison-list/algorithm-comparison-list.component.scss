@@ -14,11 +14,27 @@
 
 //   SPDX-License-Identifier: Apache-2.0
 
-import { SummarizedRunRecord } from '../../models/run-records/run-records.interface';
-import { ServiceCallGET } from '../service-call';
+.items-wrapper {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+	grid-gap: 20px;
+	padding: 20px 0;
 
-export class GetRunRecordsSummarizedData extends ServiceCallGET<SummarizedRunRecord> {
-	constructor(type: string, filename: string) {
-		super(`run-records-summarized-data/${type}/${filename}`, undefined, undefined, false);
+	.ms-card {
+		&:hover {
+			box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+		}
+	}
+
+	.comparison-item {
+		.item-wrapper {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+
+			.record-summary-buttons-wrapper {
+				display: flex;
+			}
+		}
 	}
 }

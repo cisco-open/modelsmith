@@ -16,5 +16,6 @@
 
 export enum DrawerActionTypeEnum {
 	ADD = 'add',
-	EDIT = 'edit'
+	EDIT = 'edit',
+	VIEW = 'view'
 }

@@ -15,43 +15,34 @@
 //   SPDX-License-Identifier: Apache-2.0
 
 import { Component } from '@angular/core';
-import { take } from 'rxjs';
-import { DrawerClose, DrawerService, DrawerStatus } from '../../../shared/standalone/ms-drawer';
+import { DrawerService } from '../../../shared/standalone/ms-drawer';
 import { DrawerActionTypeEnum } from '../../../shared/standalone/ms-drawer/models/drawer-action-type.enum';
 import { RecordComparissonItem } from '../../models/record-comparisson.interface';
 import { RecordsDataService } from '../../services/records-data.service';
 import { RunDrawerActionsComponent } from '../run-drawer-actions/run-drawer-actions.component';
 
 @Component({
-	selector: 'ms-algorithm-comparison',
-	templateUrl: './algorithm-comparison.component.html',
-	styleUrls: ['./algorithm-comparison.component.scss']
+	selector: 'ms-algorithm-comparison-list',
+	templateUrl: './algorithm-comparison-list.component.html',
+	styleUrls: ['./algorithm-comparison-list.component.scss']
 })
-export class AlgorithmComparisonComponent {
+export class AlgorithmComparisonListComponent {
 	constructor(
-		private drawerService: DrawerService,
-		private recordsDataService: RecordsDataService
+		public recordsDataService: RecordsDataService,
+		private drawerService: DrawerService
 	) {}
 
-	openAddRunDrawer() {
-		const drawerRef = this.drawerService.open(RunDrawerActionsComponent, {
+	removeRecord(index: number) {
+		this.recordsDataService.removeRecord(index);
+	}
+
+	viewRecord(record: RecordComparissonItem) {
+		this.drawerService.open(RunDrawerActionsComponent, {
 			title: 'Add Run',
 			saveButtonLabel: 'Add',
-			actionType: DrawerActionTypeEnum.ADD
+			showSaveButton: false,
+			actionType: DrawerActionTypeEnum.VIEW,
+			data: record
 		});
-
-		drawerRef
-			.afterClosed()
-			.pipe(take(1))
-			.subscribe((draweCloseEvent: DrawerClose<RecordComparissonItem>) => {
-				const { status } = draweCloseEvent;
-				if (status === DrawerStatus.DISMISS) {
-					return;
-				}
-
-				const { result } = draweCloseEvent;
-				this.recordsDataService.addRecord(result as RecordComparissonItem);
-				console.log(result);
-			});
 	}
 }

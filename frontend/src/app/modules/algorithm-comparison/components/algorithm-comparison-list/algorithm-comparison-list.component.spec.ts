@@ -14,11 +14,24 @@
 
 //   SPDX-License-Identifier: Apache-2.0
 
-import { SummarizedRunRecord } from '../../models/run-records/run-records.interface';
-import { ServiceCallGET } from '../service-call';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-export class GetRunRecordsSummarizedData extends ServiceCallGET<SummarizedRunRecord> {
-	constructor(type: string, filename: string) {
-		super(`run-records-summarized-data/${type}/${filename}`, undefined, undefined, false);
-	}
-}
+import { AlgorithmComparisonListComponent } from './algorithm-comparison-list.component';
+
+describe('AlgorithmComparisonListComponent', () => {
+	let component: AlgorithmComparisonListComponent;
+	let fixture: ComponentFixture<AlgorithmComparisonListComponent>;
+
+	beforeEach(() => {
+		TestBed.configureTestingModule({
+			declarations: [AlgorithmComparisonListComponent]
+		});
+		fixture = TestBed.createComponent(AlgorithmComparisonListComponent);
+		component = fixture.componentInstance;
+		fixture.detectChanges();
+	});
+
+	it('should create', () => {
+		expect(component).toBeTruthy();
+	});
+});

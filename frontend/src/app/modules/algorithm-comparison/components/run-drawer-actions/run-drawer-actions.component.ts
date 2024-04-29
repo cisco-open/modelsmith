@@ -24,6 +24,7 @@ import { RunRecordsActions } from '../../../../state/run-records/records';
 import { isNilOrEmptyString } from '../../../core/utils/core.utils';
 import { AlgorithmType } from '../../../model-compression/models/enums/algorithms.enum';
 import { DRAWER_DATA, DrawerConfig, DrawerRef, DrawerStatus } from '../../../shared/standalone/ms-drawer';
+import { DrawerActionTypeEnum } from '../../../shared/standalone/ms-drawer/models/drawer-action-type.enum';
 import { ChartColorEnum } from '../../../shared/standalone/ms-line-chart/models/enums/chart-color.enum';
 import {
 	ChartDataStructure,
@@ -35,11 +36,11 @@ import { RecordsFacadeService } from '../../services/records-facade.service';
 
 @UntilDestroy()
 @Component({
-	selector: 'ms-add-run-drawer',
-	templateUrl: './add-run-drawer.component.html',
-	styleUrls: ['./add-run-drawer.component.scss']
+	selector: 'ms-run-drawer-actions',
+	templateUrl: './run-drawer-actions.component.html',
+	styleUrls: ['./run-drawer-actions.component.scss']
 })
-export class AddRunDrawerComponent implements OnInit {
+export class RunDrawerActionsComponent implements OnInit {
 	form: FormGroup = new FormGroup({});
 
 	files: string[] = [];
@@ -68,14 +69,41 @@ export class AddRunDrawerComponent implements OnInit {
 
 	constructor(
 		private drawerRef: DrawerRef,
-		@Inject(DRAWER_DATA) public data: DrawerConfig,
+		@Inject(DRAWER_DATA) public drawerConfig: DrawerConfig,
 		private fb: FormBuilder,
 		private recordsFacadeService: RecordsFacadeService
 	) {}
 
 	ngOnInit(): void {
 		this.initForm();
-		this.loadData();
+
+		switch (this.drawerConfig.actionType) {
+			case DrawerActionTypeEnum.ADD: {
+				this.loadData();
+				this.configureAddTypeActions();
+				break;
+			}
+			case DrawerActionTypeEnum.VIEW: {
+				this.configureViewTypeActions();
+				break;
+			}
+		}
+	}
+
+	private configureViewTypeActions(): void {
+		this.form.disable();
+
+		const { recordName, recordFilename, record } = this.drawerConfig.data;
+
+		this.files = [recordFilename];
+		this.selectRunFormControl.patchValue(recordFilename);
+		this.runNameFormControl.patchValue(recordName);
+
+		this.summarizedRecord = record;
+		this.lastRunAccuracyTestingChartData = this.configureChartDataset(record);
+	}
+
+	private configureAddTypeActions(): void {
 		this.listenToSelectRunFormValueChanges();
 		this.listenToSummarizedRecordChanges();
 	}
@@ -98,14 +126,17 @@ export class AddRunDrawerComponent implements OnInit {
 			.pipe(untilDestroyed(this), skip(1))
 			.subscribe((record: SummarizedRunRecord) => {
 				this.summarizedRecord = record;
-
-				this.lastRunAccuracyTestingChartData = [
-					{
-						datasetIndex: 0,
-						values: this.summarizedRecord.lastRunTestingAccuracyData || []
-					}
-				] as ChartDatasets[];
+				this.lastRunAccuracyTestingChartData = this.configureChartDataset(record);
 			});
+	}
+
+	private configureChartDataset(record: SummarizedRunRecord): ChartDatasets[] {
+		return [
+			{
+				datasetIndex: 0,
+				values: record.lastRunTestingAccuracyData || []
+			}
+		] as ChartDatasets[];
 	}
 
 	private loadData() {
@@ -130,6 +161,7 @@ export class AddRunDrawerComponent implements OnInit {
 		this.drawerRef.close({
 			result: {
 				recordName: this.runNameFormControl.value,
+				recordFilename: this.selectRunFormControl.value,
 				record: this.summarizedRecord
 			} as RecordComparissonItem,
 			status

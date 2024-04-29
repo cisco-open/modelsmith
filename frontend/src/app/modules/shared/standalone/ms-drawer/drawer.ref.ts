@@ -27,7 +27,7 @@ export class DrawerRef {
 		return this.overlayRef.backdropClick();
 	}
 
-	public close(result?: DrawerClose) {
+	public close(result?: DrawerClose<any>) {
 		this.overlayRef.dispose();
 		this.afterClosedSubject.next(result);
 		this.afterClosedSubject.complete();

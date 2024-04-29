@@ -15,10 +15,19 @@
   SPDX-License-Identifier: Apache-2.0
    -->
 
-<p class="heading-primary-title title">Algorithm Comparison</p>
-<button mat-fab extended color="warn" (click)="openAddRunDrawer()">
-	<mat-icon fontSet="ms" fontIcon="icon-Plus"></mat-icon>
-	Add run
-</button>
+<div class="items-wrapper">
+	<mat-card class="ms-card comparison-item" *ngFor="let item of recordsDataService.records$ | async; index as i">
+		<div class="item-wrapper">
+			<div>{{ item.recordName }} | {{ item.record.parameters['arch'] }}</div>
 
-<ms-algorithm-comparison-list></ms-algorithm-comparison-list>
+			<div class="record-summary-buttons-wrapper">
+				<button mat-icon-button color="primary" (click)="viewRecord(item)">
+					<mat-icon fontSet="ms" fontIcon="icon-Eye" class="mat-primary">delete</mat-icon>
+				</button>
+				<button mat-icon-button color="error" (click)="removeRecord(i)">
+					<mat-icon class="mat-error">delete</mat-icon>
+				</button>
+			</div>
+		</div>
+	</mat-card>
+</div>

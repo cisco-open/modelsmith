@@ -1,6 +1,6 @@
 //    Copyright 2024 Cisco Systems, Inc. and its affiliates
 
-import { SummarizedRunRecordDto } from '../../../services/client/models/run-records/run-records.interface';
+import { SummarizedRunRecord } from '../../../services/client/models/run-records/run-records.interface';
 
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -18,6 +18,6 @@ import { SummarizedRunRecordDto } from '../../../services/client/models/run-reco
 
 export interface RecordsState {
 	filenames: string[];
-	summarizedRecord: SummarizedRunRecordDto;
+	summarizedRecord: SummarizedRunRecord;
 	error: any;
 }
