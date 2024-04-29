@@ -1,7 +1,7 @@
 # Security Policies and Procedures
 
 This document outlines security procedures and general policies for the
-`LION` project.
+`ModelSmith` project.
 
 - [Reporting a Bug](#reporting-a-bug)
 - [Disclosure Policy](#disclosure-policy)
@@ -9,9 +9,9 @@ This document outlines security procedures and general policies for the
 
 ## Reporting a Bug
 
-The `LION` team and community take all security bugs in
-`LION` seriously. Thank you for improving the security of
-`LION`. We appreciate your efforts and responsible disclosure and
+The `ModelSmith` team and community take all security bugs in
+`ModelSmith` seriously. Thank you for improving the security of
+`ModelSmith`. We appreciate your efforts and responsible disclosure and
 will make every effort to acknowledge your contributions.
 
 Report security bugs by emailing `oss-security@cisco.com`.
