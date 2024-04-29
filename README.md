@@ -76,4 +76,4 @@ We intend to add functionalities to the log analysis for unsupervised log analys
 If you wish to contribute or suggest any additional funtionalities, please check out [Contributing Guidelines](/CONTRIBUTING.md)
 ## License
 
-[Apache License 2.0](LICENSE.md).
+[Apache License 2.0](LICENSE).
