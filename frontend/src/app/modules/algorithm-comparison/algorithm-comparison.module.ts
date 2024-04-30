@@ -27,14 +27,20 @@ import { MsLineChartComponent } from '../shared/standalone/ms-line-chart/ms-line
 import { ParametersLabelPipe } from '../shared/standalone/pipes/parameters-label.pipe';
 import { ReadableDurationPipe } from '../shared/standalone/pipes/readable-duration.pipe';
 import { AlgorithmComparisonRoutingModule } from './algorithm-comparison-routing.module';
-import { RunDrawerActionsComponent } from './components/run-drawer-actions/run-drawer-actions.component';
+import { AlgorithmComparisonChartComponent } from './components/algorithm-comparison-chart/algorithm-comparison-chart.component';
 import { AlgorithmComparisonListComponent } from './components/algorithm-comparison-list/algorithm-comparison-list.component';
 import { AlgorithmComparisonComponent } from './components/algorithm-comparison/algorithm-comparison.component';
+import { RunDrawerActionsComponent } from './components/run-drawer-actions/run-drawer-actions.component';
 import { RecordsDataService } from './services/records-data.service';
 import { RecordsFacadeService } from './services/records-facade.service';
 
 @NgModule({
-	declarations: [AlgorithmComparisonComponent, RunDrawerActionsComponent, AlgorithmComparisonListComponent],
+	declarations: [
+		AlgorithmComparisonComponent,
+		RunDrawerActionsComponent,
+		AlgorithmComparisonListComponent,
+		AlgorithmComparisonChartComponent
+	],
 	imports: [
 		CommonModule,
 		AlgorithmComparisonRoutingModule,

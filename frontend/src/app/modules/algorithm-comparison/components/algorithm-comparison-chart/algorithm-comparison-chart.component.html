@@ -15,12 +15,9 @@
   SPDX-License-Identifier: Apache-2.0
    -->
 
-<p class="heading-primary-title title">Algorithm Comparison</p>
-<button mat-fab extended color="warn" (click)="openAddRunDrawer()">
-	<mat-icon fontSet="ms" fontIcon="icon-Plus"></mat-icon>
-	Add run
-</button>
-
-<ms-algorithm-comparison-list></ms-algorithm-comparison-list>
-
-<ms-algorithm-comparison-chart></ms-algorithm-comparison-chart>
+<mat-card class="ms-card algorithm-comparisson-charts">
+	<p class="paragraph-bold-p3-small-bold p-2">Last Accuracy Test Runs</p>
+	<ms-line-chart
+		[data]="lastRunsAccuracyTestingChartData"
+		[settings]="testingAccuracyChartDisplaySettings"></ms-line-chart>
+</mat-card>

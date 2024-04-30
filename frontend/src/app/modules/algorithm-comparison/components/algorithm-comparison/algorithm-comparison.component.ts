@@ -51,7 +51,6 @@ export class AlgorithmComparisonComponent {
 
 				const { result } = draweCloseEvent;
 				this.recordsDataService.addRecord(result as RecordComparissonItem);
-				console.log(result);
 			});
 	}
 }

@@ -88,8 +88,15 @@ export interface ChartDisplaySettings {
 	// This is particularly useful for charts that need to adapt to data changes over time, ensuring that the visualization remains clear and informative.
 	isXAxisDynamic?: boolean;
 
-	// Use this to configure the enable the view of the tooltips.
-	isTooltipsToolEnables?: boolean;
+	// Determines whether tooltips are enabled for the chart. When set to true, tooltips will appear when hovering over data points,
+	// providing additional context or data specifics. This enhances user interaction by allowing users to gain detailed insights into specific data points at a glance.
+	areTooltipsEnabled?: boolean;
+
+	// Indicates whether custom labels are used for the X-axis. When true, labels provided in `customAxisLabels` are used instead of default numerical or categorical labels. This is useful for charts that require specific labeling for clarity or emphasis on certain data aspects.
+	hasCustomDatasetsLabels?: boolean;
+
+	// An array of custom labels for the X-axis, used when `hasCustomAxisLabels` is true. Each label in this array corresponds to a specific data point on the X-axis, allowing for customized labeling that can include dates, descriptions, or any other contextual information.
+	customDatasetsLabels?: string[];
 }
 
 export const DEFAULT_Y_AXIS_GROWTH_OFFSET = 5;

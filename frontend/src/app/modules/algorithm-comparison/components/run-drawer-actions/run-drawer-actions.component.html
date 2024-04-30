@@ -18,7 +18,7 @@
 <ms-drawer [isSaveDisabled]="form.invalid" (actionEvent)="save($event)">
 	<form [formGroup]="form">
 		<div class="form-field-container">
-			<mat-label> Select run record</mat-label>
+			<mat-label>Select run record</mat-label>
 			<mat-form-field appearance="outline">
 				<mat-select formControlName="selectRun" placeholder="Select a run record">
 					<mat-option *ngFor="let file of files" [value]="file">{{ file }}</mat-option>
@@ -71,12 +71,10 @@
 			</mat-card>
 
 			<mat-card *ngIf="!!summarizedRecord?.lastRunTestingAccuracyData" class="ms-card record-wrapper">
-				<div class="testing">
-					<p class="paragraph-bold-p3-small-bold p-2">Last Epoch Run Accuracy Test</p>
-					<ms-line-chart
-						[data]="lastRunAccuracyTestingChartData"
-						[settings]="testingAccuracyChartDisplaySettings"></ms-line-chart>
-				</div>
+				<p class="paragraph-bold-p3-small-bold p-2">Last Accuracy Test Runs</p>
+				<ms-line-chart
+					[data]="lastRunAccuracyTestingChartData"
+					[settings]="testingAccuracyChartDisplaySettings"></ms-line-chart>
 			</mat-card>
 		</ng-container>
 	</form>

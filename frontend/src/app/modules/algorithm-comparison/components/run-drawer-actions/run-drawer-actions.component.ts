@@ -28,8 +28,7 @@ import { DrawerActionTypeEnum } from '../../../shared/standalone/ms-drawer/model
 import { ChartColorEnum } from '../../../shared/standalone/ms-line-chart/models/enums/chart-color.enum';
 import {
 	ChartDataStructure,
-	ChartDisplaySettings,
-	DEFAULT_PRUNING_CHART_DISPLAY_SETTINGS
+	ChartDisplaySettings
 } from '../../../shared/standalone/ms-line-chart/models/interfaces/ms-chart-display-settings.interface';
 import { RecordComparissonItem } from '../../models/record-comparisson.interface';
 import { RecordsFacadeService } from '../../services/records-facade.service';
@@ -47,14 +46,16 @@ export class RunDrawerActionsComponent implements OnInit {
 	summarizedRecord?: SummarizedRunRecord;
 
 	testingAccuracyChartDisplaySettings: ChartDisplaySettings = {
-		...DEFAULT_PRUNING_CHART_DISPLAY_SETTINGS,
+		yAxisMinimumValue: 0,
 		yAxisTickInterval: 20,
 		chartDataStructure: ChartDataStructure.SINGLE_PHASE_X_AXIS,
 		xAxisDataPointsCount: 100,
 		yAxisMaximumValue: 100,
 		datasetColorSettingsKey: ChartColorEnum.YELLOW,
 		isXAxisVisible: false,
-		isTooltipsToolEnables: true
+		areTooltipsEnabled: true,
+		xAxisLabelPrefix: 'Step:',
+		datasetLabelPrefix: 'Test:'
 	};
 
 	lastRunAccuracyTestingChartData: ChartDatasets[] = [];
@@ -101,6 +102,11 @@ export class RunDrawerActionsComponent implements OnInit {
 
 		this.summarizedRecord = record;
 		this.lastRunAccuracyTestingChartData = this.configureChartDataset(record);
+		this.testingAccuracyChartDisplaySettings = {
+			...this.testingAccuracyChartDisplaySettings,
+			hasCustomDatasetsLabels: true,
+			customDatasetsLabels: [recordName]
+		};
 	}
 
 	private configureAddTypeActions(): void {
