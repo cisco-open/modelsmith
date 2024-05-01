@@ -22,7 +22,7 @@ To get started with ModelSmith, follow these steps:
 1. Clone the repository to your local machine:
 
    ```shell
-   git clone https://github.com/your-username/modelsmith.git
+   git clone https://github.com/cisco-open/modelsmith.git
    ```
 
 ## FAQ

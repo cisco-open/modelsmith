@@ -74,7 +74,7 @@ export class MsDrawerComponent {
 			.backdropClick()
 			.pipe(untilDestroyed(this))
 			.subscribe(() => {
-				this.onClose();
+				this.onDismiss();
 			});
 	}
 
@@ -82,6 +82,6 @@ export class MsDrawerComponent {
 		if (!this.closeDialogOnEscKeyUp) {
 			return;
 		}
-		this.onClose();
+		this.onDismiss();
 	}
 }

@@ -26,7 +26,7 @@ import { DRAWER_DATA, DrawerRef } from '../../../../shared/standalone/ms-drawer'
 export class DrawerWithAlternativeHeaderTemplateComponent implements OnInit {
 	constructor(
 		private drawerRef: DrawerRef,
-		@Inject(DRAWER_DATA) public data: any
+		@Inject(DRAWER_DATA) public drawerConfig: any
 	) {}
 
 	ngOnInit(): void {}

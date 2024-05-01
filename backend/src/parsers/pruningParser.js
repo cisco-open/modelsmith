@@ -59,7 +59,8 @@ class PruningParser {
 			});
 	}, 1);
 
-	constructor() {
+	constructor(isChartBroadcasted = true) {
+		this.isChartBroadcasted = isChartBroadcasted;
 		this.reset();
 	}
 
@@ -69,6 +70,19 @@ class PruningParser {
 		this.currentPruningState = null;
 		this.currentEpoch = null;
 		this.inTestingPhase = false;
+	}
+
+	static formatPruningPhase(phase) {
+		return {
+			pruningState: phase.pruningState,
+			epochs: phase.epochs.map((epoch) => ({
+				number: epoch.number,
+				steps: epoch.steps,
+				totalSteps: epoch.totalSteps,
+				testing: epoch.testing
+			})),
+			remainingWeight: phase.remainingWeight
+		};
 	}
 
 	parseLine(line) {
@@ -167,19 +181,24 @@ class PruningParser {
 			this.currentEpoch.testing.push({ step: currentStep, loss, accuracy });
 		}
 
-		broadcastChart(
-			`${MessageTopics.CHARTS_PREFIX}${
-				inTestingPhase ? ChartsEventsTopics.UPDATE_TESTING : ChartsEventsTopics.UPDATE_LATEST_VALUE
-			}`,
-			{
-				datasetIndex: this.currentPruningState.pruningState,
-				accuracy,
-				loss
-			}
-		);
+		if (this.isChartBroadcasted) {
+			broadcastChart(
+				`${MessageTopics.CHARTS_PREFIX}${
+					inTestingPhase ? ChartsEventsTopics.UPDATE_TESTING : ChartsEventsTopics.UPDATE_LATEST_VALUE
+				}`,
+				{
+					datasetIndex: this.currentPruningState.pruningState,
+					accuracy,
+					loss
+				}
+			);
+		}
 	}
 }
 
 const pruningParserInstance = new PruningParser();
 
-module.exports = pruningParserInstance;
+module.exports = {
+	PruningParser,
+	pruningParserInstance
+};

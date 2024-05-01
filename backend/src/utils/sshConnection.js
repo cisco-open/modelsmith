@@ -109,6 +109,47 @@ class SSHConnection {
 		this.attemptConnection(SSH_CONNECTION_NAMES.BACKUP);
 	}
 
+	// This function is designed to execute a command over an SSH connection
+	// and accumulate all the output data until the command completes.
+	// It is particularly useful for handling very large files or commands
+	// that produce substantial amounts of data.
+	executeAndAccumulateOutput(command, onData, onEnd, onError) {
+		if (this.status !== SSH_STATUS.READY) {
+			onError(new Error('SSH connection is not ready'));
+			return;
+		}
+
+		this.connection.exec(command, (err, stream) => {
+			if (err) {
+				onError(err);
+				return;
+			}
+
+			let outputData = '';
+			let stderrData = '';
+
+			stream.on('data', (chunk) => {
+				outputData += chunk.toString();
+			});
+
+			stream.stderr.on('data', (chunk) => {
+				stderrData += chunk.toString();
+			});
+
+			stream.on('close', (code) => {
+				if (code !== 0 && code !== null) {
+					const errorMessage = `Process exited with code ${code}: ${stderrData}`;
+					onError(errorMessage);
+				} else {
+					onData(outputData);
+					onEnd();
+				}
+			});
+		});
+	}
+
+	// This function executes a command via an SSH connection and handles output in real-time,
+	// making it suitable for tasks requiring immediate processing of smaller amounts of data.
 	exec(command, onData, onEnd, onError) {
 		if (this.status !== SSH_STATUS.READY) {
 			onError(new Error('SSH connection is not ready'));

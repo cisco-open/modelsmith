@@ -38,17 +38,4 @@ export class PanelModelMetadataComponent implements OnInit {
 				this.metadata = metadata;
 			});
 	}
-
-	getCustomLabel(key: string): string {
-		const labels: { [key: string]: string } = {
-			creation_date: 'Creation Date',
-			epochs: 'Epochs',
-			file_size_bytes: 'File Size',
-			learning_rate: 'Learning Rate',
-			model: 'Model',
-			training_duration_seconds: 'Training Duration'
-		};
-
-		return labels[key] || key;
-	}
 }

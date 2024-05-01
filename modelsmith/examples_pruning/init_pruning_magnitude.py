@@ -36,6 +36,7 @@ run_records_dir = os.path.join(script_dir, 'run_records')
 
 sys.path.append(os.path.join(script_dir, '..'))
 
+from datetime import datetime
 from utils.model_utils import prepare_model
 from models import *
 from utils.utils import train, test
@@ -105,6 +106,9 @@ def main():
 
     logger.log("Finished!")
     end_time = time.time()
+    logger.add_statistic("algorithm_key", "IPM")
+    current_date = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    logger.add_statistic("execution_date", current_date)
     logger.add_statistic("duration_seconds", end_time - start_time)
     filename = f"IPM_{args.arch}"
     saved_file_path = logger.save_run_record(filename) 

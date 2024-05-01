@@ -24,6 +24,7 @@ const parametersRouter = require('./parametersRouter');
 const chartsRouter = require('./chartsRouter');
 const terminalRouter = require('./terminalRouter');
 const statisticsRouter = require('./statisticsRouter');
+const runRecordsRouter = require('./runRecordsRouter');
 
 router.use('/', scriptsRouter);
 router.use('/', uploadFileRouter);
@@ -32,5 +33,6 @@ router.use('/', parametersRouter);
 router.use('/', chartsRouter);
 router.use('/', terminalRouter);
 router.use('/', statisticsRouter);
+router.use('/', runRecordsRouter);
 
 module.exports = router;
