@@ -1,5 +1,4 @@
-<p align="center"><img src="docs/modelsmith.svg" alt="flame logo" width="300"/></p>
-
+<p align="center"><img src="docs/modelsmith.png" alt="flame logo" width="300"/></p>
 
 ModelSmith serves as a toolkit for compressing machine learning models, designed to enhance their speed, reduce their size, and improve energy efficiency. This toolbox addresses the demands for smaller model sizes, minimal memory usage, quicker inference times, energy-saving operations, and scenarios conforming to bandwidth limitations.
 
@@ -72,9 +71,10 @@ Gaowen Liu
 
 > We have several TODO's spread out throughout our files! We will continue working in these directions to improve ModelSmith, adjusting as needed based on our user's feedback
 
-We intend to add functionalities to the log analysis for unsupervised log analysis. 
+We intend to add functionalities to the log analysis for unsupervised log analysis.
 
 If you wish to contribute or suggest any additional funtionalities, please check out [Contributing Guidelines](/CONTRIBUTING.md)
+
 ## License
 
 [Apache License 2.0](LICENSE).
