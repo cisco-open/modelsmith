@@ -1,3 +1,5 @@
+<p align="center"><img src="docs/modelsmith.png" alt="flame logo" width="400"/></p>
+
 # ModelSmith
 
 ModelSmith serves as a toolkit for compressing machine learning models, designed to enhance their speed, reduce their size, and improve energy efficiency. This toolbox addresses the demands for smaller model sizes, minimal memory usage, quicker inference times, energy-saving operations, and scenarios conforming to bandwidth limitations.
@@ -27,9 +29,9 @@ To get started with ModelSmith, follow these steps:
 
 ## FAQ
 
-### 1. How do I configure ModelSmith to run locally? [Read here](readme/configure-the-project-locally.md).
+### 1. How do I configure ModelSmith to run locally? [Read here](docs/configure-the-project-locally.md).
 
-### 2. How do I configure ModelSmith to run on VM? [Read here](readme/configure_modelsmith_on_vm.md).
+### 2. How do I configure ModelSmith to run on VM? [Read here](docs/configure_modelsmith_on_vm.md).
 
 ## Features
 
