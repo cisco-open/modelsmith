@@ -27,6 +27,7 @@ import torch.backends.cudnn as cudnn
 import torchvision
 import torchvision.transforms as transforms
 import time
+from datetime import datetime
 
 script_dir = os.path.dirname(os.path.realpath(__file__))
 data_dir = os.path.join(script_dir, 'data')
@@ -105,6 +106,9 @@ def main():
     check_sparsity(net, logger)
     logger.log("Finished!")
     end_time = time.time()
+    logger.add_statistic("algorithm_key", "IPG")
+    current_date = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    logger.add_statistic("execution_date", current_date)
     logger.add_statistic("duration_seconds", end_time - start_time)
     filename = f"IPG_{args.arch}"
     saved_file_path = logger.save_run_record(filename) 

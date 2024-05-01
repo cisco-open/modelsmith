@@ -26,6 +26,7 @@ import { MsEmptyStateComponent } from '../shared/standalone/ms-empty-state/ms-em
 import { MsLineChartComponent } from '../shared/standalone/ms-line-chart/ms-line-chart.component';
 import { ParametersLabelPipe } from '../shared/standalone/pipes/parameters-label.pipe';
 import { ReadableDurationPipe } from '../shared/standalone/pipes/readable-duration.pipe';
+import { ReverseArrayPipe } from '../shared/standalone/pipes/reverse-array.pipe';
 import { AlgorithmComparisonRoutingModule } from './algorithm-comparison-routing.module';
 import { AlgorithmComparisonChartComponent } from './components/algorithm-comparison-chart/algorithm-comparison-chart.component';
 import { AlgorithmComparisonListComponent } from './components/algorithm-comparison-list/algorithm-comparison-list.component';
@@ -51,6 +52,7 @@ import { RecordsFacadeService } from './services/records-facade.service';
 		MsLineChartComponent,
 		ReadableDurationPipe,
 		ParametersLabelPipe,
+		ReverseArrayPipe,
 		MsEmptyStateComponent
 	],
 	providers: [DrawerService, RecordsFacadeService, RecordsDataService]

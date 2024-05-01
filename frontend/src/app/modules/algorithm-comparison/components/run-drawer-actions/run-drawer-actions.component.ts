@@ -31,6 +31,7 @@ import {
 	ChartDisplaySettings
 } from '../../../shared/standalone/ms-line-chart/models/interfaces/ms-chart-display-settings.interface';
 import { RecordComparissonItem } from '../../models/record-comparisson.interface';
+import { RecordsDataService } from '../../services/records-data.service';
 import { RecordsFacadeService } from '../../services/records-facade.service';
 
 @UntilDestroy()
@@ -42,7 +43,7 @@ import { RecordsFacadeService } from '../../services/records-facade.service';
 export class RunDrawerActionsComponent implements OnInit {
 	form: FormGroup = new FormGroup({});
 
-	files: string[] = [];
+	files: { name: string; disabled: boolean }[] = [];
 	summarizedRecord?: SummarizedRunRecord;
 
 	testingAccuracyChartDisplaySettings: ChartDisplaySettings = {
@@ -72,7 +73,8 @@ export class RunDrawerActionsComponent implements OnInit {
 		private drawerRef: DrawerRef,
 		@Inject(DRAWER_DATA) public drawerConfig: DrawerConfig,
 		private fb: FormBuilder,
-		private recordsFacadeService: RecordsFacadeService
+		private recordsFacadeService: RecordsFacadeService,
+		private recordsDataService: RecordsDataService
 	) {}
 
 	ngOnInit(): void {
@@ -84,15 +86,20 @@ export class RunDrawerActionsComponent implements OnInit {
 				this.configureAddTypeActions();
 				break;
 			}
+			case DrawerActionTypeEnum.EDIT:
 			case DrawerActionTypeEnum.VIEW: {
-				this.configureViewTypeActions();
+				this.configureEditOrViewTypeActions();
 				break;
 			}
 		}
 	}
 
-	private configureViewTypeActions(): void {
-		this.form.disable();
+	private configureEditOrViewTypeActions(): void {
+		if (this.drawerConfig.actionType === DrawerActionTypeEnum.VIEW) {
+			this.form.disable();
+		} else if (this.drawerConfig.actionType === DrawerActionTypeEnum.EDIT) {
+			this.selectRunFormControl.disable();
+		}
 
 		const { recordName, recordFilename, record } = this.drawerConfig.data;
 
@@ -133,6 +140,13 @@ export class RunDrawerActionsComponent implements OnInit {
 			.subscribe((record: SummarizedRunRecord) => {
 				this.summarizedRecord = record;
 				this.lastRunAccuracyTestingChartData = this.configureChartDataset(record);
+
+				const algorithm_key = this.summarizedRecord?.statistics['algorithm_key'];
+				const arch = this.summarizedRecord?.parameters['arch'];
+
+				if (!isNilOrEmptyString(algorithm_key) && !isNilOrEmptyString(arch)) {
+					this.runNameFormControl.setValue(`${algorithm_key}_${arch}`);
+				}
 			});
 	}
 
@@ -149,7 +163,13 @@ export class RunDrawerActionsComponent implements OnInit {
 		this.recordsFacadeService.dispatch(
 			RunRecordsActions.getRunRecordsFilenames({ algorithmType: AlgorithmType.PRUNING })
 		);
-		this.recordsFacadeService.filenames$.pipe(skip(1), take(1)).subscribe((files: string[]) => (this.files = files));
+		this.recordsFacadeService.filenames$.pipe(skip(1), take(1)).subscribe((files: string[]) => {
+			const existingFilenames = new Set(this.recordsDataService.records.map((record) => record.recordFilename));
+			this.files = files.map((file) => ({
+				name: file,
+				disabled: existingFilenames.has(file)
+			}));
+		});
 	}
 
 	private initForm() {

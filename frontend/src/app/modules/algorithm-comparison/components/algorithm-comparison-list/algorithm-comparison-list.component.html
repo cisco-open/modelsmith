@@ -18,11 +18,14 @@
 <div class="items-wrapper">
 	<mat-card class="ms-card comparison-item" *ngFor="let item of recordsDataService.records$ | async; index as i">
 		<div class="item-wrapper">
-			<div>{{ item.recordName }} | {{ item.record.parameters['arch'] }}</div>
+			<div>{{ item.recordName }}</div>
 
 			<div class="record-summary-buttons-wrapper">
 				<button mat-icon-button color="primary" (click)="viewRecord(item)">
-					<mat-icon fontSet="ms" fontIcon="icon-Eye" class="mat-primary">delete</mat-icon>
+					<mat-icon fontSet="ms" fontIcon="icon-Eye" class="mat-primary"></mat-icon>
+				</button>
+				<button mat-icon-button color="primary" (click)="editRecord(i, item)">
+					<mat-icon fontSet="ms" fontIcon="icon-PencilSimple" class="mat-primary"></mat-icon>
 				</button>
 				<button mat-icon-button color="error" (click)="removeRecord(i)">
 					<mat-icon class="mat-error">delete</mat-icon>

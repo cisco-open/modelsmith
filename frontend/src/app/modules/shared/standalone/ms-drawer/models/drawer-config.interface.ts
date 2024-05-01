@@ -22,9 +22,9 @@ export interface DrawerConfig extends OverlayConfig {
 	data?: any;
 	title?: string;
 	showSaveButton?: boolean;
-	showDismissButton?: boolean;
+	showCloseButton?: boolean;
 	saveButtonLabel?: string;
-	dismissButtonLabel?: string;
+	closeButtonLabel?: string;
 	actionType?: DrawerActionTypeEnum;
 }
 

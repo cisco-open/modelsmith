@@ -15,7 +15,9 @@
 //   SPDX-License-Identifier: Apache-2.0
 
 import { Component } from '@angular/core';
-import { DrawerService } from '../../../shared/standalone/ms-drawer';
+import { take } from 'rxjs';
+import { isEmptyObject } from '../../../core/utils/core.utils';
+import { DrawerClose, DrawerService, DrawerStatus } from '../../../shared/standalone/ms-drawer';
 import { DrawerActionTypeEnum } from '../../../shared/standalone/ms-drawer/models/drawer-action-type.enum';
 import { RecordComparissonItem } from '../../models/record-comparisson.interface';
 import { RecordsDataService } from '../../services/records-data.service';
@@ -38,11 +40,40 @@ export class AlgorithmComparisonListComponent {
 
 	viewRecord(record: RecordComparissonItem) {
 		this.drawerService.open(RunDrawerActionsComponent, {
-			title: 'Add Run',
-			saveButtonLabel: 'Add',
+			title: 'View Run',
 			showSaveButton: false,
+			showCloseButton: true,
+			closeButtonLabel: 'Close',
 			actionType: DrawerActionTypeEnum.VIEW,
 			data: record
 		});
+	}
+
+	editRecord(index: number, record: RecordComparissonItem) {
+		const drawerRef = this.drawerService.open(RunDrawerActionsComponent, {
+			title: 'Edit Run',
+			saveButtonLabel: 'Update',
+			showCloseButton: true,
+			closeButtonLabel: 'Close',
+			actionType: DrawerActionTypeEnum.EDIT,
+			data: record
+		});
+
+		drawerRef
+			.afterClosed()
+			.pipe(take(1))
+			.subscribe((draweCloseEvent: DrawerClose<RecordComparissonItem>) => {
+				const { status } = draweCloseEvent;
+				if (status === DrawerStatus.DISMISS || status === DrawerStatus.CLOSE) {
+					return;
+				}
+
+				const { result } = draweCloseEvent;
+				if (isEmptyObject(result)) {
+					return;
+				}
+
+				this.recordsDataService.updateRecord(index, result!);
+			});
 	}
 }

@@ -37,6 +37,8 @@ export class AlgorithmComparisonComponent {
 		const drawerRef = this.drawerService.open(RunDrawerActionsComponent, {
 			title: 'Add Run',
 			saveButtonLabel: 'Add',
+			showCloseButton: true,
+			closeButtonLabel: 'Close',
 			actionType: DrawerActionTypeEnum.ADD
 		});
 
@@ -45,7 +47,7 @@ export class AlgorithmComparisonComponent {
 			.pipe(take(1))
 			.subscribe((draweCloseEvent: DrawerClose<RecordComparissonItem>) => {
 				const { status } = draweCloseEvent;
-				if (status === DrawerStatus.DISMISS) {
+				if (status === DrawerStatus.DISMISS || status === DrawerStatus.CLOSE) {
 					return;
 				}
 

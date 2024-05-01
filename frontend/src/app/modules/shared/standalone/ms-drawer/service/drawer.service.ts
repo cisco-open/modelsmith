@@ -50,9 +50,9 @@ export class DrawerService {
 					provide: DRAWER_DATA,
 					useValue: {
 						saveButtonLabel: 'Save',
-						dismissButtonLabel: 'Cancel',
+						closeButtonLabel: 'Close',
 						showSaveButton: true,
-						showDismissButton: true,
+						showCloseButton: true,
 						width: 768,
 						...config
 					}

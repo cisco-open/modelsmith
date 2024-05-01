@@ -25,6 +25,10 @@ export class RecordsDataService {
 		recordsMock
 	);
 
+	get records(): RecordComparissonItem[] {
+		return this._records.value;
+	}
+
 	get records$(): Observable<RecordComparissonItem[]> {
 		return this._records.asObservable();
 	}
@@ -34,6 +38,15 @@ export class RecordsDataService {
 		const updatedRecords = [...currentRecords, newRecord];
 
 		this._records.next(updatedRecords);
+	}
+
+	updateRecord(index: number, updatedRecord: RecordComparissonItem): void {
+		const currentRecords = this._records.value;
+		if (index >= 0 && index < currentRecords.length) {
+			const updatedRecords = [...currentRecords];
+			updatedRecords[index] = updatedRecord;
+			this._records.next(updatedRecords);
+		}
 	}
 
 	removeRecord(index: number): void {

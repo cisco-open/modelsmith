@@ -39,7 +39,9 @@ export class ParametersLabelPipe implements PipeTransform {
 			start_epoch: 'Start Epoch',
 			pruning_times: 'Pruning Times',
 			rewinding_epoch: 'Rewinding Epoch',
-			save_dir: 'Saving Directory'
+			save_dir: 'Saving Directory',
+			algorithm_key: 'Algorithm',
+			execution_date: 'Execution date'
 		};
 
 		return labels[value] || value;

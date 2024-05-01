@@ -16,11 +16,20 @@
    -->
 
 <p class="heading-primary-title title">Algorithm Comparison</p>
-<button mat-fab extended color="warn" (click)="openAddRunDrawer()">
+
+<button mat-stroked-button color="primary" (click)="openAddRunDrawer()">
 	<mat-icon fontSet="ms" fontIcon="icon-Plus"></mat-icon>
 	Add run
 </button>
 
+<div class="mt-4">
+	<mat-divider></mat-divider>
+</div>
+
 <ms-algorithm-comparison-list></ms-algorithm-comparison-list>
+
+<div class="mb-4">
+	<mat-divider></mat-divider>
+</div>
 
 <ms-algorithm-comparison-chart></ms-algorithm-comparison-chart>

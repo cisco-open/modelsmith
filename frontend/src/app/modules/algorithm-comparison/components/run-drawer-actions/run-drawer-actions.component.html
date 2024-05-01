@@ -21,7 +21,9 @@
 			<mat-label>Select run record</mat-label>
 			<mat-form-field appearance="outline">
 				<mat-select formControlName="selectRun" placeholder="Select a run record">
-					<mat-option *ngFor="let file of files" [value]="file">{{ file }}</mat-option>
+					<mat-option *ngFor="let file of files" [value]="file.name" [disabled]="file.disabled">
+						{{ file.name }}
+					</mat-option>
 				</mat-select>
 			</mat-form-field>
 		</div>

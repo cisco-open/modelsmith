@@ -82,7 +82,7 @@ export class DrawerDemoComponent implements OnInit {
 		const drawerRef = this.drawerService.open(DrawerWithOnlyOneButtonComponent, {
 			title: 'Only one button',
 			showSaveButton: false,
-			dismissButtonLabel: 'Close'
+			closeButtonLabel: 'Close'
 		});
 
 		drawerRef
