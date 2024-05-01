@@ -43,15 +43,15 @@ To get started with ModelSmith, follow these steps:
 
 - Post Training Quantization
 
-  Visit the source code [PTQ](https://wwwin-github.cisco.com/gaoliu/ModelSmith/tree/master/modelsmith/examples_quant)
+  Visit the source code [PTQ](modelsmith/examples_quant)
 
 - Model Pruning
 
-  Visit the source code [Pruning](https://wwwin-github.cisco.com/gaoliu/ModelSmith/tree/master/modelsmith/examples)
+  Visit the source code [Pruning](modelsmith/examples_pruning)
 
 - Machine Unlearning
 
-  Visit the source code [Unlearning](https://wwwin-github.cisco.com/gaoliu/ModelSmith/tree/master/modelsmith/examples_unlearning)
+  Visit the source code [Unlearning](modelsmith/examples_unlearning)
 
 ## Contributions
 
