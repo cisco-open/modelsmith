@@ -18,7 +18,7 @@ import { ChangeDetectionStrategy, Component, Inject, OnInit } from '@angular/cor
 import { DRAWER_DATA, DrawerConfig, DrawerRef } from '../../../../shared/standalone/ms-drawer';
 
 @Component({
-	selector: 'ms-drawer-basic-demo',
+	selector: 'ms-run-drawer-actions',
 	templateUrl: './drawer-basic-demo.component.html',
 	styleUrls: ['./drawer-basic-demo.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush
@@ -26,7 +26,7 @@ import { DRAWER_DATA, DrawerConfig, DrawerRef } from '../../../../shared/standal
 export class DrawerBasicDemoComponent implements OnInit {
 	constructor(
 		private drawerRef: DrawerRef,
-		@Inject(DRAWER_DATA) public data: DrawerConfig
+		@Inject(DRAWER_DATA) public drawerConfig: DrawerConfig
 	) {}
 
 	ngOnInit(): void {}

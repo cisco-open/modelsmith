@@ -35,8 +35,7 @@ const {
 const ALGORITHM_PARAMETERS = require('../constants/parametersConstants');
 const ALGORITHM_TYPES = require('../constants/algorithmTypesConstants');
 const { executeCommand } = require('../facades/executionFacade');
-
-const pruningParserInstance = require('../parsers/pruningParser');
+const { pruningParserInstance } = require('../parsers/pruningParser');
 const quantizationParserInstance = require('../parsers/quantizationParser');
 const machineUnlearningParserInstance = require('../parsers/machineUnlearningParser');
 

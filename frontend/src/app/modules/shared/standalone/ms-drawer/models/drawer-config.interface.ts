@@ -22,13 +22,13 @@ export interface DrawerConfig extends OverlayConfig {
 	data?: any;
 	title?: string;
 	showSaveButton?: boolean;
-	showDismissButton?: boolean;
+	showCloseButton?: boolean;
 	saveButtonLabel?: string;
-	dismissButtonLabel?: string;
+	closeButtonLabel?: string;
 	actionType?: DrawerActionTypeEnum;
 }
 
-export interface DrawerClose {
-	result?: any;
+export interface DrawerClose<T> {
+	result?: T;
 	status: DrawerStatus;
 }

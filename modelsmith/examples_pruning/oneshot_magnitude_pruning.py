@@ -28,7 +28,7 @@ import torchvision
 import torchvision.transforms as transforms
 from copy import deepcopy
 import time
-
+from datetime import datetime
 
 # Define directory paths
 script_dir = os.path.dirname(os.path.realpath(__file__))
@@ -128,6 +128,9 @@ def main():
 
     logger.log("Finished!")
     end_time = time.time()
+    logger.add_statistic("algorithm_key", "OMP")
+    current_date = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    logger.add_statistic("execution_date", current_date)
     logger.add_statistic("duration_seconds", end_time - start_time)
     filename = f"OMP_{args.arch}"
     saved_file_path = logger.save_run_record(filename) 

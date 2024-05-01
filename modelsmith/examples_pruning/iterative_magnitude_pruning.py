@@ -25,6 +25,7 @@ import torch.nn as nn
 import torch.optim as optim
 import torchvision
 import torchvision.transforms as transforms
+from datetime import datetime 
 from copy import deepcopy
 import time
 
@@ -128,6 +129,9 @@ def main():
 
     logger.log("Finished!")
     end_time = time.time()
+    logger.add_statistic("algorithm_key", "IMP")
+    current_date = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    logger.add_statistic("execution_date", current_date)
     logger.add_statistic("duration_seconds", end_time - start_time)
     filename = f"IMP_{args.arch}"
     saved_file_path = logger.save_run_record(filename) 

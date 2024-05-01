@@ -87,7 +87,8 @@ export class ChartUtils {
 			plugins: {
 				tooltip: {
 					mode: 'index',
-					intersect: false
+					intersect: false,
+					enabled: settings.areTooltipsEnabled
 				},
 				legend: {
 					display: settings.isDatasetLabelVisible
@@ -142,15 +143,11 @@ export class ChartUtils {
 	}
 
 	static initializeDatasetTemplate(datasetCount: number, displaySettings: ChartDisplaySettings) {
-		const typeSettings =
-			chartColorsSettings[displaySettings?.datasetColorSettingsKey || DEFAULT_DATASET_COLOR_SETTINGS_KEY];
-		const colorSetting = typeSettings.datasetColors?.[datasetCount % typeSettings.datasetColors.length] || {
-			borderColor: 'black',
-			backgroundColor: 'white'
-		};
+		const colorSetting = this.getDatasetColorSetting(datasetCount, displaySettings);
+		const label = this.getDatasetLabel(datasetCount, displaySettings);
 
 		return {
-			label: `${displaySettings?.datasetLabelPrefix || ''} ${datasetCount}`,
+			label,
 			data: [],
 			borderColor: colorSetting.borderColor,
 			backgroundColor: colorSetting.backgroundColor,
@@ -162,5 +159,24 @@ export class ChartUtils {
 			pointHoverBorderColor: colorSetting.borderColor,
 			stepped: displaySettings.useSteppedLines || false
 		};
+	}
+
+	private static getDatasetColorSetting(datasetCount: number, displaySettings: ChartDisplaySettings) {
+		const typeSettings =
+			chartColorsSettings[displaySettings?.datasetColorSettingsKey || DEFAULT_DATASET_COLOR_SETTINGS_KEY];
+		return (
+			typeSettings.datasetColors?.[datasetCount % typeSettings.datasetColors.length] || {
+				borderColor: 'black',
+				backgroundColor: 'white'
+			}
+		);
+	}
+
+	private static getDatasetLabel(datasetCount: number, displaySettings: ChartDisplaySettings): string {
+		if (displaySettings.hasCustomDatasetsLabels) {
+			return displaySettings?.customDatasetsLabels?.[datasetCount] ?? '';
+		} else {
+			return `${displaySettings?.datasetLabelPrefix || ''} ${datasetCount}`;
+		}
 	}
 }

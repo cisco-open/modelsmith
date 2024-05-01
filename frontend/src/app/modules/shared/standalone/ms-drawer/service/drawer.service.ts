@@ -21,7 +21,7 @@ import { DrawerRef } from '../drawer.ref';
 import { DRAWER_DATA } from '../drawer.tokens';
 import { DrawerConfig } from '../models/drawer-config.interface';
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class DrawerService {
 	constructor(
 		private overlay: Overlay,
@@ -50,9 +50,9 @@ export class DrawerService {
 					provide: DRAWER_DATA,
 					useValue: {
 						saveButtonLabel: 'Save',
-						dismissButtonLabel: 'Cancel',
+						closeButtonLabel: 'Close',
 						showSaveButton: true,
-						showDismissButton: true,
+						showCloseButton: true,
 						width: 768,
 						...config
 					}

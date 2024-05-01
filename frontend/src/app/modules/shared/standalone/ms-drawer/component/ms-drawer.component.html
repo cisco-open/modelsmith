@@ -22,7 +22,7 @@
 			<div class="drawer-header-wrapper">
 				<div class="heading-section-title">{{ data.title }}</div>
 				<div class="close-icon">
-					<button mat-icon-button (click)="onClose()">
+					<button mat-icon-button (click)="onDismiss()">
 						<mat-icon fontSet="ms" fontIcon="icon-X"></mat-icon>
 					</button>
 				</div>
@@ -38,9 +38,9 @@
 		<ng-container *ngTemplateOutlet="actionsTemplate || defaultDrawerActions"></ng-container>
 		<ng-template #defaultDrawerActions>
 			<div class="actions-wrapper">
-				<ng-container *ngIf="data.showDismissButton">
-					<button mat-stroked-button [disabled]="isDismissDisabled" (click)="onDismiss()">
-						{{ data.dismissButtonLabel }}
+				<ng-container *ngIf="data.showCloseButton">
+					<button mat-stroked-button [disabled]="isDismissDisabled" (click)="onClose()">
+						{{ data.closeButtonLabel }}
 					</button>
 				</ng-container>
 				<ng-container *ngIf="data.showSaveButton">
