@@ -16,6 +16,7 @@
 
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { runRecordsReducers } from '../../state/run-records';
@@ -53,7 +54,8 @@ import { RecordsFacadeService } from './services/records-facade.service';
 		ReadableDurationPipe,
 		ParametersLabelPipe,
 		ReverseArrayPipe,
-		MsEmptyStateComponent
+		MsEmptyStateComponent,
+		MatProgressSpinnerModule
 	],
 	providers: [DrawerService, RecordsFacadeService, RecordsDataService]
 })

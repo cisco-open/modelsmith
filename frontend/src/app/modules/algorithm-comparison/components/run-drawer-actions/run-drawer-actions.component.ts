@@ -17,9 +17,13 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { filter, skip, take } from 'rxjs';
+import { Observable, filter, skip, take } from 'rxjs';
 import { ChartDatasets } from '../../../../services/client/models/charts/chart-data.interface-dto';
 import { SummarizedRunRecord } from '../../../../services/client/models/run-records/run-records.interface';
+import {
+	CustomAPILoadingService,
+	RequestsConfigKeyEnum
+} from '../../../../services/interceptor/app-loading-interceptor';
 import { RunRecordsActions } from '../../../../state/run-records/records';
 import { isNilOrEmptyString } from '../../../core/utils/core.utils';
 import { AlgorithmType } from '../../../model-compression/models/enums/algorithms.enum';
@@ -45,6 +49,10 @@ export class RunDrawerActionsComponent implements OnInit {
 
 	files: { name: string; disabled: boolean }[] = [];
 	summarizedRecord?: SummarizedRunRecord;
+
+	isSummarizedRecordLoading$: Observable<boolean> = this.customAPILoadingService.getLoadingObservableForKey(
+		RequestsConfigKeyEnum.RUN_RECORDS_SUMMARIZED_DATA
+	);
 
 	testingAccuracyChartDisplaySettings: ChartDisplaySettings = {
 		yAxisMinimumValue: 0,
@@ -74,7 +82,8 @@ export class RunDrawerActionsComponent implements OnInit {
 		@Inject(DRAWER_DATA) public drawerConfig: DrawerConfig,
 		private fb: FormBuilder,
 		private recordsFacadeService: RecordsFacadeService,
-		private recordsDataService: RecordsDataService
+		private recordsDataService: RecordsDataService,
+		private customAPILoadingService: CustomAPILoadingService
 	) {}
 
 	ngOnInit(): void {

@@ -14,10 +14,11 @@
 
 //   SPDX-License-Identifier: Apache-2.0
 
-import { HttpErrorResponse, HttpRequest } from '@angular/common/http';
+import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
-import { BannerService } from '../../modules/core/services/banner.service';
+import { catchError } from 'rxjs/operators';
+import { BannerService } from '../../modules/core/services';
 
 @Injectable({ providedIn: 'root' })
 export class HttpErrorHandlingService {
@@ -47,5 +48,18 @@ export class HttpErrorHandlingService {
 
 	private spawnNotification(body: string) {
 		this.bannerService.showError(body);
+	}
+}
+
+@Injectable()
+export class AppErrorHandlingInterceptor implements HttpInterceptor {
+	constructor(private errorHandler: HttpErrorHandlingService) {}
+
+	intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+		return next.handle(req).pipe(
+			catchError((error) => {
+				return this.errorHandler.handleError(req, error);
+			})
+		);
 	}
 }

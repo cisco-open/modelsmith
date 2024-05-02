@@ -36,6 +36,11 @@ export const recordsReducer = createReducer(
 		...state,
 		error
 	})),
+	on(RunRecordsActions.getRunRecordSummarizedData, (state) => ({
+		...state,
+		loading: true,
+		error: null
+	})),
 	on(RunRecordsActions.getRunRecordSummarizedDataSuccess, (state, { record }) => ({
 		...state,
 		summarizedRecord: record,

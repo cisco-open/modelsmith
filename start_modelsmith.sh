@@ -47,6 +47,7 @@ start_backend() {
 
     # Start the backend server using npm
     nohup npm run start:prod > "backend.log" 2>&1 &
+    BACKEND_PID=$!
     echo -e "${GREEN}Backend server started and logging to backend.log${NC}"
 
     tail -f "backend.log" &
@@ -63,6 +64,7 @@ start_frontend() {
 
     # Start the frontend server using npm
     nohup npm start > "frontend.log" 2>&1 &
+    FRONTEND_PID=$!
     echo -e "${GREEN}Frontend server started and logging to frontend.log${NC}"
 }
 
@@ -72,6 +74,14 @@ cleanup() {
     if [ -n "$TAIL_PID" ]; then
         kill "$TAIL_PID"
         echo -e "${GREEN}Stopped tailing backend logs.${NC}"
+    fi
+    if [ -n "$BACKEND_PID" ]; then
+        kill "$BACKEND_PID"
+        echo -e "${GREEN}Backend server stopped.${NC}"
+    fi
+    if [ -n "$FRONTEND_PID" ]; then
+        kill "$FRONTEND_PID"
+        echo -e "${GREEN}Frontend server stopped.${NC}"
     fi
 }
 

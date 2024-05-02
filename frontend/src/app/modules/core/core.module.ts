@@ -25,7 +25,8 @@ import { StoreModule } from '@ngrx/store';
 import { MAT_SELECTSEARCH_DEFAULT_OPTIONS, MatSelectSearchOptions } from 'ngx-mat-select-search';
 import { CLIENT } from '../../app.tokens';
 import { ClientBackend } from '../../services/client/client-backend';
-import { AppHttpInterceptor } from '../../services/interceptor/app-http-interceptor';
+import { AppErrorHandlingInterceptor } from '../../services/interceptor/app-error-handling-interceptor';
+import { AppLoadingInterceptor } from '../../services/interceptor/app-loading-interceptor';
 import { coreReducers } from '../../state/core';
 import { AuthEffects } from '../../state/core/auth';
 import { ChartsEffects } from '../../state/core/charts';
@@ -105,7 +106,8 @@ import { PageRunningScriptSpiningIndicatorService } from './services/page-runnin
 				noEntriesFoundLabel: 'No matching entries found...'
 			}
 		},
-		{ provide: HTTP_INTERCEPTORS, useClass: AppHttpInterceptor, multi: true }
+		{ provide: HTTP_INTERCEPTORS, useClass: AppErrorHandlingInterceptor, multi: true },
+		{ provide: HTTP_INTERCEPTORS, useClass: AppLoadingInterceptor, multi: true }
 	]
 })
 export class CoreModule {
