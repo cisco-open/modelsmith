@@ -1,4 +1,4 @@
-<p align="center"><img src="docs/modelsmith.svg" alt="flame logo" width="400"/></p>
+<p align="center"><img src="docs/modelsmith.svg" alt="modelsmith logo" width="400"/></p>
 
 ModelSmith serves as a toolkit for compressing machine learning models, designed to enhance their speed, reduce their size, and improve energy efficiency. This toolbox addresses the demands for smaller model sizes, minimal memory usage, quicker inference times, energy-saving operations, and scenarios conforming to bandwidth limitations.
 
