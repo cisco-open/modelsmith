@@ -65,6 +65,8 @@ Ioan Pop (John)
 
 Yuzhang Shang
 
+Yihua Zhang
+
 Gaowen Liu
 
 ## Contributing & Future Directions
