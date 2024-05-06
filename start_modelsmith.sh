@@ -88,7 +88,7 @@ cleanup() {
 }
 
 # Trap SIGINT, SIGTERM, and SIGHUP
-trap cleanup SIGINT SIGTERM SIGHUP
+trap 'cleanup; exit 1' SIGINT SIGTERM SIGHUP SIGTSTP
 
 # Path to the .env file
 env_file="$PROJECT_ROOT/backend/.env"
