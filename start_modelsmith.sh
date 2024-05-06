@@ -1,19 +1,3 @@
-#    Copyright 2024 Cisco Systems, Inc. and its affiliates
-
-#   Licensed under the Apache License, Version 2.0 (the "License");
-#   you may not use this file except in compliance with the License.
-#   You may obtain a copy of the License at
-
-#        http://www.apache.org/licenses/LICENSE-2.0
-
-#   Unless required by applicable law or agreed to in writing, software
-#   distributed under the License is distributed on an "AS IS" BASIS,
-#   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-#   See the License for the specific language governing permissions and
-#   limitations under the License.
-
-#   SPDX-License-Identifier: Apache-2.0
-
 #!/bin/bash
 
 # ANSI color codes for better formatting
@@ -37,6 +21,18 @@ install_dependencies() {
     fi
 }
 
+# Function to check if a port is already in use and kill the process
+check_port_occupancy() {
+    local port="$1"
+    local pid
+    if pid=$(lsof -ti:"$port"); then
+        echo "Port $port is already in use by process: $pid"
+        echo "Killing process listening on port $port..."
+        kill "$pid"
+        echo "Process killed."
+    fi
+}
+
 # Function to start the backend server
 start_backend() {
     local project_path="$1"
@@ -44,6 +40,9 @@ start_backend() {
 
     # Change working directory to the backend directory
     cd "$project_path" || exit 1
+
+    # Call the function to check port occupancy for port 3000
+    check_port_occupancy 3000
 
     # Start the backend server using npm
     nohup npm run start:prod > "backend.log" 2>&1 &
@@ -61,6 +60,9 @@ start_frontend() {
 
     # Change working directory to the frontend directory
     cd "$project_path" || exit 1
+
+    # Call the function to check port occupancy for port 4200
+    check_port_occupancy 4200
 
     # Start the frontend server using npm
     nohup npm start > "frontend.log" 2>&1 &
@@ -97,7 +99,7 @@ if [ ! -f "$env_file" ]; then
     bash "$PROJECT_ROOT/utils/setup_environment.sh"
 fi
 
-
+# Start backend and frontend servers
 echo -e "${GREEN}Setting up Backend...${NC}"
 install_dependencies "$PROJECT_ROOT/backend"
 start_backend "$PROJECT_ROOT/backend"
