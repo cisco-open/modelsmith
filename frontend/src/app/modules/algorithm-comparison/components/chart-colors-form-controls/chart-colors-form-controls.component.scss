@@ -13,17 +13,3 @@
 //   limitations under the License.
 
 //   SPDX-License-Identifier: Apache-2.0
-
-import { SummarizedRunRecord } from '../../../services/client/models/run-records/run-records.interface';
-
-export interface RecordComparisonItem {
-	recordName: string;
-	recordFilename: string;
-	record: SummarizedRunRecord;
-	chartColor: RecordComparisonChartColors;
-}
-
-export interface RecordComparisonChartColors {
-	backgroundColor: string;
-	borderColor: string;
-}

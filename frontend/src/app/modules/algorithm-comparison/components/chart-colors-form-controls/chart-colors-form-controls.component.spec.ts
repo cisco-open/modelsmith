@@ -14,16 +14,24 @@
 
 //   SPDX-License-Identifier: Apache-2.0
 
-import { SummarizedRunRecord } from '../../../services/client/models/run-records/run-records.interface';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-export interface RecordComparisonItem {
-	recordName: string;
-	recordFilename: string;
-	record: SummarizedRunRecord;
-	chartColor: RecordComparisonChartColors;
-}
+import { ChartColorsFormControlsComponent } from './chart-colors-form-controls.component';
 
-export interface RecordComparisonChartColors {
-	backgroundColor: string;
-	borderColor: string;
-}
+describe('ChartColorsFormControlsComponent', () => {
+	let component: ChartColorsFormControlsComponent;
+	let fixture: ComponentFixture<ChartColorsFormControlsComponent>;
+
+	beforeEach(() => {
+		TestBed.configureTestingModule({
+			declarations: [ChartColorsFormControlsComponent]
+		});
+		fixture = TestBed.createComponent(ChartColorsFormControlsComponent);
+		component = fixture.componentInstance;
+		fixture.detectChanges();
+	});
+
+	it('should create', () => {
+		expect(component).toBeTruthy();
+	});
+});

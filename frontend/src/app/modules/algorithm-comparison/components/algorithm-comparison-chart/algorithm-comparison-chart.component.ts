@@ -22,7 +22,7 @@ import {
 	ChartDataStructure,
 	ChartDisplaySettings
 } from '../../../shared/standalone/ms-line-chart/models/interfaces/ms-chart-display-settings.interface';
-import { RecordComparissonItem } from '../../models/record-comparisson.interface';
+import { RecordComparisonItem } from '../../models/record-comparisson.interface';
 import { RecordsDataService } from '../../services/records-data.service';
 
 @UntilDestroy()
@@ -54,7 +54,7 @@ export class AlgorithmComparisonChartComponent {
 	}
 
 	listenToRecordsChanges(): void {
-		this.recordsDataService.records$.pipe(untilDestroyed(this)).subscribe((records: RecordComparissonItem[]) => {
+		this.recordsDataService.records$.pipe(untilDestroyed(this)).subscribe((records: RecordComparisonItem[]) => {
 			this.lastRunsAccuracyTestingChartData = this.configureChartDatasets(records);
 
 			this.testingAccuracyChartDisplaySettings = {
@@ -64,7 +64,7 @@ export class AlgorithmComparisonChartComponent {
 		});
 	}
 
-	private configureChartDatasets(records: RecordComparissonItem[]): ChartDatasets[] {
+	private configureChartDatasets(records: RecordComparisonItem[]): ChartDatasets[] {
 		const datasets: ChartDatasets[] = [];
 
 		records.forEach((item, index) => {

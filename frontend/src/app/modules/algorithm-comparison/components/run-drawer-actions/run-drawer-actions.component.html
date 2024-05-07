@@ -80,7 +80,10 @@
 				</mat-card>
 
 				<mat-card *ngIf="!!summarizedRecord?.lastRunTestingAccuracyData" class="ms-card record-wrapper">
-					<p class="paragraph-bold-p3-small-bold p-2">Last Accuracy Test Runs</p>
+					<p class="paragraph-bold-p3-small-bold pt-2 pb-2">Last Accuracy Test Runs</p>
+
+					<ms-chart-colors-form-controls controlKey="chart"></ms-chart-colors-form-controls>
+
 					<ms-line-chart
 						[data]="lastRunAccuracyTestingChartData"
 						[settings]="testingAccuracyChartDisplaySettings"></ms-line-chart>

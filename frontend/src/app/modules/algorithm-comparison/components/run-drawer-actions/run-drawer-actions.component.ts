@@ -17,7 +17,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { Observable, filter, skip, take } from 'rxjs';
+import { Observable, debounceTime, filter, map, skip, take } from 'rxjs';
 import { ChartDatasets } from '../../../../services/client/models/charts/chart-data.interface-dto';
 import { SummarizedRunRecord } from '../../../../services/client/models/run-records/run-records.interface';
 import {
@@ -25,7 +25,7 @@ import {
 	RequestsConfigKeyEnum
 } from '../../../../services/interceptor/app-loading-interceptor';
 import { RunRecordsActions } from '../../../../state/run-records/records';
-import { isNilOrEmptyString } from '../../../core/utils/core.utils';
+import { isEmptyObject, isNilOrEmptyString } from '../../../core/utils/core.utils';
 import { AlgorithmType } from '../../../model-compression/models/enums/algorithms.enum';
 import { DRAWER_DATA, DrawerConfig, DrawerRef, DrawerStatus } from '../../../shared/standalone/ms-drawer';
 import { DrawerActionTypeEnum } from '../../../shared/standalone/ms-drawer/models/drawer-action-type.enum';
@@ -34,7 +34,7 @@ import {
 	ChartDataStructure,
 	ChartDisplaySettings
 } from '../../../shared/standalone/ms-line-chart/models/interfaces/ms-chart-display-settings.interface';
-import { RecordComparissonItem } from '../../models/record-comparisson.interface';
+import { RecordComparisonItem } from '../../models/record-comparisson.interface';
 import { RecordsDataService } from '../../services/records-data.service';
 import { RecordsFacadeService } from '../../services/records-facade.service';
 
@@ -88,6 +88,7 @@ export class RunDrawerActionsComponent implements OnInit {
 
 	ngOnInit(): void {
 		this.initForm();
+		this.listenToChartColorChanges();
 
 		switch (this.drawerConfig.actionType) {
 			case DrawerActionTypeEnum.ADD: {
@@ -101,6 +102,27 @@ export class RunDrawerActionsComponent implements OnInit {
 				break;
 			}
 		}
+	}
+
+	private listenToChartColorChanges() {
+		this.form.valueChanges
+			.pipe(
+				map((data) => data['chart'] ?? {}),
+				debounceTime(300),
+				untilDestroyed(this)
+			)
+			.subscribe((chartData) => {
+				if (isEmptyObject(chartData)) {
+					return;
+				}
+
+				const { backgroundColor, borderColor } = chartData;
+				const { rgba: backgroundColorValue } = backgroundColor;
+				const { rgba: borderColorValue } = borderColor;
+
+				console.log(backgroundColorValue);
+				console.log(borderColorValue);
+			});
 	}
 
 	private configureEditOrViewTypeActions(): void {
@@ -198,7 +220,7 @@ export class RunDrawerActionsComponent implements OnInit {
 				recordName: this.runNameFormControl.value,
 				recordFilename: this.selectRunFormControl.value,
 				record: this.summarizedRecord
-			} as RecordComparissonItem,
+			} as RecordComparisonItem,
 			status
 		});
 	}

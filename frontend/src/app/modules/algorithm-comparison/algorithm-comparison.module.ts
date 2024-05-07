@@ -16,7 +16,6 @@
 
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { runRecordsReducers } from '../../state/run-records';
@@ -35,13 +34,15 @@ import { AlgorithmComparisonComponent } from './components/algorithm-comparison/
 import { RunDrawerActionsComponent } from './components/run-drawer-actions/run-drawer-actions.component';
 import { RecordsDataService } from './services/records-data.service';
 import { RecordsFacadeService } from './services/records-facade.service';
+import { ChartColorsFormControlsComponent } from './components/chart-colors-form-controls/chart-colors-form-controls.component';
 
 @NgModule({
 	declarations: [
 		AlgorithmComparisonComponent,
 		RunDrawerActionsComponent,
 		AlgorithmComparisonListComponent,
-		AlgorithmComparisonChartComponent
+		AlgorithmComparisonChartComponent,
+  ChartColorsFormControlsComponent
 	],
 	imports: [
 		CommonModule,
@@ -54,8 +55,7 @@ import { RecordsFacadeService } from './services/records-facade.service';
 		ReadableDurationPipe,
 		ParametersLabelPipe,
 		ReverseArrayPipe,
-		MsEmptyStateComponent,
-		MatProgressSpinnerModule
+		MsEmptyStateComponent
 	],
 	providers: [DrawerService, RecordsFacadeService, RecordsDataService]
 })

@@ -18,7 +18,7 @@ import { Component } from '@angular/core';
 import { take } from 'rxjs';
 import { DrawerClose, DrawerService, DrawerStatus } from '../../../shared/standalone/ms-drawer';
 import { DrawerActionTypeEnum } from '../../../shared/standalone/ms-drawer/models/drawer-action-type.enum';
-import { RecordComparissonItem } from '../../models/record-comparisson.interface';
+import { RecordComparisonItem } from '../../models/record-comparisson.interface';
 import { RecordsDataService } from '../../services/records-data.service';
 import { RunDrawerActionsComponent } from '../run-drawer-actions/run-drawer-actions.component';
 
@@ -45,14 +45,14 @@ export class AlgorithmComparisonComponent {
 		drawerRef
 			.afterClosed()
 			.pipe(take(1))
-			.subscribe((draweCloseEvent: DrawerClose<RecordComparissonItem>) => {
+			.subscribe((draweCloseEvent: DrawerClose<RecordComparisonItem>) => {
 				const { status } = draweCloseEvent;
 				if (status === DrawerStatus.DISMISS || status === DrawerStatus.CLOSE) {
 					return;
 				}
 
 				const { result } = draweCloseEvent;
-				this.recordsDataService.addRecord(result as RecordComparissonItem);
+				this.recordsDataService.addRecord(result as RecordComparisonItem);
 			});
 	}
 }

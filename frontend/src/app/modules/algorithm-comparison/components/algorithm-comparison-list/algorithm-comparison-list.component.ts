@@ -19,7 +19,7 @@ import { take } from 'rxjs';
 import { isEmptyObject } from '../../../core/utils/core.utils';
 import { DrawerClose, DrawerService, DrawerStatus } from '../../../shared/standalone/ms-drawer';
 import { DrawerActionTypeEnum } from '../../../shared/standalone/ms-drawer/models/drawer-action-type.enum';
-import { RecordComparissonItem } from '../../models/record-comparisson.interface';
+import { RecordComparisonItem } from '../../models/record-comparisson.interface';
 import { RecordsDataService } from '../../services/records-data.service';
 import { RunDrawerActionsComponent } from '../run-drawer-actions/run-drawer-actions.component';
 
@@ -38,7 +38,7 @@ export class AlgorithmComparisonListComponent {
 		this.recordsDataService.removeRecord(index);
 	}
 
-	viewRecord(record: RecordComparissonItem) {
+	viewRecord(record: RecordComparisonItem) {
 		this.drawerService.open(RunDrawerActionsComponent, {
 			title: 'View Run',
 			showSaveButton: false,
@@ -49,7 +49,7 @@ export class AlgorithmComparisonListComponent {
 		});
 	}
 
-	editRecord(index: number, record: RecordComparissonItem) {
+	editRecord(index: number, record: RecordComparisonItem) {
 		const drawerRef = this.drawerService.open(RunDrawerActionsComponent, {
 			title: 'Edit Run',
 			saveButtonLabel: 'Update',
@@ -62,7 +62,7 @@ export class AlgorithmComparisonListComponent {
 		drawerRef
 			.afterClosed()
 			.pipe(take(1))
-			.subscribe((draweCloseEvent: DrawerClose<RecordComparissonItem>) => {
+			.subscribe((draweCloseEvent: DrawerClose<RecordComparisonItem>) => {
 				const { status } = draweCloseEvent;
 				if (status === DrawerStatus.DISMISS || status === DrawerStatus.CLOSE) {
 					return;

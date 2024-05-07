@@ -16,31 +16,29 @@
 
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { RecordComparissonItem } from '../models/record-comparisson.interface';
+import { RecordComparisonItem } from '../models/record-comparisson.interface';
 import { recordsMock } from '../models/records-mock-data';
 
 @Injectable()
 export class RecordsDataService {
-	private _records: BehaviorSubject<RecordComparissonItem[]> = new BehaviorSubject<RecordComparissonItem[]>(
-		recordsMock
-	);
+	private _records: BehaviorSubject<RecordComparisonItem[]> = new BehaviorSubject<RecordComparisonItem[]>(recordsMock);
 
-	get records(): RecordComparissonItem[] {
+	get records(): RecordComparisonItem[] {
 		return this._records.value;
 	}
 
-	get records$(): Observable<RecordComparissonItem[]> {
+	get records$(): Observable<RecordComparisonItem[]> {
 		return this._records.asObservable();
 	}
 
-	addRecord(newRecord: RecordComparissonItem): void {
+	addRecord(newRecord: RecordComparisonItem): void {
 		const currentRecords = this._records.value;
 		const updatedRecords = [...currentRecords, newRecord];
 
 		this._records.next(updatedRecords);
 	}
 
-	updateRecord(index: number, updatedRecord: RecordComparissonItem): void {
+	updateRecord(index: number, updatedRecord: RecordComparisonItem): void {
 		const currentRecords = this._records.value;
 		if (index >= 0 && index < currentRecords.length) {
 			const updatedRecords = [...currentRecords];

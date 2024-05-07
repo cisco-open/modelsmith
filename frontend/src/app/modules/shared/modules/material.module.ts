@@ -14,6 +14,7 @@
 
 //   SPDX-License-Identifier: Apache-2.0
 
+import { MAT_COLOR_FORMATS, MatColorFormats, NgxMatColorPickerModule } from '@angular-material-components/color-picker';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
 import { NgModule } from '@angular/core';
@@ -27,12 +28,19 @@ import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
+
+export const CUSTOM_MAT_COLOR_FORMATS: MatColorFormats = {
+	display: {
+		colorInput: 'hex'
+	}
+};
 
 @NgModule({
 	exports: [
@@ -51,9 +59,12 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 		MatSnackBarModule,
 		MatTooltipModule,
 		MatSlideToggleModule,
-		DragDropModule
+		DragDropModule,
+		MatProgressSpinnerModule,
+		NgxMatColorPickerModule
 	],
 	providers: [
+		{ provide: MAT_COLOR_FORMATS, useValue: CUSTOM_MAT_COLOR_FORMATS },
 		{
 			provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
 			useValue: {
