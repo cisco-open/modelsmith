@@ -1,3 +1,6 @@
+@angular-material-components/color-picker
+MIT
+
 @angular/animations
 MIT
 
