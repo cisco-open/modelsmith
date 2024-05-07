@@ -18,17 +18,13 @@
 	<div class="ms-chart-display accuracy-chart">
 		<div class="epochs">
 			<p class="paragraph-bold-p3-small-bold p-2">Accuracy Training</p>
-			<ms-line-chart
-				[data]="initialAccuracyChartData"
-				[realtimeUpdateMetric]="RealtimeUpdateMetric.ACCURACY"
-				[settings]="accuracyChartDisplaySettings"></ms-line-chart>
+			<ms-line-chart [data]="initialAccuracyChartData" [settings]="accuracyChartDisplaySettings"></ms-line-chart>
 		</div>
 
 		<div class="testing">
 			<p class="paragraph-bold-p3-small-bold p-2">Accuracy Test</p>
 			<ms-line-chart
 				[data]="initialAccuracyTestingChartData"
-				[realtimeUpdateMetric]="RealtimeUpdateMetric.TESTING_ACCURACY"
 				[settings]="testingAccuracyChartDisplaySettings"></ms-line-chart>
 		</div>
 	</div>
@@ -36,25 +32,16 @@
 	<div class="ms-chart-display loss-chart">
 		<div class="epochs">
 			<p class="paragraph-bold-p3-small-bold p-2">Loss Training</p>
-			<ms-line-chart
-				[data]="initialLossChartData"
-				[realtimeUpdateMetric]="RealtimeUpdateMetric.LOSS"
-				[settings]="lossChartDisplaySettings"></ms-line-chart>
+			<ms-line-chart [data]="initialLossChartData" [settings]="lossChartDisplaySettings"></ms-line-chart>
 		</div>
 		<div class="testing">
 			<p class="paragraph-bold-p3-small-bold p-2">Loss Test</p>
-			<ms-line-chart
-				[data]="initialLossTestingChartData"
-				[realtimeUpdateMetric]="RealtimeUpdateMetric.TESTING_LOSS"
-				[settings]="testingLossChartDisplaySettings"></ms-line-chart>
+			<ms-line-chart [data]="initialLossTestingChartData" [settings]="testingLossChartDisplaySettings"></ms-line-chart>
 		</div>
 	</div>
 
 	<div class="ms-chart-display sparsity-chart">
 		<p class="paragraph-bold-p3-small-bold p-2">Sparsity Training</p>
-		<ms-line-chart
-			[data]="initialSparsityChartData"
-			[realtimeUpdateMetric]="RealtimeUpdateMetric.SPARSITY"
-			[settings]="sparsityChartDisplaySettings"></ms-line-chart>
+		<ms-line-chart [data]="initialSparsityChartData" [settings]="sparsityChartDisplaySettings"></ms-line-chart>
 	</div>
 </div>

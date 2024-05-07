@@ -15,6 +15,7 @@
 //   SPDX-License-Identifier: Apache-2.0
 
 import { ChartColorEnum } from '../enums/chart-color.enum';
+import { RealtimeUpdateMetricEnum } from '../enums/realtime-update-metric.enum';
 
 export interface ChartDisplaySettings {
 	// Determines whether the X-axis should be displayed on the chart.
@@ -97,15 +98,23 @@ export interface ChartDisplaySettings {
 
 	// An array of custom labels for the X-axis, used when `hasCustomAxisLabels` is true. Each label in this array corresponds to a specific data point on the X-axis, allowing for customized labeling that can include dates, descriptions, or any other contextual information.
 	customDatasetsLabels?: string[];
+
+	// Metric used to listen to websocket events for realtime update
+	realtimeUpdateMetric?: RealtimeUpdateMetricEnum;
+
+	// Interval based on which to update the chart (optimization, performance trick)
+	updateInterval?: number;
 }
 
-export const DEFAULT_Y_AXIS_GROWTH_OFFSET = 5;
-export const DEFAULT_Y_AXIS_GROWTH_ROUND_FACTOR = 5;
-export const DEFAULT_DATASET_COLOR_SETTINGS_KEY = ChartColorEnum.GREEN;
+export const DEFAULT_UPDATE_INTERVAL_VALUE: number = 500;
 
-export const DEFAULT_NR_OF_STEPS_PER_EPOCH = 390;
-export const DEFAULT_NR_OF_STEPS_PER_TRAINING_EPOCH = 99;
-export const DEFAULT_TOTAL_EPOCHS_NR = 2;
+export const DEFAULT_Y_AXIS_GROWTH_OFFSET: number = 5;
+export const DEFAULT_Y_AXIS_GROWTH_ROUND_FACTOR: number = 5;
+export const DEFAULT_DATASET_COLOR_SETTINGS_KEY: ChartColorEnum = ChartColorEnum.GREEN;
+
+export const DEFAULT_NR_OF_STEPS_PER_EPOCH: number = 390;
+export const DEFAULT_NR_OF_STEPS_PER_TRAINING_EPOCH: number = 99;
+export const DEFAULT_TOTAL_EPOCHS_NR: number = 2;
 
 export interface ChartZoomLimits {
 	min?: number;

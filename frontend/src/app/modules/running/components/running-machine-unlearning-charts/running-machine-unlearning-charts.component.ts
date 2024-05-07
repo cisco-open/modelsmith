@@ -96,7 +96,8 @@ export class RunningMachineUnlearningChartsComponent {
 					zoomRangeLimits: {
 						max: 100
 					},
-					datasetColorSettingsKey: ChartColorEnum.GREEN
+					datasetColorSettingsKey: ChartColorEnum.GREEN,
+					realtimeUpdateMetric: RealtimeUpdateMetricEnum.ACCURACY
 				};
 
 				this.testingAccuracyChartDisplaySettings = {
@@ -110,7 +111,8 @@ export class RunningMachineUnlearningChartsComponent {
 					zoomRangeLimits: {
 						max: 100
 					},
-					datasetColorSettingsKey: ChartColorEnum.YELLOW
+					datasetColorSettingsKey: ChartColorEnum.YELLOW,
+					realtimeUpdateMetric: RealtimeUpdateMetricEnum.TESTING_ACCURACY
 				};
 
 				this.lossMachineUnlearningChartSettings =
@@ -124,7 +126,8 @@ export class RunningMachineUnlearningChartsComponent {
 					xAxisRepetitionCount: 1,
 					yAxisMinimumValue: 0,
 					isYAxisDynamic: true,
-					datasetColorSettingsKey: ChartColorEnum.RED
+					datasetColorSettingsKey: ChartColorEnum.RED,
+					realtimeUpdateMetric: RealtimeUpdateMetricEnum.LOSS
 				};
 
 				this.testingLossChartDisplaySettings = {
@@ -137,7 +140,8 @@ export class RunningMachineUnlearningChartsComponent {
 					isYAxisDynamic: true,
 					dynamicYAxisGrowthOffset: 1,
 					dynamicYAxisGrowthRoundFactor: 2,
-					datasetColorSettingsKey: ChartColorEnum.YELLOW
+					datasetColorSettingsKey: ChartColorEnum.YELLOW,
+					realtimeUpdateMetric: RealtimeUpdateMetricEnum.TESTING_LOSS
 				};
 
 				this.chartsFacadeService.dispatch(ChartActions.getCurrentMachineUnlearningChartData());

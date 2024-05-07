@@ -57,7 +57,8 @@ export class RunningPruningChartsComponent implements OnInit {
 		xAxisDataPointsCount: DEFAULT_NR_OF_STEPS_PER_EPOCH,
 		isYAxisDynamic: true,
 		dynamicYAxisGrowthOffset: 2,
-		datasetColorSettingsKey: ChartColorEnum.RED
+		datasetColorSettingsKey: ChartColorEnum.RED,
+		realtimeUpdateMetric: RealtimeUpdateMetricEnum.LOSS
 	};
 
 	initialLossTestingChartData: ChartDatasets[] = [];
@@ -69,7 +70,8 @@ export class RunningPruningChartsComponent implements OnInit {
 		xAxisDataPointsCount: DEFAULT_NR_OF_STEPS_PER_TRAINING_EPOCH,
 		isYAxisDynamic: true,
 		dynamicYAxisGrowthOffset: 2,
-		datasetColorSettingsKey: ChartColorEnum.YELLOW
+		datasetColorSettingsKey: ChartColorEnum.YELLOW,
+		realtimeUpdateMetric: RealtimeUpdateMetricEnum.TESTING_LOSS
 	};
 
 	// Accuracy
@@ -83,7 +85,8 @@ export class RunningPruningChartsComponent implements OnInit {
 		zoomRangeLimits: {
 			max: 100
 		},
-		datasetColorSettingsKey: ChartColorEnum.GREEN
+		datasetColorSettingsKey: ChartColorEnum.GREEN,
+		realtimeUpdateMetric: RealtimeUpdateMetricEnum.ACCURACY
 	};
 
 	initialAccuracyTestingChartData: ChartDatasets[] = [];
@@ -96,7 +99,8 @@ export class RunningPruningChartsComponent implements OnInit {
 		zoomRangeLimits: {
 			max: 100
 		},
-		datasetColorSettingsKey: ChartColorEnum.YELLOW
+		datasetColorSettingsKey: ChartColorEnum.YELLOW,
+		realtimeUpdateMetric: RealtimeUpdateMetricEnum.TESTING_ACCURACY
 	};
 
 	// Sparsity
@@ -112,7 +116,8 @@ export class RunningPruningChartsComponent implements OnInit {
 			max: 100
 		},
 		datasetColorSettingsKey: ChartColorEnum.BLUE,
-		useSteppedLines: true
+		useSteppedLines: true,
+		realtimeUpdateMetric: RealtimeUpdateMetricEnum.SPARSITY
 	};
 
 	constructor(private chartsFacadeService: ChartsFacadeService) {}

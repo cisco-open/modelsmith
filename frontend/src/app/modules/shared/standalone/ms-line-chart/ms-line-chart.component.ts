@@ -29,7 +29,7 @@ import {
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Chart, ChartConfiguration, ChartType } from 'chart.js';
 import { BaseChartDirective, NgChartsModule } from 'ng2-charts';
-import { delay } from 'rxjs';
+import { Subject, delay, takeUntil } from 'rxjs';
 import { ChartDatasets } from '../../../../services/client/models/charts/chart-data.interface-dto';
 import { ChartWebsocketMessageTypes } from '../../../core/models/enums/websocket-message-types.enum';
 import { ChartsMessages } from '../../../core/models/interfaces/charts-messages.interface';
@@ -42,6 +42,7 @@ import { RealtimeUpdateMetricEnum } from './models/enums/realtime-update-metric.
 import {
 	ChartDataStructure,
 	ChartDisplaySettings,
+	DEFAULT_UPDATE_INTERVAL_VALUE,
 	DEFAULT_Y_AXIS_GROWTH_OFFSET,
 	DEFAULT_Y_AXIS_GROWTH_ROUND_FACTOR
 } from './models/interfaces/ms-chart-display-settings.interface';
@@ -66,12 +67,9 @@ import { ChartUtils } from './utils/charts.utils';
 })
 export class MsLineChartComponent implements OnInit, OnChanges, OnDestroy {
 	@Input() data: ChartDatasets[] = [];
-	@Input() realtimeUpdateMetric?: RealtimeUpdateMetricEnum;
-
 	@Input() settings!: ChartDisplaySettings;
 
 	private latestValuesToUpdate: { datasetIndex: number; value: number }[] = [];
-	@Input() updateInterval: number = 500;
 	private updateIntervalId: any;
 
 	@ViewChild(BaseChartDirective) chart?: BaseChartDirective;
@@ -84,6 +82,8 @@ export class MsLineChartComponent implements OnInit, OnChanges, OnDestroy {
 	public isScriptActive: boolean = false;
 	private maxY: number = 0;
 
+	private destroy$ = new Subject<void>();
+
 	constructor(
 		private websocketService: WebsocketService,
 		private scriptFacadeService: ScriptFacadeService,
@@ -93,7 +93,6 @@ export class MsLineChartComponent implements OnInit, OnChanges, OnDestroy {
 	ngOnInit() {
 		this.registerPlugins();
 		this.listenToScriptStateChanges();
-		this.listenToChartWebsocketEvents();
 		this.listenToToolsSignals();
 	}
 
@@ -103,7 +102,10 @@ export class MsLineChartComponent implements OnInit, OnChanges, OnDestroy {
 
 	ngOnChanges(changes: SimpleChanges) {
 		if (changes['settings'] && changes['settings'].currentValue) {
+			this.destroy$.next();
+
 			this.initializeChartSettings();
+			this.listenToChartWebsocketEvents();
 		}
 		if (changes['data'] && changes['data'].currentValue) {
 			this.prependNewChartData(changes['data'].currentValue);
@@ -194,14 +196,14 @@ export class MsLineChartComponent implements OnInit, OnChanges, OnDestroy {
 		switch (this.settings?.chartDataStructure) {
 			case ChartDataStructure.SINGLE_PHASE_X_AXIS: {
 				this.lineChartData = ChartUtils.prepareSinglePhaseChartDataStructure(
-					this.settings.xAxisDataPointsCount!,
+					this.settings?.xAxisDataPointsCount || 0,
 					this.settings
 				);
 				break;
 			}
 			case ChartDataStructure.SINGLE_PHASE_X_AXIS_SKIP_ONE: {
 				this.lineChartData = ChartUtils.prepareSinglePhaseSkipOneChartDataStructure(
-					this.settings.xAxisDataPointsCount!,
+					this.settings?.xAxisDataPointsCount || 0,
 					this.settings
 				);
 				break;
@@ -223,47 +225,56 @@ export class MsLineChartComponent implements OnInit, OnChanges, OnDestroy {
 
 	// Realtime Update Feature based on Websockets
 	private listenToChartWebsocketEvents(): void {
-		if (isNilOrEmptyString(this.realtimeUpdateMetric)) {
+		if (isNilOrEmptyString(this.settings.realtimeUpdateMetric)) {
 			return;
 		}
 
-		this.websocketService.chartsMessages$.pipe(untilDestroyed(this)).subscribe((message: ChartsMessages) => {
-			switch (message.topic) {
-				case ChartWebsocketMessageTypes.UPDATE_LATEST_VALUE: {
-					const { data } = message;
-					const { accuracy, loss, sparsity, datasetIndex } = data as ChartsRealtimeUpdateValues;
+		this.websocketService.chartsMessages$
+			.pipe(takeUntil(this.destroy$), untilDestroyed(this))
+			.subscribe((message: ChartsMessages) => {
+				this.handleWebsocketMessage(message);
+			});
+	}
 
-					if (accuracy !== undefined && this.realtimeUpdateMetric === RealtimeUpdateMetricEnum.ACCURACY) {
-						this.addLatestValueToChart(datasetIndex, accuracy);
-					} else if (loss !== undefined && this.realtimeUpdateMetric === RealtimeUpdateMetricEnum.LOSS) {
-						this.addLatestValueToChart(datasetIndex, loss);
-					} else if (sparsity !== undefined && this.realtimeUpdateMetric === RealtimeUpdateMetricEnum.SPARSITY) {
-						this.addLatestValueToChart(0, sparsity);
-					}
-					break;
+	private handleWebsocketMessage(message: ChartsMessages): void {
+		switch (message.topic) {
+			case ChartWebsocketMessageTypes.UPDATE_LATEST_VALUE: {
+				const { data } = message;
+				const { accuracy, loss, sparsity, datasetIndex } = data as ChartsRealtimeUpdateValues;
+
+				if (accuracy !== undefined && this.settings.realtimeUpdateMetric === RealtimeUpdateMetricEnum.ACCURACY) {
+					this.addLatestValueToChart(datasetIndex, accuracy);
+				} else if (loss !== undefined && this.settings.realtimeUpdateMetric === RealtimeUpdateMetricEnum.LOSS) {
+					this.addLatestValueToChart(datasetIndex, loss);
+				} else if (sparsity !== undefined && this.settings.realtimeUpdateMetric === RealtimeUpdateMetricEnum.SPARSITY) {
+					this.addLatestValueToChart(0, sparsity);
 				}
-				case ChartWebsocketMessageTypes.UPDATE_TESTING:
-					const { data } = message;
-					const { accuracy, loss, datasetIndex } = data as ChartsRealtimeUpdateValues;
-
-					if (accuracy !== undefined && this.realtimeUpdateMetric === RealtimeUpdateMetricEnum.TESTING_ACCURACY) {
-						this.addLatestValueToChart(datasetIndex, accuracy);
-					} else if (loss !== undefined && this.realtimeUpdateMetric === RealtimeUpdateMetricEnum.TESTING_LOSS) {
-						this.addLatestValueToChart(datasetIndex, loss);
-					}
-					break;
-				case ChartWebsocketMessageTypes.ENHANCE_SINGLE_PHASE_X_AXIS:
-					const { reconstructionIndex } = message.data as {
-						reconstructionIndex: number;
-					};
-
-					this.enhanceSinglePhaseXAxis(reconstructionIndex);
-					break;
-				default: {
-					break;
-				}
+				break;
 			}
-		});
+			case ChartWebsocketMessageTypes.UPDATE_TESTING:
+				const { data } = message;
+				const { accuracy, loss, datasetIndex } = data as ChartsRealtimeUpdateValues;
+
+				if (
+					accuracy !== undefined &&
+					this.settings.realtimeUpdateMetric === RealtimeUpdateMetricEnum.TESTING_ACCURACY
+				) {
+					this.addLatestValueToChart(datasetIndex, accuracy);
+				} else if (loss !== undefined && this.settings.realtimeUpdateMetric === RealtimeUpdateMetricEnum.TESTING_LOSS) {
+					this.addLatestValueToChart(datasetIndex, loss);
+				}
+				break;
+			case ChartWebsocketMessageTypes.ENHANCE_SINGLE_PHASE_X_AXIS:
+				const { reconstructionIndex } = message.data as {
+					reconstructionIndex: number;
+				};
+
+				this.enhanceSinglePhaseXAxis(reconstructionIndex);
+				break;
+			default: {
+				break;
+			}
+		}
 	}
 
 	private enhanceSinglePhaseXAxis(reconstructionIndex: number) {
@@ -298,8 +309,23 @@ export class MsLineChartComponent implements OnInit, OnChanges, OnDestroy {
 	}
 
 	private startAutoUpdate() {
-		if (this.updateInterval <= 0) return;
-		this.updateIntervalId = setInterval(() => this.refreshChartData(), this.updateInterval);
+		if (isNilOrEmptyString(this.settings?.updateInterval)) {
+			this.settings.updateInterval = DEFAULT_UPDATE_INTERVAL_VALUE;
+		}
+
+		const updateInterval = Number(this.settings.updateInterval);
+		if (updateInterval <= 0) {
+			console.warn('Invalid update interval. Auto update will not start.');
+			return;
+		}
+
+		if (this.updateIntervalId !== undefined) {
+			clearInterval(this.updateIntervalId);
+		}
+
+		this.updateIntervalId = setInterval(() => {
+			this.refreshChartData();
+		}, updateInterval);
 	}
 
 	private refreshChartData() {
@@ -313,7 +339,7 @@ export class MsLineChartComponent implements OnInit, OnChanges, OnDestroy {
 				dataset.data.push(update.value);
 			});
 
-			if (this.settings.isYAxisDynamic) {
+			if (this.settings?.isYAxisDynamic) {
 				this.updateDynamicYAxis(this.latestValuesToUpdate.map((update) => update.value));
 			}
 
@@ -352,7 +378,7 @@ export class MsLineChartComponent implements OnInit, OnChanges, OnDestroy {
 	}
 
 	private ensureDatasetLength(index: number): void {
-		while (index >= this.lineChartData.datasets.length) {
+		while (index >= this.lineChartData?.datasets?.length) {
 			this.lineChartData.datasets.push(
 				ChartUtils.initializeDatasetTemplate(this.lineChartData.datasets.length, this.settings)
 			);
@@ -368,7 +394,7 @@ export class MsLineChartComponent implements OnInit, OnChanges, OnDestroy {
 		if (this.updateIntervalId) clearInterval(this.updateIntervalId);
 	}
 
-	private resetGlobalTools(): void {
+	private resetLocalChartSettings(): void {
 		if (!this.chartToolsGlobalSignalsService) {
 			return;
 		}
@@ -378,7 +404,9 @@ export class MsLineChartComponent implements OnInit, OnChanges, OnDestroy {
 	}
 
 	ngOnDestroy(): void {
-		this.resetGlobalTools();
+		this.destroy$.next();
+		this.destroy$.complete();
+		this.resetLocalChartSettings();
 		this.stopAutoUpdate();
 	}
 }

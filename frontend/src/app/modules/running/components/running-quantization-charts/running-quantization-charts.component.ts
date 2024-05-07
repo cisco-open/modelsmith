@@ -55,7 +55,8 @@ export class RunningQuantizationChartsComponent {
 		isXAxisVisible: false,
 		isYAxisDynamic: true,
 		dynamicYAxisGrowthOffset: 50,
-		datasetColorSettingsKey: ChartColorEnum.RED
+		datasetColorSettingsKey: ChartColorEnum.RED,
+		realtimeUpdateMetric: RealtimeUpdateMetricEnum.LOSS
 	};
 
 	lossTestingChartDisplaySettings: ChartDisplaySettings = {
@@ -67,7 +68,8 @@ export class RunningQuantizationChartsComponent {
 		isXAxisVisible: false,
 		isYAxisDynamic: true,
 		datasetColorSettingsKey: ChartColorEnum.YELLOW,
-		dynamicYAxisGrowthRoundFactor: 2
+		dynamicYAxisGrowthRoundFactor: 2,
+		realtimeUpdateMetric: RealtimeUpdateMetricEnum.TESTING_LOSS
 	};
 
 	accuracyChartDisplaySettings: ChartDisplaySettings = {
@@ -82,7 +84,8 @@ export class RunningQuantizationChartsComponent {
 			max: 100
 		},
 		datasetColorSettingsKey: ChartColorEnum.GREEN,
-		isXAxisDynamic: true
+		isXAxisDynamic: true,
+		realtimeUpdateMetric: RealtimeUpdateMetricEnum.ACCURACY
 	};
 
 	accuracyTestingChartDisplaySettings: ChartDisplaySettings = {
@@ -96,7 +99,8 @@ export class RunningQuantizationChartsComponent {
 		zoomRangeLimits: {
 			max: 100
 		},
-		datasetColorSettingsKey: ChartColorEnum.YELLOW
+		datasetColorSettingsKey: ChartColorEnum.YELLOW,
+		realtimeUpdateMetric: RealtimeUpdateMetricEnum.TESTING_ACCURACY
 	};
 
 	constructor(private chartsFacadeService: ChartsFacadeService) {}
