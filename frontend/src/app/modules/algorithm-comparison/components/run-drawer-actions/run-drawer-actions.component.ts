@@ -134,7 +134,7 @@ export class RunDrawerActionsComponent implements OnInit {
 		if (this.drawerConfig.actionType === DrawerActionTypeEnum.VIEW) {
 			this.form.disable();
 		} else if (this.drawerConfig.actionType === DrawerActionTypeEnum.EDIT) {
-			this.chartFormGroup.enable();
+			this.selectRunFormControl.disable();
 		}
 
 		this.files = [{ name: recordFilename, disabled: true }];
@@ -170,7 +170,7 @@ export class RunDrawerActionsComponent implements OnInit {
 	}
 
 	private listenToSelectRunFormValueChanges() {
-		this.chartFormGroup.valueChanges
+		this.selectRunFormControl.valueChanges
 			.pipe(
 				untilDestroyed(this),
 				filter((filename) => !isNilOrEmptyString(filename))
@@ -244,7 +244,7 @@ export class RunDrawerActionsComponent implements OnInit {
 		this.drawerRef.close({
 			result: {
 				recordName: this.runNameFormControl.value,
-				recordFilename: this.chartFormGroup.value,
+				recordFilename: this.selectRunFormControl.value,
 				record: this.summarizedRecord,
 				chartColors: {
 					backgroundColor: backgroundColorValue,
