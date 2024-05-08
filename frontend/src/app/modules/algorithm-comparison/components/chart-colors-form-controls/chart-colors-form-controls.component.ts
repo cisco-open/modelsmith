@@ -14,9 +14,8 @@
 
 //   SPDX-License-Identifier: Apache-2.0
 
-import { Color } from '@angular-material-components/color-picker';
-import { Component, Input, OnDestroy, OnInit, inject } from '@angular/core';
-import { AbstractControl, ControlContainer, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Component, Input, OnInit, inject } from '@angular/core';
+import { AbstractControl, ControlContainer, FormGroup } from '@angular/forms';
 
 @Component({
 	selector: 'ms-chart-colors-form-controls',
@@ -29,7 +28,7 @@ import { AbstractControl, ControlContainer, FormControl, FormGroup, Validators }
 		}
 	]
 })
-export class ChartColorsFormControlsComponent implements OnInit, OnDestroy {
+export class ChartColorsFormControlsComponent implements OnInit {
 	@Input({ required: true }) controlKey = '';
 
 	readonly CHART_BODER_COLOR_CONTROL_NAME: string = 'borderColor';
@@ -39,35 +38,19 @@ export class ChartColorsFormControlsComponent implements OnInit, OnDestroy {
 		return this.controlContainer.control as FormGroup;
 	}
 
-	get modelFormGroup(): FormGroup {
+	get chartFormGroup(): FormGroup {
 		return this.parentFormGroup.get(this.controlKey) as FormGroup;
 	}
 
 	get borderColorControl(): AbstractControl | null {
-		return this.modelFormGroup.get(this.CHART_BODER_COLOR_CONTROL_NAME);
+		return this.chartFormGroup.get(this.CHART_BODER_COLOR_CONTROL_NAME);
 	}
 
 	get backgroundColorControl(): AbstractControl | null {
-		return this.modelFormGroup.get(this.CHART_BACKGROUND_COLOR_CONTROL_NAME);
+		return this.chartFormGroup.get(this.CHART_BACKGROUND_COLOR_CONTROL_NAME);
 	}
 
 	constructor(private controlContainer: ControlContainer) {}
 
-	ngOnInit() {
-		this.initializeForm();
-	}
-
-	private initializeForm(): void {
-		this.parentFormGroup.addControl(
-			this.controlKey,
-			new FormGroup({
-				[this.CHART_BODER_COLOR_CONTROL_NAME]: new FormControl(new Color(241, 196, 15), Validators.required),
-				[this.CHART_BACKGROUND_COLOR_CONTROL_NAME]: new FormControl(new Color(241, 196, 15, 0.2), Validators.required)
-			})
-		);
-	}
-
-	ngOnDestroy() {
-		this.parentFormGroup.removeControl(this.controlKey);
-	}
+	ngOnInit() {}
 }

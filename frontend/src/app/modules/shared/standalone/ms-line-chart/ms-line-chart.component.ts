@@ -48,7 +48,7 @@ import {
 } from './models/interfaces/ms-chart-display-settings.interface';
 import { ChartsRealtimeUpdateValues } from './models/interfaces/ms-charts-realtime-update-values.interface';
 import { ChartToolsGlobalSignalsService } from './services/chart-tools-global-signals.service';
-import { ChartUtils } from './utils/charts.utils';
+import { ChartSettingsUtils } from './utils/charts-settings.utils';
 
 // Enhanced Features:
 // - Dynamic Auto-Growing yAxis: When the line approaches the MAX minus the yAxisChartOffsetDynamicGrow, the yAxis automatically expands for better visibility.
@@ -97,7 +97,7 @@ export class MsLineChartComponent implements OnInit, OnChanges, OnDestroy {
 	}
 
 	private registerPlugins(): void {
-		ChartUtils.registerZoomPlugin();
+		ChartSettingsUtils.registerZoomPlugin();
 	}
 
 	ngOnChanges(changes: SimpleChanges) {
@@ -190,26 +190,26 @@ export class MsLineChartComponent implements OnInit, OnChanges, OnDestroy {
 	}
 
 	private initializeChartSettings(): void {
-		this.lineChartOptions = ChartUtils.configureChartOptions(this.settings);
+		this.lineChartOptions = ChartSettingsUtils.configureChartOptions(this.settings);
 		this.updateChartSettingsBasedOnScriptState();
 
 		switch (this.settings?.chartDataStructure) {
 			case ChartDataStructure.SINGLE_PHASE_X_AXIS: {
-				this.lineChartData = ChartUtils.prepareSinglePhaseChartDataStructure(
+				this.lineChartData = ChartSettingsUtils.prepareSinglePhaseChartDataStructure(
 					this.settings?.xAxisDataPointsCount || 0,
 					this.settings
 				);
 				break;
 			}
 			case ChartDataStructure.SINGLE_PHASE_X_AXIS_SKIP_ONE: {
-				this.lineChartData = ChartUtils.prepareSinglePhaseSkipOneChartDataStructure(
+				this.lineChartData = ChartSettingsUtils.prepareSinglePhaseSkipOneChartDataStructure(
 					this.settings?.xAxisDataPointsCount || 0,
 					this.settings
 				);
 				break;
 			}
 			case ChartDataStructure.MUlTI_PHASE_X_AXIS: {
-				this.lineChartData = ChartUtils.prepareChartDataStructure(
+				this.lineChartData = ChartSettingsUtils.prepareChartDataStructure(
 					this.settings.xAxisRepetitionCount,
 					this.settings.xAxisDataPointsCount,
 					this.settings
@@ -380,7 +380,7 @@ export class MsLineChartComponent implements OnInit, OnChanges, OnDestroy {
 	private ensureDatasetLength(index: number): void {
 		while (index >= this.lineChartData?.datasets?.length) {
 			this.lineChartData.datasets.push(
-				ChartUtils.initializeDatasetTemplate(this.lineChartData.datasets.length, this.settings)
+				ChartSettingsUtils.initializeDatasetTemplate(this.lineChartData.datasets.length, this.settings)
 			);
 		}
 	}

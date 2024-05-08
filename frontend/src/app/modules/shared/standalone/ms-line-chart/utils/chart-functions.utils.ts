@@ -14,16 +14,17 @@
 
 //   SPDX-License-Identifier: Apache-2.0
 
-import { SummarizedRunRecord } from '../../../services/client/models/run-records/run-records.interface';
+import { Color } from '@angular-material-components/color-picker';
 
-export interface RecordComparisonItem {
-	recordName: string;
-	recordFilename: string;
-	record: SummarizedRunRecord;
-	chartColors: RecordComparisonChartColors;
-}
-
-export interface RecordComparisonChartColors {
-	backgroundColor: string;
-	borderColor: string;
-}
+export const rgbaToColor = (rgba: string): Color => {
+	const matches = rgba.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*(\d+\.?\d*))?\)$/);
+	if (matches) {
+		const r = parseInt(matches[1], 10);
+		const g = parseInt(matches[2], 10);
+		const b = parseInt(matches[3], 10);
+		const a = parseFloat(matches[4] ?? '1');
+		return new Color(r, g, b, a);
+	}
+	console.warn('Failed to parse color:', rgba);
+	return new Color(0, 0, 0);
+};

@@ -16,7 +16,8 @@
 
 import { Chart, ChartConfiguration } from 'chart.js';
 import zoomPlugin from 'chartjs-plugin-zoom';
-import { chartColorsSettings } from '../models/constants/chart-color-settings.constants';
+import { isEmptyObject } from '../../../../core/utils/core.utils';
+import { chartColorssSettings } from '../models/constants/chart-color-settings.constants';
 import {
 	ChartDisplaySettings,
 	DEFAULT_DATASET_COLOR_SETTINGS_KEY,
@@ -24,7 +25,7 @@ import {
 	DEFAULT_TOTAL_EPOCHS_NR
 } from '../models/interfaces/ms-chart-display-settings.interface';
 
-export class ChartUtils {
+export class ChartSettingsUtils {
 	static registerZoomPlugin() {
 		Chart.register(zoomPlugin);
 	}
@@ -162,14 +163,30 @@ export class ChartUtils {
 	}
 
 	private static getDatasetColorSetting(datasetCount: number, displaySettings: ChartDisplaySettings) {
-		const typeSettings =
-			chartColorsSettings[displaySettings?.datasetColorSettingsKey || DEFAULT_DATASET_COLOR_SETTINGS_KEY];
+		const typeSettings = this.determineColorSettings(displaySettings);
+
+		const colors = typeSettings?.datasetColors || [];
 		return (
-			typeSettings.datasetColors?.[datasetCount % typeSettings.datasetColors.length] || {
+			colors[datasetCount % colors.length] || {
 				borderColor: 'black',
 				backgroundColor: 'white'
 			}
 		);
+	}
+
+	private static determineColorSettings(displaySettings: ChartDisplaySettings) {
+		if (displaySettings.isChartWithCustomColorSettings && !isEmptyObject(displaySettings.customChartColors)) {
+			return displaySettings.customChartColors;
+		}
+
+		const colorSettingsKey = displaySettings.datasetColorSettingsKey || DEFAULT_DATASET_COLOR_SETTINGS_KEY;
+		const typeSettings = chartColorssSettings[colorSettingsKey];
+
+		if (displaySettings.isChartWithCustomColorSettings && isEmptyObject(displaySettings.customChartColors)) {
+			console.warn(`No custom chart colors found. Using default settings: ${DEFAULT_DATASET_COLOR_SETTINGS_KEY}`);
+		}
+
+		return typeSettings;
 	}
 
 	private static getDatasetLabel(datasetCount: number, displaySettings: ChartDisplaySettings): string {

@@ -19,7 +19,7 @@
 	<div class="form-field-container">
 		<mat-label>Chart border color</mat-label>
 		<mat-form-field>
-			<input matInput [ngxMatColorPicker]="pickerBorderColor" formControlName="borderColor" />
+			<input matInput [ngxMatColorPicker]="pickerBorderColor" [formControlName]="CHART_BODER_COLOR_CONTROL_NAME" />
 			<ngx-mat-color-toggle matSuffix [for]="pickerBorderColor"></ngx-mat-color-toggle>
 			<ngx-mat-color-picker #pickerBorderColor></ngx-mat-color-picker>
 		</mat-form-field>
@@ -27,7 +27,10 @@
 	<div class="form-field-container">
 		<mat-label>Chart background color</mat-label>
 		<mat-form-field>
-			<input matInput [ngxMatColorPicker]="pickerBackgroundColor" formControlName="backgroundColor" />
+			<input
+				matInput
+				[ngxMatColorPicker]="pickerBackgroundColor"
+				[formControlName]="CHART_BACKGROUND_COLOR_CONTROL_NAME" />
 			<ngx-mat-color-toggle matSuffix [for]="pickerBackgroundColor"></ngx-mat-color-toggle>
 			<ngx-mat-color-picker #pickerBackgroundColor></ngx-mat-color-picker>
 		</mat-form-field>

@@ -17,7 +17,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { Observable, debounceTime, filter, map, skip, take } from 'rxjs';
+import { Observable, debounceTime, filter, skip, take } from 'rxjs';
 import { ChartDatasets } from '../../../../services/client/models/charts/chart-data.interface-dto';
 import { SummarizedRunRecord } from '../../../../services/client/models/run-records/run-records.interface';
 import {
@@ -29,12 +29,12 @@ import { isEmptyObject, isNilOrEmptyString } from '../../../core/utils/core.util
 import { AlgorithmType } from '../../../model-compression/models/enums/algorithms.enum';
 import { DRAWER_DATA, DrawerConfig, DrawerRef, DrawerStatus } from '../../../shared/standalone/ms-drawer';
 import { DrawerActionTypeEnum } from '../../../shared/standalone/ms-drawer/models/drawer-action-type.enum';
-import { ChartColorEnum } from '../../../shared/standalone/ms-line-chart/models/enums/chart-color.enum';
 import {
 	ChartDataStructure,
 	ChartDisplaySettings
 } from '../../../shared/standalone/ms-line-chart/models/interfaces/ms-chart-display-settings.interface';
-import { RecordComparisonItem } from '../../models/record-comparisson.interface';
+import { rgbaToColor } from '../../../shared/standalone/ms-line-chart/utils/chart-functions.utils';
+import { RecordComparisonChartColors, RecordComparisonItem } from '../../models/record-comparisson.interface';
 import { RecordsDataService } from '../../services/records-data.service';
 import { RecordsFacadeService } from '../../services/records-facade.service';
 
@@ -60,14 +60,19 @@ export class RunDrawerActionsComponent implements OnInit {
 		chartDataStructure: ChartDataStructure.SINGLE_PHASE_X_AXIS,
 		xAxisDataPointsCount: 100,
 		yAxisMaximumValue: 100,
-		datasetColorSettingsKey: ChartColorEnum.YELLOW,
 		isXAxisVisible: false,
 		areTooltipsEnabled: true,
 		xAxisLabelPrefix: 'Step:',
-		datasetLabelPrefix: 'Test:'
+		datasetLabelPrefix: 'Test:',
+		isChartWithCustomColorSettings: true,
+		customChartColors: { datasetColors: [{ backgroundColor: 'rgba(241, 196, 15, 0.2)', borderColor: '#f1c40f' }] }
 	};
 
 	lastRunAccuracyTestingChartData: ChartDatasets[] = [];
+
+	get chartFormGroup(): FormGroup {
+		return this.form.get('chart') as FormGroup;
+	}
 
 	get selectRunFormControl(): FormControl {
 		return this.form.get('selectRun') as FormControl;
@@ -105,45 +110,57 @@ export class RunDrawerActionsComponent implements OnInit {
 	}
 
 	private listenToChartColorChanges() {
-		this.form.valueChanges
-			.pipe(
-				map((data) => data['chart'] ?? {}),
-				debounceTime(300),
-				untilDestroyed(this)
-			)
-			.subscribe((chartData) => {
-				if (isEmptyObject(chartData)) {
-					return;
+		this.chartFormGroup.valueChanges.pipe(debounceTime(300), untilDestroyed(this)).subscribe((chartData) => {
+			if (isEmptyObject(chartData)) {
+				return;
+			}
+
+			const { backgroundColor, borderColor } = chartData;
+			const { rgba: backgroundColorValue } = backgroundColor;
+			const { rgba: borderColorValue } = borderColor;
+
+			this.testingAccuracyChartDisplaySettings = {
+				...this.testingAccuracyChartDisplaySettings,
+				customChartColors: {
+					datasetColors: [{ backgroundColor: backgroundColorValue, borderColor: borderColorValue }]
 				}
-
-				const { backgroundColor, borderColor } = chartData;
-				const { rgba: backgroundColorValue } = backgroundColor;
-				const { rgba: borderColorValue } = borderColor;
-
-				console.log(backgroundColorValue);
-				console.log(borderColorValue);
-			});
+			};
+			this.lastRunAccuracyTestingChartData = [...this.lastRunAccuracyTestingChartData];
+		});
 	}
 
 	private configureEditOrViewTypeActions(): void {
+		const { recordName, recordFilename, record, chartColors } = this.drawerConfig.data;
 		if (this.drawerConfig.actionType === DrawerActionTypeEnum.VIEW) {
 			this.form.disable();
 		} else if (this.drawerConfig.actionType === DrawerActionTypeEnum.EDIT) {
-			this.selectRunFormControl.disable();
+			this.chartFormGroup.enable();
 		}
 
-		const { recordName, recordFilename, record } = this.drawerConfig.data;
-
-		this.files = [recordFilename];
-		this.selectRunFormControl.patchValue(recordFilename);
-		this.runNameFormControl.patchValue(recordName);
+		this.files = [{ name: recordFilename, disabled: true }];
+		this.form.patchValue({
+			selectRun: recordFilename,
+			runName: recordName,
+			chart: {
+				borderColor: rgbaToColor(chartColors.borderColor),
+				backgroundColor: rgbaToColor(chartColors.backgroundColor)
+			}
+		});
 
 		this.summarizedRecord = record;
 		this.lastRunAccuracyTestingChartData = this.configureChartDataset(record);
 		this.testingAccuracyChartDisplaySettings = {
 			...this.testingAccuracyChartDisplaySettings,
 			hasCustomDatasetsLabels: true,
-			customDatasetsLabels: [recordName]
+			customDatasetsLabels: [recordName],
+			customChartColors: {
+				datasetColors: [
+					{
+						backgroundColor: chartColors.backgroundColor || 'rgba(241, 196, 15, 0.2)',
+						borderColor: chartColors.borderColor || '#f1c40f'
+					}
+				]
+			}
 		};
 	}
 
@@ -153,12 +170,13 @@ export class RunDrawerActionsComponent implements OnInit {
 	}
 
 	private listenToSelectRunFormValueChanges() {
-		this.selectRunFormControl.valueChanges
+		this.chartFormGroup.valueChanges
 			.pipe(
 				untilDestroyed(this),
 				filter((filename) => !isNilOrEmptyString(filename))
 			)
 			.subscribe((filename) => {
+				this.runNameFormControl.reset();
 				this.recordsFacadeService.dispatch(
 					RunRecordsActions.getRunRecordSummarizedData({ algorithmType: AlgorithmType.PRUNING, filename })
 				);
@@ -206,7 +224,11 @@ export class RunDrawerActionsComponent implements OnInit {
 	private initForm() {
 		this.form = this.fb.group({
 			selectRun: [null, Validators.required],
-			runName: [null, Validators.required]
+			runName: [null, Validators.required],
+			chart: this.fb.group({
+				borderColor: [rgbaToColor('rgba(241, 196, 15, 1)'), Validators.required],
+				backgroundColor: [rgbaToColor('rgba(241, 196, 15, 0.2)'), Validators.required]
+			})
 		});
 	}
 
@@ -215,11 +237,19 @@ export class RunDrawerActionsComponent implements OnInit {
 			return;
 		}
 
+		const { backgroundColor, borderColor } = this.form.get('chart')?.getRawValue();
+		const { rgba: backgroundColorValue } = backgroundColor;
+		const { rgba: borderColorValue } = borderColor;
+
 		this.drawerRef.close({
 			result: {
 				recordName: this.runNameFormControl.value,
-				recordFilename: this.selectRunFormControl.value,
-				record: this.summarizedRecord
+				recordFilename: this.chartFormGroup.value,
+				record: this.summarizedRecord,
+				chartColors: {
+					backgroundColor: backgroundColorValue,
+					borderColor: borderColorValue
+				} as RecordComparisonChartColors
 			} as RecordComparisonItem,
 			status
 		});

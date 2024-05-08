@@ -16,6 +16,7 @@
 
 import { ChartColorEnum } from '../enums/chart-color.enum';
 import { RealtimeUpdateMetricEnum } from '../enums/realtime-update-metric.enum';
+import { DatasetColors } from './ms-dataset-colors.interface';
 
 export interface ChartDisplaySettings {
 	// Determines whether the X-axis should be displayed on the chart.
@@ -79,6 +80,9 @@ export interface ChartDisplaySettings {
 	// It is used to apply consistent and meaningful color themes to the chart's datasets,
 	// enhancing the visual distinction between different data sets.
 	datasetColorSettingsKey?: ChartColorEnum;
+
+	isChartWithCustomColorSettings?: boolean;
+	customChartColors?: DatasetColors;
 
 	// Determines whether chart lines should be displayed as stepped lines.
 	// When set to true, the chart line segments are rendered as stepped lines.

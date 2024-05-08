@@ -17,7 +17,7 @@
 import { ChartColorEnum } from '../enums/chart-color.enum';
 import { DatasetColors } from '../interfaces/ms-dataset-colors.interface';
 
-export const chartColorsSettings: Record<ChartColorEnum, DatasetColors> = {
+export const chartColorssSettings: Record<ChartColorEnum, DatasetColors> = {
 	[ChartColorEnum.GREEN]: {
 		datasetColors: [
 			{ borderColor: '#40dab7', backgroundColor: 'rgba(64, 218, 183, 0.2)' },

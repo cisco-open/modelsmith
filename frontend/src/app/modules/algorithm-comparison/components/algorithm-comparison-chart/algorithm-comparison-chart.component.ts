@@ -59,7 +59,11 @@ export class AlgorithmComparisonChartComponent {
 
 			this.testingAccuracyChartDisplaySettings = {
 				...this.testingAccuracyChartDisplaySettings,
-				customDatasetsLabels: records.map((record) => record.recordName)
+				customDatasetsLabels: records.map((record) => record.recordName),
+				isChartWithCustomColorSettings: true,
+				customChartColors: {
+					datasetColors: records.map((record) => record.chartColors)
+				}
 			};
 		});
 	}

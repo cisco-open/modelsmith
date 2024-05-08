@@ -15,5 +15,10 @@
 //   SPDX-License-Identifier: Apache-2.0
 
 export interface DatasetColors {
-	datasetColors?: { borderColor: string; backgroundColor: string }[];
+	datasetColors: DatasetColorItem[];
+}
+
+export interface DatasetColorItem {
+	borderColor: string;
+	backgroundColor: string;
 }
