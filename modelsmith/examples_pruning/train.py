@@ -26,6 +26,7 @@ import torch.backends.cudnn as cudnn
 import torchvision
 import torchvision.transforms as transforms
 import time
+from datetime import datetime
 
 script_dir = os.path.dirname(os.path.abspath(__file__))
 
@@ -52,6 +53,9 @@ from vgg import (
 )
 
 from utils import train, test, save_training_metadata
+from logger import RunLogger
+
+logger = RunLogger(log_directory=models_checkpoints_dir)
 
 def get_model(arch):
     """
@@ -63,19 +67,22 @@ def get_model(arch):
         raise ValueError(f"Unsupported model: {arch}")
 
 def main():
+    start_time = time.time() 
+
     parser = argparse.ArgumentParser(description='PyTorch CIFAR10 Training for Pruning')
     parser.add_argument('--lr', default=0.1, type=float, help='learning rate')
     parser.add_argument('--resume', '-r', action='store_true', help='resume from checkpoint')
     parser.add_argument('--epochs', default=200, type=int, help='number of epochs to train')
     parser.add_argument('--arch', default='ResNet18', type=str, help='Model name')
     args = parser.parse_args()
+    logger.set_parameters(vars(args)) 
 
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
     best_acc = 0  # best test accuracy
     start_epoch = 0  # start from epoch 0 or last checkpoint epoch
     
     # Data preparation
-    print('==> Preparing data..')
+    logger.log('==> Preparing data..')
     transform_train = transforms.Compose([
         transforms.RandomCrop(32, padding=4),
         transforms.RandomHorizontalFlip(),
@@ -99,7 +106,7 @@ def main():
     testloader = torch.utils.data.DataLoader(testset, batch_size=100, shuffle=False, num_workers=2)
 
     # Model
-    print('==> Building model..')
+    logger.log('==> Building model..')
     net = get_model(args.arch)
     net = net.to(device)
     if device == 'cuda':
@@ -107,7 +114,7 @@ def main():
         cudnn.benchmark = True
 
     if args.resume:
-        print('==> Resuming from checkpoint..')
+        logger.log('==> Resuming from checkpoint..')
         checkpoint_path = os.path.join(checkpoint_dir, 'ckpt.pth')
         assert os.path.isfile(checkpoint_path), 'Error: no checkpoint file found!'
         checkpoint = torch.load(checkpoint_path)
@@ -122,8 +129,8 @@ def main():
     start_time = time.time() 
 
     for epoch in range(start_epoch, start_epoch + args.epochs):
-        train(epoch, device, net, trainloader, optimizer, criterion)
-        test(epoch, device, net, testloader, criterion, best_acc, checkpoint_dir)
+        train(epoch, device, net, trainloader, optimizer, criterion, logger)
+        test(epoch, device, net, testloader, criterion, best_acc, checkpoint_dir, logger)
         scheduler.step()
     
     end_time = time.time()
@@ -131,7 +138,7 @@ def main():
     
     model_path = os.path.join(models_checkpoints_dir, f'{args.arch}.pt')
     torch.save(net.state_dict(), model_path)
-    print(f'Model saved to {model_path}')
+    logger.log(f'Model saved to {model_path}')
 
     additional_info = {
         "epochs": args.epochs,
@@ -140,6 +147,17 @@ def main():
     }
 
     save_training_metadata(models_checkpoints_dir, args.arch, additional_info)
+
+    logger.log("Finished!")
+    end_time = time.time()
+    logger.add_statistic("algorithm_key", "TRAIN_PRUNING")
+    current_date = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    logger.add_statistic("execution_date", current_date)
+    logger.add_statistic("duration_seconds", end_time - start_time)
+    filename = f"TRAIN_PRUNING_{args.arch}"
+    saved_file_path = logger.save_run_record(filename, False)  
+
+    logger.log(f"History of the run saved to: {saved_file_path}")
 
 if __name__ == '__main__':
     main()

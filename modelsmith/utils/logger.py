@@ -45,16 +45,19 @@ class RunLogger:
                 return {}
         return {}
 
-    def save_run_record(self, filename):
-        model_info = self.load_model_training_info()
-        timestamp = time.strftime('%Y_%m_%d_%H:%M:%S')
-        full_filename = os.path.join(self.log_directory, f"{timestamp}_{filename}.json")
+    def save_run_record(self, filename, save_model_info=True):
         record = {
             "parameters": self.parameters,
             "messages": self.messages,
             "statistics": self.statistics,
-            "model_training_details": model_info
         }
+        
+        if save_model_info:
+            model_info = self.load_model_training_info()
+            record["model_training_details"] = model_info
+        
+        timestamp = time.strftime('%Y_%m_%d_%H:%M:%S')
+        full_filename = os.path.join(self.log_directory, f"{timestamp}_{filename}.json")
         with open(full_filename, 'w') as f:
             json.dump(record, f, indent=4)
         return full_filename
