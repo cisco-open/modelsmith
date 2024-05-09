@@ -16,7 +16,23 @@
    -->
 
 <mat-card class="ms-card algorithm-comparisson-charts">
-	<p class="paragraph-bold-p3-small-bold p-2">Last Accuracy Test Runs</p>
+	<p class="paragraph-bold-p3-small-bold pt-2 pb-2">Last Accuracy Test Runs</p>
+
+	<div class="mt-2 flex">
+		<div>
+			<mat-slide-toggle color="primary" (change)="toggleTooltip($event)"> Enable tooltips </mat-slide-toggle>
+		</div>
+		<div class="flex">
+			<mat-slide-toggle class="ml-2" color="primary" (change)="toggleZoom($event)"> Enable zoom </mat-slide-toggle>
+			<div class="ml-1">
+				<mat-icon
+					fontSet="ms"
+					fontIcon="icon-Info"
+					matTooltip="Use mouse wheel or touchpad pinch to zoom in/out. Drag to select an area for specific zoom, or use touchpad gestures to navigate."></mat-icon>
+			</div>
+		</div>
+	</div>
+
 	<ms-line-chart
 		[data]="lastRunsAccuracyTestingChartData"
 		[settings]="testingAccuracyChartDisplaySettings"></ms-line-chart>

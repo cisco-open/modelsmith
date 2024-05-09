@@ -24,6 +24,7 @@ import { SharedModule } from '../shared/shared.module';
 import { DrawerService, MsDrawerComponent } from '../shared/standalone/ms-drawer';
 import { MsEmptyStateComponent } from '../shared/standalone/ms-empty-state/ms-empty-state.component';
 import { MsLineChartComponent } from '../shared/standalone/ms-line-chart/ms-line-chart.component';
+import { ChartToolsGlobalSignalsService } from '../shared/standalone/ms-line-chart/services/chart-tools-global-signals.service';
 import { ParametersLabelPipe } from '../shared/standalone/pipes/parameters-label.pipe';
 import { ReadableDurationPipe } from '../shared/standalone/pipes/readable-duration.pipe';
 import { ReverseArrayPipe } from '../shared/standalone/pipes/reverse-array.pipe';
@@ -31,10 +32,10 @@ import { AlgorithmComparisonRoutingModule } from './algorithm-comparison-routing
 import { AlgorithmComparisonChartComponent } from './components/algorithm-comparison-chart/algorithm-comparison-chart.component';
 import { AlgorithmComparisonListComponent } from './components/algorithm-comparison-list/algorithm-comparison-list.component';
 import { AlgorithmComparisonComponent } from './components/algorithm-comparison/algorithm-comparison.component';
+import { ChartColorsFormControlsComponent } from './components/chart-colors-form-controls/chart-colors-form-controls.component';
 import { RunDrawerActionsComponent } from './components/run-drawer-actions/run-drawer-actions.component';
 import { RecordsDataService } from './services/records-data.service';
 import { RecordsFacadeService } from './services/records-facade.service';
-import { ChartColorsFormControlsComponent } from './components/chart-colors-form-controls/chart-colors-form-controls.component';
 
 @NgModule({
 	declarations: [
@@ -42,7 +43,7 @@ import { ChartColorsFormControlsComponent } from './components/chart-colors-form
 		RunDrawerActionsComponent,
 		AlgorithmComparisonListComponent,
 		AlgorithmComparisonChartComponent,
-  ChartColorsFormControlsComponent
+		ChartColorsFormControlsComponent
 	],
 	imports: [
 		CommonModule,
@@ -57,6 +58,6 @@ import { ChartColorsFormControlsComponent } from './components/chart-colors-form
 		ReverseArrayPipe,
 		MsEmptyStateComponent
 	],
-	providers: [DrawerService, RecordsFacadeService, RecordsDataService]
+	providers: [DrawerService, RecordsFacadeService, RecordsDataService, ChartToolsGlobalSignalsService]
 })
 export class AlgorithmComparisonModule {}

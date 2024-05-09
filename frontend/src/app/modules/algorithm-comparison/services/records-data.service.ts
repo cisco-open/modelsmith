@@ -17,10 +17,11 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { RecordComparisonItem } from '../models/record-comparisson.interface';
+import { recordsMock } from '../models/records-mock-data';
 
 @Injectable()
 export class RecordsDataService {
-	private _records: BehaviorSubject<RecordComparisonItem[]> = new BehaviorSubject<RecordComparisonItem[]>([]);
+	private _records: BehaviorSubject<RecordComparisonItem[]> = new BehaviorSubject<RecordComparisonItem[]>(recordsMock);
 
 	get records(): RecordComparisonItem[] {
 		return this._records.value;

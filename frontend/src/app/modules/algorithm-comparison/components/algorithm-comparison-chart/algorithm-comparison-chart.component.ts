@@ -15,6 +15,7 @@
 //   SPDX-License-Identifier: Apache-2.0
 
 import { Component } from '@angular/core';
+import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { ChartDatasets } from '../../../../services/client/models/charts/chart-data.interface-dto';
 import { ChartColorEnum } from '../../../shared/standalone/ms-line-chart/models/enums/chart-color.enum';
@@ -22,6 +23,7 @@ import {
 	ChartDataStructure,
 	ChartDisplaySettings
 } from '../../../shared/standalone/ms-line-chart/models/interfaces/ms-chart-display-settings.interface';
+import { ChartToolsGlobalSignalsService } from '../../../shared/standalone/ms-line-chart/services/chart-tools-global-signals.service';
 import { RecordComparisonItem } from '../../models/record-comparisson.interface';
 import { RecordsDataService } from '../../services/records-data.service';
 
@@ -40,14 +42,16 @@ export class AlgorithmComparisonChartComponent {
 		yAxisMaximumValue: 100,
 		datasetColorSettingsKey: ChartColorEnum.YELLOW,
 		isXAxisVisible: false,
-		areTooltipsEnabled: true,
 		xAxisLabelPrefix: 'Step:',
 		hasCustomDatasetsLabels: true
 	};
 
 	lastRunsAccuracyTestingChartData: ChartDatasets[] = [];
 
-	constructor(public recordsDataService: RecordsDataService) {}
+	constructor(
+		public recordsDataService: RecordsDataService,
+		private chartToolsGlobalSignalsService: ChartToolsGlobalSignalsService
+	) {}
 
 	ngOnInit() {
 		this.listenToRecordsChanges();
@@ -80,5 +84,13 @@ export class AlgorithmComparisonChartComponent {
 		});
 
 		return datasets;
+	}
+
+	toggleTooltip(tooltip: MatSlideToggleChange): void {
+		this.chartToolsGlobalSignalsService.toggleTooltips = tooltip.checked;
+	}
+
+	toggleZoom(zoom: MatSlideToggleChange): void {
+		this.chartToolsGlobalSignalsService.toggleZoom = zoom.checked;
 	}
 }
