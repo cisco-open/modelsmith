@@ -17,7 +17,7 @@
 import { Chart, ChartConfiguration } from 'chart.js';
 import zoomPlugin from 'chartjs-plugin-zoom';
 import { isEmptyObject } from '../../../../core/utils/core.utils';
-import { chartColorssSettings } from '../models/constants/chart-color-settings.constants';
+import { chartColorsSettings } from '../models/constants/chart-color-settings.constants';
 import {
 	ChartDisplaySettings,
 	DEFAULT_DATASET_COLOR_SETTINGS_KEY,
@@ -180,7 +180,7 @@ export class ChartSettingsUtils {
 		}
 
 		const colorSettingsKey = displaySettings.datasetColorSettingsKey || DEFAULT_DATASET_COLOR_SETTINGS_KEY;
-		const typeSettings = chartColorssSettings[colorSettingsKey];
+		const typeSettings = chartColorsSettings[colorSettingsKey];
 
 		if (displaySettings.isChartWithCustomColorSettings && isEmptyObject(displaySettings.customChartColors)) {
 			console.warn(`No custom chart colors found. Using default settings: ${DEFAULT_DATASET_COLOR_SETTINGS_KEY}`);

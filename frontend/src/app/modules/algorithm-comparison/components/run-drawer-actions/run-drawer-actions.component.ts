@@ -29,11 +29,13 @@ import { isEmptyObject, isNilOrEmptyString } from '../../../core/utils/core.util
 import { AlgorithmType } from '../../../model-compression/models/enums/algorithms.enum';
 import { DRAWER_DATA, DrawerConfig, DrawerRef, DrawerStatus } from '../../../shared/standalone/ms-drawer';
 import { DrawerActionTypeEnum } from '../../../shared/standalone/ms-drawer/models/drawer-action-type.enum';
+import { chartColorsSettings } from '../../../shared/standalone/ms-line-chart/models/constants/chart-color-settings.constants';
+import { ChartColorEnum } from '../../../shared/standalone/ms-line-chart/models/enums/chart-color.enum';
 import {
 	ChartDataStructure,
 	ChartDisplaySettings
 } from '../../../shared/standalone/ms-line-chart/models/interfaces/ms-chart-display-settings.interface';
-import { rgbaToColor } from '../../../shared/standalone/ms-line-chart/utils/chart-functions.utils';
+import { convertColor, rgbaToColor } from '../../../shared/standalone/ms-line-chart/utils/chart-functions.utils';
 import { RecordComparisonChartColors, RecordComparisonItem } from '../../models/record-comparisson.interface';
 import { RecordsDataService } from '../../services/records-data.service';
 import { RecordsFacadeService } from '../../services/records-facade.service';
@@ -222,14 +224,26 @@ export class RunDrawerActionsComponent implements OnInit {
 	}
 
 	private initForm() {
+		const defaultColors = this.getDefaultChartColors();
+
 		this.form = this.fb.group({
 			selectRun: [null, Validators.required],
 			runName: [null, Validators.required],
 			chart: this.fb.group({
-				borderColor: [rgbaToColor('rgba(241, 196, 15, 1)'), Validators.required],
-				backgroundColor: [rgbaToColor('rgba(241, 196, 15, 0.2)'), Validators.required]
+				borderColor: [defaultColors.borderColor, Validators.required],
+				backgroundColor: [defaultColors.backgroundColor, Validators.required]
 			})
 		});
+	}
+
+	private getDefaultChartColors() {
+		const index = Math.max(this.recordsDataService.records.length, 0);
+		const chartColors = chartColorsSettings[ChartColorEnum.YELLOW].datasetColors[index];
+
+		return {
+			borderColor: convertColor(chartColors.borderColor),
+			backgroundColor: convertColor(chartColors.backgroundColor)
+		};
 	}
 
 	save(status: DrawerStatus): void {

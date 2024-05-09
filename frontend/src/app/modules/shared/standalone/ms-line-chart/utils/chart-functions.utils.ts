@@ -16,6 +16,17 @@
 
 import { Color } from '@angular-material-components/color-picker';
 
+export const convertColor = (colorString: string): Color => {
+	if (/^#([0-9A-F]{3,4}){1,2}$/i.test(colorString)) {
+		return hexToColor(colorString);
+	} else if (/^rgba?\(\d{1,3},\s*\d{1,3},\s*\d{1,3}(?:,\s*\d*\.?\d+)?\)$/i.test(colorString)) {
+		return rgbaToColor(colorString);
+	} else {
+		console.warn('Unsupported color format:', colorString);
+		return new Color(0, 0, 0);
+	}
+};
+
 export const rgbaToColor = (rgba: string): Color => {
 	const matches = rgba.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*(\d+\.?\d*))?\)$/);
 	if (matches) {
@@ -27,4 +38,34 @@ export const rgbaToColor = (rgba: string): Color => {
 	}
 	console.warn('Failed to parse color:', rgba);
 	return new Color(0, 0, 0);
+};
+
+export const hexToColor = (hex: string): Color => {
+	const cleanedHex = hex.replace('#', '').toUpperCase();
+
+	let r: number,
+		g: number,
+		b: number,
+		a: number = 1;
+
+	if ([3, 4].includes(cleanedHex.length)) {
+		r = parseInt(cleanedHex.charAt(0).repeat(2), 16);
+		g = parseInt(cleanedHex.charAt(1).repeat(2), 16);
+		b = parseInt(cleanedHex.charAt(2).repeat(2), 16);
+		if (cleanedHex.length === 4) {
+			a = parseInt(cleanedHex.charAt(3).repeat(2), 16) / 255;
+		}
+	} else if ([6, 8].includes(cleanedHex.length)) {
+		r = parseInt(cleanedHex.substring(0, 2), 16);
+		g = parseInt(cleanedHex.substring(2, 4), 16);
+		b = parseInt(cleanedHex.substring(4, 6), 16);
+		if (cleanedHex.length === 8) {
+			a = parseInt(cleanedHex.substring(6, 8), 16) / 255;
+		}
+	} else {
+		console.warn('Invalid hex color format:', hex);
+		return new Color(0, 0, 0);
+	}
+
+	return new Color(r, g, b, a);
 };
