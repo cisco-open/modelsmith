@@ -16,12 +16,12 @@
 
 const express = require('express');
 const router = express.Router();
-const { OK } = require('../constants/httpStatusCodes');
 const getModelsByType = require('../constants/modelsConstants');
 const { getActiveScriptDetails, getPreviousScriptDetails } = require('../state/scriptState');
 const ALGORITHM_TYPES = require('../constants/algorithmTypesConstants');
 const { executeCommand } = require('../facades/executionFacade');
 const checkSshConnection = require('../middlewares/checkSshConnection');
+const { BAD_REQUEST, OK, INTERNAL_SERVER_ERROR, NOT_FOUND } = require('../constants/httpStatusCodes');
 
 const CHECKPOINT_PATHS = {
 	[ALGORITHM_TYPES.QUANTIZATION]: `${process.env.MACHINE_LEARNING_CORE_PATH}/examples_quant/models_checkpoints`,
@@ -52,7 +52,7 @@ router.get('/current-or-previous-selected-model/:type', (req, res) => {
 		archValue = defaultValues[requestedType];
 	}
 
-	res.status(200).send(JSON.stringify(archValue));
+	res.status(OK).send(JSON.stringify(archValue));
 });
 
 /**
@@ -84,15 +84,15 @@ router.get('/models-list/:type', checkSshConnection, (req, res) => {
 	const models = getModelsByType(type);
 
 	if (models.length === 0) {
-		return res.status(404).send('Model type not found');
+		return res.status(NOT_FOUND).send({ error: 'Model type not found' });
 	}
 
 	const directoryPath = CHECKPOINT_PATHS[type];
 	if (!directoryPath) {
-		return res.status(400).send('Invalid model type specified');
+		return res.status(BAD_REQUEST).send({ error: 'Invalid model type specified' });
 	}
 
-	const listFilesCommand = `ls ${directoryPath}/*.pt`;
+	const listFilesCommand = `find ${directoryPath} -maxdepth 1 -name "*.pt"`;
 
 	executeCommand(
 		listFilesCommand,
@@ -115,7 +115,15 @@ router.get('/models-list/:type', checkSshConnection, (req, res) => {
 		},
 		() => {},
 		(error) => {
-			res.status(500).send(`Error listing model checkpoint files: ${error}`);
+			if (error.includes('No such file or directory')) {
+				const modelsWithTrainingInfo = models.map((modelName) => ({
+					name: modelName,
+					isTrained: false
+				}));
+				res.status(OK).send(modelsWithTrainingInfo);
+			} else {
+				res.status(INTERNAL_SERVER_ERROR).send({ error: `Error listing model checkpoint files: ${error}` });
+			}
 		}
 	);
 });
@@ -125,7 +133,7 @@ router.get('/model-metadata/:type/:arch', checkSshConnection, (req, res) => {
 	const directoryPath = CHECKPOINT_PATHS[type];
 
 	if (!directoryPath) {
-		return res.status(400).send('Invalid model type specified');
+		return res.status(BAD_REQUEST).send({ error: 'Invalid model type specified' });
 	}
 
 	const metadataFilePath = `${directoryPath}/${arch}_training_info.json`;
@@ -139,7 +147,7 @@ router.get('/model-metadata/:type/:arch', checkSshConnection, (req, res) => {
 				const metadata = JSON.parse(output);
 				res.status(OK).send(metadata);
 			} catch (error) {
-				res.status(500).send(`Error parsing JSON content: ${error.message}`);
+				res.status(INTERNAL_SERVER_ERROR).send({ error: `Error parsing JSON content: ${error.message}` });
 			}
 		},
 		() => {},
@@ -147,7 +155,7 @@ router.get('/model-metadata/:type/:arch', checkSshConnection, (req, res) => {
 			if (error.includes('No such file or directory')) {
 				res.status(OK).send({});
 			} else {
-				res.status(500).send(`Error reading model metadata file: ${error}`);
+				res.status(INTERNAL_SERVER_ERROR).send({ error: `Error reading model metadata file: ${error}` });
 			}
 		}
 	);

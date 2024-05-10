@@ -16,7 +16,7 @@ router.get('/run-records-filenames/:type', checkSshConnection, (req, res) => {
 	const directoryPath = RUN_RECORDS_PATHS[type];
 
 	if (!directoryPath) {
-		return res.status(400).send('Invalid model type specified');
+		return res.status(400).send({ error: 'Invalid model type specified' });
 	}
 
 	const listFilesCommand = `ls ${directoryPath}/*.json`;
@@ -35,7 +35,7 @@ router.get('/run-records-filenames/:type', checkSshConnection, (req, res) => {
 			res.status(200).send(files);
 		},
 		() => {},
-		(error) => res.status(500).send(`SSH error: ${error}`)
+		(error) => res.status(500).send({ error: `SSH error: ${error}` })
 	);
 });
 
@@ -45,7 +45,7 @@ router.get('/run-records-summarized-data/:type/:filename', checkSshConnection, (
 	const directoryPath = RUN_RECORDS_PATHS[type];
 
 	if (!directoryPath) {
-		return res.status(400).send('Invalid model type specified');
+		return res.status(400).send({ error: 'Invalid model type specified' });
 	}
 
 	const filePath = `${directoryPath}/${fileName}.json`;
@@ -56,7 +56,7 @@ router.get('/run-records-summarized-data/:type/:filename', checkSshConnection, (
 		(output) => parseAndRespond(output, type, res),
 		() => {},
 		(error) => {
-			res.status(500).send(`SSH error: ${error}`);
+			res.status(500).send({ error: `SSH error: ${error}` });
 		},
 		true
 	);
@@ -70,7 +70,7 @@ function parseAndRespond(output, type, res) {
 		res.setHeader('Content-Type', 'application/json; charset=utf-8');
 		res.status(200).send(summarizedData);
 	} else {
-		res.status(500).send('Algorithm type not supported.');
+		res.status(500).send({ error: 'Algorithm type not supported.' });
 	}
 }
 
