@@ -5,7 +5,7 @@
 	<ng-container *ngIf="records.length > 0; else noData">
 		<mat-card class="ms-card comparison-item" *ngFor="let item of records; index as i">
 			<div class="item-wrapper">
-				<div>{{ item.recordName }}</div>
+				<div msUseEllipsis>{{ item.recordName }}</div>
 				<div class="record-summary-buttons-wrapper">
 					<button mat-icon-button color="primary" (click)="viewRecord(item)">
 						<mat-icon fontSet="ms" fontIcon="icon-Eye" class="mat-primary"></mat-icon>

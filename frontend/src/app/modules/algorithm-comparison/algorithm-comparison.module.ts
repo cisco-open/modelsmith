@@ -21,6 +21,7 @@ import { StoreModule } from '@ngrx/store';
 import { runRecordsReducers } from '../../state/run-records';
 import { RecordsEffects } from '../../state/run-records/records';
 import { SharedModule } from '../shared/shared.module';
+import { EllipsisDirective } from '../shared/standalone/ellipsis.directive';
 import { DrawerService, MsDrawerComponent } from '../shared/standalone/ms-drawer';
 import { MsEmptyStateComponent } from '../shared/standalone/ms-empty-state/ms-empty-state.component';
 import { MsLineChartComponent } from '../shared/standalone/ms-line-chart/ms-line-chart.component';
@@ -56,7 +57,8 @@ import { RecordsFacadeService } from './services/records-facade.service';
 		ReadableDurationPipe,
 		ParametersLabelPipe,
 		ReverseArrayPipe,
-		MsEmptyStateComponent
+		MsEmptyStateComponent,
+		EllipsisDirective
 	],
 	providers: [DrawerService, RecordsFacadeService, RecordsDataService, ChartToolsGlobalSignalsService]
 })
