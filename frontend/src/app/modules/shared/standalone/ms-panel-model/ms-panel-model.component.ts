@@ -16,14 +16,7 @@
 
 import { CommonModule } from '@angular/common';
 import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, inject } from '@angular/core';
-import {
-	AbstractControl,
-	ControlContainer,
-	FormControl,
-	FormGroup,
-	ReactiveFormsModule,
-	Validators
-} from '@angular/forms';
+import { ControlContainer, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
@@ -104,8 +97,8 @@ export class MsPanelModelComponent implements OnInit, OnChanges, OnDestroy {
 		return this.parentFormGroup.get(this.controlKey) as FormGroup;
 	}
 
-	get modelControl(): AbstractControl | null {
-		return this.modelFormGroup.get(this.MODEL_CONTROL_NAME);
+	get modelControl(): FormControl {
+		return this.modelFormGroup?.get(this.MODEL_CONTROL_NAME) as FormControl;
 	}
 
 	constructor(
@@ -120,8 +113,6 @@ export class MsPanelModelComponent implements OnInit, OnChanges, OnDestroy {
 
 		this.listenToScriptStateChanges();
 		this.listenToSearchModelValueChanges();
-
-		this.listenToCurrentModelChanges();
 	}
 
 	private configureModels(algorithmType: AlgorithmType | null) {
@@ -142,11 +133,15 @@ export class MsPanelModelComponent implements OnInit, OnChanges, OnDestroy {
 				return;
 			}
 
-			this.modelControl?.patchValue(model);
+			const matchingModel = this.models.find((m) => m.name === model);
+			if (matchingModel && matchingModel.isTrained) {
+				this.modelControl?.patchValue(model);
+			}
 		});
 	}
 
 	private subscribeToModelsListChanges(algorithmType: AlgorithmType): Subscription {
+		let firstLoadComplete = false;
 		return this.modelsFacadeService
 			.getModelsByType(algorithmType)
 			.pipe(
@@ -156,6 +151,11 @@ export class MsPanelModelComponent implements OnInit, OnChanges, OnDestroy {
 			.subscribe((models: ModelDto[]) => {
 				this.models = models;
 				this.searchModel.setValue('');
+
+				if (!firstLoadComplete) {
+					this.listenToCurrentModelChanges();
+					firstLoadComplete = true;
+				}
 			});
 	}
 
