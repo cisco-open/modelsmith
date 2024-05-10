@@ -59,19 +59,19 @@ create_update_env_file() {
     echo -e "${GREEN}Creating/updating .env file for the selected environment...${NC}"
     mkdir -p "$backend_path"
 
-    local modelsmith_path="../modelsmith"
+    local machine_learning_core_path="../machine_learning_core"
     echo -e "${YELLOW}Enter CONDA_SH_PATH:${NC}"
     read -p "(e.g., ~/miniconda3/etc/profile.d/conda.sh): " conda_sh_path
 
     if [[ $env_choice == "2" ]]; then
-        echo -e "${YELLOW}Enter MODELSMITH_PATH for VM:${NC}"
-        read -p "(e.g., /path/to/modelsmith on VM): " modelsmith_vm_path
-        modelsmith_path="$modelsmith_vm_path"
+        echo -e "${YELLOW}Enter MACHINE_LEARNING_CORE_PATH for VM:${NC}"
+        read -p "(e.g., /path/to/machine_learning_core on VM): " machine_learning_core_vm_path
+        machine_learning_core_path="$machine_learning_core_vm_path"
     fi
 
     {
         echo "PORT=3000"
-        echo "MODELSMITH_PATH=$modelsmith_path"
+        echo "MACHINE_LEARNING_CORE_PATH=$machine_learning_core_path"
         echo "CONDA_SH_PATH=$conda_sh_path"
         echo ""
     } > "$env_file"

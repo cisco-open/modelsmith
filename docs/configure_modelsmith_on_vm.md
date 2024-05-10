@@ -26,15 +26,15 @@ node -v
 
 The initial phase involves preparing the VM environment for ModelSmith. Perform the following steps directly on your VM:
 
-1. **Copy the ModelSmith Project to the VM**: First, transfer the ModelSmith project files to your VM. This can be achieved using SCP (Secure Copy Protocol), FTP (File Transfer Protocol), or any file transfer method you prefer. Here's how you can do it with SCP, which securely transfers files between hosts on a network:
+1. **Copy the ModelSmith Python Project to the VM**: It's important to transfer only the Python project files located within the ModelSmith folder to your VM. This can be achieved using SCP (Secure Copy Protocol), FTP (File Transfer Protocol), or any file transfer method you prefer. Here's how you can do it with SCP, which securely transfers files between hosts on a network:
 
 ```bash
-scp -r /path/to/local/modelsmith user@vm_host:/path/to/remote/directory/
+scp -r /path/to/local/your_repository/machine_learning_core user@vm_host:/path/to/remote/directory/
 ```
 
 Replace:
 
-- `/path/to/local/modelsmith` with the actual path to your ModelSmith project on your local machine.
+- `/path/to/local/your_repository/machine_learning_core` with the actual path where the machine_learning_core folder is located within your local repository.
 - `user` with your username on the VM.
 - `vm_host` with the hostname or IP address of your VM.
 - `/path/to/remote/directory/` with the path on the VM where you want to store the ModelSmith project.
@@ -120,7 +120,7 @@ On your local machine, run the `setup_environment.sh` script located in the `uti
 
 ```
 PORT=3000
-MODELSMITH_PATH=modelsmith
+MACHINE_LEARNING_CORE_PATH=machine_learning_core
 CONDA_SH_PATH=miniconda3/etc/profile.d/conda.sh
 
 CONNECTION_TYPE=VM
@@ -131,6 +131,7 @@ PRIMARY_SSH_USERNAME=myusername
 PRIMARY_SSH_PASSWORD=mypassword
 PRIMARY_SSH_PRIVATE_KEY_PATH=
 
+# Backend it's optional, can be skipped
 BACKUP_SSH_HOST=vm-host-backup-if-primary-fails
 BACKUP_SSH_PORT=22
 BACKUP_SSH_USERNAME=myusername
@@ -141,7 +142,7 @@ BACKUP_SSH_PRIVATE_KEY_PATH=myprivatekeypaty
 ### .env File Configuration for VM Explained
 
 - **PORT**: The port number where the backend server listens. (default = 3000)
-- **MODELSMITH_PATH**: The path to the ModelSmith project directory on the VM.
+- **MACHINE_LEARNING_CORE_PATH**: The path to the modelsmith python project directory on the VM.
 - **CONDA_SH_PATH**: Path to the Conda environment script on the VM.
 
 - **CONNECTION_TYPE**: Set to `VM` to indicate the project is configured to use virtual machines for model training.

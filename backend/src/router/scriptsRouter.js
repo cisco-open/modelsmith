@@ -108,7 +108,7 @@ function executePythonScript(path, algorithm, args = '', type) {
 			machineUnlearningParserInstance.reset();
 		}
 
-		const scriptPath = `${process.env.MODELSMITH_PATH}/${path}`;
+		const scriptPath = `${process.env.MACHINE_LEARNING_CORE_PATH}/${path}`;
 		const cmd = `source ${process.env.CONDA_SH_PATH} && conda activate modelsmith && python3 ${scriptPath}${algorithm} ${args}`;
 		broadcastTerminal(`python3 ${scriptPath}${algorithm} ${args}`);
 
@@ -157,7 +157,7 @@ router.post('/stop-script', checkSshConnection, checkIfNoScriptRunning, (req, re
 		return res.status(BAD_REQUEST).send({ error: 'Unable to fetch script details.' });
 	}
 
-	const killCommand = `bash ${process.env.MODELSMITH_PATH}/bash/kill_script.sh ${fileName}`;
+	const killCommand = `bash ${process.env.MACHINE_LEARNING_CORE_PATH}/bash/kill_script.sh ${fileName}`;
 	let responseSent = false;
 
 	broadcastTerminal('Stopping script started.');

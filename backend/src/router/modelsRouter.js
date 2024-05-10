@@ -24,9 +24,9 @@ const { executeCommand } = require('../facades/executionFacade');
 const checkSshConnection = require('../middlewares/checkSshConnection');
 
 const CHECKPOINT_PATHS = {
-	[ALGORITHM_TYPES.QUANTIZATION]: `${process.env.MODELSMITH_PATH}/examples_quant/models_checkpoints`,
-	[ALGORITHM_TYPES.PRUNING]: `${process.env.MODELSMITH_PATH}/examples_pruning/models_checkpoints`,
-	[ALGORITHM_TYPES.MACHINE_UNLEARNING]: `${process.env.MODELSMITH_PATH}/examples_unlearning/models_checkpoints`
+	[ALGORITHM_TYPES.QUANTIZATION]: `${process.env.MACHINE_LEARNING_CORE_PATH}/examples_quant/models_checkpoints`,
+	[ALGORITHM_TYPES.PRUNING]: `${process.env.MACHINE_LEARNING_CORE_PATH}/examples_pruning/models_checkpoints`,
+	[ALGORITHM_TYPES.MACHINE_UNLEARNING]: `${process.env.MACHINE_LEARNING_CORE_PATH}/examples_unlearning/models_checkpoints`
 };
 
 router.get('/current-or-previous-selected-model/:type', (req, res) => {

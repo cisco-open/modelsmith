@@ -6,9 +6,9 @@ const checkSshConnection = require('../middlewares/checkSshConnection');
 const StatelessPruningParser = require('../parsers/statelessPruningParser');
 
 const RUN_RECORDS_PATHS = {
-	[ALGORITHM_TYPES.QUANTIZATION]: `${process.env.MODELSMITH_PATH}/examples_quant/run_records`,
-	[ALGORITHM_TYPES.PRUNING]: `${process.env.MODELSMITH_PATH}/examples_pruning/run_records`,
-	[ALGORITHM_TYPES.MACHINE_UNLEARNING]: `${process.env.MODELSMITH_PATH}/examples_unlearning/run_records`
+	[ALGORITHM_TYPES.QUANTIZATION]: `${process.env.MACHINE_LEARNING_CORE_PATH}/examples_quant/run_records`,
+	[ALGORITHM_TYPES.PRUNING]: `${process.env.MACHINE_LEARNING_CORE_PATH}/examples_pruning/run_records`,
+	[ALGORITHM_TYPES.MACHINE_UNLEARNING]: `${process.env.MACHINE_LEARNING_CORE_PATH}/examples_unlearning/run_records`
 };
 
 router.get('/run-records-filenames/:type', checkSshConnection, (req, res) => {
