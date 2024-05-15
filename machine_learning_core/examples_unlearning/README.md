@@ -1,6 +1,6 @@
 # Sparse Unlearn CIFAR10 with PyTorch
 
-This is the code implementation for the Neurips 2023 paper [Model Sparsity Can Simplify Machine Unlearning](https://proceedings.neurips.cc/paper_files/paper/2023/file/a204aa68ab4e970e1ceccfb5b5cdc5e4-Paper-Conference.pdf) from MSU [OPTML Group](https://github.com/OPTML-Group) and [Cisco Research](https://research.cisco.com).
+This is the code implementation for the Neurips 2023 paper [Model Sparsity Can Simplify Machine Unlearning](https://github.com/OPTML-Group/Unlearn-Sparse) from MSU [OPTML Group](https://github.com/OPTML-Group) and [Cisco Research](https://research.cisco.com).
 
 ## Environment
 
