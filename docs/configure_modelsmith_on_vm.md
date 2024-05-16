@@ -93,7 +93,7 @@ conda --version
   - Predefined models to train: resnet18, resnet34, resnet50, resnet101, resnet152, resnext50_32x4d, resnext101_32x8d, wide_resnet50_2, wide_resnet101_2
 
   ```python
-  python3 modelsmith/examples_quant/train.py --arch=resnet18 --epochs=100
+  python3 machine_learning_core/examples_quant/train.py --arch=resnet18 --epochs=100
   ```
 
 - From `examples_pruning` directory:
@@ -101,7 +101,7 @@ conda --version
   - Predefined models to train: ResNet18, ResNet34, ResNet50, ResNet101, ResNet152, VGG11, VGG13, VGG16, VGG19
 
   ```python
-  python3 modelsmith/examples_pruning/train.py --arch=ResNet18 --epochs=100
+  python3 machine_learning_core/examples_pruning/train.py --arch=ResNet18 --epochs=100
   ```
 
 - From `examples_unlearning` directory:
@@ -109,7 +109,7 @@ conda --version
   - Predefined models to train: ResNet18, ResNet34, ResNet50, ResNet101, ResNet152, VGG11, VGG13, VGG16, VGG19
 
   ```python
-  python3 modelsmith/examples_unlearning/train.py --arch=ResNet18 --epochs=100
+  python3 machine_learning_core/examples_unlearning/train.py --arch=ResNet18 --epochs=100
   ```
 
 ## Phase 2: Configure the Environment
