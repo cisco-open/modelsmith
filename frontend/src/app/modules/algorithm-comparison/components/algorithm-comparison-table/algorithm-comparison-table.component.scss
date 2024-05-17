@@ -13,28 +13,6 @@
 //   limitations under the License.
 
 //   SPDX-License-Identifier: Apache-2.0
-
-.items-wrapper {
-	display: grid;
-	grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-	grid-gap: 20px;
-	padding: 20px 0;
-
-	.ms-card {
-		&:hover {
-			box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-		}
-	}
-
-	.comparison-item {
-		.item-wrapper {
-			display: flex;
-			justify-content: space-between;
-			align-items: center;
-
-			.record-summary-buttons-wrapper {
-				display: flex;
-			}
-		}
-	}
+.hover-highlight:hover {
+	background-color: var(--backgrounds-80);
 }

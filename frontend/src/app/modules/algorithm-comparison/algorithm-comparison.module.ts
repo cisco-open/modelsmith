@@ -26,12 +26,14 @@ import { DrawerService, MsDrawerComponent } from '../shared/standalone/ms-drawer
 import { MsEmptyStateComponent } from '../shared/standalone/ms-empty-state/ms-empty-state.component';
 import { MsLineChartComponent } from '../shared/standalone/ms-line-chart/ms-line-chart.component';
 import { ChartToolsGlobalSignalsService } from '../shared/standalone/ms-line-chart/services/chart-tools-global-signals.service';
+import { EmptyTableFieldPipe } from '../shared/standalone/pipes/empty-table-field.pipe';
 import { ParametersLabelPipe } from '../shared/standalone/pipes/parameters-label.pipe';
 import { ReadableDurationPipe } from '../shared/standalone/pipes/readable-duration.pipe';
 import { ReverseArrayPipe } from '../shared/standalone/pipes/reverse-array.pipe';
 import { AlgorithmComparisonRoutingModule } from './algorithm-comparison-routing.module';
 import { AlgorithmComparisonChartComponent } from './components/algorithm-comparison-chart/algorithm-comparison-chart.component';
 import { AlgorithmComparisonListComponent } from './components/algorithm-comparison-list/algorithm-comparison-list.component';
+import { AlgorithmComparisonTableComponent } from './components/algorithm-comparison-table/algorithm-comparison-table.component';
 import { AlgorithmComparisonComponent } from './components/algorithm-comparison/algorithm-comparison.component';
 import { ChartColorsFormControlsComponent } from './components/chart-colors-form-controls/chart-colors-form-controls.component';
 import { RunDrawerActionsComponent } from './components/run-drawer-actions/run-drawer-actions.component';
@@ -44,7 +46,8 @@ import { RecordsFacadeService } from './services/records-facade.service';
 		RunDrawerActionsComponent,
 		AlgorithmComparisonListComponent,
 		AlgorithmComparisonChartComponent,
-		ChartColorsFormControlsComponent
+		ChartColorsFormControlsComponent,
+		AlgorithmComparisonTableComponent
 	],
 	imports: [
 		CommonModule,
@@ -58,7 +61,8 @@ import { RecordsFacadeService } from './services/records-facade.service';
 		ParametersLabelPipe,
 		ReverseArrayPipe,
 		MsEmptyStateComponent,
-		EllipsisDirective
+		EllipsisDirective,
+		EmptyTableFieldPipe
 	],
 	providers: [DrawerService, RecordsFacadeService, RecordsDataService, ChartToolsGlobalSignalsService]
 })

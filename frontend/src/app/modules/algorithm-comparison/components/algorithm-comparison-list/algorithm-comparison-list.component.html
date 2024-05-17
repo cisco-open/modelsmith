@@ -1,8 +1,5 @@
-<div
-	[class.items-wrapper]="records && records.length > 0"
-	[class.no-data-wrapper]="!records || records.length === 0"
-	*ngIf="recordsDataService.records$ | async as records; else noData">
-	<ng-container *ngIf="records.length > 0; else noData">
+<div class="items-wrapper">
+	<ng-container *ngIf="recordsDataService.records$ | async as records">
 		<mat-card class="ms-card comparison-item" *ngFor="let item of records; index as i">
 			<div class="item-wrapper">
 				<div msUseEllipsis>{{ item.recordName }}</div>
@@ -21,9 +18,3 @@
 		</mat-card>
 	</ng-container>
 </div>
-
-<ng-template #noData>
-	<div class="no-data-wrapper">
-		<ms-empty-state title="No data selected"></ms-empty-state>
-	</div>
-</ng-template>

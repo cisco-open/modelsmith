@@ -30,7 +30,7 @@ import { RunDrawerActionsComponent } from '../run-drawer-actions/run-drawer-acti
 export class AlgorithmComparisonComponent {
 	constructor(
 		private drawerService: DrawerService,
-		private recordsDataService: RecordsDataService
+		public recordsDataService: RecordsDataService
 	) {}
 
 	openAddRunDrawer() {

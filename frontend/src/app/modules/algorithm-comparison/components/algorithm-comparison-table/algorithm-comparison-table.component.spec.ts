@@ -14,27 +14,24 @@
 
 //   SPDX-License-Identifier: Apache-2.0
 
-.items-wrapper {
-	display: grid;
-	grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-	grid-gap: 20px;
-	padding: 20px 0;
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-	.ms-card {
-		&:hover {
-			box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-		}
-	}
+import { AlgorithmComparisonTableComponent } from './algorithm-comparison-table.component';
 
-	.comparison-item {
-		.item-wrapper {
-			display: flex;
-			justify-content: space-between;
-			align-items: center;
+describe('AlgorithmComparisonTableComponent', () => {
+	let component: AlgorithmComparisonTableComponent;
+	let fixture: ComponentFixture<AlgorithmComparisonTableComponent>;
 
-			.record-summary-buttons-wrapper {
-				display: flex;
-			}
-		}
-	}
-}
+	beforeEach(() => {
+		TestBed.configureTestingModule({
+			declarations: [AlgorithmComparisonTableComponent]
+		});
+		fixture = TestBed.createComponent(AlgorithmComparisonTableComponent);
+		component = fixture.componentInstance;
+		fixture.detectChanges();
+	});
+
+	it('should create', () => {
+		expect(component).toBeTruthy();
+	});
+});

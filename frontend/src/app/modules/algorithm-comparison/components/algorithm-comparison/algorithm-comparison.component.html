@@ -26,10 +26,24 @@
 	<mat-divider></mat-divider>
 </div>
 
-<ms-algorithm-comparison-list></ms-algorithm-comparison-list>
+<ng-container *ngIf="(recordsDataService.records$ | async)!.length > 0; else noData">
+	<ms-algorithm-comparison-list></ms-algorithm-comparison-list>
 
-<div class="mb-4">
-	<mat-divider></mat-divider>
-</div>
+	<div class="mt-4 mb-4">
+		<mat-divider></mat-divider>
+	</div>
 
-<ms-algorithm-comparison-chart></ms-algorithm-comparison-chart>
+	<ms-algorithm-comparison-table></ms-algorithm-comparison-table>
+
+	<div class="mt-4 mb-4">
+		<mat-divider></mat-divider>
+	</div>
+
+	<ms-algorithm-comparison-chart></ms-algorithm-comparison-chart>
+</ng-container>
+
+<ng-template #noData>
+	<div class="no-data-wrapper">
+		<ms-empty-state title="No data selected"></ms-empty-state>
+	</div>
+</ng-template>
