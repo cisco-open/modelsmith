@@ -15,8 +15,10 @@
   SPDX-License-Identifier: Apache-2.0
    -->
 
-<mat-card class="ms-card table-wrapper">
-	<p class="paragraph-bold-p3-small-bold pt-2 pb-2">Parameters</p>
+<mat-expansion-panel expanded="true">
+	<mat-expansion-panel-header>
+		<mat-panel-title class="paragraph-bold-p3-small-bold"> Parameters </mat-panel-title>
+	</mat-expansion-panel-header>
 
 	<table mat-table [dataSource]="dataSource" matSort class="mat-table">
 		<ng-container matColumnDef="recordName">
@@ -36,4 +38,4 @@
 		<tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
 		<tr mat-row *matRowDef="let row; columns: displayedColumns" class="hover-highlight"></tr>
 	</table>
-</mat-card>
+</mat-expansion-panel>

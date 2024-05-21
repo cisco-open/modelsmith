@@ -25,10 +25,8 @@
 <div class="mt-4">
 	<mat-divider></mat-divider>
 </div>
-
 <ng-container *ngIf="(recordsDataService.records$ | async)!.length > 0; else noData">
 	<ms-algorithm-comparison-list></ms-algorithm-comparison-list>
-
 	<div class="mt-4 mb-4">
 		<mat-divider></mat-divider>
 	</div>

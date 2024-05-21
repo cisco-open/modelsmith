@@ -24,6 +24,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatExpansionModule } from '@angular/material/expansion';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
@@ -64,7 +65,8 @@ export const CUSTOM_MAT_COLOR_FORMATS: MatColorFormats = {
 		MatSlideToggleModule,
 		DragDropModule,
 		MatProgressSpinnerModule,
-		NgxMatColorPickerModule
+		NgxMatColorPickerModule,
+		MatExpansionModule
 	],
 	providers: [
 		{ provide: MAT_COLOR_FORMATS, useValue: CUSTOM_MAT_COLOR_FORMATS },

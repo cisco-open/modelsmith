@@ -127,6 +127,7 @@ $ms-typography: mat.define-rem-typography-config(
 	@include mat.progress-bar-theme($theme);
 	@include mat.progress-spinner-theme($theme);
 	@include mat.slide-toggle-theme($theme);
+	@include mat.expansion-theme($theme);
 
 	@include mat.form-field-density(-4);
 	@include mat.icon-button-density(-4);

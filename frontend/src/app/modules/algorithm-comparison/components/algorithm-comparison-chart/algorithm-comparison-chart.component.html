@@ -15,8 +15,10 @@
   SPDX-License-Identifier: Apache-2.0
    -->
 
-<mat-card class="ms-card algorithm-comparisson-charts">
-	<p class="paragraph-bold-p3-small-bold pt-2 pb-2">Last Accuracy Test Runs</p>
+<mat-expansion-panel expanded="true">
+	<mat-expansion-panel-header>
+		<mat-panel-title class="paragraph-bold-p3-small-bold"> Last Accuracy Test Runs </mat-panel-title>
+	</mat-expansion-panel-header>
 
 	<div class="mt-2 flex">
 		<div>
@@ -36,4 +38,4 @@
 	<ms-line-chart
 		[data]="lastRunsAccuracyTestingChartData"
 		[settings]="testingAccuracyChartDisplaySettings"></ms-line-chart>
-</mat-card>
+</mat-expansion-panel>

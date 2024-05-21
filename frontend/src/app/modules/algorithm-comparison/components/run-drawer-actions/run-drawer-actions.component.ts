@@ -14,8 +14,9 @@
 
 //   SPDX-License-Identifier: Apache-2.0
 
-import { Component, Inject, OnInit } from '@angular/core';
+import { AfterViewInit, Component, Inject, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatExpansionPanel } from '@angular/material/expansion';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Observable, debounceTime, filter, skip, take } from 'rxjs';
 import { ChartDatasets } from '../../../../services/client/models/charts/chart-data.interface-dto';
@@ -46,7 +47,14 @@ import { RecordsFacadeService } from '../../services/records-facade.service';
 	templateUrl: './run-drawer-actions.component.html',
 	styleUrls: ['./run-drawer-actions.component.scss']
 })
-export class RunDrawerActionsComponent implements OnInit {
+export class RunDrawerActionsComponent implements OnInit, AfterViewInit {
+	@ViewChildren(MatExpansionPanel) panels!: QueryList<MatExpansionPanel>;
+	panelStates: { [key: string]: boolean } = {
+		statistics: true,
+		parameters: true,
+		accuracy: true
+	};
+
 	form: FormGroup = new FormGroup({});
 
 	files: { name: string; disabled: boolean }[] = [];
@@ -92,6 +100,10 @@ export class RunDrawerActionsComponent implements OnInit {
 		private recordsDataService: RecordsDataService,
 		private customAPILoadingService: CustomAPILoadingService
 	) {}
+
+	ngAfterViewInit(): void {
+		this.restorePanelStates();
+	}
 
 	ngOnInit(): void {
 		this.initForm();
@@ -198,6 +210,9 @@ export class RunDrawerActionsComponent implements OnInit {
 				if (!isNilOrEmptyString(algorithm_key) && !isNilOrEmptyString(arch)) {
 					this.runNameFormControl.setValue(`${algorithm_key}_${arch}`);
 				}
+
+				this.savePanelStates();
+				this.restorePanelStates();
 			});
 	}
 
@@ -271,5 +286,19 @@ export class RunDrawerActionsComponent implements OnInit {
 
 	close() {
 		this.drawerRef.close();
+	}
+
+	private savePanelStates() {
+		this.panels.forEach((panel, index) => {
+			this.panelStates[index] = panel.expanded;
+		});
+	}
+
+	private restorePanelStates() {
+		this.panels.forEach((panel, index) => {
+			if (this.panelStates[index] !== undefined) {
+				panel.expanded = this.panelStates[index];
+			}
+		});
 	}
 }

@@ -45,49 +45,63 @@
 					</mat-form-field>
 				</div>
 
-				<mat-card *ngIf="summarizedRecord?.statistics | keyvalue; let items" class="ms-card record-wrapper mb-4">
-					<p class="paragraph-bold-p3-small-bold mb-4">Statistics</p>
+				<mat-accordion multi>
+					<mat-expansion-panel
+						[(expanded)]="panelStates['statistics']"
+						*ngIf="summarizedRecord?.statistics | keyvalue; let items">
+						<mat-expansion-panel-header>
+							<mat-panel-title class="paragraph-bold-p3-small-bold"> Statistics </mat-panel-title>
+						</mat-expansion-panel-header>
 
-					<div *ngFor="let item of items; let last = last" class="key-value-container single">
-						<div class="key-value-pair space-between">
-							<div class="key-value-key">{{ item.key | parametersLabel }}:</div>
-							<div class="key-value-value">
-								<ng-container [ngSwitch]="item.key">
-									<ng-container *ngSwitchCase="'duration_seconds'">{{ item.value | readableDuration }}</ng-container>
-									<ng-container *ngSwitchDefault>{{ item.value }}</ng-container>
-								</ng-container>
+						<div *ngFor="let item of items; let last = last" class="key-value-container single">
+							<div class="key-value-pair space-between">
+								<div class="key-value-key">{{ item.key | parametersLabel }}:</div>
+								<div class="key-value-value">
+									<ng-container [ngSwitch]="item.key">
+										<ng-container *ngSwitchCase="'duration_seconds'">{{ item.value | readableDuration }}</ng-container>
+										<ng-container *ngSwitchDefault>{{ item.value }}</ng-container>
+									</ng-container>
+								</div>
+							</div>
+							<div *ngIf="!last" class="pt-2">
+								<mat-divider></mat-divider>
 							</div>
 						</div>
-						<div *ngIf="!last" class="pt-2">
-							<mat-divider></mat-divider>
-						</div>
-					</div>
-				</mat-card>
+					</mat-expansion-panel>
 
-				<mat-card *ngIf="summarizedRecord?.parameters | keyvalue; let items" class="ms-card record-wrapper mb-4">
-					<div class="paragraph-bold-p3-small-bold mb-4">Parameters</div>
-					<div *ngFor="let item of items; let last = last" class="key-value-container single">
-						<div class="key-value-pair space-between">
-							<div class="key-value-key">{{ item.key | parametersLabel }}:</div>
-							<div class="key-value-value">
-								{{ item.value }}
+					<mat-expansion-panel
+						[(expanded)]="panelStates['parameters']"
+						*ngIf="summarizedRecord?.parameters | keyvalue; let items">
+						<mat-expansion-panel-header>
+							<mat-panel-title class="paragraph-bold-p3-small-bold"> Parameters </mat-panel-title>
+						</mat-expansion-panel-header>
+						<div *ngFor="let item of items; let last = last" class="key-value-container single">
+							<div class="key-value-pair space-between">
+								<div class="key-value-key">{{ item.key | parametersLabel }}:</div>
+								<div class="key-value-value">
+									{{ item.value }}
+								</div>
+							</div>
+							<div *ngIf="!last" class="pt-2">
+								<mat-divider></mat-divider>
 							</div>
 						</div>
-						<div *ngIf="!last" class="pt-2">
-							<mat-divider></mat-divider>
-						</div>
-					</div>
-				</mat-card>
+					</mat-expansion-panel>
 
-				<mat-card *ngIf="!!summarizedRecord?.lastRunTestingAccuracyData" class="ms-card record-wrapper">
-					<p class="paragraph-bold-p3-small-bold pt-2 pb-2">Last Accuracy Test Runs</p>
+					<mat-expansion-panel
+						[(expanded)]="panelStates['accuracy']"
+						*ngIf="summarizedRecord?.parameters | keyvalue; let items">
+						<mat-expansion-panel-header>
+							<mat-panel-title class="paragraph-bold-p3-small-bold"> Last Accuracy Test Runs </mat-panel-title>
+						</mat-expansion-panel-header>
 
-					<ms-chart-colors-form-controls controlKey="chart"></ms-chart-colors-form-controls>
+						<ms-chart-colors-form-controls controlKey="chart"></ms-chart-colors-form-controls>
 
-					<ms-line-chart
-						[data]="lastRunAccuracyTestingChartData"
-						[settings]="testingAccuracyChartDisplaySettings"></ms-line-chart>
-				</mat-card>
+						<ms-line-chart
+							[data]="lastRunAccuracyTestingChartData"
+							[settings]="testingAccuracyChartDisplaySettings"></ms-line-chart>
+					</mat-expansion-panel>
+				</mat-accordion>
 			</ng-container>
 		</ng-template>
 	</form>
