@@ -4,6 +4,7 @@ const ALGORITHM_TYPES = require('../constants/algorithmTypesConstants');
 const { executeCommand } = require('../facades/executionFacade');
 const checkSshConnection = require('../middlewares/checkSshConnection');
 const StatelessPruningParser = require('../parsers/statelessPruningParser');
+const StatelessQuantizationParser = require('../parsers/statelessQuantizationParser');
 
 const RUN_RECORDS_PATHS = {
 	[ALGORITHM_TYPES.QUANTIZATION]: `${process.env.MACHINE_LEARNING_CORE_PATH}/examples_quant/run_records`,
@@ -53,7 +54,7 @@ router.get('/run-records-summarized-data/:type/:filename', checkSshConnection, (
 
 	executeCommand(
 		readFileCommand,
-		(output) => parseAndRespond(output, type, res),
+		async (output) => await parseAndRespond(output, type, res),
 		() => {},
 		(error) => {
 			res.status(500).send({ error: `SSH error: ${error}` });
@@ -62,19 +63,43 @@ router.get('/run-records-summarized-data/:type/:filename', checkSshConnection, (
 	);
 });
 
-function parseAndRespond(output, type, res) {
+async function parseAndRespond(output, type, res) {
 	const jsonData = JSON.parse(output);
-	if (type === ALGORITHM_TYPES.PRUNING) {
-		jsonData.messages = StatelessPruningParser.parseMessages(jsonData.messages);
-		const summarizedData = summarizeData(jsonData);
-		res.setHeader('Content-Type', 'application/json; charset=utf-8');
-		res.status(200).send(summarizedData);
-	} else {
-		res.status(500).send({ error: 'Algorithm type not supported.' });
+
+	switch (type) {
+		case ALGORITHM_TYPES.PRUNING:
+			jsonData.messages = await StatelessPruningParser.parseMessages(jsonData.messages);
+			const summarizedDataPruning = summarizePruningData(jsonData);
+			res.setHeader('Content-Type', 'application/json; charset=utf-8');
+			res.status(200).send(summarizedDataPruning);
+			break;
+
+		case ALGORITHM_TYPES.QUANTIZATION:
+			jsonData.messages = await StatelessQuantizationParser.parseMessages(jsonData.messages);
+			const summarizedDataQuantization = summarizeQuantizationData(jsonData);
+
+			res.setHeader('Content-Type', 'application/json; charset=utf-8');
+			res.status(200).send(summarizedDataQuantization);
+			break;
+
+		default:
+			res.status(500).send({ error: 'Algorithm type not supported.' });
+			break;
 	}
 }
 
-function summarizeData(jsonData) {
+function summarizeQuantizationData(jsonData) {
+	const testingData = jsonData.messages.testing;
+	const accuracyData = testingData.steps.map((test) => test.accuracy) || [];
+
+	return {
+		parameters: jsonData.parameters,
+		statistics: jsonData.statistics,
+		lastRunTestingAccuracyData: accuracyData
+	};
+}
+
+function summarizePruningData(jsonData) {
 	const lastMessage = jsonData.messages[jsonData.messages.length - 1];
 	const lastEpoch = lastMessage?.epochs[lastMessage.epochs.length - 1];
 	const accuracyData = lastEpoch?.testing.map((test) => test.accuracy) || [];

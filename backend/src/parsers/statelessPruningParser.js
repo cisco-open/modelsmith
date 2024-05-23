@@ -1,17 +1,14 @@
 const { PruningParser } = require('./pruningParser');
 
 class StatelessPruningParser {
-	static parseMessages(messages) {
+	static async parseMessages(messages) {
 		const pruningParser = new PruningParser(false);
-		const parsedData = [];
 
-		messages.forEach((message) => {
-			pruningParser.processLine(message);
-		});
+		for (const message of messages) {
+			await pruningParser.processLine(message);
+		}
 
-		pruningParser.pruningPhases.forEach((phase) => {
-			parsedData.push(PruningParser.formatPruningPhase(phase));
-		});
+		const parsedData = pruningParser.pruningPhases;
 
 		pruningParser.reset();
 		return parsedData;

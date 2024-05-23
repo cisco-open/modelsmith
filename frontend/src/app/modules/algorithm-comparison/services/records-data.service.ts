@@ -16,12 +16,29 @@
 
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { AlgorithmType } from '../../model-compression/models/enums/algorithms.enum';
 import { RecordComparisonItem } from '../models/record-comparisson.interface';
-import { recordsMock } from '../models/records-mock-data';
 
 @Injectable()
 export class RecordsDataService {
-	private _records: BehaviorSubject<RecordComparisonItem[]> = new BehaviorSubject<RecordComparisonItem[]>(recordsMock);
+	private _recordsMap: Map<AlgorithmType, RecordComparisonItem[]> = new Map();
+	private _records: BehaviorSubject<RecordComparisonItem[]> = new BehaviorSubject<RecordComparisonItem[]>([]);
+	private _algorithmType: BehaviorSubject<AlgorithmType> = new BehaviorSubject<AlgorithmType>(AlgorithmType.PRUNING);
+
+	get algorithmType(): AlgorithmType {
+		return this._algorithmType.value;
+	}
+
+	get algorithmType$(): Observable<AlgorithmType> {
+		return this._algorithmType.asObservable();
+	}
+
+	set algorithmType(algorithmType: AlgorithmType) {
+		this._recordsMap.set(this._algorithmType.value, this._records.value);
+		this._algorithmType.next(algorithmType);
+		const newRecords = this._recordsMap.get(algorithmType) || [];
+		this._records.next(newRecords);
+	}
 
 	get records(): RecordComparisonItem[] {
 		return this._records.value;
@@ -34,8 +51,8 @@ export class RecordsDataService {
 	addRecord(newRecord: RecordComparisonItem): void {
 		const currentRecords = this._records.value;
 		const updatedRecords = [...currentRecords, newRecord];
-
 		this._records.next(updatedRecords);
+		this._recordsMap.set(this._algorithmType.value, updatedRecords);
 	}
 
 	updateRecord(index: number, updatedRecord: RecordComparisonItem): void {
@@ -44,6 +61,7 @@ export class RecordsDataService {
 			const updatedRecords = [...currentRecords];
 			updatedRecords[index] = updatedRecord;
 			this._records.next(updatedRecords);
+			this._recordsMap.set(this._algorithmType.value, updatedRecords);
 		}
 	}
 
@@ -52,6 +70,7 @@ export class RecordsDataService {
 		if (index >= 0 && index < currentRecords.length) {
 			const updatedRecords = currentRecords.filter((_, i) => i !== index);
 			this._records.next(updatedRecords);
+			this._recordsMap.set(this._algorithmType.value, updatedRecords);
 		}
 	}
 

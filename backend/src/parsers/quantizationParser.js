@@ -35,7 +35,8 @@ class QuantizationParser {
 			});
 	}, 1);
 
-	constructor() {
+	constructor(isChartBroadcasted = true) {
+		this.isChartBroadcasted = isChartBroadcasted;
 		this.reset();
 	}
 
@@ -86,7 +87,7 @@ class QuantizationParser {
 		if (!inTestingPhase) {
 			this.currentReconstruction.totalSteps = totalSteps;
 
-			if (currentStep === 1) {
+			if (currentStep === 1 && this.isChartBroadcasted) {
 				const reconstructionIndex = this.reconstructions.indexOf(this.currentReconstruction);
 				broadcastChart(`${MessageTopics.CHARTS_PREFIX}${ChartsEventsTopics.ENHANCE_SINGLE_PHASE_X_AXIS}`, {
 					reconstructionIndex
@@ -96,21 +97,25 @@ class QuantizationParser {
 			const stepInfo = { step: currentStep, loss };
 			this.currentReconstruction.steps.push(stepInfo);
 
-			const datasetIndex = this.reconstructions.indexOf(this.currentReconstruction);
-			broadcastChart(`${MessageTopics.CHARTS_PREFIX}${ChartsEventsTopics.UPDATE_LATEST_VALUE}`, {
-				datasetIndex,
-				loss
-			});
+			if (this.isChartBroadcasted) {
+				const datasetIndex = this.reconstructions.indexOf(this.currentReconstruction);
+				broadcastChart(`${MessageTopics.CHARTS_PREFIX}${ChartsEventsTopics.UPDATE_LATEST_VALUE}`, {
+					datasetIndex,
+					loss
+				});
+			}
 		} else {
 			this.testing.totalSteps = totalSteps;
 			const testingStepInfo = { step: currentStep, loss, accuracy };
 			this.testing.steps.push(testingStepInfo);
 
-			broadcastChart(`${MessageTopics.CHARTS_PREFIX}${ChartsEventsTopics.UPDATE_TESTING}`, {
-				datasetIndex: 0, // datasetIndex is 0 as we don't have multiple testing datasets
-				accuracy,
-				loss
-			});
+			if (this.isChartBroadcasted) {
+				broadcastChart(`${MessageTopics.CHARTS_PREFIX}${ChartsEventsTopics.UPDATE_TESTING}`, {
+					datasetIndex: 0, // datasetIndex is 0 as we don't have multiple testing datasets
+					accuracy,
+					loss
+				});
+			}
 		}
 	}
 
@@ -120,10 +125,12 @@ class QuantizationParser {
 			const accuracy = parseFloat(match[1]);
 			this.currentReconstruction.accuracy = accuracy;
 
-			broadcastChart(`${MessageTopics.CHARTS_PREFIX}${ChartsEventsTopics.UPDATE_LATEST_VALUE}`, {
-				datasetIndex: 0, // datasetIndex is 0 as we don't have multiple testing datasets
-				accuracy
-			});
+			if (this.isChartBroadcasted) {
+				broadcastChart(`${MessageTopics.CHARTS_PREFIX}${ChartsEventsTopics.UPDATE_LATEST_VALUE}`, {
+					datasetIndex: 0, // datasetIndex is 0 as we don't have multiple testing datasets
+					accuracy
+				});
+			}
 		}
 	}
 
@@ -138,4 +145,7 @@ class QuantizationParser {
 
 const quantizationParserInstance = new QuantizationParser();
 
-module.exports = quantizationParserInstance;
+module.exports = {
+	QuantizationParser,
+	quantizationParserInstance
+};

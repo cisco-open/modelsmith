@@ -72,19 +72,6 @@ class PruningParser {
 		this.inTestingPhase = false;
 	}
 
-	static formatPruningPhase(phase) {
-		return {
-			pruningState: phase.pruningState,
-			epochs: phase.epochs.map((epoch) => ({
-				number: epoch.number,
-				steps: epoch.steps,
-				totalSteps: epoch.totalSteps,
-				testing: epoch.testing
-			})),
-			remainingWeight: phase.remainingWeight
-		};
-	}
-
 	parseLine(line) {
 		PruningParser.queue.push({ line: line });
 	}

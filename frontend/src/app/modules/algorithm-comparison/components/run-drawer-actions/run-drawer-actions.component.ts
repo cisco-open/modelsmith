@@ -27,7 +27,6 @@ import {
 } from '../../../../services/interceptor/app-loading-interceptor';
 import { RunRecordsActions } from '../../../../state/run-records/records';
 import { isEmptyObject, isNilOrEmptyString } from '../../../core/utils/core.utils';
-import { AlgorithmType } from '../../../model-compression/models/enums/algorithms.enum';
 import { DRAWER_DATA, DrawerConfig, DrawerRef, DrawerStatus } from '../../../shared/standalone/ms-drawer';
 import { DrawerActionTypeEnum } from '../../../shared/standalone/ms-drawer/models/drawer-action-type.enum';
 import { chartColorsSettings } from '../../../shared/standalone/ms-line-chart/models/constants/chart-color-settings.constants';
@@ -192,7 +191,10 @@ export class RunDrawerActionsComponent implements OnInit, AfterViewInit {
 			.subscribe((filename) => {
 				this.runNameFormControl.reset();
 				this.recordsFacadeService.dispatch(
-					RunRecordsActions.getRunRecordSummarizedData({ algorithmType: AlgorithmType.PRUNING, filename })
+					RunRecordsActions.getRunRecordSummarizedData({
+						algorithmType: this.recordsDataService.algorithmType,
+						filename
+					})
 				);
 			});
 	}
@@ -227,7 +229,7 @@ export class RunDrawerActionsComponent implements OnInit, AfterViewInit {
 
 	private loadData() {
 		this.recordsFacadeService.dispatch(
-			RunRecordsActions.getRunRecordsFilenames({ algorithmType: AlgorithmType.PRUNING })
+			RunRecordsActions.getRunRecordsFilenames({ algorithmType: this.recordsDataService.algorithmType })
 		);
 		this.recordsFacadeService.filenames$.pipe(skip(1), take(1)).subscribe((files: string[]) => {
 			const existingFilenames = new Set(this.recordsDataService.records.map((record) => record.recordFilename));

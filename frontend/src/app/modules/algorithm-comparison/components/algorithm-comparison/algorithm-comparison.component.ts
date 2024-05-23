@@ -14,23 +14,38 @@
 
 //   SPDX-License-Identifier: Apache-2.0
 
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { take } from 'rxjs';
+import { KeyValueObject } from '../../../../services/client/models/key-value/key-value.interface-dto';
+import { AlgorithmType, AlgorithmTypeKeyValue } from '../../../model-compression/models/enums/algorithms.enum';
 import { DrawerClose, DrawerService, DrawerStatus } from '../../../shared/standalone/ms-drawer';
 import { DrawerActionTypeEnum } from '../../../shared/standalone/ms-drawer/models/drawer-action-type.enum';
 import { RecordComparisonItem } from '../../models/record-comparisson.interface';
 import { RecordsDataService } from '../../services/records-data.service';
 import { RunDrawerActionsComponent } from '../run-drawer-actions/run-drawer-actions.component';
 
+@UntilDestroy()
 @Component({
 	selector: 'ms-algorithm-comparison',
 	templateUrl: './algorithm-comparison.component.html',
 	styleUrls: ['./algorithm-comparison.component.scss']
 })
-export class AlgorithmComparisonComponent {
+export class AlgorithmComparisonComponent implements OnInit {
+	form: FormGroup = new FormGroup({});
+
+	readonly algorithmTypesOptions = AlgorithmTypeKeyValue.filter((option) => option.key !== AlgorithmType.TRAIN);
+	readonly ALGORITHM_TYPE_CONTROL_NAME = 'algorithmType';
+
+	get algorithmTypeFormControl(): FormControl {
+		return this.form.get(this.ALGORITHM_TYPE_CONTROL_NAME) as FormControl;
+	}
+
 	constructor(
 		private drawerService: DrawerService,
-		public recordsDataService: RecordsDataService
+		public recordsDataService: RecordsDataService,
+		private fb: FormBuilder
 	) {}
 
 	openAddRunDrawer() {
@@ -54,5 +69,26 @@ export class AlgorithmComparisonComponent {
 				const { result } = draweCloseEvent;
 				this.recordsDataService.addRecord(result as RecordComparisonItem);
 			});
+	}
+
+	ngOnInit(): void {
+		this.initForm();
+		this.listenToAlgorithmTypeChanges();
+	}
+
+	private initForm() {
+		this.form = this.fb.group({
+			[this.ALGORITHM_TYPE_CONTROL_NAME]: [AlgorithmType.PRUNING, Validators.required]
+		});
+	}
+
+	private listenToAlgorithmTypeChanges() {
+		this.algorithmTypeFormControl.valueChanges.pipe(untilDestroyed(this)).subscribe((algorithmType: AlgorithmType) => {
+			this.recordsDataService.algorithmType = algorithmType;
+		});
+	}
+
+	trackByAlgorithmType(_: number, algorithmType: KeyValueObject<string>): any {
+		return algorithmType.key;
 	}
 }

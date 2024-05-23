@@ -15,7 +15,27 @@
   SPDX-License-Identifier: Apache-2.0
    -->
 
-<p class="heading-primary-title title">Algorithm Comparison</p>
+<div class="title-wrapper">
+	<p class="heading-primary-title title">Algorithm Comparison for</p>
+
+	<form class="ml-2" [formGroup]="form">
+		<div class="form-field-container w-56 mt-2">
+			<mat-form-field appearance="outline">
+				<mat-select [formControlName]="ALGORITHM_TYPE_CONTROL_NAME" placeholder="Select a run record">
+					<mat-option
+						*ngFor="let algorithmType of algorithmTypesOptions; trackBy: trackByAlgorithmType"
+						[value]="algorithmType.key">
+						{{ algorithmType.value }}
+					</mat-option>
+				</mat-select>
+			</mat-form-field>
+		</div>
+	</form>
+</div>
+
+<div class="mt-4 mb-4">
+	<mat-divider></mat-divider>
+</div>
 
 <button mat-stroked-button color="primary" (click)="openAddRunDrawer()">
 	<mat-icon fontSet="ms" fontIcon="icon-Plus"></mat-icon>
@@ -25,6 +45,7 @@
 <div class="mt-4">
 	<mat-divider></mat-divider>
 </div>
+
 <ng-container *ngIf="(recordsDataService.records$ | async)!.length > 0; else noData">
 	<ms-algorithm-comparison-list></ms-algorithm-comparison-list>
 	<div class="mt-4 mb-4">

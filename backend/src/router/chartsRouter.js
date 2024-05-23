@@ -17,7 +17,7 @@
 const express = require('express');
 const router = express.Router();
 const { pruningParserInstance } = require('../parsers/pruningParser');
-const quantizationParserInstance = require('../parsers/quantizationParser');
+const { quantizationParserInstance } = require('../parsers/quantizationParser');
 const machineUnlearningParserInstance = require('../parsers/machineUnlearningParser');
 const { OK, NOT_FOUND } = require('../constants/httpStatusCodes');
 const { getActiveScriptDetails, getPreviousScriptDetails } = require('../state/scriptState');
