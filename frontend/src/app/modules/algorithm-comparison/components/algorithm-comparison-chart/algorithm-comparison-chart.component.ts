@@ -18,6 +18,7 @@ import { Component } from '@angular/core';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { ChartDatasets } from '../../../../services/client/models/charts/chart-data.interface-dto';
+import { AlgorithmType } from '../../../model-compression/models/enums/algorithms.enum';
 import { ChartColorEnum } from '../../../shared/standalone/ms-line-chart/models/enums/chart-color.enum';
 import {
 	ChartDataStructure,
@@ -38,7 +39,6 @@ export class AlgorithmComparisonChartComponent {
 		yAxisMinimumValue: 0,
 		yAxisTickInterval: 20,
 		chartDataStructure: ChartDataStructure.SINGLE_PHASE_X_AXIS,
-		xAxisDataPointsCount: 100,
 		yAxisMaximumValue: 100,
 		datasetColorSettingsKey: ChartColorEnum.YELLOW,
 		isXAxisVisible: false,
@@ -61,8 +61,24 @@ export class AlgorithmComparisonChartComponent {
 		this.recordsDataService.records$.pipe(untilDestroyed(this)).subscribe((records: RecordComparisonItem[]) => {
 			this.lastRunsAccuracyTestingChartData = this.configureChartDatasets(records);
 
+			let xAxisDataPointsCount: number = 0;
+			switch (this.recordsDataService.algorithmType) {
+				case AlgorithmType.PRUNING: {
+					xAxisDataPointsCount = 100;
+					break;
+				}
+				case AlgorithmType.QUANTIZATION: {
+					xAxisDataPointsCount = 79;
+					break;
+				}
+				default: {
+					break;
+				}
+			}
+
 			this.testingAccuracyChartDisplaySettings = {
 				...this.testingAccuracyChartDisplaySettings,
+				xAxisDataPointsCount,
 				customDatasetsLabels: records.map((record) => record.recordName),
 				isChartWithCustomColorSettings: true,
 				customChartColors: {

@@ -292,6 +292,10 @@ export class MsLineChartComponent implements OnInit, OnChanges, OnDestroy {
 	}
 
 	private prependNewChartData(chartDatasets: ChartDatasets[]) {
+		if (isEmptyObject(this.lineChartData)) {
+			return;
+		}
+
 		chartDatasets.forEach((chartDataset: ChartDatasets) => {
 			const datasetIndex = chartDataset.datasetIndex;
 			this.ensureDatasetLength(datasetIndex);
@@ -300,7 +304,7 @@ export class MsLineChartComponent implements OnInit, OnChanges, OnDestroy {
 			dataset.data = [...chartDataset.values, ...dataset.data];
 		});
 
-		if (this.settings.isYAxisDynamic) {
+		if (this.settings?.isYAxisDynamic) {
 			const allDataPoints = chartDatasets.flatMap((dataset) => dataset.values);
 			this.updateDynamicYAxis(allDataPoints);
 		}
@@ -309,9 +313,11 @@ export class MsLineChartComponent implements OnInit, OnChanges, OnDestroy {
 	}
 
 	private startAutoUpdate() {
-		if (isNilOrEmptyString(this.settings?.updateInterval)) {
-			this.settings.updateInterval = DEFAULT_UPDATE_INTERVAL_VALUE;
+		if (isEmptyObject(this.settings)) {
+			return;
 		}
+
+		this.settings.updateInterval = DEFAULT_UPDATE_INTERVAL_VALUE;
 
 		const updateInterval = Number(this.settings.updateInterval);
 		if (updateInterval <= 0) {

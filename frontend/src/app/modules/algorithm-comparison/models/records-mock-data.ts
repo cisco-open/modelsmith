@@ -14,7 +14,62 @@
 
 //   SPDX-License-Identifier: Apache-2.0
 
-export const recordsMock: any = [
+export const quantizationRecordsMock: any = [
+	{
+		recordName: 'BPTQ_resnet18',
+		recordFilename: '2024_05_22_09:44:14_BPTQ_resnet18',
+		record: {
+			parameters: {
+				seed: 1005,
+				dataset: 'cifar10',
+				arch: 'resnet18',
+				batch_size: 128,
+				workers: 4,
+				n_bits_w: 4,
+				channel_wise: false,
+				n_bits_a: 4,
+				act_quant: false,
+				disable_8bit_head_stem: false,
+				num_samples: 1024,
+				iters_w: 20000,
+				weight: 0.01,
+				keep_cpu: false,
+				wwq: true,
+				waq: false,
+				b_start: 20,
+				b_end: 2,
+				warmup: 0.2,
+				lr: 0.00004,
+				awq: false,
+				aaq: false,
+				init_wmode: 'mse',
+				init_amode: 'mse',
+				order: 'before',
+				prob: 1,
+				input_prob: 1
+			},
+			statistics: {
+				algorithm_key: 'BPTQ',
+				execution_date: '2024-05-22 09:44:14',
+				duration_seconds: 978.4157836437225
+			},
+			lastRunTestingAccuracyData: [
+				47.656, 42.188, 43.49, 43.945, 45.938, 43.49, 43.75, 42.969, 42.795, 42.734, 42.116, 41.992, 42.067, 42.188,
+				42.396, 42.236, 42.188, 42.101, 42.105, 41.758, 41.443, 41.371, 41.135, 40.983, 41.031, 41.106, 41.117, 41.183,
+				41.218, 41.38, 41.28, 41.187, 41.051, 41.131, 41.094, 41.059, 41.153, 41.242, 41.326, 41.367, 41.311, 41.35,
+				41.334, 41.388, 41.337, 41.44, 41.539, 41.536, 41.454, 41.531, 41.498, 41.572, 41.524, 41.522, 41.392, 41.504,
+				41.584, 41.595, 41.698, 41.68, 41.867, 41.784, 41.642, 41.65, 41.454, 41.43, 41.406, 41.36, 41.406, 41.406,
+				41.472, 41.482, 41.545, 41.501, 41.594, 41.591, 41.498, 41.426, 41.44
+			]
+		},
+		chartColors: {
+			backgroundColor: 'rgba(241,196,15,0.2)',
+			borderColor: 'rgba(241,196,15,1)'
+		}
+	}
+];
+
+export const pruningRecordsMock: any = [
 	{
 		recordName: 'IMP_VGG11',
 		recordFilename: '2024_05_10_06:12:23_IMP_VGG11',

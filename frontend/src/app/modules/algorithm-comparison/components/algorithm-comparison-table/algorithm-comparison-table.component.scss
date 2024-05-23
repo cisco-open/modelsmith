@@ -13,6 +13,69 @@
 //   limitations under the License.
 
 //   SPDX-License-Identifier: Apache-2.0
+
 .hover-highlight:hover {
 	background-color: var(--backgrounds-80);
+}
+
+.table-container {
+	overflow-x: auto;
+	white-space: nowrap;
+	width: 87vw;
+}
+
+.hover-highlight:hover {
+	background-color: var(--backgrounds-80);
+}
+
+.mat-column-disable_8bit_head_stem {
+	min-width: 200px;
+}
+
+.mat-column-workers {
+	min-width: 160px;
+}
+
+.mat-column-n_bits_w {
+	min-width: 160px;
+}
+
+.mat-column-channel_wise {
+	min-width: 160px;
+}
+
+.mat-column-n_bits_a {
+	min-width: 160px;
+}
+
+.mat-column-act_quant {
+	min-width: 180px;
+}
+
+.mat-column-num_samples {
+	min-width: 160px;
+}
+
+.mat-column-iters_w {
+	min-width: 160px;
+}
+
+.mat-column-keep_cpu {
+	min-width: 180px;
+}
+
+.mat-column-awq {
+	min-width: 180px;
+}
+
+.mat-column-aaq {
+	min-width: 200px;
+}
+
+.mat-column-init_wmode {
+	min-width: 200px;
+}
+
+.mat-column-init_amode {
+	min-width: 200px;
 }

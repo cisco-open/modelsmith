@@ -27,6 +27,7 @@ import {
 } from '../../../../services/interceptor/app-loading-interceptor';
 import { RunRecordsActions } from '../../../../state/run-records/records';
 import { isEmptyObject, isNilOrEmptyString } from '../../../core/utils/core.utils';
+import { AlgorithmType } from '../../../model-compression/models/enums/algorithms.enum';
 import { DRAWER_DATA, DrawerConfig, DrawerRef, DrawerStatus } from '../../../shared/standalone/ms-drawer';
 import { DrawerActionTypeEnum } from '../../../shared/standalone/ms-drawer/models/drawer-action-type.enum';
 import { chartColorsSettings } from '../../../shared/standalone/ms-line-chart/models/constants/chart-color-settings.constants';
@@ -63,19 +64,7 @@ export class RunDrawerActionsComponent implements OnInit, AfterViewInit {
 		RequestsConfigKeyEnum.RUN_RECORDS_SUMMARIZED_DATA
 	);
 
-	testingAccuracyChartDisplaySettings: ChartDisplaySettings = {
-		yAxisMinimumValue: 0,
-		yAxisTickInterval: 20,
-		chartDataStructure: ChartDataStructure.SINGLE_PHASE_X_AXIS,
-		xAxisDataPointsCount: 100,
-		yAxisMaximumValue: 100,
-		isXAxisVisible: false,
-		areTooltipsEnabled: true,
-		xAxisLabelPrefix: 'Step:',
-		datasetLabelPrefix: 'Test:',
-		isChartWithCustomColorSettings: true,
-		customChartColors: { datasetColors: [{ backgroundColor: 'rgba(241, 196, 15, 0.2)', borderColor: '#f1c40f' }] }
-	};
+	testingAccuracyChartDisplaySettings: ChartDisplaySettings = {};
 
 	lastRunAccuracyTestingChartData: ChartDatasets[] = [];
 
@@ -106,6 +95,7 @@ export class RunDrawerActionsComponent implements OnInit, AfterViewInit {
 
 	ngOnInit(): void {
 		this.initForm();
+		this.initChartDisplaySettings();
 		this.listenToChartColorChanges();
 
 		switch (this.drawerConfig.actionType) {
@@ -120,6 +110,38 @@ export class RunDrawerActionsComponent implements OnInit, AfterViewInit {
 				break;
 			}
 		}
+	}
+
+	private initChartDisplaySettings(): void {
+		let xAxisDataPointsCount: number = 0;
+
+		switch (this.recordsDataService.algorithmType) {
+			case AlgorithmType.PRUNING: {
+				xAxisDataPointsCount = 100;
+				break;
+			}
+			case AlgorithmType.QUANTIZATION: {
+				xAxisDataPointsCount = 79;
+				break;
+			}
+			default: {
+				break;
+			}
+		}
+
+		this.testingAccuracyChartDisplaySettings = {
+			yAxisMinimumValue: 0,
+			yAxisTickInterval: 20,
+			chartDataStructure: ChartDataStructure.SINGLE_PHASE_X_AXIS,
+			xAxisDataPointsCount,
+			yAxisMaximumValue: 100,
+			isXAxisVisible: false,
+			areTooltipsEnabled: true,
+			xAxisLabelPrefix: 'Step:',
+			datasetLabelPrefix: 'Test:',
+			isChartWithCustomColorSettings: true,
+			customChartColors: { datasetColors: [{ backgroundColor: 'rgba(241, 196, 15, 0.2)', borderColor: '#f1c40f' }] }
+		};
 	}
 
 	private listenToChartColorChanges() {

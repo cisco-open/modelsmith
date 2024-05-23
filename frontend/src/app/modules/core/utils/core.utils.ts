@@ -19,7 +19,10 @@ export const generateRandomID = (): number => {
 };
 
 export function isEmptyObject(obj: any): boolean {
-	return Object.prototype.toString.call(obj) === '[object Object]' && Object.keys(obj).length === 0;
+	return (
+		(obj === undefined || Object.prototype.toString.call(obj) === '[object Object]') &&
+		Object.keys(obj || {}).length === 0
+	);
 }
 
 export function isNil(obj: any): boolean {

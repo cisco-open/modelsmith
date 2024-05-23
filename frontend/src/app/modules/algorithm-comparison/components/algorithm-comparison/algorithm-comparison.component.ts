@@ -78,7 +78,7 @@ export class AlgorithmComparisonComponent implements OnInit {
 
 	private initForm() {
 		this.form = this.fb.group({
-			[this.ALGORITHM_TYPE_CONTROL_NAME]: [AlgorithmType.PRUNING, Validators.required]
+			[this.ALGORITHM_TYPE_CONTROL_NAME]: [this.recordsDataService.algorithmType, Validators.required]
 		});
 	}
 

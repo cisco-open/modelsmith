@@ -39,9 +39,7 @@
 		<div class="testing">
 			<p class="paragraph-bold-p3-small-bold p-2">Loss Test</p>
 
-			<ms-line-chart
-				[data]="initialLossTestingChartData"
-				[realtimeUpdateMetric]="RealtimeUpdateMetric.TESTING_LOSS"></ms-line-chart>
+			<ms-line-chart [data]="initialLossTestingChartData" [settings]="lossTestingChartDisplaySettings"></ms-line-chart>
 		</div>
 	</div>
 </div>
