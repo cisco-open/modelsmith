@@ -18,7 +18,7 @@ import { Component } from '@angular/core';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { ChartDatasets } from '../../../../services/client/models/charts/chart-data.interface-dto';
-import { AlgorithmType } from '../../../model-compression/models/enums/algorithms.enum';
+import { isEmptyArray } from '../../../core/utils/core.utils';
 import { ChartColorEnum } from '../../../shared/standalone/ms-line-chart/models/enums/chart-color.enum';
 import {
 	ChartDataStructure,
@@ -59,27 +59,16 @@ export class AlgorithmComparisonChartComponent {
 
 	listenToRecordsChanges(): void {
 		this.recordsDataService.records$.pipe(untilDestroyed(this)).subscribe((records: RecordComparisonItem[]) => {
-			this.lastRunsAccuracyTestingChartData = this.configureChartDatasets(records);
-
-			let xAxisDataPointsCount: number = 0;
-			switch (this.recordsDataService.algorithmType) {
-				case AlgorithmType.PRUNING: {
-					xAxisDataPointsCount = 100;
-					break;
-				}
-				case AlgorithmType.QUANTIZATION: {
-					xAxisDataPointsCount = 79;
-					break;
-				}
-				default: {
-					break;
-				}
+			if (isEmptyArray(records)) {
+				return;
 			}
+
+			this.lastRunsAccuracyTestingChartData = this.configureChartDatasets(records);
 
 			this.testingAccuracyChartDisplaySettings = {
 				...this.testingAccuracyChartDisplaySettings,
-				xAxisDataPointsCount,
 				customDatasetsLabels: records.map((record) => record.recordName),
+				xAxisDataPointsCount: records[0].record.lastRunTestingAccuracyData.length,
 				isChartWithCustomColorSettings: true,
 				customChartColors: {
 					datasetColors: records.map((record) => record.chartColors)

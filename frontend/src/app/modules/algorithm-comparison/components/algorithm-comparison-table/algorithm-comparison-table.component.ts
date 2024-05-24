@@ -57,7 +57,7 @@ export class AlgorithmComparisonTableComponent implements OnInit, AfterViewInit 
 
 		records.forEach((record) => {
 			Object.keys(record.record.parameters).forEach((param) => {
-				if (param !== 'save_dir') {
+				if (param !== 'save_dir' && param !== 'data') {
 					allParameters.add(param);
 				}
 			});

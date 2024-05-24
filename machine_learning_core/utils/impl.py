@@ -21,17 +21,11 @@ import time
 import numpy as np
 import torch
 
-
 from utils.pruner import extract_mask, prune_model_custom, remove_prune
 
 sys.path.append(".")
 
-
-
-
-
-
-def _iterative_unlearn_impl(unlearn_iter_func):
+def _iterative_unlearn_impl(unlearn_iter_func, logger):
     def _wrapped(data_loaders, model, criterion, args):
         decreasing_lr = list(map(int, args.decreasing_lr.split(",")))
         if args.rewind_epoch != 0:
@@ -84,21 +78,23 @@ def _iterative_unlearn_impl(unlearn_iter_func):
                 scheduler.step()
         for epoch in range(0, args.unlearn_epochs):
             start_time = time.time()
-            print("Epoch: {}".format(epoch))
+            logger.log("Epoch: {}".format(epoch))
             train_acc = unlearn_iter_func(
                 data_loaders, model, criterion, optimizer, epoch, args
             )
             scheduler.step()
 
-            print("one epoch duration:{}".format(time.time() - start_time))
+            logger.log("one epoch duration:{}".format(time.time() - start_time))
 
     return _wrapped
 
 
-def iterative_unlearn(func):
+def iterative_unlearn(logger):
     """usage:
 
-    @iterative_unlearn
+    @iterative_unlearn(logger)
 
-    def func(data_loaders, model, criterion, optimizer, epoch, args)"""
-    return _iterative_unlearn_impl(func)
+    def func(data_loaders, model, criterion, optimizer, epoch, args, logger)"""
+    def decorator(func):
+        return _iterative_unlearn_impl(func, logger)
+    return decorator

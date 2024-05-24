@@ -34,7 +34,8 @@ class MachineUnlearningParser {
 			});
 	}, 1);
 
-	constructor() {
+	constructor(isChartBroadcasted = true) {
+		this.isChartBroadcasted = isChartBroadcasted;
 		this.reset();
 	}
 
@@ -51,8 +52,18 @@ class MachineUnlearningParser {
 		MachineUnlearningParser.queue.push({ line: line });
 	}
 
+	shouldSkipLine(line) {
+		const strLine = String(line).trim();
+		return !isNaN(strLine);
+	}
+
 	processLine(line) {
 		return new Promise((resolve) => {
+			if (this.shouldSkipLine(line)) {
+				resolve();
+				return;
+			}
+
 			this.checkForTestingPhase(line);
 			this.processEpochOrTest(line);
 			this.processStep(line);
@@ -106,20 +117,25 @@ class MachineUnlearningParser {
 				this.currentEpoch.steps.push(stepData);
 			}
 
-			broadcastChart(
-				`${MessageTopics.CHARTS_PREFIX}${
-					this.inTestingPhase ? ChartsEventsTopics.UPDATE_TESTING : ChartsEventsTopics.UPDATE_LATEST_VALUE
-				}`,
-				{
-					datasetIndex: this.inTestingPhase ? this.tests.length - 1 : this.epochs.length - 1,
-					accuracy: stepData.accuracy,
-					loss: stepData.loss
-				}
-			);
+			if (this.isChartBroadcasted) {
+				broadcastChart(
+					`${MessageTopics.CHARTS_PREFIX}${
+						this.inTestingPhase ? ChartsEventsTopics.UPDATE_TESTING : ChartsEventsTopics.UPDATE_LATEST_VALUE
+					}`,
+					{
+						datasetIndex: this.inTestingPhase ? this.tests.length - 1 : this.epochs.length - 1,
+						accuracy: stepData.accuracy,
+						loss: stepData.loss
+					}
+				);
+			}
 		}
 	}
 }
 
 const machineUnlearningParserInstance = new MachineUnlearningParser();
 
-module.exports = machineUnlearningParserInstance;
+module.exports = {
+	MachineUnlearningParser,
+	machineUnlearningParserInstance
+};

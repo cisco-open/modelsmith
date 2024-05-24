@@ -5,6 +5,7 @@ const { executeCommand } = require('../facades/executionFacade');
 const checkSshConnection = require('../middlewares/checkSshConnection');
 const StatelessPruningParser = require('../parsers/statelessPruningParser');
 const StatelessQuantizationParser = require('../parsers/statelessQuantizationParser');
+const StatelessMachineUnlearningParser = require('../parsers/statelessMachineUnlearningParser');
 
 const RUN_RECORDS_PATHS = {
 	[ALGORITHM_TYPES.QUANTIZATION]: `${process.env.MACHINE_LEARNING_CORE_PATH}/examples_quant/run_records`,
@@ -82,10 +83,30 @@ async function parseAndRespond(output, type, res) {
 			res.status(200).send(summarizedDataQuantization);
 			break;
 
+		case ALGORITHM_TYPES.MACHINE_UNLEARNING:
+			jsonData.messages = await StatelessMachineUnlearningParser.parseMessages(jsonData.messages);
+			const summarizedMachineUnlearning = summarizeMachineUnlearningData(jsonData);
+
+			res.setHeader('Content-Type', 'application/json; charset=utf-8');
+			res.status(200).send(summarizedMachineUnlearning);
+			break;
+
 		default:
 			res.status(500).send({ error: 'Algorithm type not supported.' });
 			break;
 	}
+}
+
+function summarizeMachineUnlearningData(jsonData) {
+	const testingData = jsonData.messages.tests;
+	const lastTest = testingData[testingData.length - 1];
+	const accuracyData = lastTest?.steps.map((test) => test.accuracy) || [];
+
+	return {
+		parameters: jsonData.parameters,
+		statistics: jsonData.statistics,
+		lastRunTestingAccuracyData: accuracyData
+	};
 }
 
 function summarizeQuantizationData(jsonData) {

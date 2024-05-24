@@ -53,46 +53,46 @@ case $choice in
   1)
     echo -e "${GREEN}Updating the entire modelsmith project... (warning: this will update the entire folder in the VM but preserve data, checkpoint, and models_checkpoint folders)${NC}"
     ssh ${PRIMARY_SSH_USERNAME}@${PRIMARY_SSH_HOST} "mkdir -p /home/${PRIMARY_SSH_USERNAME}/${MACHINE_LEARNING_CORE_PATH}"
-    rsync -avz --exclude 'data/' --exclude 'checkpoint/' --exclude 'models_checkpoints/' ../modelsmith/ ${PRIMARY_SSH_USERNAME}@${PRIMARY_SSH_HOST}:/home/${PRIMARY_SSH_USERNAME}/${MACHINE_LEARNING_CORE_PATH}
+    rsync -avz --exclude 'data/' --exclude 'checkpoint/' --exclude 'models_checkpoints/' ../${MACHINE_LEARNING_CORE_PATH}/ ${PRIMARY_SSH_USERNAME}@${PRIMARY_SSH_HOST}:/home/${PRIMARY_SSH_USERNAME}/${MACHINE_LEARNING_CORE_PATH}
     ;;
   2)
     echo -e "${GREEN}Copying the entire modelsmith project excluding data, checkpoint and models_checkpoint folders...${NC}"
-    rsync -avz --exclude 'data' --exclude 'checkpoint' --exclude 'models_checkpoints' ../modelsmith/ ${PRIMARY_SSH_USERNAME}@${PRIMARY_SSH_HOST}:/home/${PRIMARY_SSH_USERNAME}/${MACHINE_LEARNING_CORE_PATH}
+    rsync -avz --exclude 'data' --exclude 'checkpoint' --exclude 'models_checkpoints' ../${MACHINE_LEARNING_CORE_PATH}/ ${PRIMARY_SSH_USERNAME}@${PRIMARY_SSH_HOST}:/home/${PRIMARY_SSH_USERNAME}/${MACHINE_LEARNING_CORE_PATH}
     ;;
   3)
     echo -e "${GREEN}Updating bash folder...${NC}"
     ssh ${PRIMARY_SSH_USERNAME}@${PRIMARY_SSH_HOST} "find /home/${PRIMARY_SSH_USERNAME}/${MACHINE_LEARNING_CORE_PATH}/bash -maxdepth 1 -type f -delete"
-    scp -r ../modelsmith/bash ${PRIMARY_SSH_USERNAME}@${PRIMARY_SSH_HOST}:/home/${PRIMARY_SSH_USERNAME}/${MACHINE_LEARNING_CORE_PATH}
+    scp -r ../${MACHINE_LEARNING_CORE_PATH}/bash ${PRIMARY_SSH_USERNAME}@${PRIMARY_SSH_HOST}:/home/${PRIMARY_SSH_USERNAME}/${MACHINE_LEARNING_CORE_PATH}
     ;;
   4)
     echo -e "${GREEN}Updating iterative_magnitude_pruning.py script...${NC}"
     ssh ${PRIMARY_SSH_USERNAME}@${PRIMARY_SSH_HOST} "rm -f /home/${PRIMARY_SSH_USERNAME}/${MACHINE_LEARNING_CORE_PATH}/examples_pruning/iterative_magnitude_pruning.py"
-    scp ../modelsmith/examples_pruning/iterative_magnitude_pruning.py ${PRIMARY_SSH_USERNAME}@${PRIMARY_SSH_HOST}:/home/${PRIMARY_SSH_USERNAME}/${MACHINE_LEARNING_CORE_PATH}/examples
+    scp ../${MACHINE_LEARNING_CORE_PATH}/examples_pruning/iterative_magnitude_pruning.py ${PRIMARY_SSH_USERNAME}@${PRIMARY_SSH_HOST}:/home/${PRIMARY_SSH_USERNAME}/${MACHINE_LEARNING_CORE_PATH}/examples
     ;;
   5)
     echo -e "${GREEN}Updating block_recon.py...${NC}"
     ssh ${PRIMARY_SSH_USERNAME}@${PRIMARY_SSH_HOST} "rm -f /home/${PRIMARY_SSH_USERNAME}/${MACHINE_LEARNING_CORE_PATH}/utils/quant/block_recon.py"
-    scp ../modelsmith/utils/quant/block_recon.py ${PRIMARY_SSH_USERNAME}@${PRIMARY_SSH_HOST}:/home/${PRIMARY_SSH_USERNAME}/${MACHINE_LEARNING_CORE_PATH}/utils/quant
+    scp ../${MACHINE_LEARNING_CORE_PATH}/utils/quant/block_recon.py ${PRIMARY_SSH_USERNAME}@${PRIMARY_SSH_HOST}:/home/${PRIMARY_SSH_USERNAME}/${MACHINE_LEARNING_CORE_PATH}/utils/quant
     ;;
   6)
     echo -e "${GREEN}Updating utils.py...${NC}"
     ssh ${PRIMARY_SSH_USERNAME}@${PRIMARY_SSH_HOST} "rm -f /home/${PRIMARY_SSH_USERNAME}/${MACHINE_LEARNING_CORE_PATH}/utils/utils.py"
-    scp ../modelsmith/utils/utils.py ${PRIMARY_SSH_USERNAME}@${PRIMARY_SSH_HOST}:/home/${PRIMARY_SSH_USERNAME}/${MACHINE_LEARNING_CORE_PATH}/utils/
+    scp ../${MACHINE_LEARNING_CORE_PATH}/utils/utils.py ${PRIMARY_SSH_USERNAME}@${PRIMARY_SSH_HOST}:/home/${PRIMARY_SSH_USERNAME}/${MACHINE_LEARNING_CORE_PATH}/utils/
     ;;
   7)
     echo -e "${GREEN}Updating pruner.py...${NC}"
     ssh ${PRIMARY_SSH_USERNAME}@${PRIMARY_SSH_HOST} "rm -f /home/${PRIMARY_SSH_USERNAME}/${MACHINE_LEARNING_CORE_PATH}/utils/pruner.py"
-    scp ../modelsmith/utils/pruner.py ${PRIMARY_SSH_USERNAME}@${PRIMARY_SSH_HOST}:/home/${PRIMARY_SSH_USERNAME}/${MACHINE_LEARNING_CORE_PATH}/utils/
+    scp ../${MACHINE_LEARNING_CORE_PATH}/utils/pruner.py ${PRIMARY_SSH_USERNAME}@${PRIMARY_SSH_HOST}:/home/${PRIMARY_SSH_USERNAME}/${MACHINE_LEARNING_CORE_PATH}/utils/
     ;;
   8)
     echo -e "${GREEN}Updating basic-ptq-example.py...${NC}"
     ssh ${PRIMARY_SSH_USERNAME}@${PRIMARY_SSH_HOST} "rm -f /home/${PRIMARY_SSH_USERNAME}/${MACHINE_LEARNING_CORE_PATH}/examples_quant/basic-ptq-example.py"
-    scp ../modelsmith/examples_quant/basic-ptq-example.py ${PRIMARY_SSH_USERNAME}@${PRIMARY_SSH_HOST}:/home/${PRIMARY_SSH_USERNAME}/${MACHINE_LEARNING_CORE_PATH}/examples_quant/
+    scp ../${MACHINE_LEARNING_CORE_PATH}/examples_quant/basic-ptq-example.py ${PRIMARY_SSH_USERNAME}@${PRIMARY_SSH_HOST}:/home/${PRIMARY_SSH_USERNAME}/${MACHINE_LEARNING_CORE_PATH}/examples_quant/
     ;;
   9)
     echo -e "${GREEN}Updating quantization train.py...${NC}"
     ssh ${PRIMARY_SSH_USERNAME}@${PRIMARY_SSH_HOST} "rm -f /home/${PRIMARY_SSH_USERNAME}/${MACHINE_LEARNING_CORE_PATH}/examples_quant/train.py"
-    scp ../modelsmith/examples_quant/train.py ${PRIMARY_SSH_USERNAME}@${PRIMARY_SSH_HOST}:/home/${PRIMARY_SSH_USERNAME}/${MACHINE_LEARNING_CORE_PATH}/examples_quant/
+    scp ../${MACHINE_LEARNING_CORE_PATH}/examples_quant/train.py ${PRIMARY_SSH_USERNAME}@${PRIMARY_SSH_HOST}:/home/${PRIMARY_SSH_USERNAME}/${MACHINE_LEARNING_CORE_PATH}/examples_quant/
     ;;
   *)
     echo -e "${RED}Invalid choice.${NC}"

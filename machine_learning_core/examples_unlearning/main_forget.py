@@ -35,7 +35,6 @@ run_records_dir = os.path.join(script_dir, 'run_records')
 
 sys.path.append(os.path.join(script_dir, '..'))
 
-
 from collections import OrderedDict
 from utils.model_utils import prepare_model
 from utils.utils import progress_bar, train, test, setup_seed, setup_dataset
@@ -175,7 +174,7 @@ def l1_regularization(model):
         params_vec.append(param.view(-1))
     return torch.norm(torch.cat(params_vec), p=1)
 
-@iterative_unlearn
+@iterative_unlearn(logger)
 def FT_l1(data_loaders, model, criterion, optimizer, epoch, args):
     return FT_iter(data_loaders, model, criterion, optimizer, epoch, args, with_l1=True)
 

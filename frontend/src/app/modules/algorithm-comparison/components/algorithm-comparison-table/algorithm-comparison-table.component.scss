@@ -21,7 +21,7 @@
 .table-container {
 	overflow-x: auto;
 	white-space: nowrap;
-	width: 87vw;
+	width: 82vw;
 }
 
 .hover-highlight:hover {
@@ -78,4 +78,44 @@
 
 .mat-column-init_amode {
 	min-width: 200px;
+}
+
+.mat-column-num_indexes_to_replace {
+	min-width: 185px;
+}
+
+.mat-column-unlearn_lr {
+	min-width: 200px;
+}
+
+.mat-column-alpha {
+	min-width: 200px;
+}
+
+.mat-column-unlearn_epochs {
+	min-width: 200px;
+}
+
+.mat-column-train_seed {
+	min-width: 200px;
+}
+
+.mat-column-class_to_replace {
+	min-width: 200px;
+}
+
+.mat-column-indexes_to_replace {
+	min-width: 200px;
+}
+
+.mat-column-no_aug {
+	min-width: 200px;
+}
+
+.mat-column-imagenet_arch {
+	min-width: 220px;
+}
+
+.mat-column-num_workers {
+	min-width: 180px;
 }

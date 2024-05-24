@@ -26,7 +26,7 @@ export class ParametersLabelPipe implements PipeTransform {
 		const labels: KeyValue<string> = {
 			creation_date: 'Creation Date',
 			epochs: 'Number of Epochs',
-			file_size_bytes: 'File Size (bytes)',
+			file_size_bytes: 'File Size',
 			learning_rate: 'Learning Rate',
 			model: 'Model Architecture',
 			training_duration_seconds: 'Training Duration',
@@ -45,7 +45,7 @@ export class ParametersLabelPipe implements PipeTransform {
 			seed: 'Random Seed',
 			dataset: 'Dataset Name',
 			batch_size: 'Batch Size',
-			workers: 'Number of Workers',
+			workers: 'Workers',
 			n_bits_w: 'Bitwidth for Weights',
 			channel_wise: 'Channel-wise Quantization',
 			n_bits_a: 'Bitwidth for Activations',
@@ -66,7 +66,23 @@ export class ParametersLabelPipe implements PipeTransform {
 			order: 'Order of Quantization',
 			prob: 'Probability',
 			input_prob: 'Input Probability',
-			act_quant: 'Apply Activation Quantization'
+			act_quant: 'Apply Activation Quantization',
+			num_indexes_to_replace: 'Number of Indexes to Replace',
+			alpha: 'L1 Regularization Coefficient (Alpha)',
+			unlearn_lr: 'Learning Rate for Unlearning',
+			unlearn_epochs: 'Nr. of Epochs for L1-Sparse Unlearning',
+			train_seed: 'Random Seed for Training',
+			class_to_replace: 'Specific Class to Forget',
+			data: 'Location of the Data Corpus',
+			indexes_to_replace: 'Specific Index Data to Forget',
+			no_aug: 'No Augmentation in Training Dataset',
+			decreasing_lr: 'Decreasing Strategy',
+			rewind_epoch: 'Rewind Checkpoint',
+			imagenet_arch: 'Architecture for ImageNet Size Samples',
+			no_l1_epochs: 'Non L1 Epochs',
+			momentum: 'Momentum',
+			weight_decay: 'Weight Decay',
+			num_workers: 'Number of workers'
 		};
 
 		return labels[value] || value;

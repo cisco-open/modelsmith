@@ -124,6 +124,10 @@ export class RunDrawerActionsComponent implements OnInit, AfterViewInit {
 				xAxisDataPointsCount = 79;
 				break;
 			}
+			case AlgorithmType.MACHINE_UNLEARNING: {
+				xAxisDataPointsCount = 36;
+				break;
+			}
 			default: {
 				break;
 			}
@@ -184,6 +188,7 @@ export class RunDrawerActionsComponent implements OnInit, AfterViewInit {
 
 		this.summarizedRecord = record;
 		this.lastRunAccuracyTestingChartData = this.configureChartDataset(record);
+
 		this.testingAccuracyChartDisplaySettings = {
 			...this.testingAccuracyChartDisplaySettings,
 			hasCustomDatasetsLabels: true,

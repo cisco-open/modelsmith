@@ -37,7 +37,7 @@ const ALGORITHM_TYPES = require('../constants/algorithmTypesConstants');
 const { executeCommand } = require('../facades/executionFacade');
 const { pruningParserInstance } = require('../parsers/pruningParser');
 const { quantizationParserInstance } = require('../parsers/quantizationParser');
-const machineUnlearningParserInstance = require('../parsers/machineUnlearningParser');
+const { machineUnlearningParserInstance } = require('../parsers/machineUnlearningParser');
 
 router.get('/current-or-last-active-script-details', (_, res) => {
 	let script = getActiveScriptDetails() || getPreviousScriptDetails();
