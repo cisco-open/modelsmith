@@ -133,7 +133,7 @@ class MachineUnlearningParser {
 	}
 }
 
-const machineUnlearningParserInstance = new MachineUnlearningParser();
+const machineUnlearningParserInstance = new MachineUnlearningParser(true);
 
 module.exports = {
 	MachineUnlearningParser,

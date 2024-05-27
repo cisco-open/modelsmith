@@ -104,6 +104,9 @@ export class MsLineChartComponent implements OnInit, OnChanges, OnDestroy {
 		if (changes['settings'] && changes['settings'].currentValue) {
 			this.destroy$.next();
 
+			this.stopAutoUpdate();
+			this.startAutoUpdate();
+
 			this.initializeChartSettings();
 			this.listenToChartWebsocketEvents();
 		}
@@ -313,7 +316,7 @@ export class MsLineChartComponent implements OnInit, OnChanges, OnDestroy {
 	}
 
 	private startAutoUpdate() {
-		if (isEmptyObject(this.settings)) {
+		if (!this.isScriptActive || isEmptyObject(this.settings)) {
 			return;
 		}
 
