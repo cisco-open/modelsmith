@@ -46,60 +46,99 @@
 				</div>
 
 				<mat-accordion multi>
-					<mat-expansion-panel
-						[(expanded)]="panelStates['statistics']"
-						*ngIf="summarizedRecord?.statistics | keyvalue; let items">
+					<mat-expansion-panel [(expanded)]="panelStates['statistics']">
 						<mat-expansion-panel-header>
 							<mat-panel-title class="paragraph-bold-p3-small-bold"> Statistics </mat-panel-title>
 						</mat-expansion-panel-header>
-
-						<div *ngFor="let item of items; let last = last" class="key-value-container single">
-							<div class="key-value-pair space-between">
-								<div class="key-value-key">{{ item.key | parametersLabel }}:</div>
-								<div class="key-value-value">
-									<ng-container [ngSwitch]="item.key">
-										<ng-container *ngSwitchCase="'duration_seconds'">{{ item.value | readableDuration }}</ng-container>
-										<ng-container *ngSwitchDefault>{{ item.value }}</ng-container>
-									</ng-container>
+						<ng-container *ngIf="summarizedRecord?.statistics | keyvalue as statisticsItems; else noStatisticsData">
+							<div *ngFor="let item of statisticsItems; let last = last" class="key-value-container single">
+								<div class="key-value-pair space-between">
+									<div class="key-value-key">{{ item.key | parametersLabel }}:</div>
+									<div class="key-value-value">
+										<ng-container [ngSwitch]="item.key">
+											<ng-container *ngSwitchCase="'duration_seconds'">{{
+												item.value | readableDuration
+											}}</ng-container>
+											<ng-container *ngSwitchDefault>{{ item.value }}</ng-container>
+										</ng-container>
+									</div>
+								</div>
+								<div *ngIf="!last" class="pt-2">
+									<mat-divider></mat-divider>
 								</div>
 							</div>
-							<div *ngIf="!last" class="pt-2">
-								<mat-divider></mat-divider>
-							</div>
-						</div>
+						</ng-container>
+						<ng-template #noStatisticsData>
+							<div class="no-data-container">No data available</div>
+						</ng-template>
 					</mat-expansion-panel>
 
-					<mat-expansion-panel
-						[(expanded)]="panelStates['parameters']"
-						*ngIf="summarizedRecord?.parameters | keyvalue; let items">
+					<mat-expansion-panel [(expanded)]="panelStates['modelTrainingDetails']">
+						<mat-expansion-panel-header>
+							<mat-panel-title class="paragraph-bold-p3-small-bold"> Model training details </mat-panel-title>
+						</mat-expansion-panel-header>
+						<ng-container
+							*ngIf="
+								summarizedRecord?.modelTrainingDetails | keyvalue as modelTrainingDetailsItems;
+								else noModelTrainingDetailsData
+							">
+							<div *ngFor="let item of modelTrainingDetailsItems; let last = last" class="key-value-container single">
+								<div class="key-value-pair space-between">
+									<div class="key-value-key">{{ item.key | parametersLabel }}:</div>
+									<div class="key-value-value">
+										<ng-container [ngSwitch]="item.key">
+											<ng-container *ngSwitchCase="'file_size_bytes'">{{ item.value | adaptiveFileSize }}</ng-container>
+											<ng-container *ngSwitchCase="'creation_date'">{{ item.value | date: 'medium' }}</ng-container>
+											<ng-container *ngSwitchCase="'training_duration_seconds'">{{
+												item.value | readableDuration
+											}}</ng-container>
+											<ng-container *ngSwitchDefault>{{ item.value }}</ng-container>
+										</ng-container>
+									</div>
+								</div>
+								<div *ngIf="!last" class="pt-2">
+									<mat-divider></mat-divider>
+								</div>
+							</div>
+						</ng-container>
+						<ng-template #noModelTrainingDetailsData>
+							<div class="no-data-container">No data available</div>
+						</ng-template>
+					</mat-expansion-panel>
+
+					<mat-expansion-panel [(expanded)]="panelStates['parameters']">
 						<mat-expansion-panel-header>
 							<mat-panel-title class="paragraph-bold-p3-small-bold"> Parameters </mat-panel-title>
 						</mat-expansion-panel-header>
-						<div *ngFor="let item of items; let last = last" class="key-value-container single">
-							<div class="key-value-pair space-between">
-								<div class="key-value-key">{{ item.key | parametersLabel }}:</div>
-								<div class="key-value-value">
-									{{ item.value }}
+						<ng-container *ngIf="summarizedRecord?.parameters | keyvalue as parametersItems; else noParametersData">
+							<div *ngFor="let item of parametersItems; let last = last" class="key-value-container single">
+								<div class="key-value-pair space-between">
+									<div class="key-value-key">{{ item.key | parametersLabel }}:</div>
+									<div class="key-value-value">{{ item.value }}</div>
+								</div>
+								<div *ngIf="!last" class="pt-2">
+									<mat-divider></mat-divider>
 								</div>
 							</div>
-							<div *ngIf="!last" class="pt-2">
-								<mat-divider></mat-divider>
-							</div>
-						</div>
+						</ng-container>
+						<ng-template #noParametersData>
+							<div class="no-data-container">No data available</div>
+						</ng-template>
 					</mat-expansion-panel>
 
-					<mat-expansion-panel
-						[(expanded)]="panelStates['accuracy']"
-						*ngIf="summarizedRecord?.parameters | keyvalue; let items">
+					<mat-expansion-panel [(expanded)]="panelStates['accuracy']">
 						<mat-expansion-panel-header>
 							<mat-panel-title class="paragraph-bold-p3-small-bold"> Last Accuracy Test Run </mat-panel-title>
 						</mat-expansion-panel-header>
-
-						<ms-chart-colors-form-controls controlKey="chart"></ms-chart-colors-form-controls>
-
-						<ms-line-chart
-							[data]="lastRunAccuracyTestingChartData"
-							[settings]="testingAccuracyChartDisplaySettings"></ms-line-chart>
+						<ng-container *ngIf="summarizedRecord?.parameters | keyvalue as accuracyItems; else noAccuracyData">
+							<ms-chart-colors-form-controls controlKey="chart"></ms-chart-colors-form-controls>
+							<ms-line-chart
+								[data]="lastRunAccuracyTestingChartData"
+								[settings]="testingAccuracyChartDisplaySettings"></ms-line-chart>
+						</ng-container>
+						<ng-template #noAccuracyData>
+							<div class="no-data-container">No data available</div>
+						</ng-template>
 					</mat-expansion-panel>
 				</mat-accordion>
 			</ng-container>

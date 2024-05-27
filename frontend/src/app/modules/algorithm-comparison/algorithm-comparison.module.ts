@@ -26,6 +26,7 @@ import { DrawerService, MsDrawerComponent } from '../shared/standalone/ms-drawer
 import { MsEmptyStateComponent } from '../shared/standalone/ms-empty-state/ms-empty-state.component';
 import { MsLineChartComponent } from '../shared/standalone/ms-line-chart/ms-line-chart.component';
 import { ChartToolsGlobalSignalsService } from '../shared/standalone/ms-line-chart/services/chart-tools-global-signals.service';
+import { AdaptiveFileSizePipe } from '../shared/standalone/pipes/adaptive-file-size.pipe';
 import { EmptyTableFieldPipe } from '../shared/standalone/pipes/empty-table-field.pipe';
 import { ParametersLabelPipe } from '../shared/standalone/pipes/parameters-label.pipe';
 import { ReadableDurationPipe } from '../shared/standalone/pipes/readable-duration.pipe';
@@ -62,7 +63,8 @@ import { RecordsFacadeService } from './services/records-facade.service';
 		ReverseArrayPipe,
 		MsEmptyStateComponent,
 		EllipsisDirective,
-		EmptyTableFieldPipe
+		EmptyTableFieldPipe,
+		AdaptiveFileSizePipe
 	],
 	providers: [DrawerService, RecordsFacadeService, RecordsDataService, ChartToolsGlobalSignalsService]
 })

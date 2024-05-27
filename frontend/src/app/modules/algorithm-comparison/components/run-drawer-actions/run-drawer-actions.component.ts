@@ -52,7 +52,8 @@ export class RunDrawerActionsComponent implements OnInit, AfterViewInit {
 	panelStates: { [key: string]: boolean } = {
 		statistics: true,
 		parameters: true,
-		accuracy: true
+		accuracy: true,
+		modelTrainingDetails: true
 	};
 
 	form: FormGroup = new FormGroup({});

@@ -105,6 +105,7 @@ function summarizeMachineUnlearningData(jsonData) {
 	return {
 		parameters: jsonData.parameters,
 		statistics: jsonData.statistics,
+		modelTrainingDetails: jsonData.model_training_details,
 		lastRunTestingAccuracyData: accuracyData
 	};
 }
@@ -116,6 +117,7 @@ function summarizeQuantizationData(jsonData) {
 	return {
 		parameters: jsonData.parameters,
 		statistics: jsonData.statistics,
+		modelTrainingDetails: jsonData.model_training_details,
 		lastRunTestingAccuracyData: accuracyData
 	};
 }
@@ -128,6 +130,7 @@ function summarizePruningData(jsonData) {
 	return {
 		parameters: jsonData.parameters,
 		statistics: jsonData.statistics,
+		modelTrainingDetails: jsonData.model_training_details,
 		lastRunTestingAccuracyData: accuracyData
 	};
 }
