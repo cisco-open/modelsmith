@@ -1,0 +1,3 @@
+[submodule "machine_learning_core/llm-awq"]
+	path = machine_learning_core/llm-awq
+	url = https://github.com/mit-han-lab/llm-awq.git
