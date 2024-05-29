@@ -14,24 +14,14 @@
 
 //   SPDX-License-Identifier: Apache-2.0
 
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+.panel-title-wrapper {
+	display: flex;
+	justify-content: space-between;
+	margin-bottom: 12px;
 
-import { MsPanelModelComponent } from './ms-ms-panel-model.component';
-
-describe('MsPanelModelComponent', () => {
-	let component: MsPanelModelComponent;
-	let fixture: ComponentFixture<MsPanelModelComponent>;
-
-	beforeEach(() => {
-		TestBed.configureTestingModule({
-			declarations: [MsPanelModelComponent]
-		});
-		fixture = TestBed.createComponent(MsPanelModelComponent);
-		component = fixture.componentInstance;
-		fixture.detectChanges();
-	});
-
-	it('should create', () => {
-		expect(component).toBeTruthy();
-	});
-});
+	.train-models {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+}

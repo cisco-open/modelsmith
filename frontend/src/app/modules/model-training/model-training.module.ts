@@ -18,7 +18,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { SharedModule } from '../shared/shared.module';
 import { MsEmptyStateComponent } from '../shared/standalone/ms-empty-state/ms-empty-state.component';
-import { MsPanelModelComponent } from '../shared/standalone/ms-panel-model/ms-panel-model.component';
+import { MsPanelModelTrainingComponent } from '../shared/standalone/ms-panel-model-training/ms-panel-model-training.component';
 import { MsPanelParametersComponent } from '../shared/standalone/ms-panel-parameters/ms-panel-parameters.component';
 import { MsTerminalComponent } from '../shared/standalone/ms-terminal/ms-terminal.component';
 import { AdaptiveFileSizePipe } from '../shared/standalone/pipes/adaptive-file-size.pipe';
@@ -36,7 +36,7 @@ import { ModelTrainingRoutingModule } from './model-training-routing.module';
 		SharedModule,
 		ModelTrainingRoutingModule,
 		MsTerminalComponent,
-		MsPanelModelComponent,
+		MsPanelModelTrainingComponent,
 		MsPanelParametersComponent,
 		AdaptiveFileSizePipe,
 		ReadableDurationPipe,

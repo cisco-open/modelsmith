@@ -35,13 +35,13 @@ import { ModelsFacadeService } from '../../../core/services/models-facade.servic
 import { PageRunningScriptSpiningIndicatorService } from '../../../core/services/page-running-script-spinning-indicator.service';
 import { ScriptFacadeService } from '../../../core/services/script-facade.service';
 import { isEmptyArray, isNilOrEmptyString } from '../../../core/utils/core.utils';
-import { AlgorithmType } from '../../../model-compression/models/enums/algorithms.enum';
+import { AlgorithmType, TrainAlgorithmsEnum } from '../../../model-compression/models/enums/algorithms.enum';
 import { isScriptActive } from '../../../model-compression/models/enums/script-status.enum';
 import { MsSpiningIndicatorComponent } from '../ms-spining-indicator/ms-spining-indicator.component';
 
 @UntilDestroy()
 @Component({
-	selector: 'ms-panel-model',
+	selector: 'ms-panel-model-training',
 	standalone: true,
 	imports: [
 		ReactiveFormsModule,
@@ -55,8 +55,8 @@ import { MsSpiningIndicatorComponent } from '../ms-spining-indicator/ms-spining-
 		MatProgressSpinnerModule,
 		MsSpiningIndicatorComponent
 	],
-	templateUrl: './ms-panel-model.component.html',
-	styleUrls: ['./ms-panel-model.component.scss'],
+	templateUrl: './ms-panel-model-training.component.html',
+	styleUrls: ['./ms-panel-model-training.component.scss'],
 	viewProviders: [
 		{
 			provide: ControlContainer,
@@ -64,7 +64,7 @@ import { MsSpiningIndicatorComponent } from '../ms-spining-indicator/ms-spining-
 		}
 	]
 })
-export class MsPanelModelComponent implements OnInit, OnChanges, OnDestroy {
+export class MsPanelModelTrainingComponent implements OnInit, OnChanges, OnDestroy {
 	@Input({ required: true }) controlKey = '';
 	@Input({ required: true }) algorithmType?: AlgorithmType;
 
@@ -124,7 +124,31 @@ export class MsPanelModelComponent implements OnInit, OnChanges, OnDestroy {
 		this.getModelsByTypeSubscription = this.subscribeToModelsListChanges(algorithmType);
 
 		this.modelsFacadeService.dispatch(ModelsActions.getModelsList({ algorithmType }));
-		this.modelsFacadeService.dispatch(ModelsActions.getCurrentOrPreviousSelectedModel({ algorithmType }));
+
+		switch (algorithmType) {
+			case AlgorithmType.PRUNING: {
+				this.modelsFacadeService.dispatch(
+					ModelsActions.getCurrentOrPreviousSelectedModel({ algorithmType: TrainAlgorithmsEnum.PRUNING_TRAIN as any })
+				);
+				break;
+			}
+			case AlgorithmType.QUANTIZATION: {
+				this.modelsFacadeService.dispatch(
+					ModelsActions.getCurrentOrPreviousSelectedModel({
+						algorithmType: TrainAlgorithmsEnum.QUANTIZATION_TRAIN as any
+					})
+				);
+				break;
+			}
+			case AlgorithmType.MACHINE_UNLEARNING: {
+				this.modelsFacadeService.dispatch(
+					ModelsActions.getCurrentOrPreviousSelectedModel({
+						algorithmType: TrainAlgorithmsEnum.MACHINE_UNLEARNING_TRAIN as any
+					})
+				);
+				break;
+			}
+		}
 	}
 
 	private listenToCurrentModelChanges() {
@@ -134,7 +158,7 @@ export class MsPanelModelComponent implements OnInit, OnChanges, OnDestroy {
 			}
 
 			const matchingModel = this.models.find((m) => m.name === model);
-			if (matchingModel && matchingModel.isTrained) {
+			if (matchingModel) {
 				this.modelControl?.patchValue(model);
 			}
 		});

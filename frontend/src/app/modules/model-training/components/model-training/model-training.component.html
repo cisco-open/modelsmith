@@ -20,12 +20,7 @@
 	<div class="left" [formGroup]="form">
 		<ms-panel-algorithm-type controlKey="algorithmTypeGroup"></ms-panel-algorithm-type>
 
-		<ms-panel-model
-			[algorithmType]="selectedAlgorithmType"
-			controlKey="model"
-			[areNotTrainedItemsSelectable]="true"
-			[isInitialLoadForTrainTypeModels]="true"
-			[isTrainedModelsPageVisible]="false"></ms-panel-model>
+		<ms-panel-model-training [algorithmType]="selectedAlgorithmType" controlKey="model"></ms-panel-model-training>
 
 		<ms-panel-model-metadata></ms-panel-model-metadata>
 
