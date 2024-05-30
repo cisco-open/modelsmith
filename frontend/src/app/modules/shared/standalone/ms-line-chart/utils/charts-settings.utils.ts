@@ -31,18 +31,25 @@ export class ChartSettingsUtils {
 	}
 
 	static createXAxisLabels(totalEpochs: number, totalSteps: number, displaySettings: ChartDisplaySettings): string[] {
+		const density = displaySettings.xAxisLabelDensity || 1;
 		return Array.from({ length: totalEpochs * totalSteps }, (_, index) =>
-			index % totalSteps === 0 ? `${displaySettings?.xAxisLabelPrefix} ${index / totalSteps}` : ''
+			index % (totalSteps * density) === 0 ? `${displaySettings?.xAxisLabelPrefix || ''} ${index / totalSteps}` : ''
 		);
 	}
 
 	static createSinglePhaseAxisLabels(length: number, displaySettings: ChartDisplaySettings): string[] {
-		const startingNumber = displaySettings.xAxisInitialLabelValue ?? 1; // Default to 1 if not provided
-		return Array.from({ length }, (_, i) => `${displaySettings?.xAxisLabelPrefix} ${i + startingNumber}`);
+		const density = displaySettings.xAxisLabelDensity || 1;
+		const startingNumber = displaySettings.xAxisInitialLabelValue ?? 1;
+		return Array.from({ length }, (_, i) =>
+			i % density === 0 ? `${displaySettings?.xAxisLabelPrefix || ''} ${i + startingNumber}` : ''
+		);
 	}
 
 	static createSinglePhaseSkipOneAxisLabels(length: number, displaySettings: ChartDisplaySettings): string[] {
-		return Array.from({ length }, (_, i) => (i === 0 ? '' : `${displaySettings?.xAxisLabelPrefix} ${i - 1}`));
+		const density = displaySettings.xAxisLabelDensity || 1;
+		return Array.from({ length }, (_, i) =>
+			i % density === 0 && i !== 0 ? `${displaySettings?.xAxisLabelPrefix || ''} ${i - 1}` : ''
+		);
 	}
 
 	static configureChartOptions(settings: ChartDisplaySettings): ChartConfiguration['options'] {
@@ -89,7 +96,19 @@ export class ChartSettingsUtils {
 				tooltip: {
 					mode: 'index',
 					intersect: false,
-					enabled: settings.areTooltipsEnabled
+					enabled: settings.areTooltipsEnabled,
+					callbacks: {
+						title: (tooltipItems) => {
+							const item = tooltipItems[0];
+							const labelIndex = item.dataIndex;
+							return `Step ${labelIndex}`;
+						},
+						label: (tooltipItem) => {
+							const datasetLabel = tooltipItem.dataset.label || '';
+							const value = tooltipItem.raw;
+							return `${datasetLabel}: ${value}`;
+						}
+					}
 				},
 				legend: {
 					display: settings.isDatasetLabelVisible
@@ -106,10 +125,55 @@ export class ChartSettingsUtils {
 						x: {
 							min: 0
 						}
+					},
+					zoom: {
+						onZoom: ({ chart }) => {
+							this.dynamicUpdateOfXAxisLabels(chart, settings);
+						},
+						onZoomComplete: ({ chart }) => {
+							this.dynamicUpdateOfXAxisLabels(chart, settings);
+						}
 					}
 				}
 			}
 		};
+	}
+
+	static dynamicUpdateOfXAxisLabels(chart: Chart, settings: ChartDisplaySettings): void {
+		if (!settings.isXAxisDynamic) {
+			return;
+		}
+
+		const xScale = chart.scales['x'];
+		const minIndex = Math.floor(xScale.min);
+		const maxIndex = Math.ceil(xScale.max);
+		const availableWidth = chart.width || 0;
+		const startingNumber = settings.xAxisInitialLabelValue ?? 1;
+
+		const sampleLabel = `${settings?.xAxisLabelPrefix || ''} ${startingNumber + maxIndex}`;
+		const labelWidth = this.calculateLabelWidth(sampleLabel, chart);
+		const maxLabels = Math.floor(availableWidth / labelWidth);
+		const totalDataPoints = maxIndex - minIndex + 1;
+		const density = Math.max(1, Math.ceil(totalDataPoints / maxLabels));
+
+		const labels = Array.from({ length: chart?.data?.labels!.length }, (_, i) => {
+			if (i < minIndex || i > maxIndex) {
+				return '';
+			}
+			return i % density === 0 ? `${settings?.xAxisLabelPrefix || ''} ${startingNumber + i}` : '';
+		});
+
+		chart.data.labels = labels;
+		chart.update('none');
+	}
+
+	static calculateLabelWidth(label: string, chart: Chart): number {
+		const ctx = chart.ctx;
+		ctx.save();
+		ctx.font = ctx.font;
+		const labelWidth = ctx.measureText(label).width;
+		ctx.restore();
+		return labelWidth;
 	}
 
 	static prepareSinglePhaseChartDataStructure(

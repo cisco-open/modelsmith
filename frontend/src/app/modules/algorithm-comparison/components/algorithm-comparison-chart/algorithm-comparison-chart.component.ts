@@ -37,12 +37,17 @@ import { RecordsDataService } from '../../services/records-data.service';
 export class AlgorithmComparisonChartComponent {
 	testingAccuracyChartDisplaySettings: ChartDisplaySettings = {
 		yAxisMinimumValue: 0,
+		yAxisMaximumValue: 100,
 		yAxisTickInterval: 20,
 		chartDataStructure: ChartDataStructure.SINGLE_PHASE_X_AXIS,
-		yAxisMaximumValue: 100,
 		datasetColorSettingsKey: ChartColorEnum.YELLOW,
-		isXAxisVisible: false,
+		isXAxisVisible: true,
 		xAxisLabelPrefix: 'Step:',
+		zoomRangeLimits: {
+			min: 0,
+			max: 100
+		},
+		isXAxisDynamic: true,
 		hasCustomDatasetsLabels: true
 	};
 

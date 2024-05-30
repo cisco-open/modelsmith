@@ -108,6 +108,9 @@ export interface ChartDisplaySettings {
 
 	// Interval based on which to update the chart (optimization, performance trick)
 	updateInterval?: number;
+
+	// Determines the density of the X-axis labels. A higher value means fewer labels.
+	xAxisLabelDensity?: number;
 }
 
 export const DEFAULT_UPDATE_INTERVAL_VALUE: number = 500;
