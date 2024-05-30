@@ -21,9 +21,14 @@
 			<mat-label>Select run record</mat-label>
 			<mat-form-field appearance="outline">
 				<mat-select formControlName="selectRun" placeholder="Select a run record">
-					<mat-option *ngFor="let file of files" [value]="file.name" [disabled]="file.disabled">
-						{{ file.name }}
+					<mat-option disabled *ngIf="files.length === 0">
+						No algorithm was yet run. Please run a {{ algorithmTypeLabel }} algorithm.
 					</mat-option>
+					<ng-container *ngIf="files.length > 0">
+						<mat-option *ngFor="let file of files" [value]="file.name" [disabled]="file.disabled">
+							{{ file.name }}
+						</mat-option>
+					</ng-container>
 				</mat-select>
 			</mat-form-field>
 		</div>

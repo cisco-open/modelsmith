@@ -58,6 +58,8 @@ export class RunDrawerActionsComponent implements OnInit, AfterViewInit {
 
 	form: FormGroup = new FormGroup({});
 
+	algorithmTypeLabel: string = '';
+
 	files: { name: string; disabled: boolean }[] = [];
 	summarizedRecord?: SummarizedRunRecord;
 
@@ -99,6 +101,8 @@ export class RunDrawerActionsComponent implements OnInit, AfterViewInit {
 		this.initChartDisplaySettings();
 		this.listenToChartColorChanges();
 
+		this.algorithmTypeLabel = this.getAlgorithmTypeString();
+
 		switch (this.drawerConfig.actionType) {
 			case DrawerActionTypeEnum.ADD: {
 				this.loadData();
@@ -110,6 +114,19 @@ export class RunDrawerActionsComponent implements OnInit, AfterViewInit {
 				this.configureEditOrViewTypeActions();
 				break;
 			}
+		}
+	}
+
+	private getAlgorithmTypeString(): string {
+		switch (this.recordsDataService.algorithmType) {
+			case AlgorithmType.PRUNING:
+				return 'pruning';
+			case AlgorithmType.QUANTIZATION:
+				return 'quantization';
+			case AlgorithmType.MACHINE_UNLEARNING:
+				return 'machine unlearning';
+			default:
+				return 'specified';
 		}
 	}
 
