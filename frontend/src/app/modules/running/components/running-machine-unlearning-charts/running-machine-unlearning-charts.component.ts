@@ -20,16 +20,11 @@ import {
 	ChartDatasets,
 	MachineUnlearningProgress
 } from '../../../../services/client/models/charts/chart-data.interface-dto';
-import {
-	ChartConfigurationSettings,
-	ChartConfigurationSettingsDictionary
-} from '../../../../services/client/models/charts/chart-settings.interface-dto';
 import { ChartActions } from '../../../../state/core/charts';
 import { ChartsFacadeService } from '../../../core/services/charts-facade.service';
 import { isEmptyObject } from '../../../core/utils/core.utils';
 
 import { ChartColorEnum } from '../../../shared/standalone/ms-line-chart/models/enums/chart-color.enum';
-import { ChartTypeEnum } from '../../../shared/standalone/ms-line-chart/models/enums/chart-type.enum';
 import { RealtimeUpdateMetricEnum } from '../../../shared/standalone/ms-line-chart/models/enums/realtime-update-metric.enum';
 import {
 	ChartDataStructure,
@@ -51,21 +46,74 @@ export class RunningMachineUnlearningChartsComponent {
 
 	// Accuracy
 	initialAccuracyChartData: ChartDatasets[] = [];
-	accuracyMachineUnlearningChartSettings: ChartConfigurationSettings = {};
-	accuracyChartDisplaySettings: ChartDisplaySettings = {};
+	accuracyChartDisplaySettings: ChartDisplaySettings = {
+		chartDataStructure: ChartDataStructure.MUlTI_PHASE_X_AXIS,
+		xAxisDataPointsCount: 159,
+		isXAxisDynamic: true,
+		datasetLabelPrefix: 'Epoch:',
+		xAxisLabelPrefix: 'Step',
+		xAxisRepetitionCount: 1,
+		yAxisMinimumValue: 0,
+		yAxisMaximumValue: 100,
+		zoomRangeLimits: {
+			max: 100
+		},
+		datasetColorSettingsKey: ChartColorEnum.GREEN,
+		realtimeUpdateMetric: RealtimeUpdateMetricEnum.ACCURACY
+	};
 
 	// Accuracy Testing
 	initialAccuracyTestingChartData: ChartDatasets[] = [];
-	testingAccuracyChartDisplaySettings: ChartDisplaySettings = {};
+	testingAccuracyChartDisplaySettings: ChartDisplaySettings = {
+		chartDataStructure: ChartDataStructure.MUlTI_PHASE_X_AXIS,
+		xAxisDataPointsCount: 159,
+		isXAxisVisible: true,
+		isXAxisDynamic: true,
+		xAxisLabelPrefix: 'Step',
+		datasetLabelPrefix: 'Test:',
+		xAxisRepetitionCount: 1,
+		yAxisMinimumValue: 0,
+		yAxisMaximumValue: 100,
+		zoomRangeLimits: {
+			max: 100
+		},
+		datasetColorSettingsKey: ChartColorEnum.YELLOW,
+		realtimeUpdateMetric: RealtimeUpdateMetricEnum.TESTING_ACCURACY
+	};
 
 	// Loss
 	initialLossChartData: ChartDatasets[] = [];
-	lossMachineUnlearningChartSettings: ChartConfigurationSettings = {};
-	lossChartDisplaySettings: ChartDisplaySettings = {};
+	lossChartDisplaySettings: ChartDisplaySettings = {
+		chartDataStructure: ChartDataStructure.MUlTI_PHASE_X_AXIS,
+		xAxisDataPointsCount: 159,
+		isXAxisVisible: true,
+		isXAxisDynamic: true,
+		xAxisLabelPrefix: 'Step',
+		datasetLabelPrefix: 'Epoch:',
+		xAxisRepetitionCount: 1,
+		yAxisMinimumValue: 0,
+		isYAxisDynamic: true,
+		datasetColorSettingsKey: ChartColorEnum.RED,
+		realtimeUpdateMetric: RealtimeUpdateMetricEnum.LOSS
+	};
 
 	// Loss Testing
 	initialLossTestingChartData: ChartDatasets[] = [];
-	testingLossChartDisplaySettings: ChartDisplaySettings = {};
+	testingLossChartDisplaySettings: ChartDisplaySettings = {
+		chartDataStructure: ChartDataStructure.MUlTI_PHASE_X_AXIS,
+		xAxisDataPointsCount: 159,
+		isXAxisVisible: true,
+		isXAxisDynamic: true,
+		xAxisLabelPrefix: 'Step',
+		datasetLabelPrefix: 'Test:',
+		xAxisRepetitionCount: 1,
+		yAxisMinimumValue: 0,
+		isYAxisDynamic: true,
+		dynamicYAxisGrowthOffset: 1,
+		dynamicYAxisGrowthRoundFactor: 2,
+		datasetColorSettingsKey: ChartColorEnum.YELLOW,
+		realtimeUpdateMetric: RealtimeUpdateMetricEnum.TESTING_LOSS
+	};
 
 	constructor(private chartsFacadeService: ChartsFacadeService) {}
 
@@ -75,83 +123,7 @@ export class RunningMachineUnlearningChartsComponent {
 	}
 
 	private loadChartSettings() {
-		this.chartsFacadeService.settings$
-			.pipe(skip(1), take(1))
-			.subscribe((settings: ChartConfigurationSettingsDictionary | undefined) => {
-				if (!settings) {
-					return;
-				}
-
-				this.accuracyMachineUnlearningChartSettings =
-					settings[ChartTypeEnum.ACCURACY_MACHINE_UNLEARNING] || ({} as ChartConfigurationSettings);
-
-				this.accuracyChartDisplaySettings = {
-					chartDataStructure: ChartDataStructure.MUlTI_PHASE_X_AXIS,
-					xAxisDataPointsCount: 159,
-					isXAxisVisible: false,
-					datasetLabelPrefix: 'Epoch:',
-					xAxisRepetitionCount: 1,
-					yAxisMinimumValue: 0,
-					yAxisMaximumValue: 100,
-					zoomRangeLimits: {
-						max: 100
-					},
-					datasetColorSettingsKey: ChartColorEnum.GREEN,
-					realtimeUpdateMetric: RealtimeUpdateMetricEnum.ACCURACY
-				};
-
-				this.testingAccuracyChartDisplaySettings = {
-					chartDataStructure: ChartDataStructure.MUlTI_PHASE_X_AXIS,
-					xAxisDataPointsCount: 159,
-					isXAxisVisible: false,
-					datasetLabelPrefix: 'Test:',
-					xAxisRepetitionCount: 1,
-					yAxisMinimumValue: 0,
-					yAxisMaximumValue: 100,
-					zoomRangeLimits: {
-						max: 100
-					},
-					datasetColorSettingsKey: ChartColorEnum.YELLOW,
-					realtimeUpdateMetric: RealtimeUpdateMetricEnum.TESTING_ACCURACY
-				};
-
-				this.lossMachineUnlearningChartSettings =
-					settings[ChartTypeEnum.LOSS_MACHINE_UNLEARNING] || ({} as ChartConfigurationSettings);
-
-				this.lossChartDisplaySettings = {
-					chartDataStructure: ChartDataStructure.MUlTI_PHASE_X_AXIS,
-					xAxisDataPointsCount: 159,
-					isXAxisVisible: false,
-					datasetLabelPrefix: 'Epoch:',
-					xAxisRepetitionCount: 1,
-					yAxisMinimumValue: 0,
-					isYAxisDynamic: true,
-					datasetColorSettingsKey: ChartColorEnum.RED,
-					realtimeUpdateMetric: RealtimeUpdateMetricEnum.LOSS
-				};
-
-				this.testingLossChartDisplaySettings = {
-					chartDataStructure: ChartDataStructure.MUlTI_PHASE_X_AXIS,
-					xAxisDataPointsCount: 159,
-					isXAxisVisible: false,
-					datasetLabelPrefix: 'Test:',
-					xAxisRepetitionCount: 1,
-					yAxisMinimumValue: 0,
-					isYAxisDynamic: true,
-					dynamicYAxisGrowthOffset: 1,
-					dynamicYAxisGrowthRoundFactor: 2,
-					datasetColorSettingsKey: ChartColorEnum.YELLOW,
-					realtimeUpdateMetric: RealtimeUpdateMetricEnum.TESTING_LOSS
-				};
-
-				this.chartsFacadeService.dispatch(ChartActions.getCurrentMachineUnlearningChartData());
-			});
-
-		this.chartsFacadeService.dispatch(
-			ChartActions.getChartConfigurationSettings({
-				chartTypes: [ChartTypeEnum.ACCURACY_MACHINE_UNLEARNING, ChartTypeEnum.LOSS_MACHINE_UNLEARNING]
-			})
-		);
+		this.chartsFacadeService.dispatch(ChartActions.getCurrentMachineUnlearningChartData());
 	}
 
 	private loadLatestChartsData(): void {

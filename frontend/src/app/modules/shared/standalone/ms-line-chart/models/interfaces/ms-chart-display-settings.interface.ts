@@ -113,16 +113,6 @@ export interface ChartDisplaySettings {
 	xAxisLabelDensity?: number;
 }
 
-export const DEFAULT_UPDATE_INTERVAL_VALUE: number = 500;
-
-export const DEFAULT_Y_AXIS_GROWTH_OFFSET: number = 5;
-export const DEFAULT_Y_AXIS_GROWTH_ROUND_FACTOR: number = 5;
-export const DEFAULT_DATASET_COLOR_SETTINGS_KEY: ChartColorEnum = ChartColorEnum.GREEN;
-
-export const DEFAULT_NR_OF_STEPS_PER_EPOCH: number = 390;
-export const DEFAULT_NR_OF_STEPS_PER_TRAINING_EPOCH: number = 99;
-export const DEFAULT_TOTAL_EPOCHS_NR: number = 2;
-
 export interface ChartZoomLimits {
 	min?: number;
 	max?: number;
@@ -133,13 +123,3 @@ export enum ChartDataStructure {
 	SINGLE_PHASE_X_AXIS_SKIP_ONE = 'singlePhaseXAxisSkipOne',
 	MUlTI_PHASE_X_AXIS = 'multiplePhase'
 }
-
-export const DEFAULT_PRUNING_CHART_DISPLAY_SETTINGS: ChartDisplaySettings = {
-	isXAxisVisible: true,
-	isYAxisVisible: true,
-	xAxisLabelPrefix: 'Epoch:',
-	datasetLabelPrefix: 'Pruning:',
-	yAxisMinimumValue: 0,
-	yAxisTickInterval: 20,
-	datasetColorSettingsKey: ChartColorEnum.GREEN
-};

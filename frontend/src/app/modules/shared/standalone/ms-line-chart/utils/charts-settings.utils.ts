@@ -19,11 +19,11 @@ import zoomPlugin from 'chartjs-plugin-zoom';
 import { isEmptyObject } from '../../../../core/utils/core.utils';
 import { chartColorsSettings } from '../models/constants/chart-color-settings.constants';
 import {
-	ChartDisplaySettings,
 	DEFAULT_DATASET_COLOR_SETTINGS_KEY,
 	DEFAULT_NR_OF_STEPS_PER_EPOCH,
 	DEFAULT_TOTAL_EPOCHS_NR
-} from '../models/interfaces/ms-chart-display-settings.interface';
+} from '../models/constants/chart.constants';
+import { ChartDisplaySettings } from '../models/interfaces/ms-chart-display-settings.interface';
 
 export class ChartSettingsUtils {
 	static registerZoomPlugin() {
@@ -101,10 +101,10 @@ export class ChartSettingsUtils {
 						title: (tooltipItems) => {
 							const item = tooltipItems[0];
 							const labelIndex = item.dataIndex;
-							return `Step ${labelIndex}`;
+							return `${settings?.xAxisLabelPrefix} ${labelIndex}`;
 						},
 						label: (tooltipItem) => {
-							const datasetLabel = tooltipItem.dataset.label || '';
+							const datasetLabel = tooltipItem?.dataset?.label || '';
 							const value = tooltipItem.raw;
 							return `${datasetLabel}: ${value}`;
 						}

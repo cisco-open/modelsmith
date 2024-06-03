@@ -52,7 +52,8 @@ export class RunningQuantizationChartsComponent {
 		datasetLabelPrefix: 'Reconstruction:',
 		xAxisLabelPrefix: 'Step',
 		chartDataStructure: ChartDataStructure.SINGLE_PHASE_X_AXIS,
-		isXAxisVisible: false,
+		isXAxisVisible: true,
+		isXAxisDynamic: true,
 		isYAxisDynamic: true,
 		dynamicYAxisGrowthOffset: 50,
 		datasetColorSettingsKey: ChartColorEnum.RED,
@@ -61,11 +62,12 @@ export class RunningQuantizationChartsComponent {
 
 	lossTestingChartDisplaySettings: ChartDisplaySettings = {
 		yAxisMinimumValue: 0,
-		xAxisDataPointsCount: 79,
+		xAxisDataPointsCount: 78,
 		isDatasetLabelVisible: false,
 		xAxisLabelPrefix: 'Step',
 		chartDataStructure: ChartDataStructure.SINGLE_PHASE_X_AXIS,
-		isXAxisVisible: false,
+		isXAxisVisible: true,
+		isXAxisDynamic: true,
 		isYAxisDynamic: true,
 		datasetColorSettingsKey: ChartColorEnum.YELLOW,
 		dynamicYAxisGrowthRoundFactor: 2,
@@ -91,11 +93,12 @@ export class RunningQuantizationChartsComponent {
 	accuracyTestingChartDisplaySettings: ChartDisplaySettings = {
 		yAxisMaximumValue: 100,
 		yAxisMinimumValue: 0,
-		xAxisDataPointsCount: 79,
+		xAxisDataPointsCount: 78,
 		isDatasetLabelVisible: false,
 		xAxisLabelPrefix: 'Step',
 		chartDataStructure: ChartDataStructure.SINGLE_PHASE_X_AXIS,
-		isXAxisVisible: false,
+		isXAxisVisible: true,
+		isXAxisDynamic: true,
 		zoomRangeLimits: {
 			max: 100
 		},

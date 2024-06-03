@@ -38,14 +38,13 @@ import { WebsocketService } from '../../../core/services/websocket.service';
 import { isEmptyObject, isNilOrEmptyString } from '../../../core/utils/core.utils';
 import { isScriptActive } from '../../../model-compression/models/enums/script-status.enum';
 
-import { RealtimeUpdateMetricEnum } from './models/enums/realtime-update-metric.enum';
 import {
-	ChartDataStructure,
-	ChartDisplaySettings,
 	DEFAULT_UPDATE_INTERVAL_VALUE,
 	DEFAULT_Y_AXIS_GROWTH_OFFSET,
 	DEFAULT_Y_AXIS_GROWTH_ROUND_FACTOR
-} from './models/interfaces/ms-chart-display-settings.interface';
+} from './models/constants/chart.constants';
+import { RealtimeUpdateMetricEnum } from './models/enums/realtime-update-metric.enum';
+import { ChartDataStructure, ChartDisplaySettings } from './models/interfaces/ms-chart-display-settings.interface';
 import { ChartsRealtimeUpdateValues } from './models/interfaces/ms-charts-realtime-update-values.interface';
 import { ChartToolsGlobalSignalsService } from './services/chart-tools-global-signals.service';
 import { ChartSettingsUtils } from './utils/charts-settings.utils';
