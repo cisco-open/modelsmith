@@ -115,7 +115,13 @@ export class ChartSettingsUtils {
 				},
 				zoom: {
 					pan: {
-						mode: 'xy'
+						mode: 'xy',
+						onPan: ({ chart }) => {
+							this.dynamicUpdateOfXAxisLabels(chart, settings);
+						},
+						onPanComplete: ({ chart }) => {
+							this.dynamicUpdateOfXAxisLabels(chart, settings);
+						}
 					},
 					limits: {
 						y: {
