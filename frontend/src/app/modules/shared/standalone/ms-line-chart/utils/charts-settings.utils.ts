@@ -23,7 +23,7 @@ import {
 	DEFAULT_NR_OF_STEPS_PER_EPOCH,
 	DEFAULT_TOTAL_EPOCHS_NR
 } from '../models/constants/chart.constants';
-import { ChartDisplaySettings } from '../models/interfaces/ms-chart-display-settings.interface';
+import { ChartDataStructure, ChartDisplaySettings } from '../models/interfaces/ms-chart-display-settings.interface';
 
 export class ChartSettingsUtils {
 	static registerZoomPlugin() {
@@ -101,7 +101,16 @@ export class ChartSettingsUtils {
 						title: (tooltipItems) => {
 							const item = tooltipItems[0];
 							const labelIndex = item.dataIndex;
-							return `${settings?.xAxisLabelPrefix} ${labelIndex}`;
+							const prefix = settings.tooltipLabelPrefix || settings.xAxisLabelPrefix || '';
+							const maxStepsPerEpoch = settings.xAxisDataPointsCount || 1;
+
+							if (settings.chartDataStructure === ChartDataStructure.MUlTI_PHASE_X_AXIS) {
+								const epoch = Math.floor(labelIndex / maxStepsPerEpoch) + 1;
+								const step = labelIndex % maxStepsPerEpoch;
+								return `${prefix} ${epoch}, Step: ${step}`;
+							} else {
+								return `${prefix} ${labelIndex}`;
+							}
 						},
 						label: (tooltipItem) => {
 							const datasetLabel = tooltipItem?.dataset?.label || '';

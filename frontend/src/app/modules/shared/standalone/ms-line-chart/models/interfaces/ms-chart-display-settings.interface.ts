@@ -39,6 +39,9 @@ export interface ChartDisplaySettings {
 	// Prefix for the labels on the X-axis. This is prepended to each label for clarity and context.
 	xAxisLabelPrefix?: string;
 
+	// Configures the tooltip label prefix, if not defined, will use the xAxisLabelPrefix
+	tooltipLabelPrefix?: string;
+
 	// Prefix for the labels of each dataset. This is useful for distinguishing between different datasets on the chart.
 	datasetLabelPrefix?: string;
 

@@ -58,6 +58,7 @@ export class RunningPruningChartsComponent implements OnInit {
 		chartDataStructure: ChartDataStructure.MUlTI_PHASE_X_AXIS,
 		xAxisDataPointsCount: DEFAULT_NR_OF_STEPS_PER_EPOCH,
 		isYAxisDynamic: true,
+
 		dynamicYAxisGrowthOffset: 2,
 		datasetColorSettingsKey: ChartColorEnum.RED,
 		realtimeUpdateMetric: RealtimeUpdateMetricEnum.LOSS
