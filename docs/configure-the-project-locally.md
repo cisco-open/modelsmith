@@ -68,6 +68,10 @@ To get started, you need to set up the Python environment for ModelSmith. This i
      python3 modelsmith/examples_unlearning/train.py --arch=ResNet18 --epochs=100
      ```
 
+4. **Configure AutoAWQ for Model Quantization**:
+
+   Please refer to the [AutoAWQ Configuration Guide](configure-autoawq.md) for detailed instructions on setting up AutoAWQ.
+
 ## Phase 2: Run the Environment Setup Script
 
 After configuring the Python environment, the next step involves setting up the project environment. This is done by executing the `setup_environment.sh` script located in the `utils` directory. The script performs several tasks, including setting up the `.env` file for the backend server.

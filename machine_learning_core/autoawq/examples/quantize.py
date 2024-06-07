@@ -1,5 +1,8 @@
+from huggingface_hub import login
 from awq import AutoAWQForCausalLM
 from transformers import AutoTokenizer
+
+login(token="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")
 
 model_path = 'mistralai/Mistral-7B-Instruct-v0.2'
 quant_path = 'mistral-instruct-v0.2-awq'

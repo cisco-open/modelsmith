@@ -112,6 +112,10 @@ conda --version
   python3 machine_learning_core/examples_unlearning/train.py --arch=ResNet18 --epochs=100
   ```
 
+6. **Configure AutoAWQ for Model Quantization**:
+
+   Please refer to the [AutoAWQ Configuration Guide](configure-autoawq.md) for detailed instructions on setting up AutoAWQ.
+
 ## Phase 2: Configure the Environment
 
 On your local machine, run the `setup_environment.sh` script located in the `utils` directory of the repository. This script configures the `.env` file for the backend server. When prompted for the environment for model training, select "2. VM" and provide the necessary SSH details for the primary and, optionally, backup VMs.
