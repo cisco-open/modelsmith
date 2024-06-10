@@ -48,6 +48,11 @@ const expert: SidenavItem[] = [
 		key: PageKey.MACHINE_UNLEARNING
 	},
 	{
+		route: RoutesList.AWQ.ROOT,
+		label: 'Activation-aware Weight Quantization',
+		icon: 'icon-Lightning'
+	},
+	{
 		route: 'model-specialization',
 		label: 'Model Specialization',
 		icon: 'icon-MapTrifold'

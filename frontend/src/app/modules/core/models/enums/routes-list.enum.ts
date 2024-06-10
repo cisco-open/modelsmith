@@ -40,6 +40,9 @@ export const RoutesList = {
 	ALGORITHM_COMPARISON: {
 		ROOT: 'algorithm-comparison'
 	},
+	AWQ: {
+		ROOT: 'awq'
+	},
 	DEMO: {
 		ROOT: 'demo',
 		BUTTONS: 'buttons',

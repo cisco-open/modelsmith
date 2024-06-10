@@ -63,6 +63,10 @@ const routes: Routes = [
 					import('./modules/machine-unlearning/machine-unlearning.module').then((m) => m.MachineUnlearningModule)
 			},
 			{
+				path: RoutesList.AWQ.ROOT,
+				loadChildren: () => import('./modules/awq/awq.module').then((m) => m.AWQModule)
+			},
+			{
 				path: RoutesList.RUNNING.ROOT,
 				loadChildren: () => import('./modules/running/running.module').then((m) => m.RunningModule)
 			},
