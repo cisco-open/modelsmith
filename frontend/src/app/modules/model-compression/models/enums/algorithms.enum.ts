@@ -20,12 +20,14 @@ export type AlgorithmKey =
 	| PruningAlgorithmsEnum
 	| QuantizationAlgorithmsEnum
 	| MachineUnlearningAlgorithmsEnum
+	| AWQAlgorithmsEnum
 	| TrainAlgorithmsEnum;
 
 export enum AlgorithmType {
 	QUANTIZATION = 'quantization',
 	PRUNING = 'pruning',
 	MACHINE_UNLEARNING = 'machine_unlearning',
+	AWQ = 'awq',
 	TRAIN = 'train'
 }
 
@@ -55,6 +57,10 @@ export enum MachineUnlearningAlgorithmsEnum {
 	MU = 'MU'
 }
 
+export enum AWQAlgorithmsEnum {
+	AWQ_QUANTIZATION = 'AWQ_Q'
+}
+
 export enum TrainAlgorithmsEnum {
 	QUANTIZATION_TRAIN = 'Q_TRAIN',
 	PRUNING_TRAIN = 'P_TRAIN',
@@ -74,6 +80,8 @@ export function determineAlgorithmType(algValue: AlgorithmKey): AlgorithmType | 
 		return AlgorithmType.QUANTIZATION;
 	} else if (Object.values(MachineUnlearningAlgorithmsEnum).includes(algValue as MachineUnlearningAlgorithmsEnum)) {
 		return AlgorithmType.MACHINE_UNLEARNING;
+	} else if (Object.values(AWQAlgorithmsEnum).includes(algValue as AWQAlgorithmsEnum)) {
+		return AlgorithmType.AWQ;
 	} else if (Object.values(TrainAlgorithmsEnum).includes(algValue as TrainAlgorithmsEnum)) {
 		return AlgorithmType.TRAIN;
 	}

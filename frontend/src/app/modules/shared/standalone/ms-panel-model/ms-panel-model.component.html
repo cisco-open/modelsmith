@@ -17,7 +17,7 @@
 <mat-card class="ms-card model-card">
 	<div class="panel-title-wrapper">
 		<div class="heading-sub-section-title">Model</div>
-		<div class="train-models">
+		<div class="train-models" *ngIf="isTrainModelsPageRouteVisible">
 			<a [routerLink]="['/' + RoutesList.MODEL_TRAINING.ROOT]">Train models</a>
 
 			<ng-container

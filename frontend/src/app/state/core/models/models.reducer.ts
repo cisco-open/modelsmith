@@ -23,6 +23,7 @@ export const initialState: ModelsState = {
 	quantizationModels: [],
 	pruningModels: [],
 	machineUnlearningModels: [],
+	awqModels: [],
 	currentModel: '',
 	modelMetadata: {},
 	error: undefined
@@ -38,6 +39,8 @@ export const modelsReducer = createReducer(
 				return { ...state, pruningModels: models, error: undefined };
 			case AlgorithmType.MACHINE_UNLEARNING:
 				return { ...state, machineUnlearningModels: models, error: undefined };
+			case AlgorithmType.AWQ:
+				return { ...state, awqModels: models, error: undefined };
 			default:
 				return state;
 		}

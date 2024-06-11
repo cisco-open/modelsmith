@@ -18,6 +18,7 @@ const ALGORITHM_TYPES = {
 	PRUNING: 'pruning',
 	QUANTIZATION: 'quantization',
 	MACHINE_UNLEARNING: 'machine_unlearning',
+	AWQ: 'awq',
 	TRAIN: 'train'
 };
 

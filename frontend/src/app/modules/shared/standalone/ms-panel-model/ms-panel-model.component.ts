@@ -67,6 +67,7 @@ import { MsSpiningIndicatorComponent } from '../ms-spining-indicator/ms-spining-
 export class MsPanelModelComponent implements OnInit, OnChanges, OnDestroy {
 	@Input({ required: true }) controlKey = '';
 	@Input({ required: true }) algorithmType?: AlgorithmType;
+	@Input() isTrainModelsPageRouteVisible: boolean = true;
 
 	getModelsByTypeSubscription?: Subscription;
 

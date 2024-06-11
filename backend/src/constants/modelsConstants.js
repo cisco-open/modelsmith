@@ -36,6 +36,24 @@ const MACHINE_UNLEARNING_MODELS = [
 	'VGG19'
 ];
 
+const AWQ_MODELS = [
+	'mistralai/Mistral-7B',
+	'mistralai/Mistral-7B-Instruct-v0.2',
+	'mosaicml/mpt-7b',
+	'decapoda-research/llama-7b-hf',
+	'facebook/opt-1.3b',
+	'tiiuae/falcon-7b',
+	'bigscience/bloom-560m',
+	'EleutherAI/gpt-j-6B',
+	'bigcode/gpt_bigcode-santacoder',
+	'EleutherAI/gpt-neox-20b',
+	'Qwen/Qwen-7B',
+	'baichuan-inc/Baichuan-7B',
+	'liuhaotian/LLaVA-13b',
+	'stabilityai/stablelm-tuned-alpha-7b',
+	'bigcode/starcoder'
+];
+
 function getModelsByType(type) {
 	switch (type) {
 		case ALGORITHM_TYPES.QUANTIZATION:
@@ -44,6 +62,8 @@ function getModelsByType(type) {
 			return PRUNING_MODELS;
 		case ALGORITHM_TYPES.MACHINE_UNLEARNING:
 			return MACHINE_UNLEARNING_MODELS;
+		case ALGORITHM_TYPES.AWQ:
+			return AWQ_MODELS;
 		default:
 			return [];
 	}

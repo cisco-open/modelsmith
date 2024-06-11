@@ -21,6 +21,7 @@ export interface ModelsState {
 	quantizationModels: ModelDto[];
 	pruningModels: ModelDto[];
 	machineUnlearningModels: ModelDto[];
+	awqModels: ModelDto[];
 	currentModel: string;
 	modelMetadata: ModelMetadataDto;
 	error: any;

@@ -38,6 +38,7 @@ router.get('/current-or-previous-selected-model/:type', (req, res) => {
 		[ALGORITHM_TYPES.QUANTIZATION]: 'resnet18',
 		[ALGORITHM_TYPES.PRUNING]: 'ResNet18',
 		[ALGORITHM_TYPES.MACHINE_UNLEARNING]: 'ResNet18',
+		[ALGORITHM_TYPES.AWQ]: 'mistralai/Mistral-7B',
 		Q_TRAIN: 'resnet18',
 		P_TRAIN: 'ResNet18',
 		MU_TRAIN: 'ResNet18'
@@ -66,7 +67,10 @@ router.get('/current-or-previous-selected-model/:type', (req, res) => {
  * of models associated with that type. If no models are found, a 404 Not Found status is returned with a message
  * indicating that the model type was not found.
  *
- * If the model type is valid, it then constructs a file listing command based on a directory path that
+ * If the model type is 'AWQ', the function directly sets the 'isTrained' flag to true for each model, as these models
+ * are pretrained and sourced from Hugging Face. It then responds with a status of 200 OK and the list of models.
+ *
+ * For other valid model types, the function constructs a file listing command based on a directory path that
  * corresponds to the model type. This path is determined from a mapping (CHECKPOINT_PATHS) that associates
  * algorithm types to their respective storage directories on the filesystem.
  *
@@ -86,8 +90,18 @@ router.get('/models-list/:type', checkSshConnection, (req, res) => {
 	const type = req.params.type;
 	const models = getModelsByType(type);
 
-	if (models.length === 0) {
+	if (!models || models.length === 0) {
 		return res.status(NOT_FOUND).send({ error: 'Model type not found' });
+	}
+
+	if (type === ALGORITHM_TYPES.AWQ) {
+		// For AWQ models are already pretrained. We take them from https://huggingface.co/
+		const modelsAreTrained = models.map((modelName) => ({
+			name: modelName,
+			isTrained: true
+		}));
+
+		return res.status(OK).send(modelsAreTrained);
 	}
 
 	const directoryPath = CHECKPOINT_PATHS[type];

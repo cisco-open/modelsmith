@@ -27,7 +27,7 @@ const QUANTIZATION_PARAMETERS = {
 		{
 			argName: 'dataset',
 			defaultValue: 'cifar10',
-			inputType: 'dropdown',
+			inputType: 'select',
 			label: 'Dataset Name',
 			placeholder: 'Select dataset',
 			help: 'dataset name',
@@ -127,7 +127,7 @@ const QUANTIZATION_PARAMETERS = {
 		{
 			argName: 'init_wmode',
 			defaultValue: 'mse',
-			inputType: 'dropdown',
+			inputType: 'select',
 			label: 'Initialization Mode for Weight',
 			placeholder: 'Select initialization mode for weight',
 			help: 'init opt mode for weight',
@@ -140,7 +140,7 @@ const QUANTIZATION_PARAMETERS = {
 		{
 			argName: 'init_amode',
 			defaultValue: 'mse',
-			inputType: 'dropdown',
+			inputType: 'select',
 			label: 'Initialization Mode for Activation',
 			placeholder: 'Select initialization mode for activation',
 			help: 'init opt mode for activation',
@@ -153,7 +153,7 @@ const QUANTIZATION_PARAMETERS = {
 		{
 			argName: 'order',
 			defaultValue: 'before',
-			inputType: 'dropdown',
+			inputType: 'select',
 			label: 'Quantization Order',
 			placeholder: 'Select quantization order',
 			help: 'order about activation compare to weight',
@@ -689,7 +689,7 @@ const PRUNING_PARAMETERS = {
 		{
 			argName: 'device',
 			defaultValue: 'cpu',
-			inputType: 'dropdown',
+			inputType: 'select',
 			label: 'Device',
 			placeholder: 'Select device',
 			help: 'device to use',
@@ -749,7 +749,7 @@ const PRUNING_PARAMETERS = {
 		{
 			argName: 'device',
 			defaultValue: 'cpu',
-			inputType: 'dropdown',
+			inputType: 'select',
 			label: 'Device',
 			placeholder: 'Select device',
 			help: 'device to use',
@@ -809,7 +809,7 @@ const PRUNING_PARAMETERS = {
 		{
 			argName: 'device',
 			defaultValue: 'cpu',
-			inputType: 'dropdown',
+			inputType: 'select',
 			label: 'Device',
 			placeholder: 'Select device',
 			help: 'device to use',
@@ -869,7 +869,7 @@ const PRUNING_PARAMETERS = {
 		{
 			argName: 'device',
 			defaultValue: 'cpu',
-			inputType: 'dropdown',
+			inputType: 'select',
 			label: 'Device',
 			placeholder: 'Select device',
 			help: 'device to use',
@@ -921,7 +921,7 @@ const PRUNING_PARAMETERS = {
 		{
 			argName: 'device',
 			defaultValue: 'cpu',
-			inputType: 'dropdown',
+			inputType: 'select',
 			label: 'Device',
 			placeholder: 'Select device',
 			help: 'device to use',
@@ -1050,6 +1050,62 @@ const MACHINE_UNLEARNING_PARAMETERS = {
 	]
 };
 
+const AWQ_PARAMETERS = {
+	AWQ_Q: [
+		{
+			argName: 'w_bit',
+			defaultValue: 4,
+			inputType: 'select',
+			label: 'Bit width for weights',
+			placeholder: 'Select bit width for weights',
+			help: 'Bit width for weights',
+			options: [
+				{ value: 4, viewValue: '4' },
+				{ value: 8, viewValue: '8' },
+				{ value: 16, viewValue: '16' }
+			]
+		},
+		{
+			argName: 'zero_point',
+			defaultValue: true,
+			inputType: 'select',
+			label: 'Zero-point quantization',
+			placeholder: 'Select zero-point quantization option',
+			help: 'Use zero-point quantization',
+			options: [
+				{ value: true, viewValue: 'True' },
+				{ value: false, viewValue: 'False' }
+			]
+		},
+		{
+			argName: 'q_group_size',
+			defaultValue: 128,
+			inputType: 'select',
+			label: 'Quantization group size',
+			placeholder: 'Select quantization group size',
+			help: 'Quantization group size',
+			options: [
+				{ value: 32, viewValue: '32' },
+				{ value: 64, viewValue: '64' },
+				{ value: 128, viewValue: '128' },
+				{ value: 256, viewValue: '256' }
+			]
+		},
+		{
+			argName: 'version',
+			defaultValue: 'GEMM',
+			inputType: 'select',
+			label: 'Quantization version/algorithm',
+			placeholder: 'Select quantization version/algorithm',
+			help: 'Quantization version/algorithm',
+			options: [
+				{ value: 'GEMM', viewValue: 'GEMM' },
+				{ value: 'DEFAULT', viewValue: 'DEFAULT' }
+			]
+		}
+	]
+};
+
 const TRAIN_PARAMETERS = {
 	P_TRAIN: [
 		{
@@ -1111,6 +1167,7 @@ const ALGORITHM_PARAMETERS = {
 	...QUANTIZATION_PARAMETERS,
 	...PRUNING_PARAMETERS,
 	...MACHINE_UNLEARNING_PARAMETERS,
+	...AWQ_PARAMETERS,
 	...TRAIN_PARAMETERS
 };
 

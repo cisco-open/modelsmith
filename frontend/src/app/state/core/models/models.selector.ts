@@ -27,6 +27,8 @@ export const selectModelsByType = (algorithmType: AlgorithmType) =>
 				return state.models.pruningModels;
 			case AlgorithmType.MACHINE_UNLEARNING:
 				return state.models.machineUnlearningModels;
+			case AlgorithmType.AWQ:
+				return state.models.awqModels;
 			default:
 				return undefined;
 		}
