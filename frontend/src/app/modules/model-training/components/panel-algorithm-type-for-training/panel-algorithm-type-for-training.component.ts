@@ -27,16 +27,15 @@ import {
 	AlgorithmKey,
 	AlgorithmType,
 	AlgorithmTypeKeyValue,
-	TrainAlgorithmsEnum,
-	determineAlgorithmType
+	TrainAlgorithmsEnum
 } from '../../../model-compression/models/enums/algorithms.enum';
 import { isScriptActive } from '../../../model-compression/models/enums/script-status.enum';
 
 @UntilDestroy()
 @Component({
-	selector: 'ms-panel-algorithm-type',
-	templateUrl: './panel-algorithm-type.component.html',
-	styleUrls: ['./panel-algorithm-type.component.scss'],
+	selector: 'ms-panel-algorithm-type-for-training',
+	templateUrl: './panel-algorithm-type-for-training.component.html',
+	styleUrls: ['./panel-algorithm-type-for-training.component.scss'],
 	viewProviders: [
 		{
 			provide: ControlContainer,
@@ -44,10 +43,12 @@ import { isScriptActive } from '../../../model-compression/models/enums/script-s
 		}
 	]
 })
-export class PanelAlgorithmTypeComponent implements OnInit {
+export class PanelAlgorithmTypeForTrainingComponent implements OnInit {
 	@Input({ required: true }) controlKey = '';
 
-	readonly algorithmTypesOptions = AlgorithmTypeKeyValue.filter((option) => option.key !== AlgorithmType.TRAIN);
+	readonly algorithmTypesOptions = AlgorithmTypeKeyValue.filter(
+		(option) => option.key !== AlgorithmType.TRAIN && option.key !== AlgorithmType.AWQ
+	);
 	readonly ALGORITHM_TYPE_CONTROL_NAME = 'algorithmType';
 
 	get parentFormGroup() {
@@ -84,12 +85,12 @@ export class PanelAlgorithmTypeComponent implements OnInit {
 			)
 			.subscribe((algKey: AlgorithmKey) => {
 				switch (algKey) {
-					case TrainAlgorithmsEnum.MACHINE_UNLEARNING_TRAIN: {
-						this.algorithmTypeFormControl.patchValue(AlgorithmType.MACHINE_UNLEARNING);
-						break;
-					}
 					case TrainAlgorithmsEnum.PRUNING_TRAIN: {
 						this.algorithmTypeFormControl.patchValue(AlgorithmType.PRUNING);
+						break;
+					}
+					case TrainAlgorithmsEnum.MACHINE_UNLEARNING_TRAIN: {
+						this.algorithmTypeFormControl.patchValue(AlgorithmType.MACHINE_UNLEARNING);
 						break;
 					}
 					case TrainAlgorithmsEnum.QUANTIZATION_TRAIN: {
@@ -97,13 +98,7 @@ export class PanelAlgorithmTypeComponent implements OnInit {
 						break;
 					}
 					default: {
-						// Feature to display the current running algorithm model metadata
-						const algorithmType = determineAlgorithmType(algKey);
-						if (isNilOrEmptyString(algorithmType)) {
-							break;
-						}
-
-						this.algorithmTypeFormControl.patchValue(algorithmType);
+						this.algorithmTypeFormControl.patchValue(AlgorithmType.PRUNING);
 					}
 				}
 			});

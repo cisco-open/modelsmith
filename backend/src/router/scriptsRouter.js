@@ -65,13 +65,11 @@ router.post('/run-script', checkSshConnection, checkIfScriptRunning, (req, res) 
 	}
 
 	const { mergedParams, args } = buildArgsString(alg, params);
-	const { arch = '' } = req?.body?.params || {};
 
 	setActiveScriptDetails({
 		algKey: alg,
 		algorithm: scriptDetails,
-		params: mergedParams,
-		model: arch
+		params: mergedParams
 	});
 
 	changeAndBroadcastScriptState(ScriptState.RUNNING);
@@ -186,27 +184,31 @@ router.post('/stop-script', checkSshConnection, checkIfNoScriptRunning, (req, re
 	);
 });
 
-function buildArgsString(alg, providedParams) {
+// Helper functions
+const buildArgsString = (alg, providedParams) => {
 	const defaultParamsArray = ALGORITHM_PARAMETERS[alg] || [];
-
 	const defaultParameters = defaultParamsArray.reduce((acc, param) => {
 		acc[param.argName] = param.defaultValue;
 		return acc;
 	}, {});
-
 	const mergedParams = { ...defaultParameters, ...providedParams };
-
+	if (alg === 'AWQ_Q') {
+		const token = process.env.HUGGING_FACE_ACCESS_TOKEN;
+		if (token) {
+			mergedParams.token = token;
+		}
+	}
 	return {
 		mergedParams,
 		args: Object.entries(mergedParams)
 			.map(([key, value]) => `--${key}=${value}`)
 			.join(' ')
 	};
-}
+};
 
-function changeAndBroadcastScriptState(newState) {
+const changeAndBroadcastScriptState = (newState) => {
 	setScriptState(newState);
 	broadcastStatus();
-}
+};
 
 module.exports = router;

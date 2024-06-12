@@ -56,8 +56,8 @@ if __name__ == "__main__":
     # stabilityai/stablelm-tuned-alpha-7b ( https://huggingface.co/stabilityai/stablelm-tuned-alpha-7b )
     # bigcode/starcoder ( https://huggingface.co/bigcode/starcoder )
 
-    parser.add_argument("--model_path", type=str, required=True, help="Path to the pre-trained model")
-    parser.add_argument("--token", type=str, default="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", help="Hugging Face token for login")
+    parser.add_argument("--model", type=str, required=True, help="Path to the pre-trained model")
+    parser.add_argument("--token", type=str, help="Hugging Face token for login")
     parser.add_argument("--w_bit", type=int, choices=[4, 8, 16], default=4, help="Bit width for weights (4, 8, 16)")
     parser.add_argument("--zero_point", type=bool, choices=[True, False], default=True, help="Use zero-point quantization (True, False)")
     parser.add_argument("--q_group_size", type=int, choices=[32, 64, 128, 256], default=128, help="Quantization group size (32, 64, 128, 256)")
@@ -71,4 +71,4 @@ if __name__ == "__main__":
         "version": args.version
     }
 
-    quantize_and_save_model(args.model_path, args.token, quant_config)
+    quantize_and_save_model(args.model, args.token, quant_config)

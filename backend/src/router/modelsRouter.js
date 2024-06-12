@@ -38,25 +38,23 @@ router.get('/current-or-previous-selected-model/:type', (req, res) => {
 		[ALGORITHM_TYPES.QUANTIZATION]: 'resnet18',
 		[ALGORITHM_TYPES.PRUNING]: 'ResNet18',
 		[ALGORITHM_TYPES.MACHINE_UNLEARNING]: 'ResNet18',
-		[ALGORITHM_TYPES.AWQ]: 'mistralai/Mistral-7B',
+		[ALGORITHM_TYPES.AWQ]: 'mistralai/Mistral-7B-Instruct-v0.2',
 		Q_TRAIN: 'resnet18',
 		P_TRAIN: 'ResNet18',
 		MU_TRAIN: 'ResNet18'
 	};
 
-	let archValue;
+	let modelValue = defaultValues[requestedType];
 
-	if (script) {
-		if (script.algKey === requestedType) {
-			archValue = script.params.arch;
+	if (script && script.params && script.algorithm.type === requestedType) {
+		if (requestedType === ALGORITHM_TYPES.AWQ) {
+			modelValue = script.params.model || modelValue;
 		} else {
-			archValue = defaultValues[requestedType];
+			modelValue = script.params.arch || modelValue;
 		}
-	} else {
-		archValue = defaultValues[requestedType];
 	}
 
-	res.status(OK).send(JSON.stringify(archValue));
+	res.status(OK).json({ model: modelValue });
 });
 
 /**

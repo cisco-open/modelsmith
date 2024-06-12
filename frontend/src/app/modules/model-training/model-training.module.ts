@@ -25,12 +25,12 @@ import { AdaptiveFileSizePipe } from '../shared/standalone/pipes/adaptive-file-s
 import { ParametersLabelPipe } from '../shared/standalone/pipes/parameters-label.pipe';
 import { ReadableDurationPipe } from '../shared/standalone/pipes/readable-duration.pipe';
 import { ModelTrainingComponent } from './components/model-training/model-training.component';
-import { PanelAlgorithmTypeComponent } from './components/panel-algorithm-type/panel-algorithm-type.component';
+import { PanelAlgorithmTypeForTrainingComponent } from './components/panel-algorithm-type-for-training/panel-algorithm-type-for-training.component';
 import { PanelModelMetadataComponent } from './components/panel-model-metadata/panel-model-metadata.component';
 import { ModelTrainingRoutingModule } from './model-training-routing.module';
 
 @NgModule({
-	declarations: [ModelTrainingComponent, PanelAlgorithmTypeComponent, PanelModelMetadataComponent],
+	declarations: [ModelTrainingComponent, PanelAlgorithmTypeForTrainingComponent, PanelModelMetadataComponent],
 	imports: [
 		CommonModule,
 		SharedModule,

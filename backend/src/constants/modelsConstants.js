@@ -37,8 +37,8 @@ const MACHINE_UNLEARNING_MODELS = [
 ];
 
 const AWQ_MODELS = [
-	'mistralai/Mistral-7B',
 	'mistralai/Mistral-7B-Instruct-v0.2',
+	'mistralai/Mistral-7B-v0.3',
 	'mosaicml/mpt-7b',
 	'decapoda-research/llama-7b-hf',
 	'facebook/opt-1.3b',

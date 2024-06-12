@@ -126,6 +126,7 @@ On your local machine, run the `setup_environment.sh` script located in the `uti
 PORT=3000
 MACHINE_LEARNING_CORE_PATH=machine_learning_core
 CONDA_SH_PATH=miniconda3/etc/profile.d/conda.sh
+HUGGING_FACE_ACCESS_TOKEN=insert_token_here
 
 CONNECTION_TYPE=VM
 
@@ -148,6 +149,7 @@ BACKUP_SSH_PRIVATE_KEY_PATH=myprivatekeypaty
 - **PORT**: The port number where the backend server listens. (default = 3000)
 - **MACHINE_LEARNING_CORE_PATH**: The path to the modelsmith python project directory on the VM.
 - **CONDA_SH_PATH**: Path to the Conda environment script on the VM.
+- **HUGGING_FACE_ACCESS_TOKEN**: This token is necessary for authenticating and accessing Hugging Face's model repositories. To obtain the token, please check: [AutoAWQ Configuration Guide](configure-autoawq.md)
 
 - **CONNECTION_TYPE**: Set to `VM` to indicate the project is configured to use virtual machines for model training.
 

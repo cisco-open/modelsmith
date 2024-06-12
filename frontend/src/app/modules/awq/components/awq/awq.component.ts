@@ -14,12 +14,15 @@
 
 //   SPDX-License-Identifier: Apache-2.0
 
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { ScriptConfigsDto } from '../../../../services/client/models/script/script-configs.interface-dto';
+import { ScriptActions } from '../../../../state/core/script';
 import { ScriptFacadeService } from '../../../core/services';
 import { AWQAlgorithmsEnum, AlgorithmType } from '../../../model-compression/models/enums/algorithms.enum';
 import { isScriptActive } from '../../../model-compression/models/enums/script-status.enum';
+import { MsPanelParametersComponent } from '../../../shared/standalone/ms-panel-parameters/ms-panel-parameters.component';
 
 @UntilDestroy()
 @Component({
@@ -32,6 +35,8 @@ export class AwqComponent {
 	readonly AWQAlgorithmsEnum: typeof AWQAlgorithmsEnum = AWQAlgorithmsEnum;
 
 	isScriptActive: boolean = false;
+
+	@ViewChild('panelParameters', { static: false }) panelParametersComponent!: MsPanelParametersComponent;
 
 	form!: FormGroup;
 
@@ -73,5 +78,18 @@ export class AwqComponent {
 		if (this.isScriptActive) {
 			return;
 		}
+
+		const { algorithm, model: modelPanel } = this.form.getRawValue();
+		const { model } = modelPanel;
+
+		const configs: ScriptConfigsDto = {
+			...algorithm,
+			params: {
+				...this.panelParametersComponent.parametersFormatted,
+				model
+			}
+		};
+
+		this.scriptFacadeService.dispatch(ScriptActions.callScript({ configs }));
 	}
 }

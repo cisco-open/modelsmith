@@ -19,6 +19,7 @@ const ALGORITHM_TYPES = require('./algorithmTypesConstants');
 const PRUNING_PATH = 'examples_pruning/';
 const QUANTIZATION_PATH = 'examples_quant/';
 const MACHINE_UNLEARNING_PATH = 'examples_unlearning/';
+const AUTOAWQ_PATH = 'autoawq/examples/';
 
 const PRUNING_ALGORITHMS = {
 	IPG: {
@@ -89,6 +90,14 @@ const MACHINE_UNLEARNING_ALGORITHMS = {
 	}
 };
 
+const AWQ_ALGORITHMS = {
+	AWQ_Q: {
+		path: AUTOAWQ_PATH,
+		type: ALGORITHM_TYPES.AWQ,
+		fileName: 'quantize.py'
+	}
+};
+
 const TRAIN_ALGORITHMS = {
 	P_TRAIN: {
 		path: PRUNING_PATH,
@@ -111,6 +120,7 @@ const ALGORITHMS = {
 	...PRUNING_ALGORITHMS,
 	...QUANT_ALGORITHMS,
 	...MACHINE_UNLEARNING_ALGORITHMS,
+	...AWQ_ALGORITHMS,
 	...TRAIN_ALGORITHMS
 };
 

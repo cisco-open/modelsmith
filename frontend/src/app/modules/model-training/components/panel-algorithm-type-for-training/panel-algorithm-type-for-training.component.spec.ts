@@ -16,17 +16,17 @@
 
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PanelAlgorithmTypeComponent } from './panel-algorithm-type.component';
+import { PanelAlgorithmTypeForTrainingComponent } from './panel-algorithm-type-for-training.component';
 
-describe('PanelAlgorithmTypeComponent', () => {
-	let component: PanelAlgorithmTypeComponent;
-	let fixture: ComponentFixture<PanelAlgorithmTypeComponent>;
+describe('PanelAlgorithmTypeForTrainingComponent', () => {
+	let component: PanelAlgorithmTypeForTrainingComponent;
+	let fixture: ComponentFixture<PanelAlgorithmTypeForTrainingComponent>;
 
 	beforeEach(() => {
 		TestBed.configureTestingModule({
-			declarations: [PanelAlgorithmTypeComponent]
+			declarations: [PanelAlgorithmTypeForTrainingComponent]
 		});
-		fixture = TestBed.createComponent(PanelAlgorithmTypeComponent);
+		fixture = TestBed.createComponent(PanelAlgorithmTypeForTrainingComponent);
 		component = fixture.componentInstance;
 		fixture.detectChanges();
 	});

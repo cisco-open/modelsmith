@@ -61,6 +61,10 @@ export class PageRunningScriptSpiningIndicatorService {
 						this._currentRunningPage.next(PageKey.MACHINE_UNLEARNING);
 						break;
 					}
+					case AlgorithmType.AWQ: {
+						this._currentRunningPage.next(PageKey.AWQ);
+						break;
+					}
 					case AlgorithmType.TRAIN: {
 						this._currentRunningPage.next(PageKey.MODEL_TRAINING);
 						break;

@@ -48,13 +48,12 @@ export class ModelsEffects {
 	getCurrentOrPreviousSelectedModel$ = createEffect(() =>
 		this.actions$.pipe(
 			ofType(ModelsActions.getCurrentOrPreviousSelectedModel),
-			switchMap((action) => {
-				const { algorithmType } = action;
-				return this.apiClient.serviceCall(new GetCurrentOrPreviousSelectedModel(algorithmType)).pipe(
-					map((model: any) => ModelsActions.getCurrentOrPreviousSelectedModelSuccess({ model })),
+			switchMap((action) =>
+				this.apiClient.serviceCall(new GetCurrentOrPreviousSelectedModel(action.algorithmType)).pipe(
+					map((modelObj: any) => ModelsActions.getCurrentOrPreviousSelectedModelSuccess({ model: modelObj.model })),
 					catchError((error) => of(ModelsActions.getCurrentOrPreviousSelectedModelFailure({ error })))
-				);
-			})
+				)
+			)
 		)
 	);
 
