@@ -54,7 +54,7 @@ def run_eval(
             num_fewshot=task_n_shot,
         )
 
-        print(evaluator.make_table(results))
+        print(evaluator.make_table(results), flush=True)
 
 if __name__ == '__main__':
     """

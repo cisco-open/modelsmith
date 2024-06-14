@@ -71,7 +71,7 @@ def eval_humaneval(
         timeout=3.0,
     )
 
-    print(results)
+    print(results, flush=True)
 
 
 @torch.inference_mode()
@@ -311,7 +311,7 @@ def evaluate_functional_correctness(
         n_samples = 0
         results = defaultdict(list)
 
-        print("Reading samples...")
+        print("Reading samples...", flush=True)
         for sample in tqdm(stream_jsonl(sample_file)):
             task_id = sample["task_id"]
             completion = sample["completion"]
@@ -325,12 +325,12 @@ def evaluate_functional_correctness(
             include_keys = list(problems.keys())[: len(completion_id)]
             print(
                 f"Only found {len(completion_id)} solutions, reducing problems from {len(problems)}..."
-            )
+            , flush=True)
             problems = {k: v for k, v in problems.items() if k in include_keys}
 
         assert len(completion_id) == len(problems), "Some problems are not attempted."
 
-        print("Running test suites...")
+        print("Running test suites...", flush=True)
         for future in tqdm(as_completed(futures), total=len(futures)):
             result = future.result()
             results[result["task_id"]].append((result["completion_id"], result))

@@ -116,33 +116,33 @@ def eval_kl_divergence(
     q99 = np.quantile(kls, 0.99)
     q_bounds = mquantiles_cimj(kls, prob=[0.90, 0.95, 0.99])
 
-    print(" -- ")
-    print(" ** Reference model:", ref_model.config.model_type)
-    print(" ** Evaluation model:", eval_model.config.model_type)
-    print(" -- ")
-    print(f" ** KL Divergence: {m[0]:.6g}, [{m[1][0]:.6g} - {m[1][1]:.6g}]")
-    print(f" ** q90: {q90:.4g}, [{q_bounds[0][0]:.4g} - {q_bounds[1][0]:.4g}]")
-    print(f" ** q95: {q95:.4g}, [{q_bounds[0][1]:.4g} - {q_bounds[1][1]:.4g}]")
-    print(f" ** q99: {q99:.4g}, [{q_bounds[0][2]:.4g} - {q_bounds[1][2]:.4g}]")
-    print(f"max: {np.max(kls):.4g}")
-    print(" -- ")
-    print("Reference top token in eval top-n probability:")
+    print(" -- ", flush=True)
+    print(" ** Reference model:", ref_model.config.model_type, flush=True)
+    print(" ** Evaluation model:", eval_model.config.model_type, flush=True)
+    print(" -- ", flush=True)
+    print(f" ** KL Divergence: {m[0]:.6g}, [{m[1][0]:.6g} - {m[1][1]:.6g}]", flush=True)
+    print(f" ** q90: {q90:.4g}, [{q_bounds[0][0]:.4g} - {q_bounds[1][0]:.4g}]", flush=True)
+    print(f" ** q95: {q95:.4g}, [{q_bounds[0][1]:.4g} - {q_bounds[1][1]:.4g}]", flush=True)
+    print(f" ** q99: {q99:.4g}, [{q_bounds[0][2]:.4g} - {q_bounds[1][2]:.4g}]", flush=True)
+    print(f"max: {np.max(kls):.4g}", flush=True)
+    print(" -- ", flush=True)
+    print("Reference top token in eval top-n probability:", flush=True)
     print(
         f" ** ref_top1: {top1 / samples:.4g} ± {bin_conf(top1/samples, samples, z):.4g}"
-    )
+    , flush=True)
     print(
         f" ** ref_top5: {top5 / samples:.4g} ± {bin_conf(top5/samples, samples, z):.4g}"
-    )
+    , flush=True)
     print(
         f" ** ref_top10: {top10 / samples:4g} ± {bin_conf(top10/samples, samples, z):.4g}"
-    )
-    print("Eval top token in reference top-n probability:")
+    , flush=True)
+    print("Eval top token in reference top-n probability:", flush=True)
     print(
         f" ** eval_top5: {eval_top5 / samples:.4g} ± {bin_conf(eval_top5/samples, samples, z):.4g}"
-    )
+    , flush=True)
     print(
         f" ** eval_top10: {eval_top10 / samples:4g} ± {bin_conf(eval_top10/samples, samples, z):.4g}"
-    )
+    , flush=True)
 
 
 if __name__ == "__main__":

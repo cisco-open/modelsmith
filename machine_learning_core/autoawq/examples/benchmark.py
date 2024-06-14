@@ -86,7 +86,7 @@ def generate_hf(model: BaseAWQForCausalLM, input_ids, n_generate):
     return context_time, generate_time
 
 def run_round(generator, model_path, quant_file, n_generate, input_ids, batch_size, no_safetensors, pretrained):
-    print(f" -- Loading model...")
+    print(f" -- Loading model...", flush=True)
 
     if pretrained:
         model = AutoAWQForCausalLM.from_pretrained(
@@ -102,10 +102,10 @@ def run_round(generator, model_path, quant_file, n_generate, input_ids, batch_si
             safetensors=not no_safetensors
         )
 
-    print(f" -- Warming up...")
+    print(f" -- Warming up...", flush=True)
     warmup(model)
 
-    print(f" -- Generating {n_generate} tokens, {input_ids.shape[1]} in context...")
+    print(f" -- Generating {n_generate} tokens, {input_ids.shape[1]} in context...", flush=True)
     
     try:
         context_time, generate_time = generator(model, input_ids, n_generate)
@@ -124,14 +124,14 @@ def run_round(generator, model_path, quant_file, n_generate, input_ids, batch_si
         # 1 second / median time per token in seconds * batch size
         decode_tokens_per_second = round(1 / np.median(generate_time) * batch_size, 2)
 
-        print(f" ** Speed (Prefill): {prefill_tokens_per_second:.2f} tokens/second")
-        print(f" ** Speed (Decode): {decode_tokens_per_second:.2f} tokens/second")
+        print(f" ** Speed (Prefill): {prefill_tokens_per_second:.2f} tokens/second", flush=True)
+        print(f" ** Speed (Decode): {decode_tokens_per_second:.2f} tokens/second", flush=True)
 
         for device in range(torch.cuda.device_count()):
             memory_used = torch.cuda.max_memory_allocated(device) / (1024 ** 3)
             total_memory_used += memory_used
             memory_pct = memory_used / (torch.cuda.get_device_properties(device).total_memory / (1024 ** 3)) * 100
-            print(f" ** Max Memory (device: {device}): {memory_used:.2f} GB ({memory_pct:.2f}%)")
+            print(f" ** Max Memory (device: {device}): {memory_used:.2f} GB ({memory_pct:.2f}%)", flush=True)
     else:
         prefill_tokens_per_second = 'OOM'
         decode_tokens_per_second = 'OOM'
@@ -192,10 +192,10 @@ def main(args):
             break
     
     df = pd.DataFrame(all_stats)
-    print('GPU:', torch.cuda.get_device_name())
-    print('Model:', args.model_path)
-    print('Version:', model_version)
-    print(df.to_markdown(index=False))
+    print('GPU:', torch.cuda.get_device_name(), flush=True)
+    print('Model:', args.model_path, flush=True)
+    print('Version:', model_version, flush=True)
+    print(df.to_markdown(index=False), flush=True)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()

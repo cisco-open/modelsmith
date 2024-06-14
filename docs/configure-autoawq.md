@@ -1,6 +1,11 @@
 # Configure ModelSmith with AutoAWQ
 
-This guide provides instructions to configure ModelSmith to work with AutoAWQ, facilitating the process of model quantization using remote computational resources.
+This guide provides instructions to configure ModelSmith to work with [AutoAWQ](https://github.com/mit-han-lab/llm-awq), facilitating the process of model quantization using remote computational resources.
+
+## References
+
+- [Original Paper: AutoAWQ](https://arxiv.org/pdf/2306.00978)
+- [Main Repository: AutoAWQ](https://github.com/mit-han-lab/llm-awq)
 
 ## Prerequisites
 

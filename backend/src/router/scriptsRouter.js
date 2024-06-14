@@ -107,12 +107,13 @@ function executePythonScript(path, algorithm, args = '', type) {
 		}
 
 		const scriptPath = `${process.env.MACHINE_LEARNING_CORE_PATH}/${path}`;
-		const cmd = `source ${process.env.CONDA_SH_PATH} && conda activate modelsmith && python3 ${scriptPath}${algorithm} ${args}`;
+		const cmd = `source ${process.env.CONDA_SH_PATH} && conda activate modelsmith && python3 -u ${scriptPath}${algorithm} ${args}`;
 		broadcastTerminal(`python3 ${scriptPath}${algorithm} ${args}`);
 
 		executeCommand(
 			cmd,
 			(data) => {
+				console.log(data);
 				const formattedData = data.toString().replace(/\r\n/g, '');
 				broadcastTerminal(formattedData);
 

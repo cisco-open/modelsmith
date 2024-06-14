@@ -1,10 +1,45 @@
 import argparse
+import logging
+import os
+import sys
+import threading
 from huggingface_hub import login
 from awq import AutoAWQForCausalLM
 from transformers import AutoTokenizer
 from datetime import datetime
-import os
+import io
 
+# Set up logging
+logger = logging.getLogger()
+logger.setLevel(logging.INFO)
+
+# Create a logging handler that writes to stdout and flushes immediately
+class FlushHandler(logging.StreamHandler):
+    def emit(self, record):
+        super().emit(record)
+        self.flush()
+
+handler = FlushHandler(sys.stdout)
+formatter = logging.Formatter('%(message)s')  # Only include the message in the format
+handler.setFormatter(formatter)
+logger.addHandler(handler)
+
+class StreamToLogger(io.StringIO):
+    def __init__(self, logger, level):
+        super().__init__()
+        self.logger = logger
+        self.level = level
+
+    def write(self, message):
+        if message.strip():  # Avoid logging empty messages
+            self.logger.log(self.level, message.strip())
+
+    def flush(self):
+        pass
+
+# Redirect stdout and stderr to logging
+sys.stdout = StreamToLogger(logger, logging.INFO)
+sys.stderr = StreamToLogger(logger, logging.ERROR)
 
 def generate_quant_path(model_path: str) -> str:
     model_name = model_path.split('/')[-1]
@@ -33,7 +68,7 @@ def quantize_and_save_model(model_path: str, token: str, quant_config: dict):
     model.save_quantized(quant_path)
     tokenizer.save_pretrained(quant_path)
 
-    print(f'Model is quantized and saved at "{quant_path}"')
+    logger.info(f'Model is quantized and saved at "{quant_path}"')
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Quantize a Hugging Face model and save it.")

@@ -62,7 +62,7 @@ def eval_librispeech(model_id, num_samples=100, batch_size=4):
     try:
         import jiwer, librosa, soundfile
     except ImportError:
-        print("Please install the following: pip install jiwer librosa soundfile")
+        print("Please install the following: pip install jiwer librosa soundfile", flush=True)
 
     dataset = load_dataset("librispeech_asr", "clean", split="test", streaming=True)
 
@@ -161,7 +161,7 @@ def eval_mmlu(
         log_samples=False,
     )
 
-    print(evaluator.make_table(results))
+    print(evaluator.make_table(results), flush=True)
 
 
 if __name__ == "__main__":
