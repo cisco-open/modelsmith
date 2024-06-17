@@ -2,7 +2,6 @@ import argparse
 import logging
 import os
 import sys
-import threading
 from huggingface_hub import login
 from awq import AutoAWQForCausalLM
 from transformers import AutoTokenizer
@@ -41,10 +40,14 @@ class StreamToLogger(io.StringIO):
 sys.stdout = StreamToLogger(logger, logging.INFO)
 sys.stderr = StreamToLogger(logger, logging.ERROR)
 
+# Define directory paths
+script_dir = os.path.dirname(os.path.realpath(__file__))
+quantization_dir = os.path.join(script_dir, 'quantization')
+
 def generate_quant_path(model_path: str) -> str:
     model_name = model_path.split('/')[-1]
-    current_date = datetime.now().strftime('%Y-%m-%d')
-    return f"{model_name}-quantized-{current_date}"
+    current_datetime = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
+    return os.path.join(quantization_dir, f"{model_name}-quantized-{current_datetime}")
 
 def quantize_and_save_model(model_path: str, token: str, quant_config: dict):
     # Login to Hugging Face
