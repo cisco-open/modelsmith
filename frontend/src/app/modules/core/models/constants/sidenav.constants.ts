@@ -49,7 +49,7 @@ const expert: SidenavItem[] = [
 	},
 	{
 		route: RoutesList.AWQ.ROOT,
-		label: 'Activation-aware Weight Quantization',
+		label: 'LLM Quantization',
 		icon: 'icon-Lightning',
 		key: PageKey.AWQ
 	},
