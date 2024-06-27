@@ -1,0 +1,45 @@
+# training data
+
+# each caption for the whole image is already contained in the region annotations
+cc3m_file: 'data/pretrain/cc3m_pretrain.json'
+
+# image folders
+vg_image_root: 'images/vg'
+cc3m_image_root: 'images/cc3m'
+use_test_transform: False
+
+# region files
+region_files: [
+  'data/pretrain/vg_regions.json'
+]
+
+# configuration for region dataset
+max_regions: 1
+min_perc_in_image: 0.5
+calc_image_bbox_loss: False
+
+# details of annotations (keys are shared among general and region-level files)
+image_key: 'image' 
+caption_key: 'caption' 
+dataset_key: 'dataset'
+
+# pruning settings
+batch_size: 32
+
+# visual settings
+image_res: 224
+patch_size: 16
+
+# textual settings
+use_roberta: false
+text_encoder: 'bert-base-uncased'
+mask_prob: 0.25
+max_masks: 8
+mask_whole_word: True
+skipgram_prb: 0.2
+skipgram_size: 3
+
+# data settings
+embed_dim: 256
+max_words: 40
+max_tokens: 40

@@ -1,0 +1,40 @@
+batch_size_target: 128
+batch_size_test: 32
+batch_size_test_text: 32
+batch_size_train: 32
+
+train_file: [data/finetune/itr/coco_train.json]
+val_file: data/finetune/itr/coco_val.json
+test_file: data/finetune/itr/coco_test.json
+
+image_root: 'images/coco'
+ann_root: 'annotation'
+dataset: 'coco'
+
+# set pretrained as a file path or an url
+pretrained: ''
+
+# size of vit model; base or large
+vit: 'base'
+vit_grad_ckpt: False
+vit_ckpt_layer: 4
+
+image_res: 384
+queue_size: 57600
+alpha: 0.4
+k_test: 256
+negative_all_rank: False
+
+# optimizer
+optimizer: {init_lr: 1e-5, weight_decay: 0.05, min_lr: 0}
+scheduler: {epochs: 6, num_warmup_steps: 0, sched: cosine}
+
+# save frequency (in epochs)
+save_freq: 1
+max_tokens: 35
+
+# config for W&B
+wandb_data:
+  name: your_run_name
+  project: your_project_name
+  tags: [your_list_of_tags]

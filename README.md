@@ -29,7 +29,7 @@ To get started with ModelSmith, follow these steps:
 
 ### 1. How do I configure ModelSmith to run locally? [Read here](docs/configure-the-project-locally.md).
 
-### 2. How do I configure ModelSmith to run on VM? [Read here](docs/configure_modelsmith_on_vm.md).
+### 2. How do I configure ModelSmith to run on VM? [Read here](docs/configure-modelsmith-on-vm.md).
 
 ## Features
 
@@ -41,17 +41,15 @@ To get started with ModelSmith, follow these steps:
 
 ## Supported technologies
 
-- Post Training Quantization
+- [Post Training Quantization](machine_learning_core/examples_quant)
 
-  Visit the source code [PTQ](modelsmith/examples_quant)
+- [Model Pruning](machine_learning_core/examples_pruning)
 
-- Model Pruning
+- [Machine Unlearning](machine_learning_core/examples_unlearning)
 
-  Visit the source code [Pruning](modelsmith/examples_pruning)
+- [AutoAWQ](machine_learning_core/autoawq/)
 
-- Machine Unlearning
-
-  Visit the source code [Unlearning](modelsmith/examples_unlearning)
+- [Multiflow](machine_learning_core/multiflow)
 
 ## Contributions
 

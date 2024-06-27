@@ -1,0 +1,9 @@
+# size of vit model; base or large
+vit: 'base'
+vit_grad_ckpt: False
+vit_ckpt_layer: 0
+
+image_res: 224
+batch_size: 16
+queue_size: 57600
+alpha: 0.4

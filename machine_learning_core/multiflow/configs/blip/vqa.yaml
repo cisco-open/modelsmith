@@ -1,0 +1,36 @@
+# dataset configuration
+answer_list: data/finetune/vqa/answer_list.json
+vqa_root: 'images/coco' 
+vg_root: 'images/vg'  
+train_file: [data/finetune/vqa/vqa_train.json, data/finetune/vqa/vqa_val.json, data/finetune/vqa/vg_qa.json]
+val_file: [data/finetune/vqa/vqa_val.json]
+test_file: [data/finetune/vqa/vqa_test.json]
+
+ann_root: 'annotation'
+print_freq: 256
+
+# set pretrained as a file path or an url
+pretrained: ''
+
+# size of vit model; base or large
+vit: 'base'
+batch_size_target: 256
+batch_size_test: 64
+batch_size_train: 64
+vit_grad_ckpt: False
+vit_ckpt_layer: 0
+
+image_res: 384
+max_tokens: 35
+k_test: 128
+inference: 'rank'
+
+# optimization config
+init_lr: 2e-5
+optimizer: {init_lr: 2e-5, weight_decay: 0.05, min_lr: 0}
+scheduler: {epochs: 10, num_warmup_steps: 0, sched: cosine}
+
+wandb_data:
+  name: your_run_name
+  project: your_project_name
+  tags: [your_list_of_tags]

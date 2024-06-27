@@ -1,0 +1,4 @@
+# configs for loading
+batch_size: 32
+image_res: 224
+root: data/imagenet

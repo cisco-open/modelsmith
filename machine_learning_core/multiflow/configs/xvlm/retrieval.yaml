@@ -1,0 +1,30 @@
+batch_size_target: 128
+batch_size_test: 32
+batch_size_test_text: 64
+batch_size_train: 32
+embed_dim: 256
+eval_dataset: coco
+finetuning_dataset: coco
+grad_acc_steps: 4
+image_res: 384
+image_root: images/coco/
+k_test: 256
+max_tokens: 40
+optimizer: {lr: 3e-05, lr_mult: 2, opt: adamW, weight_decay: 0.01}
+patch_size: 16
+save_freq: -1
+scheduler: {epochs: 10, lr: 3e-05, num_warmup_steps: 0.1, sched: linear}
+temp: 0.07
+test_file: data/finetune/itr/coco_test.json
+text_config: configs/xvlm/config_bert.json
+text_encoder: bert-base-uncased
+train_file: [data/finetune/itr/coco_train.json]
+use_clip_vit: true
+use_roberta: false
+use_swin: false
+val_file: data/finetune/itr/coco_val.json
+vision_config: configs/xvlm/config_clipvitB.json
+wandb_data:
+  name: your_run_name
+  project: your_project_name
+  tags: [your_list_of_tags]

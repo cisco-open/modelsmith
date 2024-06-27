@@ -1,0 +1,26 @@
+# training data
+# each is a json file containing a list of dicts
+
+# each caption for the whole image is already contained in the region annotations
+vg_file: 'data/pretrain/vg_dense_gby_image.json'
+cc3m_file: 'data/pretrain/cc3m_pretrain.json'
+
+# image folders
+vg_image_root: 'images/vg'
+cc3m_image_root: 'images/cc3m'
+
+# details of annotations (keys are shared among general and region-level files)
+image_key: 'image' 
+caption_key: 'caption' 
+dataset_key: 'dataset'
+
+# pruning settings
+batch_size: 32
+
+# visual settings
+image_res: 224
+patch_size: 16
+
+use_test_transform: False
+max_words: 40
+max_tokens: 30

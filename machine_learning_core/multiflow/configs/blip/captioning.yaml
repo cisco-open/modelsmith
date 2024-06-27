@@ -1,0 +1,44 @@
+train_file: ['data/finetune/ic/coco_karpathy_train.json']
+val_file: 'data/finetune/ic/coco_karpathy_val.json'
+test_file: 'data/finetune/ic/coco_karpathy_test.json'
+
+image_root: 'images/coco/'
+val_gt_file: 'data/finetune/ic/coco_karpathy_val_gt.json'
+test_gt_file: 'data/finetune/ic/coco_karpathy_test_gt.json'
+
+batch_size_target: 256
+batch_size_test: 64
+batch_size_test_text: 64
+batch_size_train: 64
+
+
+start_eval: 0
+
+# set pretrained as a file path or an url
+pretrained: ''
+
+# size of vit model; base or large
+vit: 'base'
+vit_grad_ckpt: False
+vit_ckpt_layer: 0
+batch_size: 32
+init_lr: 1e-5
+
+max_tokens: 40
+image_res: 384
+log_freq: 16
+
+# generation configs 
+max_length: 20  
+min_length: 5
+num_beams: 3
+prompt: 'a picture of '
+
+# learning settings
+optimizer: {init_lr: 1e-5, weight_decay: 0.05, min_lr: 0}
+scheduler: {sched: cosine, epochs: 5, num_warmup_steps: 0}
+
+wandb_data:
+  name: your_run_name
+  project: your_project_name
+  tags: [your_list_of_tags]

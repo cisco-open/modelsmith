@@ -1,0 +1,31 @@
+answer_list: data/finetune/vqa/answer_list.json
+batch_size_target: 256
+batch_size_test: 64
+batch_size_train: 64
+eos: '[SEP]'
+grad_acc_steps: 8
+image_res: 384
+k_test: 128
+max_tokens: 40
+num_dec_layers: 6
+optimizer: {lr: 5e-05, lr_mult: 2, opt: adamW, weight_decay: 0.01}
+pad_token_id: 0
+patch_size: 16
+print_freq: 256
+scheduler: {epochs: 10, lr: 5e-05, num_warmup_steps: 0.1, sched: linear}
+start_eval: 7
+test_file: [data/finetune/vqa/vqa_test.json]
+text_config: configs/xvlm/config_bert.json
+text_encoder: bert-base-uncased
+train_file: [data/finetune/vqa/vqa_train.json, data/finetune/vqa/vqa_val.json, data/finetune/vqa/vg_qa.json]
+use_clip_vit: true
+use_roberta: false
+use_swin: false
+val_file: [data/finetune/vqa/vqa_val.json]
+vg_root: images/vg/
+vision_config: configs/xvlm/config_clipvitB.json
+vqa_root: images/coco/
+wandb_data:
+  name: your_run_name
+  project: your_project_name
+  tags: [your_list_of_tags]

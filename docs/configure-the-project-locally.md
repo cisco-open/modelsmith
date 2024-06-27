@@ -41,36 +41,17 @@ To get started, you need to set up the Python environment for ModelSmith. This i
    pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
    ```
 
-3. **Train the Models**
-   While beeing in the modelsmith environment (conda activate modelsmith), navigate to each of the following directories and run the `train.py` script with the epochs and arch parameters:
+3. **Configure Pruning, Quantization, Machine Unlearning Python Projects**:
 
-   - From `examples_quant` directory:
-
-     - Predefined models to train: resnet18, resnet34, resnet50, resnet101, resnet152, resnext50_32x4d, resnext101_32x8d, wide_resnet50_2, wide_resnet101_2
-
-     ```python
-     python3 modelsmith/examples_quant/train.py --arch=resnet18 --epochs=100
-     ```
-
-   - From `examples_pruning` directory:
-
-     - Predefined models to train: ResNet18, ResNet34, ResNet50, ResNet101, ResNet152, VGG11, VGG13, VGG16, VGG19
-
-     ```python
-     python3 modelsmith/examples_pruning/train.py --arch=ResNet18 --epochs=100
-     ```
-
-   - From `examples_unlearning` directory:
-
-     - Predefined models to train: ResNet18, ResNet34, ResNet50, ResNet101, ResNet152, VGG11, VGG13, VGG16, VGG19
-
-     ```python
-     python3 modelsmith/examples_unlearning/train.py --arch=ResNet18 --epochs=100
-     ```
+   Please refer to the [Pruning, Quantization, Machine Unlearning Configuration Guide](configure-pruning-quant-ml.md) for detailed instructions.
 
 4. **Configure AutoAWQ for Model Quantization**:
 
-   Please refer to the [AutoAWQ Configuration Guide](configure-autoawq.md) for detailed instructions on setting up AutoAWQ.
+   Please refer to the [AutoAWQ Configuration Guide](configure-autoawq.md) for detailed instructions.
+
+5. **Configure Multiflow Python Project**:
+
+   Please refer to the [Multiflow Configuration Guide](configure-multiflow.md) for detailed instructions.
 
 ## Phase 2: Run the Environment Setup Script
 

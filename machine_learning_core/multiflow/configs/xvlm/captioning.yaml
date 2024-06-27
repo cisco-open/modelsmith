@@ -1,0 +1,51 @@
+train_file: ['data/finetune/ic/coco_karpathy_train.json']
+val_file: 'data/finetune/ic/coco_karpathy_val.json'
+test_file: 'data/finetune/ic/coco_karpathy_test.json'
+
+image_root: 'images/coco/'
+val_gt_file: 'data/finetune/ic/coco_karpathy_val_gt.json'
+test_gt_file: 'data/finetune/ic/coco_karpathy_test_gt.json'
+
+## Vision Encoder
+vision_config: 'configs/xvlm/config_clipvitB.json'
+
+use_clip_vit: True
+image_res: 384
+patch_size: 16
+
+use_swin: False
+# image_res: 384
+# patch_size: 32
+
+## Text Encoder
+use_roberta: False
+text_config: 'configs/xvlm/config_bert.json'
+text_encoder: 'bert-base-uncased'
+
+## Training
+num_dec_layers: 6
+batch_size_target: 256
+batch_size_train: 64
+batch_size_test: 64
+max_tokens: 40
+label_smoothing: 0.1
+
+
+## generation configs, following blip
+max_length: 20
+min_length: 5
+num_beams: 3
+prompt: 'a picture of '
+
+
+## Other Settings
+optimizer: {opt: adamW, lr: 1e-5, weight_decay: 0.01, lr_mult: 2}
+scheduler: {sched: linear, lr: 1e-5, epochs: 5, num_warmup_steps: 0.1}
+start_eval: 0  # epoch index
+log_freq: 16
+
+wandb_data:
+  name: your_run_name
+  project: your_project_name
+  tags: [your_list_of_tags]
+

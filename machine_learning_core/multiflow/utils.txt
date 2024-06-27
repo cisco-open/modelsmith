@@ -1,0 +1,1 @@
+rsync -av --exclude='.git' multiflow ipop@eti-research-dev3:/home/ipop/
