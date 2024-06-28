@@ -35,45 +35,56 @@ Run the provided script to download the required annotation files:
 ./machine_learning_core/multiflow/download_annots.sh
 ```
 
-### Step 4: Install Additional Dependencies
-
-```bash
-pip install -r machine_learning_core/multiflow/deps/requirements.txt
-```
-
-### Step 5: Download and Prepare COCO Images
+### Step 4: Download and Prepare COCO Images
 
 Download the COCO images from the [official website](https://cocodataset.org/#download). You need the `train2014`, `val2014`, and `test2015` images. Follow these step-by-step instructions:
 
 1. Download and extract the `train2014` dataset:
 
    ```bash
+   # Download the dataset
    wget http://images.cocodataset.org/zips/train2014.zip -O coco_train2014.zip
-   # If download is interrupted, use:
-   curl -O -C - http://images.cocodataset.org/zips/train2014.zip -o coco_train2014.zip
-   python3 -m zipfile -e coco_train2014.zip machine_learning_core/multiflow/images/coco/train2014
+   # If the download is interrupted, you can resume it with:
+   curl -C - -o coco_train2014.zip http://images.cocodataset.org/zips/train2014.zip
+
+   # Extract the dataset
+   python3 -m zipfile -e coco_train2014.zip machine_learning_core/multiflow/images/coco
+
+   # Remove the zip file to save space
    rm coco_train2014.zip
    ```
 
 2. Download and extract the `val2014` dataset:
 
    ```bash
+   # Download the dataset
    wget http://images.cocodataset.org/zips/val2014.zip -O coco_val2014.zip
    # If download is interrupted, use:
-   curl -O -C - http://images.cocodataset.org/zips/val2014.zip -o coco_val2014.zip
-   python3 -m zipfile -e coco_val2014.zip machine_learning_core/multiflow/images/coco/val2014
+   curl -C - -o coco_val2014.zip http://images.cocodataset.org/zips/val2014.zip
+
+   # Extract the dataset
+   python3 -m zipfile -e coco_val2014.zip machine_learning_core/multiflow/images/coco
+
+    # Remove the zip file to save space
    rm coco_val2014.zip
    ```
 
 3. Download and extract the `test2015` dataset:
 
    ```bash
+   # Download the dataset
    wget http://images.cocodataset.org/zips/test2015.zip -O coco_test2015.zip
-   python3 -m zipfile -e coco_test2015.zip machine_learning_core/multiflow/images/coco/test2015
+   # If download is interrupted, use:
+   curl -C - -o coco_test2015.zip http://images.cocodataset.org/zips/test2015.zip
+
+    # Extract the dataset
+   python3 -m zipfile -e coco_test2015.zip machine_learning_core/multiflow/images/coco
+
+   # Remove the zip file to save space
    rm coco_test2015.zip
    ```
 
-### Step 6: Download and Prepare Visual Genome (VG) Images
+### Step 5: Download and Prepare Visual Genome (VG) Images
 
 1. Create the directory:
 
@@ -84,27 +95,26 @@ Download the COCO images from the [official website](https://cocodataset.org/#do
 2. Download and extract the VG images:
 
    ```bash
+   # Download part 1
    wget https://cs.stanford.edu/people/rak248/VG_100K_2/images.zip -O vg_images_part1.zip
-   python3 -m zipfile -e vg_images_part1.zip machine_learning_core/multiflow/images/vg
+   # If download is interrupted, use:
+   curl -C - -o vg_images_part1.zip https://cs.stanford.edu/people/rak248/VG_100K_2/images.zip
+
+   # Extract part 1 directly to the target directory
+   python3 machine_learning_core/multiflow/extract.py vg_images_part1.zip machine_learning_core/multiflow/images/vg
    rm vg_images_part1.zip
 
+   # Download part 2
    wget https://cs.stanford.edu/people/rak248/VG_100K_2/images2.zip -O vg_images_part2.zip
-   python3 -m zipfile -e vg_images_part2.zip machine_learning_core/multiflow/images/vg
+   # If download is interrupted, use:
+   curl -C - -o vg_images_part2.zip https://cs.stanford.edu/people/rak248/VG_100K_2/images2.zip
+
+   # Extract part 2 directly to the target directory
+   python3 machine_learning_core/multiflow/extract.py vg_images_part2.zip machine_learning_core/multiflow/images/vg
    rm vg_images_part2.zip
    ```
 
-3. Move the contents from `VG_100K` and `VG_100K_2` to the `machine_learning_core/multiflow/images/vg` directory:
-
-   ```bash
-   find machine_learning_core/multiflow/images/vg/VG_100K -type f -exec mv {} machine_learning_core/multiflow/images/vg/ \;
-   find machine_learning_core/multiflow/images/vg/VG_100K_2 -type f -exec mv {} machine_learning_core/multiflow/images/vg/ \;
-
-   # Remove the now empty directories
-   rm -r machine_learning_core/multiflow/images/vg/VG_100K
-   rm -r machine_learning_core/multiflow/images/vg/VG_100K_2
-   ```
-
-### Step 7: Download and Prepare Conceptual Captions 3M (CC3M) Dataset
+### Step 6: Download and Prepare Conceptual Captions 3M (CC3M) Dataset
 
 1. Create the directory:
 
@@ -116,6 +126,9 @@ Download the COCO images from the [official website](https://cocodataset.org/#do
 
    ```bash
    wget https://huggingface.co/datasets/liuhaotian/LLaVA-CC3M-Pretrain-595K/resolve/main/images.zip -O cc3m_images.zip
+   # If download is interrupted, use:
+   curl -C - -o cc3m_images.zip https://huggingface.co/datasets/liuhaotian/LLaVA-CC3M-Pretrain-595K/resolve/main/images.zip
+
    python3 -m zipfile -e cc3m_images.zip machine_learning_core/multiflow/images/cc3m
    rm cc3m_images.zip
    ```
@@ -129,9 +142,17 @@ Download the COCO images from the [official website](https://cocodataset.org/#do
 4. Transform the metadata:
 
    ```bash
-   python transform_metadata.py machine_learning_core/multiflow/data/pretrain/metadata.json machine_learning_core/multiflow/data/pretrain/cc3m_pretrain.json cc3m
+   python machine_learning_core/multiflow/transform_metadata.py machine_learning_core/multiflow/data/pretrain/metadata.json machine_learning_core/multiflow/data/pretrain/cc3m_pretrain.json cc3m
    ```
 
----
+## Test
 
 By following these steps, you will successfully configure and set up the Multiflow project.
+
+You can check that multiflow it's running by running the command:
+
+```bash
+conda activate modelsmithm
+cd machine_learning_core/multiflow
+python3 prune.py --model xvlm --pruner multiflow
+```
