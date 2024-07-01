@@ -19,7 +19,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { take } from 'rxjs';
 import { KeyValueObject } from '../../../../services/client/models/key-value/key-value.interface-dto';
-import { AlgorithmType, AlgorithmTypeKeyValue } from '../../../model-compression/models/enums/algorithms.enum';
+import { AlgorithmType } from '../../../model-compression/models/enums/algorithms.enum';
 import { DrawerClose, DrawerService, DrawerStatus } from '../../../shared/standalone/ms-drawer';
 import { DrawerActionTypeEnum } from '../../../shared/standalone/ms-drawer/models/drawer-action-type.enum';
 import { RecordComparisonItem } from '../../models/record-comparisson.interface';
@@ -35,7 +35,21 @@ import { RunDrawerActionsComponent } from '../run-drawer-actions/run-drawer-acti
 export class AlgorithmComparisonComponent implements OnInit {
 	form: FormGroup = new FormGroup({});
 
-	readonly algorithmTypesOptions = AlgorithmTypeKeyValue.filter((option) => option.key !== AlgorithmType.TRAIN);
+	readonly algorithmTypesOptions = [
+		{
+			key: AlgorithmType.QUANTIZATION,
+			value: 'Quantization'
+		},
+		{
+			key: AlgorithmType.PRUNING,
+			value: 'Pruning'
+		},
+		{
+			key: AlgorithmType.MACHINE_UNLEARNING,
+			value: 'Machine Unlearning'
+		}
+	];
+
 	readonly ALGORITHM_TYPE_CONTROL_NAME = 'algorithmType';
 
 	get algorithmTypeFormControl(): FormControl {

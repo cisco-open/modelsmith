@@ -20,6 +20,7 @@ import { ControlContainer, FormArray, FormBuilder, FormGroup, ReactiveFormsModul
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -48,7 +49,8 @@ import { isScriptActive } from '../../../model-compression/models/enums/script-s
 		MatFormFieldModule,
 		MatSelectModule,
 		MatTooltipModule,
-		MatCheckboxModule
+		MatCheckboxModule,
+		MatIconModule
 	],
 	templateUrl: './ms-panel-parameters.component.html',
 	styleUrls: ['./ms-panel-parameters.component.scss'],

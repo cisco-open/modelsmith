@@ -21,6 +21,7 @@ export type AlgorithmKey =
 	| QuantizationAlgorithmsEnum
 	| MachineUnlearningAlgorithmsEnum
 	| AWQAlgorithmsEnum
+	| MultiflowAlgorithmsEnum
 	| TrainAlgorithmsEnum;
 
 export enum AlgorithmType {
@@ -28,6 +29,7 @@ export enum AlgorithmType {
 	PRUNING = 'pruning',
 	MACHINE_UNLEARNING = 'machine_unlearning',
 	AWQ = 'awq',
+	MULTIFLOW = 'multiflow',
 	TRAIN = 'train'
 }
 
@@ -40,6 +42,10 @@ export enum QuantizationAlgorithmsEnum {
 	BPTQ = 'BPTQ',
 	BRECQ = 'BRECQ',
 	MINMAXPTQ = 'MINMAXPTQ'
+}
+
+export enum MultiflowAlgorithmsEnum {
+	MULTIFLOW_PRUNE = 'MULTIFLOW_PRUNE'
 }
 
 export enum PruningAlgorithmsEnum {
@@ -84,6 +90,8 @@ export function determineAlgorithmType(algValue: AlgorithmKey): AlgorithmType | 
 		return AlgorithmType.AWQ;
 	} else if (Object.values(TrainAlgorithmsEnum).includes(algValue as TrainAlgorithmsEnum)) {
 		return AlgorithmType.TRAIN;
+	} else if (Object.values(MultiflowAlgorithmsEnum).includes(algValue as MultiflowAlgorithmsEnum)) {
+		return AlgorithmType.MULTIFLOW;
 	}
 	return null;
 }

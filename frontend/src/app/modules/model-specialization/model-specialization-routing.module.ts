@@ -16,17 +16,17 @@
 
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AwqComponent } from './components/awq/awq.component';
+import { ModelSpecializationComponent } from './components/model-specialization/model-specialization.component';
 
-const AWQ_ROUTES: Routes = [
+const MODEL_SPECIALIZATION_ROUTES: Routes = [
 	{
 		path: '',
-		component: AwqComponent
+		component: ModelSpecializationComponent
 	}
 ];
 
 @NgModule({
-	imports: [RouterModule.forChild(AWQ_ROUTES)],
+	imports: [RouterModule.forChild(MODEL_SPECIALIZATION_ROUTES)],
 	exports: [RouterModule]
 })
-export class AWQRoutingModule {}
+export class ModelSpecializationRoutingModule {}

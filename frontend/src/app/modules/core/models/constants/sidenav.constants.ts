@@ -54,9 +54,10 @@ const expert: SidenavItem[] = [
 		key: PageKey.AWQ
 	},
 	{
-		route: 'model-specialization',
+		route: RoutesList.MODEL_SPECIALIZATION.ROOT,
 		label: 'Model Specialization',
-		icon: 'icon-MapTrifold'
+		icon: 'icon-MapTrifold',
+		key: PageKey.MODEL_SPECIALIZATION
 	},
 	{
 		route: 'multi-modal',

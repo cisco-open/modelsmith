@@ -64,7 +64,7 @@ const routes: Routes = [
 			},
 			{
 				path: RoutesList.AWQ.ROOT,
-				loadChildren: () => import('./modules/awq/awq.module').then((m) => m.AWQModule)
+				loadChildren: () => import('./modules/llm-quantization/llm-quantization.module').then((m) => m.LlmQuantizationModule)
 			},
 			{
 				path: RoutesList.RUNNING.ROOT,
@@ -78,6 +78,11 @@ const routes: Routes = [
 				path: RoutesList.ALGORITHM_COMPARISON.ROOT,
 				loadChildren: () =>
 					import('./modules/algorithm-comparison/algorithm-comparison.module').then((m) => m.AlgorithmComparisonModule)
+			},
+			{
+				path: RoutesList.MODEL_SPECIALIZATION.ROOT,
+				loadChildren: () =>
+					import('./modules/model-specialization/model-specialization.module').then((m) => m.ModelSpecializationModule)
 			}
 		]
 	}

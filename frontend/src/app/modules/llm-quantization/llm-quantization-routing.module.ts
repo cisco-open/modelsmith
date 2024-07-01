@@ -14,11 +14,19 @@
 
 //   SPDX-License-Identifier: Apache-2.0
 
-export enum PageKey {
-	MODEL_COMPRESSION = 'MODEL_COMPRESSION',
-	MACHINE_UNLEARNING = 'MACHINE_UNLEARNING',
-	MODEL_TRAINING = 'MODEL_TRAINING',
-	AWQ = 'AWQ',
-	MODEL_SPECIALIZATION = 'MODEL_SPECIALIZATION',
-	NONE = 'NONE'
-}
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { LlmQuantizationComponent } from './components/llm-quantization/llm-quantization.component';
+
+const LLM_ROUTES: Routes = [
+	{
+		path: '',
+		component: LlmQuantizationComponent
+	}
+];
+
+@NgModule({
+	imports: [RouterModule.forChild(LLM_ROUTES)],
+	exports: [RouterModule]
+})
+export class LlmQuantizationRoutingModule {}

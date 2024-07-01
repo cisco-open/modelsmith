@@ -1163,12 +1163,103 @@ const TRAIN_PARAMETERS = {
 	]
 };
 
+const MULTIFLOW_PARAMETERS = {
+	MULTIFLOW_PRUNE: [
+		{
+			argName: 'pruner',
+			defaultValue: 'multiflow',
+			inputType: 'select',
+			label: 'Pruner Type',
+			placeholder: 'Select pruner type',
+			help: 'Type of pruner to use',
+			options: [
+				{ value: 'omp', viewValue: 'omp' },
+				{ value: 'rand', viewValue: 'rand' },
+				{ value: 'snip', viewValue: 'snip' },
+				{ value: 'itersnip', viewValue: 'itersnip' },
+				{ value: 'lamp', viewValue: 'lamp' },
+				{ value: 'chita', viewValue: 'chita' },
+				{ value: 'tamt', viewValue: 'tamt' },
+				{ value: 'l2', viewValue: 'l2' },
+				{ value: 'multiflow', viewValue: 'multiflow' }
+			]
+		},
+		{
+			argName: 'model',
+			defaultValue: 'xvlm',
+			inputType: 'select',
+			label: 'Model Type',
+			placeholder: 'Select model type',
+			help: 'Type of model to prune',
+			options: [
+				{ value: 'xvlm', viewValue: 'xvlm' },
+				{ value: 'blip', viewValue: 'blip' },
+				{ value: 'dino', viewValue: 'dino' }
+			]
+		},
+		{
+			argName: 'sparsities',
+			defaultValue: '63,75,90',
+			inputType: 'text',
+			label: 'Sparsities',
+			placeholder: 'Enter comma separated list of sparsities',
+			help: 'Comma separated list of sparsities to prune at. Default: 63,75,90'
+		},
+		{
+			argName: 'seed',
+			defaultValue: 42,
+			inputType: 'number',
+			label: 'Seed',
+			placeholder: 'Enter seed for random number generator',
+			help: 'Seed for the random number generator. Default: 42'
+		},
+		{
+			argName: 'num_batches',
+			defaultValue: 3000,
+			inputType: 'number',
+			label: 'Number of Batches',
+			placeholder: 'Enter number of batches to use',
+			help: 'Number of batches to use. Default: 3000'
+		},
+		{
+			argName: 'epochs',
+			defaultValue: 1,
+			inputType: 'number',
+			label: 'Epochs',
+			placeholder: 'Enter total number of pruning iterations',
+			help: 'Total number of pruning iterations. Default: 1'
+		},
+		{
+			argName: 'schedule',
+			defaultValue: 'exp',
+			inputType: 'select',
+			label: 'Schedule',
+			placeholder: 'Select schedule for IterSNIP/CHITA++',
+			help: 'Schedule for IterSNIP/CHITA++. Default: exp',
+			options: [
+				{ value: 'linear', viewValue: 'linear' },
+				{ value: 'exp', viewValue: 'exp' },
+				{ value: 'const', viewValue: 'const' }
+			]
+		},
+		{
+			argName: 'lambda_',
+			defaultValue: 1e-5,
+			inputType: 'number',
+			label: 'Lambda',
+			placeholder: 'Enter ridge penalty for CHITA and CHITA++',
+			help: 'Ridge penalty for CHITA and CHITA++, unused otherwise. Default: 1e-5'
+		}
+	]
+};
+
 const ALGORITHM_PARAMETERS = {
 	...QUANTIZATION_PARAMETERS,
 	...PRUNING_PARAMETERS,
 	...MACHINE_UNLEARNING_PARAMETERS,
 	...AWQ_PARAMETERS,
-	...TRAIN_PARAMETERS
+	...TRAIN_PARAMETERS,
+	...MULTIFLOW_PARAMETERS
 };
 
 module.exports = ALGORITHM_PARAMETERS;

@@ -15,20 +15,15 @@
   SPDX-License-Identifier: Apache-2.0
    -->
 
-<p class="heading-primary-title title">Activation-aware Weight Quantization</p>
+<p class="heading-primary-title title">Model Specialization</p>
 
 <div class="page-wrapper" [formGroup]="form">
 	<div class="left">
 		<ng-container [formGroup]="form">
-			<ms-panel-model
-				controlKey="model"
-				[algorithmType]="AlgorithmType.AWQ"
-				[isTrainModelsPageRouteVisible]="false"></ms-panel-model>
-
 			<ms-panel-parameters
 				#panelParameters
 				controlKey="params"
-				[algorithm]="AWQAlgorithmsEnum.AWQ_QUANTIZATION"></ms-panel-parameters>
+				[algorithm]="MultiflowAlgorithmsEnum.MULTIFLOW_PRUNE"></ms-panel-parameters>
 		</ng-container>
 
 		<div>

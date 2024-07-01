@@ -14,11 +14,24 @@
 
 //   SPDX-License-Identifier: Apache-2.0
 
-export enum PageKey {
-	MODEL_COMPRESSION = 'MODEL_COMPRESSION',
-	MACHINE_UNLEARNING = 'MACHINE_UNLEARNING',
-	MODEL_TRAINING = 'MODEL_TRAINING',
-	AWQ = 'AWQ',
-	MODEL_SPECIALIZATION = 'MODEL_SPECIALIZATION',
-	NONE = 'NONE'
-}
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+
+import { ModelSpecializationComponent } from './model-specialization.component';
+
+describe('ModelSpecializationComponent', () => {
+	let component: ModelSpecializationComponent;
+	let fixture: ComponentFixture<ModelSpecializationComponent>;
+
+	beforeEach(() => {
+		TestBed.configureTestingModule({
+			declarations: [ModelSpecializationComponent]
+		});
+		fixture = TestBed.createComponent(ModelSpecializationComponent);
+		component = fixture.componentInstance;
+		fixture.detectChanges();
+	});
+
+	it('should create', () => {
+		expect(component).toBeTruthy();
+	});
+});

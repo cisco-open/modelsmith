@@ -26,11 +26,11 @@ import { MsPanelParametersComponent } from '../../../shared/standalone/ms-panel-
 
 @UntilDestroy()
 @Component({
-	selector: 'ms-awq',
-	templateUrl: './awq.component.html',
-	styleUrls: ['./awq.component.scss']
+	selector: 'ms-llm-quantization',
+	templateUrl: './llm-quantization.component.html',
+	styleUrls: ['./llm-quantization.component.scss']
 })
-export class AwqComponent {
+export class LlmQuantizationComponent {
 	readonly AlgorithmType: typeof AlgorithmType = AlgorithmType;
 	readonly AWQAlgorithmsEnum: typeof AWQAlgorithmsEnum = AWQAlgorithmsEnum;
 

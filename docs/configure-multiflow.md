@@ -152,7 +152,7 @@ By following these steps, you will successfully configure and set up the Multifl
 You can check that multiflow it's running by running the command:
 
 ```bash
-conda activate modelsmithm
+conda activate modelsmith
 cd machine_learning_core/multiflow
 python3 prune.py --model xvlm --pruner multiflow
 ```

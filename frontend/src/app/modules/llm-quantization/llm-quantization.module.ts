@@ -20,18 +20,18 @@ import { SharedModule } from '../shared/shared.module';
 import { MsPanelModelComponent } from '../shared/standalone/ms-panel-model/ms-panel-model.component';
 import { MsPanelParametersComponent } from '../shared/standalone/ms-panel-parameters/ms-panel-parameters.component';
 import { MsTerminalComponent } from '../shared/standalone/ms-terminal/ms-terminal.component';
-import { AWQRoutingModule } from './awq-routing.module';
-import { AwqComponent } from './components/awq/awq.component';
+import { LlmQuantizationRoutingModule } from './llm-quantization-routing.module';
+import { LlmQuantizationComponent } from './components/llm-quantization/llm-quantization.component';
 
 @NgModule({
-	declarations: [AwqComponent],
+	declarations: [LlmQuantizationComponent],
 	imports: [
 		CommonModule,
 		SharedModule,
-		AWQRoutingModule,
+		LlmQuantizationRoutingModule,
 		MsPanelModelComponent,
 		MsPanelParametersComponent,
 		MsTerminalComponent
 	]
 })
-export class AWQModule {}
+export class LlmQuantizationModule {}
