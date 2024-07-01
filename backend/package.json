@@ -20,7 +20,7 @@
 		"multer": "^1.4.5-lts.1",
 		"ssh2": "^1.14.0",
 		"winston": "^3.11.0",
-		"ws": "^8.14.2"
+		"ws": "^8.17.1"
 	},
 	"devDependencies": {
 		"nodemon": "^3.0.1",
