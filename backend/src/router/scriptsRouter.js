@@ -107,14 +107,22 @@ function executePythonScript(path, algorithm, args = '', type) {
 		}
 
 		const scriptPath = `${process.env.MACHINE_LEARNING_CORE_PATH}/${path}`;
-		const cmd = `source ${process.env.CONDA_SH_PATH} && conda activate modelsmith && python3 -u ${scriptPath}${algorithm} ${args}`;
-		broadcastTerminal(`python3 ${scriptPath}${algorithm} ${args}`);
+		let cmd;
+
+		if (type === ALGORITHM_TYPES.MULTIFLOW) {
+			cmd = `source "${process.env.CONDA_SH_PATH}" && cd "${process.env.MACHINE_LEARNING_CORE_PATH}/multiflow" && conda activate modelsmith && python3 -u ${algorithm} ${args}`;
+			pythonCmd = `python3 ${algorithm} ${args}`;
+		} else {
+			cmd = `source "${process.env.CONDA_SH_PATH}" && conda activate modelsmith && python3 -u "${scriptPath}${algorithm}" ${args}`;
+			pythonCmd = `python3 "${scriptPath}${algorithm}" ${args}`;
+		}
+
+		broadcastTerminal(pythonCmd);
 
 		executeCommand(
 			cmd,
 			(data) => {
-				console.log(data);
-				const formattedData = data.toString().replace(/\r\n/g, '');
+				const formattedData = data.toString();
 				broadcastTerminal(formattedData);
 
 				switch (type) {

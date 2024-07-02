@@ -20,6 +20,7 @@ const PRUNING_PATH = 'examples_pruning/';
 const QUANTIZATION_PATH = 'examples_quant/';
 const MACHINE_UNLEARNING_PATH = 'examples_unlearning/';
 const AUTOAWQ_PATH = 'autoawq/examples/';
+const MULTIFLOW_PATH = 'multiflow/';
 
 const PRUNING_ALGORITHMS = {
 	IPG: {
@@ -116,12 +117,21 @@ const TRAIN_ALGORITHMS = {
 	}
 };
 
+const MULTIFLOW_ALGORITHMS = {
+	MULTIFLOW_PRUNE: {
+		path: MULTIFLOW_PATH,
+		type: ALGORITHM_TYPES.MULTIFLOW,
+		fileName: 'prune.py'
+	}
+};
+
 const ALGORITHMS = {
 	...PRUNING_ALGORITHMS,
 	...QUANT_ALGORITHMS,
 	...MACHINE_UNLEARNING_ALGORITHMS,
 	...AWQ_ALGORITHMS,
-	...TRAIN_ALGORITHMS
+	...TRAIN_ALGORITHMS,
+	...MULTIFLOW_ALGORITHMS
 };
 
 module.exports = ALGORITHMS;

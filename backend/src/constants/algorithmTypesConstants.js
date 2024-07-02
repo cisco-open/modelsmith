@@ -19,6 +19,7 @@ const ALGORITHM_TYPES = {
 	QUANTIZATION: 'quantization',
 	MACHINE_UNLEARNING: 'machine_unlearning',
 	AWQ: 'awq',
+	MULTIFLOW: 'multiflow',
 	TRAIN: 'train'
 };
 

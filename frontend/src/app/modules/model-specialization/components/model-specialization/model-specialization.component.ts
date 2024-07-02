@@ -18,6 +18,7 @@ import { Component, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { ScriptConfigsDto } from '../../../../services/client/models/script/script-configs.interface-dto';
+import { ScriptActions } from '../../../../state/core/script';
 import { ScriptFacadeService } from '../../../core/services';
 import { AlgorithmType, MultiflowAlgorithmsEnum } from '../../../model-compression/models/enums/algorithms.enum';
 import { isScriptActive } from '../../../model-compression/models/enums/script-status.enum';
@@ -57,7 +58,7 @@ export class ModelSpecializationComponent {
 		});
 
 		setTimeout(() => {
-			this.form.get('algorithm.alg')?.setValue(MultiflowAlgorithmsEnum);
+			this.form.get('algorithm.alg')?.setValue(MultiflowAlgorithmsEnum.MULTIFLOW_PRUNE);
 		}, 0);
 	}
 
@@ -78,17 +79,15 @@ export class ModelSpecializationComponent {
 			return;
 		}
 
-		const { algorithm, model: modelPanel } = this.form.getRawValue();
-		const { model } = modelPanel;
+		const { algorithm } = this.form.getRawValue();
 
 		const configs: ScriptConfigsDto = {
 			...algorithm,
 			params: {
-				...this.panelParametersComponent.parametersFormatted,
-				model
+				...this.panelParametersComponent.parametersFormatted
 			}
 		};
 
-		// this.scriptFacadeService.dispatch(ScriptActions.callScript({ configs }));
+		this.scriptFacadeService.dispatch(ScriptActions.callScript({ configs }));
 	}
 }

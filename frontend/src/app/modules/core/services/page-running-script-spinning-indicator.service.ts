@@ -69,6 +69,10 @@ export class PageRunningScriptSpiningIndicatorService {
 						this._currentRunningPage.next(PageKey.MODEL_TRAINING);
 						break;
 					}
+					case AlgorithmType.MULTIFLOW: {
+						this._currentRunningPage.next(PageKey.MODEL_SPECIALIZATION);
+						break;
+					}
 					default: {
 						this._currentRunningPage.next(PageKey.NONE);
 						break;
