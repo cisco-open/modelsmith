@@ -54,16 +54,17 @@ const expert: SidenavItem[] = [
 		key: PageKey.AWQ
 	},
 	{
+		route: 'multi-modal',
+		label: 'Multi-modal',
+		icon: 'icon-Environmental'
+	},
+	{
 		route: RoutesList.MODEL_SPECIALIZATION.ROOT,
 		label: 'Model Specialization',
 		icon: 'icon-MapTrifold',
 		key: PageKey.MODEL_SPECIALIZATION
 	},
-	{
-		route: 'multi-modal',
-		label: 'Multi-modal',
-		icon: 'icon-Environmental'
-	},
+
 	{
 		route: RoutesList.ALGORITHM_COMPARISON.ROOT,
 		label: 'Algorithm Comparison',

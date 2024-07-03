@@ -110,10 +110,10 @@ function executePythonScript(path, algorithm, args = '', type) {
 		let cmd;
 
 		if (type === ALGORITHM_TYPES.MULTIFLOW) {
-			cmd = `source "${process.env.CONDA_SH_PATH}" && cd "${process.env.MACHINE_LEARNING_CORE_PATH}/multiflow" && conda activate modelsmith && python3 -u ${algorithm} ${args}`;
+			cmd = `source "${process.env.CONDA_SH_PATH}" && cd "${process.env.MACHINE_LEARNING_CORE_PATH}/multiflow" && conda activate modelsmith && python3 ${algorithm} ${args}`;
 			pythonCmd = `python3 ${algorithm} ${args}`;
 		} else {
-			cmd = `source "${process.env.CONDA_SH_PATH}" && conda activate modelsmith && python3 -u "${scriptPath}${algorithm}" ${args}`;
+			cmd = `source "${process.env.CONDA_SH_PATH}" && conda activate modelsmith && python3 "${scriptPath}${algorithm}" ${args}`;
 			pythonCmd = `python3 "${scriptPath}${algorithm}" ${args}`;
 		}
 

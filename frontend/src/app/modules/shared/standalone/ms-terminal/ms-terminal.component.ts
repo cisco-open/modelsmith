@@ -76,9 +76,7 @@ export class MsTerminalComponent implements OnInit, AfterViewInit, OnDestroy {
 
 			const formattedMessage = this.formatMessageByType(message);
 			if (this.displayWebSocketMessages) {
-				formattedMessage.split('\n').forEach((line) => {
-					this.terminal.writeln(line);
-				});
+				this.writeToTerminal(formattedMessage);
 			} else {
 				this.messagesBuffer.push(message);
 			}
@@ -97,25 +95,33 @@ export class MsTerminalComponent implements OnInit, AfterViewInit, OnDestroy {
 		this.fitTerminalToContainer();
 	}
 
+	private writeToTerminal(message: string): void {
+		const lines = message.split('\n');
+		lines.forEach((line) => {
+			this.terminal.writeln(line);
+		});
+	}
+
 	private loadLatestMessages() {
 		this.terminalFacadeService.messages$.pipe(skip(1), take(1)).subscribe((messages: TerminalMessage[]) => {
 			messages.forEach((messageObj: TerminalMessage) => {
 				const formattedMessage = this.formatMessageByType(messageObj);
-				formattedMessage.split('\n').forEach((line) => {
-					this.terminal.writeln(line);
-				});
+				this.writeToTerminal(formattedMessage);
 			});
 
 			this.messagesBuffer.forEach((bufferedMessageObj: TerminalMessage) => {
 				const formattedMessage = this.formatMessageByType(bufferedMessageObj);
-				formattedMessage.split('\n').forEach((line) => {
-					this.terminal.writeln(line);
-				});
+				this.writeToTerminal(formattedMessage);
 			});
 			this.messagesBuffer = [];
 			this.displayWebSocketMessages = true;
 		});
 		this.terminalFacadeService.dispatch(TerminalActions.getLatestMessages());
+	}
+
+	private logMessageWithControlChars(message: string): void {
+		const visibleMessage = message.replace(/\n/g, '\\n').replace(/\r/g, '\\r');
+		console.log(visibleMessage);
 	}
 
 	private formatMessageByType(message: TerminalMessage): string {
@@ -136,7 +142,14 @@ export class MsTerminalComponent implements OnInit, AfterViewInit, OnDestroy {
 				break;
 		}
 
-		return `${colorCode}${message.data}\x1b[0m`;
+		this.logMessageWithControlChars(message.data);
+
+		let formattedData = message.data;
+		if (formattedData.endsWith('\n')) {
+			formattedData = formattedData.slice(0, -1);
+		}
+
+		return `${colorCode}${formattedData}\x1b[0m`;
 	}
 
 	private initializeTerminal(): void {
