@@ -22,10 +22,14 @@
 
 	<div class="mt-2 flex">
 		<div>
-			<mat-slide-toggle color="primary" (change)="toggleTooltip($event)"> Enable tooltips </mat-slide-toggle>
+			<mat-slide-toggle color="primary" [(ngModel)]="enableTooltips" (change)="toggleTooltip($event)">
+				Enable tooltips
+			</mat-slide-toggle>
 		</div>
 		<div class="flex">
-			<mat-slide-toggle class="ml-2" color="primary" (change)="toggleZoom($event)"> Enable zoom </mat-slide-toggle>
+			<mat-slide-toggle class="ml-2" color="primary" [(ngModel)]="enableZoom" (change)="toggleZoom($event)">
+				Enable zoom
+			</mat-slide-toggle>
 			<div class="ml-1">
 				<mat-icon
 					fontSet="ms"

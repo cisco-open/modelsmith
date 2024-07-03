@@ -53,6 +53,9 @@ export class AlgorithmComparisonChartComponent {
 
 	lastRunsAccuracyTestingChartData: ChartDatasets[] = [];
 
+	enableTooltips = false;
+	enableZoom = false;
+
 	constructor(
 		public recordsDataService: RecordsDataService,
 		private chartToolsGlobalSignalsService: ChartToolsGlobalSignalsService
@@ -60,6 +63,7 @@ export class AlgorithmComparisonChartComponent {
 
 	ngOnInit() {
 		this.listenToRecordsChanges();
+		this.subscribeToChartToolsSignals();
 	}
 
 	listenToRecordsChanges(): void {
@@ -79,6 +83,16 @@ export class AlgorithmComparisonChartComponent {
 					datasetColors: records.map((record) => record.chartColors)
 				}
 			};
+		});
+	}
+
+	subscribeToChartToolsSignals(): void {
+		this.chartToolsGlobalSignalsService.toggleTooltips$.pipe(untilDestroyed(this)).subscribe((value: boolean) => {
+			this.enableTooltips = value;
+		});
+
+		this.chartToolsGlobalSignalsService.toggleZoom$.pipe(untilDestroyed(this)).subscribe((value: boolean) => {
+			this.enableZoom = value;
 		});
 	}
 

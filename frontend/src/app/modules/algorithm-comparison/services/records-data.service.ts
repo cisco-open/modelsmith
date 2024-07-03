@@ -17,6 +17,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { AlgorithmType } from '../../model-compression/models/enums/algorithms.enum';
+import { ChartToolsGlobalSignalsService } from '../../shared/standalone/ms-line-chart/services/chart-tools-global-signals.service';
 import { RecordComparisonItem } from '../models/record-comparisson.interface';
 
 @Injectable()
@@ -49,6 +50,8 @@ export class RecordsDataService {
 	}
 
 	addRecord(newRecord: RecordComparisonItem): void {
+		this.stopTooltips();
+
 		const currentRecords = this._records.value;
 		const updatedRecords = [...currentRecords, newRecord];
 		this._records.next(updatedRecords);
@@ -56,6 +59,8 @@ export class RecordsDataService {
 	}
 
 	updateRecord(index: number, updatedRecord: RecordComparisonItem): void {
+		this.stopTooltips();
+
 		const currentRecords = this._records.value;
 		if (index >= 0 && index < currentRecords.length) {
 			const updatedRecords = [...currentRecords];
@@ -66,6 +71,8 @@ export class RecordsDataService {
 	}
 
 	removeRecord(index: number): void {
+		this.stopTooltips();
+
 		const currentRecords = this._records.value;
 		if (index >= 0 && index < currentRecords.length) {
 			const updatedRecords = currentRecords.filter((_, i) => i !== index);
@@ -74,5 +81,10 @@ export class RecordsDataService {
 		}
 	}
 
-	constructor() {}
+	stopTooltips() {
+		this.chartToolsGlobalSignalsService.toggleTooltips = false;
+		this.chartToolsGlobalSignalsService.toggleZoom = false;
+	}
+
+	constructor(private chartToolsGlobalSignalsService: ChartToolsGlobalSignalsService) {}
 }
