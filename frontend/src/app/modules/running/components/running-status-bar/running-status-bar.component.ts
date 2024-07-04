@@ -36,6 +36,9 @@ export class RunningStatusBarComponent {
 	isScriptActive: boolean = false;
 	scriptDetails?: ScriptDetails;
 
+	enableTooltips = false;
+	enableZoom = false;
+
 	constructor(
 		private scriptFacadeService: ScriptFacadeService,
 		private chartToolsGlobalSignalsService: ChartToolsGlobalSignalsService
@@ -43,6 +46,7 @@ export class RunningStatusBarComponent {
 
 	ngOnInit(): void {
 		this.listenToScriptStateChanges();
+		this.subscribeToChartToolsSignals();
 	}
 
 	private listenToScriptStateChanges(): void {
@@ -73,6 +77,16 @@ export class RunningStatusBarComponent {
 
 	get isSparsityVisible(): boolean {
 		return this.scriptDetails?.type === AlgorithmType.PRUNING;
+	}
+
+	subscribeToChartToolsSignals(): void {
+		this.chartToolsGlobalSignalsService.toggleTooltips$.pipe(untilDestroyed(this)).subscribe((value: boolean) => {
+			this.enableTooltips = value;
+		});
+
+		this.chartToolsGlobalSignalsService.toggleZoom$.pipe(untilDestroyed(this)).subscribe((value: boolean) => {
+			this.enableZoom = value;
+		});
 	}
 
 	runStopScript(): void {

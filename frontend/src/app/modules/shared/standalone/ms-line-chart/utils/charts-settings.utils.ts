@@ -100,13 +100,16 @@ export class ChartSettingsUtils {
 					callbacks: {
 						title: (tooltipItems) => {
 							const item = tooltipItems[0];
-							const labelIndex = item.dataIndex;
+							const labelIndex = item.dataIndex + 1;
 							const prefix = settings.tooltipLabelPrefix || settings.xAxisLabelPrefix || '';
 							const maxStepsPerEpoch = settings.xAxisDataPointsCount || 1;
 
 							if (settings.chartDataStructure === ChartDataStructure.MUlTI_PHASE_X_AXIS) {
-								const epoch = Math.floor(labelIndex / maxStepsPerEpoch) + 1;
-								const step = labelIndex % maxStepsPerEpoch;
+								const epoch = Math.floor(labelIndex / maxStepsPerEpoch);
+								let step = labelIndex % maxStepsPerEpoch;
+								if (step === 0 && labelIndex !== 0) {
+									step = maxStepsPerEpoch;
+								}
 								return `${prefix} ${epoch}, Step: ${step}`;
 							} else {
 								return `${prefix} ${labelIndex}`;

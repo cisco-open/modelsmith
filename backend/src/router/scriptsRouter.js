@@ -13,7 +13,6 @@
 //  limitations under the License.
 
 //  SPDX-License-Identifier: Apache-2.0
-
 const express = require('express');
 const router = express.Router();
 const { broadcastTerminal, broadcastStatus } = require('../services/websocketService');
@@ -33,11 +32,8 @@ const {
 	getPreviousScriptDetails
 } = require('../state/scriptState');
 const ALGORITHM_PARAMETERS = require('../constants/parametersConstants');
-const ALGORITHM_TYPES = require('../constants/algorithmTypesConstants');
-const { executeCommand } = require('../facades/executionFacade');
-const { pruningParserInstance } = require('../parsers/pruningParser');
-const { quantizationParserInstance } = require('../parsers/quantizationParser');
-const { machineUnlearningParserInstance } = require('../parsers/machineUnlearningParser');
+const { executeCommand } = require('../facades/commandExecutionFacade');
+const { executorFactory } = require('../facades/algorithmExecutionFacade');
 
 router.get('/current-or-last-active-script-details', (_, res) => {
 	let script = getActiveScriptDetails() || getPreviousScriptDetails();
@@ -56,7 +52,7 @@ router.get('/current-or-last-active-script-details', (_, res) => {
 	res.status(OK).send(lastActiveScript);
 });
 
-router.post('/run-script', checkSshConnection, checkIfScriptRunning, (req, res) => {
+router.post('/run-script', checkSshConnection, checkIfScriptRunning, async (req, res) => {
 	const { alg = '', params = [] } = req.body;
 
 	const scriptDetails = ALGORITHMS[alg];
@@ -74,85 +70,34 @@ router.post('/run-script', checkSshConnection, checkIfScriptRunning, (req, res) 
 
 	changeAndBroadcastScriptState(ScriptState.RUNNING);
 
-	executePythonScript(scriptDetails.path, scriptDetails.fileName, args, scriptDetails.type)
-		.then(() => {
-			res.status(OK).send({ message: 'Script execution ended successfully.' });
-			broadcastTerminal('Script execution ended successfully.', MESSAGE_TYPES.SUCCESS);
+	const executor = executorFactory[scriptDetails.type];
+	if (!executor) {
+		return res.status(BAD_REQUEST).send({ error: 'Unsupported algorithm type.' });
+	}
 
-			setActiveScriptDetails(null);
-			changeAndBroadcastScriptState(ScriptState.NOT_RUNNING);
-		})
-		.catch((error) => {
-			logger.error(`Error executing command: ${error}`);
-
-			setActiveScriptDetails(null);
-			changeAndBroadcastScriptState(ScriptState.ERROR);
-
-			broadcastTerminal(error, MESSAGE_TYPES.ERROR);
-
-			res.status(INTERNAL_SERVER_ERROR).send({
-				error: 'The script has errors and failed to start automatically. Please check the terminal.'
-			});
-		});
-});
-
-function executePythonScript(path, algorithm, args = '', type) {
-	return new Promise((resolve, reject) => {
-		if (type === ALGORITHM_TYPES.PRUNING) {
-			pruningParserInstance.reset();
-		} else if (type === ALGORITHM_TYPES.QUANTIZATION) {
-			quantizationParserInstance.reset();
-		} else if (type === ALGORITHM_TYPES.MACHINE_UNLEARNING) {
-			machineUnlearningParserInstance.reset();
-		}
-
-		const scriptPath = `${process.env.MACHINE_LEARNING_CORE_PATH}/${path}`;
-		let cmd;
-
-		if (type === ALGORITHM_TYPES.MULTIFLOW) {
-			cmd = `source "${process.env.CONDA_SH_PATH}" && cd "${process.env.MACHINE_LEARNING_CORE_PATH}/multiflow" && conda activate modelsmith && python3 ${algorithm} ${args}`;
-			pythonCmd = `python3 ${algorithm} ${args}`;
-		} else {
-			cmd = `source "${process.env.CONDA_SH_PATH}" && conda activate modelsmith && python3 "${scriptPath}${algorithm}" ${args}`;
-			pythonCmd = `python3 "${scriptPath}${algorithm}" ${args}`;
-		}
-
-		broadcastTerminal(pythonCmd);
-
-		executeCommand(
-			cmd,
-			(data) => {
-				const formattedData = data.toString();
-				broadcastTerminal(formattedData);
-
-				switch (type) {
-					case ALGORITHM_TYPES.PRUNING:
-						pruningParserInstance.parseLine(formattedData);
-						break;
-					case ALGORITHM_TYPES.QUANTIZATION:
-						quantizationParserInstance.parseLine(formattedData);
-						break;
-					case ALGORITHM_TYPES.MACHINE_UNLEARNING:
-						machineUnlearningParserInstance.parseLine(formattedData);
-						break;
-					default:
-						break;
-				}
-			},
-			() => {
-				resolve();
-			},
-			(error) => {
-				reject(error);
-			}
+	try {
+		await executor.execute(
+			`${process.env.MACHINE_LEARNING_CORE_PATH}/${scriptDetails.path}`,
+			scriptDetails.fileName,
+			args
 		);
-	});
-}
+		res.status(OK).send({ message: 'Script execution ended successfully.' });
+		broadcastTerminal('Script execution ended successfully.', MESSAGE_TYPES.SUCCESS);
+	} catch (error) {
+		logger.error(`Error executing command: ${error}`);
+		res.status(INTERNAL_SERVER_ERROR).send({
+			error: 'The script has errors and failed to start automatically. Please check the terminal.'
+		});
+		broadcastTerminal(error, MESSAGE_TYPES.ERROR);
+	} finally {
+		setActiveScriptDetails(null);
+		changeAndBroadcastScriptState(ScriptState.NOT_RUNNING);
+	}
+});
 
 router.get('/script-status', (req, res) => {
 	const scriptStatus = getScriptState();
 	const response = { status: scriptStatus };
-
 	res.status(OK).send(response);
 });
 

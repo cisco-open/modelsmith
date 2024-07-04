@@ -18,6 +18,9 @@ import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/c
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, finalize } from 'rxjs';
 
+// This code implements a custom HTTP interceptor and a related service in Angular to track the loading state of specific API requests.
+// It's designed to provide fine-grained control over loading indicators for different parts of an application.
+
 export enum RequestsConfigKeyEnum {
 	RUN_RECORDS_SUMMARIZED_DATA = 'runRecordsSummarizedData'
 }

@@ -27,7 +27,11 @@
 			</div>
 			<div class="mt-2 flex">
 				<div>
-					<mat-slide-toggle color="primary" (change)="toggleTooltip($event)" [disabled]="!scriptDetails?.algKey">
+					<mat-slide-toggle
+						color="primary"
+						[(ngModel)]="enableTooltips"
+						(change)="toggleTooltip($event)"
+						[disabled]="!scriptDetails?.algKey">
 						Enable tooltips
 					</mat-slide-toggle>
 				</div>
@@ -35,6 +39,7 @@
 					<mat-slide-toggle
 						class="ml-2"
 						color="primary"
+						[(ngModel)]="enableZoom"
 						(change)="toggleZoom($event)"
 						[disabled]="!scriptDetails?.algKey">
 						Enable zoom

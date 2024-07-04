@@ -14,7 +14,7 @@
 
 //  SPDX-License-Identifier: Apache-2.0
 
-const { getConnectionStatus } = require('../facades/executionFacade');
+const { getConnectionStatus } = require('../facades/commandExecutionFacade');
 
 module.exports = (req, res, next) => {
 	if (getConnectionStatus() !== 'READY') {

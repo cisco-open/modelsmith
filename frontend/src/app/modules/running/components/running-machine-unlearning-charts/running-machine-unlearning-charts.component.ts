@@ -47,7 +47,7 @@ export class RunningMachineUnlearningChartsComponent {
 	// Accuracy
 	initialAccuracyChartData: ChartDatasets[] = [];
 	accuracyChartDisplaySettings: ChartDisplaySettings = {
-		chartDataStructure: ChartDataStructure.MUlTI_PHASE_X_AXIS,
+		chartDataStructure: ChartDataStructure.SINGLE_PHASE_X_AXIS,
 		xAxisDataPointsCount: 159,
 		isXAxisDynamic: true,
 		datasetLabelPrefix: 'Epoch:',
@@ -65,7 +65,7 @@ export class RunningMachineUnlearningChartsComponent {
 	// Accuracy Testing
 	initialAccuracyTestingChartData: ChartDatasets[] = [];
 	testingAccuracyChartDisplaySettings: ChartDisplaySettings = {
-		chartDataStructure: ChartDataStructure.MUlTI_PHASE_X_AXIS,
+		chartDataStructure: ChartDataStructure.SINGLE_PHASE_X_AXIS,
 		xAxisDataPointsCount: 159,
 		isXAxisVisible: true,
 		isXAxisDynamic: true,
@@ -84,7 +84,7 @@ export class RunningMachineUnlearningChartsComponent {
 	// Loss
 	initialLossChartData: ChartDatasets[] = [];
 	lossChartDisplaySettings: ChartDisplaySettings = {
-		chartDataStructure: ChartDataStructure.MUlTI_PHASE_X_AXIS,
+		chartDataStructure: ChartDataStructure.SINGLE_PHASE_X_AXIS,
 		xAxisDataPointsCount: 159,
 		isXAxisVisible: true,
 		isXAxisDynamic: true,
@@ -100,7 +100,7 @@ export class RunningMachineUnlearningChartsComponent {
 	// Loss Testing
 	initialLossTestingChartData: ChartDatasets[] = [];
 	testingLossChartDisplaySettings: ChartDisplaySettings = {
-		chartDataStructure: ChartDataStructure.MUlTI_PHASE_X_AXIS,
+		chartDataStructure: ChartDataStructure.SINGLE_PHASE_X_AXIS,
 		xAxisDataPointsCount: 159,
 		isXAxisVisible: true,
 		isXAxisDynamic: true,

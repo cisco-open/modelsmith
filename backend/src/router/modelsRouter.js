@@ -19,7 +19,7 @@ const router = express.Router();
 const getModelsByType = require('../constants/modelsConstants');
 const { getActiveScriptDetails, getPreviousScriptDetails } = require('../state/scriptState');
 const ALGORITHM_TYPES = require('../constants/algorithmTypesConstants');
-const { executeCommand } = require('../facades/executionFacade');
+const { executeCommand } = require('../facades/commandExecutionFacade');
 const checkSshConnection = require('../middlewares/checkSshConnection');
 const { BAD_REQUEST, OK, INTERNAL_SERVER_ERROR, NOT_FOUND } = require('../constants/httpStatusCodes');
 

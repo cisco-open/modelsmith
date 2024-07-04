@@ -160,7 +160,7 @@ export class RunDrawerActionsComponent implements OnInit, AfterViewInit {
 			isXAxisVisible: true,
 			isXAxisDynamic: true,
 			areTooltipsEnabled: true,
-			xAxisInitialLabelValue: 0,
+			xAxisInitialLabelValue: 1,
 			xAxisLabelPrefix: 'Step:',
 			datasetLabelPrefix: 'Test:',
 			isChartWithCustomColorSettings: true,
