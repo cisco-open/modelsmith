@@ -14,7 +14,8 @@
 
 //   SPDX-License-Identifier: Apache-2.0
 
-import { Component, OnInit } from '@angular/core';
+import { animate, state, style, transition, trigger } from '@angular/animations';
+import { Component, OnInit, Renderer2 } from '@angular/core';
 import { Router } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { ConfigActions } from '../../../../state/core/configs/configs.actions';
@@ -28,16 +29,29 @@ import { ConfigsFacadeService } from '../../../core/services/configs-facade.serv
 @Component({
 	selector: 'ms-sidenav',
 	templateUrl: './ms-sidenav.component.html',
-	styleUrls: ['./ms-sidenav.component.scss']
+	styleUrls: ['./ms-sidenav.component.scss'],
+	animations: [
+		trigger('expandCollapse', [
+			state('expanded', style({ width: '230px' })),
+			state('collapsed', style({ width: '40px' })),
+			transition('expanded <=> collapsed', animate('300ms ease-in-out'))
+		]),
+		trigger('fadeInOut', [
+			transition(':enter', [style({ opacity: 0 }), animate('300ms ease-in-out', style({ opacity: 1 }))]),
+			transition(':leave', [animate('300ms ease-in-out', style({ opacity: 0 }))])
+		])
+	]
 })
 export class MsSidenavComponent implements OnInit {
 	readonly SidenavConstants = SidenavConstants;
 	readonly Modes = AppModes;
 	currentMode: AppModes | undefined;
+	isExpanded = true;
 
 	constructor(
 		private router: Router,
-		private configFacadeService: ConfigsFacadeService
+		private configFacadeService: ConfigsFacadeService,
+		private renderer: Renderer2
 	) {}
 
 	ngOnInit(): void {
@@ -62,5 +76,10 @@ export class MsSidenavComponent implements OnInit {
 
 	trackByRoute(_: number, item: SidenavItem): string {
 		return item.route;
+	}
+
+	// New method to toggle sidebar expansion
+	toggleSidebar(): void {
+		this.isExpanded = !this.isExpanded;
 	}
 }

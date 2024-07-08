@@ -18,8 +18,10 @@
 	<div class="item-icon">
 		<mat-icon fontSet="ms" [fontIcon]="item.icon"></mat-icon>
 	</div>
-	<div class="item-label paragraph-semibold-p3-small-emphasis">
-		{{ item.label }}
+	<div class="item-label paragraph-semibold-p3-small-emphasis" *ngIf="isExpanded" [@fadeInOut]>
+		<div class="text-container">
+			{{ item.label }}
+		</div>
 
 		<ng-container *ngIf="pageRunningScriptSpiningIndicatorService.currentRunningPage$ | async as currentRunningPageKey">
 			<ng-container *ngIf="currentRunningPageKey === item?.key">

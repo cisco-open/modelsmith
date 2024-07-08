@@ -30,10 +30,28 @@
 		display: flex;
 		align-items: center;
 		margin-left: 10px;
+		transition: opacity 0.3s ease;
+	}
+
+	.text-container {
+		width: 180px;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
 	}
 
 	&.active-route .item-label {
 		@include typography.paragraph-bold-p3-small-bold;
+	}
+}
+
+:host-context(.collapsed) {
+	.sidenav-item {
+		justify-content: center;
+
+		.item-label {
+			display: none;
+		}
 	}
 }
 

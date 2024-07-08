@@ -14,6 +14,7 @@
 
 //   SPDX-License-Identifier: Apache-2.0
 
+import { animate, style, transition, trigger } from '@angular/animations';
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { SidenavItem } from '../../../../../core/models/interfaces/sidenav.interface';
 import { PageRunningScriptSpiningIndicatorService } from '../../../../../core/services/page-running-script-spinning-indicator.service';
@@ -22,11 +23,18 @@ import { PageRunningScriptSpiningIndicatorService } from '../../../../../core/se
 	selector: 'ms-sidenav-item',
 	templateUrl: './ms-sidenav-item.component.html',
 	styleUrls: ['./ms-sidenav-item.component.scss'],
-	changeDetection: ChangeDetectionStrategy.OnPush
+	changeDetection: ChangeDetectionStrategy.OnPush,
+	animations: [
+		trigger('fadeInOut', [
+			transition(':enter', [style({ opacity: 0 }), animate('300ms ease-in-out', style({ opacity: 1 }))]),
+			transition(':leave', [animate('300ms ease-in-out', style({ opacity: 0 }))])
+		])
+	]
 })
 export class MsSidenavItemComponent {
 	@Input() item!: SidenavItem;
 	@Input() itemStyle: 'accent' | 'grey' = 'accent';
+	@Input() isExpanded = true;
 
 	constructor(public pageRunningScriptSpiningIndicatorService: PageRunningScriptSpiningIndicatorService) {}
 }

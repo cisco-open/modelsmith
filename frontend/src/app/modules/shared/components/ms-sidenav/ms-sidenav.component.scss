@@ -15,12 +15,14 @@
 //   SPDX-License-Identifier: Apache-2.0
 
 :host {
-	width: 260px;
-	height: calc(100% - 20px);
+	height: 100%;
 }
 
 .sidenav-wrapper {
 	padding: 0 12px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
 
 	.switch {
 		display: flex;
@@ -53,4 +55,35 @@
 	.sidenav-items-wrapper {
 		margin-top: 10px;
 	}
+
+	.sidebar-toggle {
+		flex-shrink: 0;
+		display: flex;
+		align-items: center;
+		padding: 6px;
+		cursor: pointer;
+		transition: background-color 0.3s ease;
+
+		&:hover {
+			background-color: rgba(0, 0, 0, 0.04);
+		}
+
+		mat-icon {
+			margin-right: 8px;
+			color: var(--foregrounds-750);
+		}
+
+		span {
+			font-size: 14px;
+			transition: opacity 0.3s ease;
+			color: var(--foregrounds-750);
+		}
+	}
+}
+
+.text-container {
+	width: 180px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }

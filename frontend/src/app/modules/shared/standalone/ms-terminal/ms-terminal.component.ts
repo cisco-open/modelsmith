@@ -142,8 +142,6 @@ export class MsTerminalComponent implements OnInit, AfterViewInit, OnDestroy {
 				break;
 		}
 
-		this.logMessageWithControlChars(message.data);
-
 		let formattedData = message.data;
 		if (formattedData.endsWith('\n')) {
 			formattedData = formattedData.slice(0, -1);
