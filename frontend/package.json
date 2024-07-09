@@ -42,8 +42,8 @@
     "@ngrx/operators": "^18.0.0"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "^17.3.8",
-    "@angular/cli": "~17.3.8",
+    "@angular-devkit/build-angular": "^18.0.7",
+    "@angular/cli": "~18.0.7",
     "@angular/compiler-cli": "^18.0.6",
     "@lottiefiles/lottie-types": "^1.4.1",
     "@ngrx/store-devtools": "^18.0.1",
