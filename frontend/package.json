@@ -25,8 +25,8 @@
     "@angular/router": "^18.0.6",
     "@dotlottie/player-component": "^2.7.8",
     "@ngneat/until-destroy": "^10.0.0",
-    "@ngrx/effects": "^16.2.0",
-    "@ngrx/store": "^16.2.0",
+    "@ngrx/effects": "^18.0.1",
+    "@ngrx/store": "^18.0.1",
     "chart.js": "^4.4.1",
     "chartjs-plugin-zoom": "^2.0.1",
     "howler": "^2.2.4",
@@ -38,14 +38,15 @@
     "tslib": "^2.3.0",
     "xterm": "^5.3.0",
     "xterm-addon-fit": "^0.8.0",
-    "zone.js": "~0.14.7"
+    "zone.js": "~0.14.7",
+    "@ngrx/operators": "^18.0.0"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^17.3.8",
     "@angular/cli": "~17.3.8",
     "@angular/compiler-cli": "^18.0.6",
     "@lottiefiles/lottie-types": "^1.4.1",
-    "@ngrx/store-devtools": "^16.2.0",
+    "@ngrx/store-devtools": "^18.0.1",
     "@types/howler": "^2.2.11",
     "@types/jasmine": "~4.3.0",
     "autoprefixer": "^10.4.15",

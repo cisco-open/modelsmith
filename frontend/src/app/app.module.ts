@@ -33,7 +33,8 @@ import { metaReducers } from './state/app.metareducers';
 		StoreModule.forRoot({}, { metaReducers }),
 		StoreDevtoolsModule.instrument({
 			maxAge: 25,
-			logOnly: isDevMode()
+			logOnly: isDevMode(),
+			connectInZone: true
 		}),
 		EffectsModule.forRoot([])
 	],
