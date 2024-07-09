@@ -18,6 +18,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
+import { NgxColorsModule } from 'ngx-colors';
 import { runRecordsReducers } from '../../state/run-records';
 import { RecordsEffects } from '../../state/run-records/records';
 import { SharedModule } from '../shared/shared.module';
@@ -54,6 +55,7 @@ import { RecordsFacadeService } from './services/records-facade.service';
 		CommonModule,
 		AlgorithmComparisonRoutingModule,
 		MsDrawerComponent,
+		NgxColorsModule,
 		SharedModule,
 		StoreModule.forFeature('runRecords', runRecordsReducers),
 		EffectsModule.forFeature([RecordsEffects]),

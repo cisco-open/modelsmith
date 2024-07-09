@@ -36,7 +36,6 @@ import {
 	ChartDataStructure,
 	ChartDisplaySettings
 } from '../../../shared/standalone/ms-line-chart/models/interfaces/ms-chart-display-settings.interface';
-import { convertColor, rgbaToColor } from '../../../shared/standalone/ms-line-chart/utils/chart-functions.utils';
 import { RecordComparisonChartColors, RecordComparisonItem } from '../../models/record-comparisson.interface';
 import { RecordsDataService } from '../../services/records-data.service';
 import { RecordsFacadeService } from '../../services/records-facade.service';
@@ -175,13 +174,11 @@ export class RunDrawerActionsComponent implements OnInit, AfterViewInit {
 			}
 
 			const { backgroundColor, borderColor } = chartData;
-			const { rgba: backgroundColorValue } = backgroundColor;
-			const { rgba: borderColorValue } = borderColor;
 
 			this.testingAccuracyChartDisplaySettings = {
 				...this.testingAccuracyChartDisplaySettings,
 				customChartColors: {
-					datasetColors: [{ backgroundColor: backgroundColorValue, borderColor: borderColorValue }]
+					datasetColors: [{ backgroundColor: backgroundColor, borderColor: borderColor }]
 				}
 			};
 			this.lastRunAccuracyTestingChartData = [...this.lastRunAccuracyTestingChartData];
@@ -201,8 +198,8 @@ export class RunDrawerActionsComponent implements OnInit, AfterViewInit {
 			selectRun: recordFilename,
 			runName: recordName,
 			chart: {
-				borderColor: rgbaToColor(chartColors.borderColor),
-				backgroundColor: rgbaToColor(chartColors.backgroundColor)
+				borderColor: chartColors.borderColor,
+				backgroundColor: chartColors.backgroundColor
 			}
 		});
 
@@ -305,8 +302,8 @@ export class RunDrawerActionsComponent implements OnInit, AfterViewInit {
 		const chartColors = chartColorsSettings[ChartColorEnum.YELLOW].datasetColors[index];
 
 		return {
-			borderColor: convertColor(chartColors.borderColor),
-			backgroundColor: convertColor(chartColors.backgroundColor)
+			borderColor: chartColors.borderColor,
+			backgroundColor: chartColors.backgroundColor
 		};
 	}
 
@@ -316,8 +313,6 @@ export class RunDrawerActionsComponent implements OnInit, AfterViewInit {
 		}
 
 		const { backgroundColor, borderColor } = this.form.get('chart')?.getRawValue();
-		const { rgba: backgroundColorValue } = backgroundColor;
-		const { rgba: borderColorValue } = borderColor;
 
 		this.drawerRef.close({
 			result: {
@@ -325,8 +320,8 @@ export class RunDrawerActionsComponent implements OnInit, AfterViewInit {
 				recordFilename: this.selectRunFormControl.value,
 				record: this.summarizedRecord,
 				chartColors: {
-					backgroundColor: backgroundColorValue,
-					borderColor: borderColorValue
+					backgroundColor: backgroundColor,
+					borderColor: borderColor
 				} as RecordComparisonChartColors
 			} as RecordComparisonItem,
 			status
