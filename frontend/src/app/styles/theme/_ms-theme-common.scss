@@ -36,14 +36,14 @@
  * - button: Used for buttons and anchors.
  */
 
-$ms-typography: mat.define-rem-typography-config(
+$ms-typography: mat.m2-define-rem-typography-config(
 	$font-family: 'Montserrat',
-	$headline-1: mat.define-typography-level(7rem, 7rem, 300, $letter-spacing: -0.05em),
-	$headline-2: mat.define-typography-level(3.5rem, 3.5rem, 400, $letter-spacing: -0.02em),
-	$headline-3: mat.define-typography-level(2.8125rem, 3rem, 400, $letter-spacing: -0.005em),
-	$headline-4: mat.define-typography-level(2.125rem, 2.5rem, 400),
-	$headline-5: mat.define-typography-level(1.5rem, 2.125rem, 700),
-	$button: mat.define-typography-level(0.875rem, 1.25rem, 700, 'Inter')
+	$headline-1: mat.m2-define-typography-level(7rem, 7rem, 300, $letter-spacing: -0.05em),
+	$headline-2: mat.m2-define-typography-level(3.5rem, 3.5rem, 400, $letter-spacing: -0.02em),
+	$headline-3: mat.m2-define-typography-level(2.8125rem, 3rem, 400, $letter-spacing: -0.005em),
+	$headline-4: mat.m2-define-typography-level(2.125rem, 2.5rem, 400),
+	$headline-5: mat.m2-define-typography-level(1.5rem, 2.125rem, 700),
+	$button: mat.m2-define-typography-level(0.875rem, 1.25rem, 700, 'Inter')
 );
 
 @function apply-extra-colors($theme, $extra-color-scheme) {
