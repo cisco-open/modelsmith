@@ -19,7 +19,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { SharedModule } from '../shared/shared.module';
 import { MsCardSelectorComponent } from '../shared/standalone/ms-card-selector/ms-card-selector.component';
-import { MsDrawerComponent } from '../shared/standalone/ms-drawer';
+import { DrawerService, MsDrawerComponent } from '../shared/standalone/ms-drawer';
 import { ButtonsDemoComponent } from './components/buttons-demo/buttons-demo.component';
 import { CardsDemoComponent } from './components/cards-demo/cards-demo.component';
 import { CheckboxesDemoComponent } from './components/checkboxes-demo/checkboxes-demo.component';
@@ -67,6 +67,7 @@ import { DemoRoutingModule } from './demo-routing.module';
 		DrawerWithButtonsActionsComponent,
 		DrawerWithCustomizableWidthComponent
 	],
-	imports: [RouterModule, CommonModule, SharedModule, DemoRoutingModule, MsCardSelectorComponent, MsDrawerComponent]
+	imports: [RouterModule, CommonModule, SharedModule, DemoRoutingModule, MsCardSelectorComponent, MsDrawerComponent],
+	providers: [DrawerService]
 })
 export class DemoModule {}

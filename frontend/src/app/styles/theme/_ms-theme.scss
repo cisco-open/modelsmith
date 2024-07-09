@@ -19,11 +19,11 @@
 @use './ms-theme-palettes' as palettes;
 @use 'sass:map';
 
-$ms-theme-primary: mat.define-palette(map.get(palettes.$ms-theme-variables, primary), 800);
-$ms-theme-accent: mat.define-palette(map.get(palettes.$ms-theme-variables, accent), 400);
-$ms-theme-warn: mat.define-palette(mat.$red-palette);
+$ms-theme-primary: mat.m2-define-palette(map.get(palettes.$ms-theme-variables, primary), 800);
+$ms-theme-accent: mat.m2-define-palette(map.get(palettes.$ms-theme-variables, accent), 400);
+$ms-theme-warn: mat.m2-define-palette(mat.$m2-red-palette);
 
-$ms-theme: mat.define-light-theme(
+$ms-theme: mat.m2-define-light-theme(
 	(
 		color: (
 			primary: $ms-theme-primary,

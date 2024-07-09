@@ -6,7 +6,7 @@ This guide will walk you through the process of configuring ModelSmith to run on
 
 Before you can use this application, please ensure that you have the following installed on your system:
 
-- [Node.js](https://nodejs.org/) (v18.17.1 or higher)
+- [Node.js](https://nodejs.org/) (v20 or higher)
 
 If you don't have Node.js and npm installed, you can follow these steps to install them:
 

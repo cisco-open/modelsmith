@@ -14,26 +14,16 @@
 
 //   SPDX-License-Identifier: Apache-2.0
 
-import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MAT_SNACK_BAR_DATA, MatSnackBarRef } from '@angular/material/snack-bar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { RouterTestingModule } from '@angular/router/testing';
 import { CoreModule } from '../../../core/core.module';
 import { MaterialModule } from '../../modules/material.module';
 import { SharedModule } from '../../shared.module';
 import { MsBannerComponent } from './ms-banner.component';
 
-const MODULE_IMPORTS = [
-	CoreModule,
-	BrowserAnimationsModule,
-	SharedModule,
-	RouterTestingModule,
-	HttpClientTestingModule,
-	MaterialModule,
-	ReactiveFormsModule
-];
+const MODULE_IMPORTS = [CoreModule, BrowserAnimationsModule, SharedModule, MaterialModule, ReactiveFormsModule];
 
 describe('MsBannerComponent', () => {
 	let component: MsBannerComponent;

@@ -15,7 +15,7 @@
 //   SPDX-License-Identifier: Apache-2.0
 
 import { CommonModule } from '@angular/common';
-import { HTTP_INTERCEPTORS, HttpClient, HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClient, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { NgModule, Optional, SkipSelf } from '@angular/core';
 import { MatIconRegistry } from '@angular/material/icon';
 import { BrowserModule } from '@angular/platform-browser';
@@ -60,7 +60,6 @@ import { PageRunningScriptSpiningIndicatorService } from './services/page-runnin
 	imports: [
 		CommonModule,
 		BrowserModule,
-		HttpClientModule,
 		BrowserAnimationsModule,
 		StoreModule.forFeature('core', coreReducers),
 		EffectsModule.forFeature([
@@ -107,7 +106,8 @@ import { PageRunningScriptSpiningIndicatorService } from './services/page-runnin
 			}
 		},
 		{ provide: HTTP_INTERCEPTORS, useClass: AppErrorHandlingInterceptor, multi: true },
-		{ provide: HTTP_INTERCEPTORS, useClass: AppLoadingInterceptor, multi: true }
+		{ provide: HTTP_INTERCEPTORS, useClass: AppLoadingInterceptor, multi: true },
+		provideHttpClient(withInterceptorsFromDi())
 	]
 })
 export class CoreModule {
