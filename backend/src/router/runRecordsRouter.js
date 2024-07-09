@@ -6,6 +6,7 @@ const checkSshConnection = require('../middlewares/checkSshConnection');
 const StatelessPruningParser = require('../parsers/statelessPruningParser');
 const StatelessQuantizationParser = require('../parsers/statelessQuantizationParser');
 const StatelessMachineUnlearningParser = require('../parsers/statelessMachineUnlearningParser');
+const { BAD_REQUEST, OK, INTERNAL_SERVER_ERROR } = require('../constants/httpStatusCodes');
 
 const RUN_RECORDS_PATHS = {
 	[ALGORITHM_TYPES.QUANTIZATION]: `${process.env.MACHINE_LEARNING_CORE_PATH}/examples_quant/run_records`,
@@ -34,10 +35,16 @@ router.get('/run-records-filenames/:type', checkSshConnection, (req, res) => {
 					return baseName.replace(/\.json$/, '');
 				});
 
-			res.status(200).send(files);
+			res.status(OK).send(files);
 		},
 		() => {},
-		(error) => res.status(500).send({ error: `SSH error: ${error}` })
+		(error) => {
+			if (error.includes('No such file or directory')) {
+				res.status(OK).send([]);
+			} else {
+				res.status(INTERNAL_SERVER_ERROR).send({ error });
+			}
+		}
 	);
 });
 
@@ -47,7 +54,7 @@ router.get('/run-records-summarized-data/:type/:filename', checkSshConnection, (
 	const directoryPath = RUN_RECORDS_PATHS[type];
 
 	if (!directoryPath) {
-		return res.status(400).send({ error: 'Invalid model type specified' });
+		return res.status(BAD_REQUEST).send({ error: 'Invalid model type specified' });
 	}
 
 	const filePath = `${directoryPath}/${fileName}.json`;
@@ -58,7 +65,7 @@ router.get('/run-records-summarized-data/:type/:filename', checkSshConnection, (
 		async (output) => await parseAndRespond(output, type, res),
 		() => {},
 		(error) => {
-			res.status(500).send({ error: `SSH error: ${error}` });
+			res.status(INTERNAL_SERVER_ERROR).send({ error: `SSH error: ${error}` });
 		},
 		true
 	);
@@ -72,7 +79,7 @@ async function parseAndRespond(output, type, res) {
 			jsonData.messages = await StatelessPruningParser.parseMessages(jsonData.messages);
 			const summarizedDataPruning = summarizePruningData(jsonData);
 			res.setHeader('Content-Type', 'application/json; charset=utf-8');
-			res.status(200).send(summarizedDataPruning);
+			res.status(OK).send(summarizedDataPruning);
 			break;
 
 		case ALGORITHM_TYPES.QUANTIZATION:
@@ -80,7 +87,7 @@ async function parseAndRespond(output, type, res) {
 			const summarizedDataQuantization = summarizeQuantizationData(jsonData);
 
 			res.setHeader('Content-Type', 'application/json; charset=utf-8');
-			res.status(200).send(summarizedDataQuantization);
+			res.status(OK).send(summarizedDataQuantization);
 			break;
 
 		case ALGORITHM_TYPES.MACHINE_UNLEARNING:
@@ -88,11 +95,11 @@ async function parseAndRespond(output, type, res) {
 			const summarizedMachineUnlearning = summarizeMachineUnlearningData(jsonData);
 
 			res.setHeader('Content-Type', 'application/json; charset=utf-8');
-			res.status(200).send(summarizedMachineUnlearning);
+			res.status(OK).send(summarizedMachineUnlearning);
 			break;
 
 		default:
-			res.status(500).send({ error: 'Algorithm type not supported.' });
+			res.status(BAD_REQUEST).send({ error: 'Algorithm type not supported.' });
 			break;
 	}
 }

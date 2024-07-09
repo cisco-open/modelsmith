@@ -14,18 +14,12 @@
 
 //   SPDX-License-Identifier: Apache-2.0
 
-.wizard-layout {
-	display: flex;
-	justify-content: space-between;
-	gap: 20px;
-	height: 100%;
+import { animate, style, transition, trigger } from '@angular/animations';
 
-	.left {
-		width: 45%;
-		gap: 20px;
-	}
-
-	.right {
-		width: 55%;
-	}
-}
+export const fadeRightToLeftAnimation = trigger('fadeRightToLeft', [
+	transition(':enter', [
+		style({ opacity: 0, transform: 'translateX(100%)' }),
+		animate('300ms ease-in-out', style({ opacity: 1, transform: 'translateX(0)' }))
+	]),
+	transition(':leave', [animate('300ms ease-in-out', style({ opacity: 0, transform: 'translateX(100%)' }))])
+]);

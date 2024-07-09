@@ -31,6 +31,10 @@
 			</div>
 		</div>
 
+		<div class="mt-3">
+			<mat-divider></mat-divider>
+		</div>
+
 		<ng-container *ngIf="currentMode === Modes.GUIDED; else expertModeBlock">
 			<div class="sidenav-items-wrapper" *ngFor="let item of SidenavConstants.guided; trackBy: trackByRoute">
 				<ms-sidenav-item [item]="item" [isExpanded]="isExpanded" itemStyle="grey"></ms-sidenav-item>
@@ -52,10 +56,14 @@
 		</div>
 	</div>
 
+	<div class="mt-2 mb-4">
+		<mat-divider></mat-divider>
+	</div>
+
 	<div class="bottom-section-items">
 		<div class="sidebar-toggle" (click)="toggleSidebar()">
 			<mat-icon>{{ isExpanded ? 'chevron_left' : 'chevron_right' }}</mat-icon>
-			<span class="paragraph-semibold-p3-small-emphasis" *ngIf="isExpanded" @fadeInOut>Collapse</span>
+			<span class="paragraph-semibold-p3-small-emphasis" *ngIf="isExpanded">Collapse</span>
 		</div>
 	</div>
 </div>

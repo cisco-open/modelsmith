@@ -15,18 +15,22 @@
   SPDX-License-Identifier: Apache-2.0 -->
 
 <div class="sidenav-item" [routerLink]="item.route" routerLinkActive="active-route">
-	<div class="item-icon">
-		<mat-icon fontSet="ms" [fontIcon]="item.icon"></mat-icon>
-	</div>
-	<div class="item-label paragraph-semibold-p3-small-emphasis" *ngIf="isExpanded" [@fadeInOut]>
-		<div class="text-container">
-			{{ item.label }}
+	<div class="left-side">
+		<div class="item-icon">
+			<mat-icon fontSet="ms" [fontIcon]="item.icon"></mat-icon>
 		</div>
+		<div *ngIf="isExpanded">
+			<div class="item-label paragraph-semibold-p3-small-emphasis">
+				{{ item.label }}
+			</div>
+		</div>
+	</div>
 
+	<div class="right-side">
 		<ng-container *ngIf="pageRunningScriptSpiningIndicatorService.currentRunningPage$ | async as currentRunningPageKey">
-			<ng-container *ngIf="currentRunningPageKey === item?.key">
-				<ms-spining-indicator class="ml-2"></ms-spining-indicator>
-			</ng-container>
+			<div *ngIf="isExpanded && currentRunningPageKey === item?.key">
+				<ms-spining-indicator></ms-spining-indicator>
+			</div>
 		</ng-container>
 	</div>
 </div>

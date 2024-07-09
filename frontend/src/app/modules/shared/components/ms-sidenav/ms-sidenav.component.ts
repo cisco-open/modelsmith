@@ -15,7 +15,7 @@
 //   SPDX-License-Identifier: Apache-2.0
 
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { Component, OnInit, Renderer2 } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { ConfigActions } from '../../../../state/core/configs/configs.actions';
@@ -35,10 +35,6 @@ import { ConfigsFacadeService } from '../../../core/services/configs-facade.serv
 			state('expanded', style({ width: '230px' })),
 			state('collapsed', style({ width: '40px' })),
 			transition('expanded <=> collapsed', animate('300ms ease-in-out'))
-		]),
-		trigger('fadeInOut', [
-			transition(':enter', [style({ opacity: 0 }), animate('300ms ease-in-out', style({ opacity: 1 }))]),
-			transition(':leave', [animate('300ms ease-in-out', style({ opacity: 0 }))])
 		])
 	]
 })
@@ -50,8 +46,7 @@ export class MsSidenavComponent implements OnInit {
 
 	constructor(
 		private router: Router,
-		private configFacadeService: ConfigsFacadeService,
-		private renderer: Renderer2
+		private configFacadeService: ConfigsFacadeService
 	) {}
 
 	ngOnInit(): void {
@@ -74,12 +69,11 @@ export class MsSidenavComponent implements OnInit {
 		}
 	}
 
-	trackByRoute(_: number, item: SidenavItem): string {
-		return item.route;
-	}
-
-	// New method to toggle sidebar expansion
 	toggleSidebar(): void {
 		this.isExpanded = !this.isExpanded;
+	}
+
+	trackByRoute(_: number, item: SidenavItem): string {
+		return item.route;
 	}
 }

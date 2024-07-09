@@ -27,6 +27,7 @@
 	.switch {
 		display: flex;
 		cursor: pointer;
+		height: 38px;
 
 		.left {
 			display: flex;
@@ -65,7 +66,9 @@
 		transition: background-color 0.3s ease;
 
 		&:hover {
-			background-color: rgba(0, 0, 0, 0.04);
+			color: var(--foregrounds-800);
+			background-color: var(--foregrounds-150);
+			border-radius: 8px;
 		}
 
 		mat-icon {
@@ -73,11 +76,7 @@
 			color: var(--foregrounds-750);
 		}
 
-		span {
-			font-size: 14px;
-			transition: opacity 0.3s ease;
-			color: var(--foregrounds-750);
-		}
+		color: var(--foregrounds-750);
 	}
 }
 
