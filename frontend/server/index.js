@@ -18,8 +18,8 @@ const express = require('express');
 const app = express();
 const path = require('path');
 
-// Serve static files from the 'modelsmith-build' directory
-app.use(express.static(path.join(__dirname, 'modelsmith-build')));
+// Serve static files from the 'modelsmith-build/browser' directory
+app.use(express.static(path.join(__dirname, 'modelsmith-build', 'browser')));
 
 // Serve JavaScript files with the correct content type
 app.get('*.js', (_, res, next) => {
@@ -29,7 +29,7 @@ app.get('*.js', (_, res, next) => {
 
 // Redirect all routes to index.html to handle Angular routing
 app.get('*', (_, res) => {
-	res.sendFile(path.join(__dirname, 'modelsmith-build/index.html'));
+	res.sendFile(path.join(__dirname, 'modelsmith-build', 'browser', 'index.html'));
 });
 
 const port = 4200;
