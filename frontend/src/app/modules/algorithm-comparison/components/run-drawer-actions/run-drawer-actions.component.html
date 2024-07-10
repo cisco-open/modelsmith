@@ -82,12 +82,10 @@
 						<mat-expansion-panel-header>
 							<mat-panel-title class="paragraph-bold-p3-small-bold"> Model training details </mat-panel-title>
 						</mat-expansion-panel-header>
-						<ng-container
-							*ngIf="
-								summarizedRecord?.modelTrainingDetails | keyvalue as modelTrainingDetailsItems;
-								else noModelTrainingDetailsData
-							">
-							<div *ngFor="let item of modelTrainingDetailsItems; let last = last" class="key-value-container single">
+						<ng-container *ngIf="summarizedRecord?.modelTrainingDetails | hasKeys; else noModelTrainingDetailsData">
+							<div
+								*ngFor="let item of summarizedRecord?.modelTrainingDetails | keyvalue; let last = last"
+								class="key-value-container single">
 								<div class="key-value-pair space-between">
 									<div class="key-value-key">{{ item.key | parametersLabel }}:</div>
 									<div class="key-value-value">
