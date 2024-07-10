@@ -60,6 +60,11 @@ export class RunningComponent implements OnInit {
 	}
 
 	get isChartVisible(): boolean {
-		return !isEmptyObject(this.scriptDetails?.algKey) && this.scriptDetails?.type !== AlgorithmType.TRAIN;
+		return (
+			!isEmptyObject(this.scriptDetails?.algKey) &&
+			this.scriptDetails?.type !== AlgorithmType.TRAIN &&
+			this.scriptDetails?.type !== AlgorithmType.AWQ &&
+			this.scriptDetails?.type !== AlgorithmType.MULTIFLOW
+		);
 	}
 }
