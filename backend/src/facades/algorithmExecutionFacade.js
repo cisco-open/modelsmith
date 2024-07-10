@@ -1,4 +1,3 @@
-const express = require('express');
 const { broadcastTerminal } = require('../services/websocketService');
 const ALGORITHM_TYPES = require('../constants/algorithmTypesConstants');
 const { executeCommand } = require('./commandExecutionFacade');
@@ -57,6 +56,7 @@ const executorFactory = {
 		ALGORITHM_TYPES.MACHINE_UNLEARNING,
 		machineUnlearningParserInstance
 	),
+	[ALGORITHM_TYPES.AWQ]: new ScriptExecutor(ALGORITHM_TYPES.AWQ, { reset: () => {}, parseLine: () => {} }),
 	[ALGORITHM_TYPES.MULTIFLOW]: new ScriptExecutor(ALGORITHM_TYPES.MULTIFLOW, { reset: () => {}, parseLine: () => {} })
 };
 

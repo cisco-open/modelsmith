@@ -181,6 +181,7 @@ export class RunDrawerActionsComponent implements OnInit, AfterViewInit {
 					datasetColors: [{ backgroundColor: backgroundColor, borderColor: borderColor }]
 				}
 			};
+
 			this.lastRunAccuracyTestingChartData = [...this.lastRunAccuracyTestingChartData];
 		});
 	}

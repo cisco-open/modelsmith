@@ -25,28 +25,52 @@ import {
 } from '../models/constants/chart.constants';
 import { ChartDataStructure, ChartDisplaySettings } from '../models/interfaces/ms-chart-display-settings.interface';
 
+export const AVERAGE_CHAR_WIDTH: number = 6;
+
 export class ChartSettingsUtils {
 	static registerZoomPlugin() {
 		Chart.register(zoomPlugin);
 	}
 
-	static createXAxisLabels(totalEpochs: number, totalSteps: number, displaySettings: ChartDisplaySettings): string[] {
+	static createXAxisLabels(displaySettings: ChartDisplaySettings): string[] {
 		const density = displaySettings.xAxisLabelDensity || 1;
+		const totalEpochs: number = displaySettings.xAxisRepetitionCount || DEFAULT_TOTAL_EPOCHS_NR;
+		const totalSteps: number = displaySettings.xAxisDataPointsCount || DEFAULT_NR_OF_STEPS_PER_EPOCH;
 		return Array.from({ length: totalEpochs * totalSteps }, (_, index) =>
 			index % (totalSteps * density) === 0 ? `${displaySettings?.xAxisLabelPrefix || ''} ${index / totalSteps}` : ''
 		);
 	}
 
-	static createSinglePhaseAxisLabels(length: number, displaySettings: ChartDisplaySettings): string[] {
-		const density = displaySettings.xAxisLabelDensity || 1;
+	static createSinglePhaseAxisLabels(displaySettings: ChartDisplaySettings, xAxisAvailableWidth: number): string[] {
 		const startingNumber = displaySettings.xAxisInitialLabelValue ?? 1;
+		const length = displaySettings.xAxisDataPointsCount ?? 0;
+		const highestNumber = length + startingNumber - 1;
+		const sampleLabel = `${displaySettings?.xAxisLabelPrefix || ''} ${highestNumber}`;
+		const averageCharWidth = AVERAGE_CHAR_WIDTH;
+		const labelWidth = sampleLabel.length * averageCharWidth;
+
+		const maxLabels = Math.floor(xAxisAvailableWidth / labelWidth);
+		const density = Math.max(1, Math.ceil(length / maxLabels));
+
 		return Array.from({ length }, (_, i) =>
 			i % density === 0 ? `${displaySettings?.xAxisLabelPrefix || ''} ${i + startingNumber}` : ''
 		);
 	}
 
-	static createSinglePhaseSkipOneAxisLabels(length: number, displaySettings: ChartDisplaySettings): string[] {
-		const density = displaySettings.xAxisLabelDensity || 1;
+	static createSinglePhaseSkipOneAxisLabels(
+		displaySettings: ChartDisplaySettings,
+		xAxisAvailableWidth: number
+	): string[] {
+		const length = displaySettings.xAxisDataPointsCount || 0;
+		const startingNumber = displaySettings.xAxisInitialLabelValue ?? 1;
+		const highestNumber = length + startingNumber - 1;
+		const sampleLabel = `${displaySettings?.xAxisLabelPrefix || ''} ${highestNumber}`;
+		const averageCharWidth = AVERAGE_CHAR_WIDTH;
+		const labelWidth = sampleLabel.length * averageCharWidth;
+
+		const maxLabels = Math.floor(xAxisAvailableWidth / labelWidth);
+		const density = Math.max(1, Math.ceil(length / maxLabels));
+
 		return Array.from({ length }, (_, i) =>
 			i % density === 0 && i !== 0 ? `${displaySettings?.xAxisLabelPrefix || ''} ${i - 1}` : ''
 		);
@@ -168,11 +192,14 @@ export class ChartSettingsUtils {
 		const availableWidth = chart.width || 0;
 		const startingNumber = settings.xAxisInitialLabelValue ?? 1;
 
-		const sampleLabel = `${settings?.xAxisLabelPrefix || ''} ${startingNumber + maxIndex}`;
-		const labelWidth = this.calculateLabelWidth(sampleLabel, chart);
+		const length = maxIndex - minIndex + 1;
+		const highestNumber = length + startingNumber - 1;
+		const sampleLabel = `${settings?.xAxisLabelPrefix || ''} ${highestNumber}`;
+		const averageCharWidth = AVERAGE_CHAR_WIDTH;
+		const labelWidth = sampleLabel.length * averageCharWidth;
+
 		const maxLabels = Math.floor(availableWidth / labelWidth);
-		const totalDataPoints = maxIndex - minIndex + 1;
-		const density = Math.max(1, Math.ceil(totalDataPoints / maxLabels));
+		const density = Math.max(1, Math.ceil(length / maxLabels));
 
 		const labels = Array.from({ length: chart?.data?.labels!.length }, (_, i) => {
 			if (i < minIndex || i > maxIndex) {
@@ -185,43 +212,30 @@ export class ChartSettingsUtils {
 		chart.update('none');
 	}
 
-	static calculateLabelWidth(label: string, chart: Chart): number {
-		const ctx = chart.ctx;
-		ctx.save();
-		ctx.font = ctx.font;
-		const labelWidth = ctx.measureText(label).width;
-		ctx.restore();
-		return labelWidth;
-	}
-
 	static prepareSinglePhaseChartDataStructure(
-		length: number,
-		displaySettings: ChartDisplaySettings
+		displaySettings: ChartDisplaySettings,
+		xAxisAvailableWidth: number
 	): ChartConfiguration['data'] {
 		return {
 			datasets: [],
-			labels: this.createSinglePhaseAxisLabels(length, displaySettings)
+			labels: this.createSinglePhaseAxisLabels(displaySettings, xAxisAvailableWidth)
 		};
 	}
 
 	static prepareSinglePhaseSkipOneChartDataStructure(
-		length: number,
-		displaySettings: ChartDisplaySettings
+		displaySettings: ChartDisplaySettings,
+		xAxisAvailableWidth: number
 	): ChartConfiguration['data'] {
 		return {
 			datasets: [],
-			labels: this.createSinglePhaseSkipOneAxisLabels(length, displaySettings)
+			labels: this.createSinglePhaseSkipOneAxisLabels(displaySettings, xAxisAvailableWidth)
 		};
 	}
 
-	static prepareChartDataStructure(
-		totalEpochs: number = DEFAULT_TOTAL_EPOCHS_NR,
-		totalSteps: number = DEFAULT_NR_OF_STEPS_PER_EPOCH,
-		displaySettings: ChartDisplaySettings
-	): ChartConfiguration['data'] {
+	static prepareChartDataStructure(displaySettings: ChartDisplaySettings): ChartConfiguration['data'] {
 		return {
 			datasets: [],
-			labels: this.createXAxisLabels(totalEpochs, totalSteps, displaySettings)
+			labels: this.createXAxisLabels(displaySettings)
 		};
 	}
 

@@ -114,6 +114,9 @@ export interface ChartDisplaySettings {
 
 	// Determines the density of the X-axis labels. A higher value means fewer labels.
 	xAxisLabelDensity?: number;
+
+	// Determines whether the websocketEvent for the enhanceXAxis is allowed to execute or not
+	enhanceSinglePhaseXAxisWebsocketEvent?: boolean;
 }
 
 export interface ChartZoomLimits {

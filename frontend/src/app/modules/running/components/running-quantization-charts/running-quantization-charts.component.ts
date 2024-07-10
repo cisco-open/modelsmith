@@ -87,7 +87,8 @@ export class RunningQuantizationChartsComponent {
 		},
 		datasetColorSettingsKey: ChartColorEnum.GREEN,
 		isXAxisDynamic: true,
-		realtimeUpdateMetric: RealtimeUpdateMetricEnum.ACCURACY
+		realtimeUpdateMetric: RealtimeUpdateMetricEnum.ACCURACY,
+		enhanceSinglePhaseXAxisWebsocketEvent: true
 	};
 
 	accuracyTestingChartDisplaySettings: ChartDisplaySettings = {

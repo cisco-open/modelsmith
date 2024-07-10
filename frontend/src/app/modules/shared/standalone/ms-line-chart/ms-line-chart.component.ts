@@ -68,8 +68,8 @@ export class MsLineChartComponent implements OnInit, OnChanges, OnDestroy {
 	private latestValuesToUpdate: { datasetIndex: number; value: number }[] = [];
 	private updateIntervalId: any;
 
-	@ViewChild(BaseChartDirective) chart?: BaseChartDirective;
-	@ViewChild('chartContainer') chartContainer!: ElementRef;
+	@ViewChild(BaseChartDirective, { static: true }) chart?: BaseChartDirective;
+	@ViewChild('chartContainer', { static: true }) chartContainer!: ElementRef;
 
 	public lineChartData!: ChartConfiguration['data'];
 	public lineChartOptions!: ChartConfiguration['options'];
@@ -96,8 +96,11 @@ export class MsLineChartComponent implements OnInit, OnChanges, OnDestroy {
 		this.chartWebsocketService.latestValuesToUpdate.pipe(untilDestroyed(this)).subscribe((update) => {
 			this.addLatestValueToChart(update.datasetIndex, update.value);
 		});
+
 		this.chartWebsocketService.enhanceXAxis.pipe(untilDestroyed(this)).subscribe((reconstructionIndex) => {
-			this.enhanceSinglePhaseXAxis(reconstructionIndex);
+			if (this.settings.enhanceSinglePhaseXAxisWebsocketEvent) {
+				this.enhanceSinglePhaseXAxis(reconstructionIndex);
+			}
 		});
 	}
 
@@ -199,27 +202,26 @@ export class MsLineChartComponent implements OnInit, OnChanges, OnDestroy {
 		this.lineChartOptions = ChartSettingsUtils.configureChartOptions(this.settings);
 		this.updateChartSettingsBasedOnScriptState();
 
+		const xAxisAvailableWidth = this.chartContainer.nativeElement.offsetWidth;
+
 		switch (this.settings?.chartDataStructure) {
 			case ChartDataStructure.SINGLE_PHASE_X_AXIS: {
 				this.lineChartData = ChartSettingsUtils.prepareSinglePhaseChartDataStructure(
-					this.settings?.xAxisDataPointsCount || 0,
-					this.settings
+					this.settings,
+					xAxisAvailableWidth
 				);
+
 				break;
 			}
 			case ChartDataStructure.SINGLE_PHASE_X_AXIS_SKIP_ONE: {
 				this.lineChartData = ChartSettingsUtils.prepareSinglePhaseSkipOneChartDataStructure(
-					this.settings?.xAxisDataPointsCount || 0,
-					this.settings
+					this.settings,
+					xAxisAvailableWidth
 				);
 				break;
 			}
 			case ChartDataStructure.MUlTI_PHASE_X_AXIS: {
-				this.lineChartData = ChartSettingsUtils.prepareChartDataStructure(
-					this.settings.xAxisRepetitionCount,
-					this.settings.xAxisDataPointsCount,
-					this.settings
-				);
+				this.lineChartData = ChartSettingsUtils.prepareChartDataStructure(this.settings);
 				break;
 			}
 			default:
