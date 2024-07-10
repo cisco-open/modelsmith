@@ -15,7 +15,6 @@
 //   SPDX-License-Identifier: Apache-2.0
 
 import { ChangeDetectionStrategy, Component, ElementRef, Input, OnInit, Renderer2, ViewChild } from '@angular/core';
-import '@dotlottie/player-component';
 import { DotLottie } from '@lottiefiles/dotlottie-web';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Required } from '../../../core/decorators/required.decorator';
