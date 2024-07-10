@@ -14,16 +14,9 @@
 
 //   SPDX-License-Identifier: Apache-2.0
 
-import {
-	AfterViewInit,
-	ChangeDetectionStrategy,
-	Component,
-	ElementRef,
-	Input,
-	Renderer2,
-	ViewChild
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, Input, OnInit, Renderer2, ViewChild } from '@angular/core';
 import '@dotlottie/player-component';
+import { DotLottie } from '@lottiefiles/dotlottie-web';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Required } from '../../../core/decorators/required.decorator';
 import { ScriptFacadeService } from '../../../core/services/script-facade.service';
@@ -39,9 +32,10 @@ import { AnimationConfig } from '../../models/interfaces/animation-config.interf
 	styleUrls: ['./running-animation.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class RunningAnimationComponent implements AfterViewInit {
+export class RunningAnimationComponent implements OnInit {
 	@Input() @Required animationType!: AnimationType;
-	@ViewChild('lottiePlayer', { static: true }) lottiePlayer: any;
+	@ViewChild('dotlottieCanvas', { static: true }) dotlottieCanvas!: ElementRef<HTMLCanvasElement>;
+	private dotLottie?: DotLottie;
 
 	constructor(
 		private scriptFacadeService: ScriptFacadeService,
@@ -49,7 +43,7 @@ export class RunningAnimationComponent implements AfterViewInit {
 		private renderer: Renderer2
 	) {}
 
-	ngAfterViewInit(): void {
+	ngOnInit(): void {
 		const config = ANIMATION_CONFIGS[this.animationType];
 		if (!config) {
 			throw new Error(`Unknown animation type: ${this.animationType}`);
@@ -59,19 +53,22 @@ export class RunningAnimationComponent implements AfterViewInit {
 	}
 
 	private initializeAnimation(config: AnimationConfig): void {
-		setTimeout(() => {
-			this.lottiePlayer.nativeElement.load(config.path, {
-				progresiveLoad: true
-			});
-		}, 0);
+		this.dotLottie = new DotLottie({
+			autoplay: false,
+			loop: true,
+			canvas: this.dotlottieCanvas.nativeElement,
+			src: config.path,
+			speed: config.speed || 1
+		});
+
+		this.dotLottie.addEventListener('load', () => {
+			this.listenToScriptStateChanges();
+		});
 
 		this.renderer.addClass(this.el.nativeElement, config.className);
 	}
 
-	listenToScriptStateChanges(): void {
-		const config = ANIMATION_CONFIGS[this.animationType];
-		this.lottiePlayer.nativeElement.setSpeed(config.speed);
-
+	private listenToScriptStateChanges(): void {
 		this.scriptFacadeService.scriptStatus$.pipe(untilDestroyed(this)).subscribe((state) => {
 			if (isScriptActive(state)) {
 				this.playAnimation();
@@ -82,10 +79,10 @@ export class RunningAnimationComponent implements AfterViewInit {
 	}
 
 	playAnimation(): void {
-		this.lottiePlayer.nativeElement.play();
+		this.dotLottie?.play();
 	}
 
 	stopAnimation(): void {
-		this.lottiePlayer.nativeElement.stop();
+		this.dotLottie?.stop();
 	}
 }

@@ -22,7 +22,7 @@
     "@angular/platform-browser": "^18.0.6",
     "@angular/platform-browser-dynamic": "^18.0.6",
     "@angular/router": "^18.0.6",
-    "@dotlottie/player-component": "^2.7.8",
+    "@lottiefiles/dotlottie-web": "^0.28.0",
     "@ngneat/until-destroy": "^10.0.0",
     "@ngrx/effects": "^18.0.1",
     "@ngrx/operators": "^18.0.0",

@@ -15,7 +15,7 @@
 //   SPDX-License-Identifier: Apache-2.0
 
 import { CommonModule } from '@angular/common';
-import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { SharedModule } from '../shared/shared.module';
 import { MsEmptyStateComponent } from '../shared/standalone/ms-empty-state/ms-empty-state.component';
 import { MsLineChartComponent } from '../shared/standalone/ms-line-chart/ms-line-chart.component';
@@ -31,7 +31,6 @@ import { ReadableStatisticsLabelPipe } from './pipes/readable-statistics-label.p
 import { RunningRoutingModule } from './running-routing.module';
 
 @NgModule({
-	schemas: [CUSTOM_ELEMENTS_SCHEMA],
 	declarations: [
 		RunningComponent,
 		RunningPruningChartsComponent,

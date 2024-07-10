@@ -25,7 +25,7 @@ export const ANIMATION_CONFIGS: Record<AnimationType, AnimationConfig> = {
 	},
 	[AnimationType.QUANTIZATION]: {
 		path: '../assets/animations/quantization.lottie',
-		speed: 0.08,
+		speed: 0.07,
 		className: 'quant'
 	}
 };
