@@ -40,6 +40,9 @@ export const RoutesList = {
 	ALGORITHM_COMPARISON: {
 		ROOT: 'algorithm-comparison'
 	},
+	MULTI_MODAL: {
+		ROOT: 'multi-modal'
+	},
 	MODEL_SPECIALIZATION: {
 		ROOT: 'model-specialization'
 	},

@@ -16,12 +16,12 @@
 
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ModelSpecializationComponent } from './components/model-specialization/model-specialization.component';
+import { MultiModalComponent } from './components/multi-modal/multi-modal.component';
 
 const MODEL_SPECIALIZATION_ROUTES: Routes = [
 	{
 		path: '',
-		component: ModelSpecializationComponent
+		component: MultiModalComponent
 	}
 ];
 
@@ -29,4 +29,4 @@ const MODEL_SPECIALIZATION_ROUTES: Routes = [
 	imports: [RouterModule.forChild(MODEL_SPECIALIZATION_ROUTES)],
 	exports: [RouterModule]
 })
-export class ModelSpecializationRoutingModule {}
+export class MultiModalRoutingModule {}

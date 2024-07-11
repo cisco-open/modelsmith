@@ -4,8 +4,10 @@ import torch
 import pandas as pd
 import ruamel.yaml as yaml
 import lightning as L
+import logging
+import io
+import sys
 from argparse import ArgumentParser
-
 
 from pruners import available_pruners, get_pruner_by_name
 from datasets import create_dataset, create_loader, create_sampler
@@ -19,6 +21,37 @@ from utils.functions import get_unprunable_parameters
 import warnings
 warnings.filterwarnings("ignore")
 
+# Set up logging
+logger = logging.getLogger()
+logger.setLevel(logging.INFO)
+
+# Create a logging handler that writes to stdout and flushes immediately
+class FlushHandler(logging.StreamHandler):
+    def emit(self, record):
+        super().emit(record)
+        self.flush()
+
+handler = FlushHandler(sys.stdout)
+formatter = logging.Formatter('%(message)s')  # Only include the message in the format
+handler.setFormatter(formatter)
+logger.addHandler(handler)
+
+class StreamToLogger(io.StringIO):
+    def __init__(self, logger, level):
+        super().__init__()
+        self.logger = logger
+        self.level = level
+
+    def write(self, message):
+        if message.strip():  # Avoid logging empty messages
+            self.logger.log(self.level, message.strip())
+
+    def flush(self):
+        pass
+
+# Redirect stdout and stderr to logging
+sys.stdout = StreamToLogger(logger, logging.INFO)
+sys.stderr = StreamToLogger(logger, logging.ERROR)
 
 def main(args):
 
@@ -194,7 +227,7 @@ if __name__ == "__main__":
                         "If you select the pruner 'chita' and provide this value greater than 1, it will directly run CHITA++. " 
                         "Default: 1")
     parser.add_argument('--schedule', type=str, default='exp', choices=['linear', 'exp', 'const'], help='schedule for IterSNIP/CHITA++. Default: exp')
-    parser.add_argument('--output_dir', default="pruned_weights", help="directory where to dump the pruned weights. Default: ./pruned_weights")
+    parser.add_argument('--output_dir', default="machine_learning_core/multiflow/pruned_weights", help="directory where to dump the pruned weights. Default: ./machine_learning_core/multiflow/pruned_weights")
     parser.add_argument('--lambda_', type=float, default=1e-5, 
                         help='ridge penalty for CHITA and CHITA++, unused otherwise. Please see our Supp. Mat. on how to set this! Default: 1e-5')
     args = parser.parse_args()

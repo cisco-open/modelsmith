@@ -19,17 +19,11 @@ import { NgModule } from '@angular/core';
 import { SharedModule } from '../shared/shared.module';
 import { MsPanelParametersComponent } from '../shared/standalone/ms-panel-parameters/ms-panel-parameters.component';
 import { MsTerminalComponent } from '../shared/standalone/ms-terminal/ms-terminal.component';
-import { ModelSpecializationComponent } from './components/model-specialization/model-specialization.component';
-import { ModelSpecializationRoutingModule } from './model-specialization-routing.module';
+import { MultiModalComponent } from './components/multi-modal/multi-modal.component';
+import { MultiModalRoutingModule } from './multi-modal-routing.module';
 
 @NgModule({
-	declarations: [ModelSpecializationComponent],
-	imports: [
-		CommonModule,
-		SharedModule,
-		MsPanelParametersComponent,
-		MsTerminalComponent,
-		ModelSpecializationRoutingModule
-	]
+	declarations: [MultiModalComponent],
+	imports: [CommonModule, SharedModule, MsPanelParametersComponent, MsTerminalComponent, MultiModalRoutingModule]
 })
-export class ModelSpecializationModule {}
+export class MultiModalModule {}

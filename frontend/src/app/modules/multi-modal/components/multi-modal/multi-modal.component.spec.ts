@@ -16,17 +16,17 @@
 
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ModelSpecializationComponent } from './model-specialization.component';
+import { MultiModalComponent } from './multi-modal.component';
 
-describe('ModelSpecializationComponent', () => {
-	let component: ModelSpecializationComponent;
-	let fixture: ComponentFixture<ModelSpecializationComponent>;
+describe('MultiModalComponent', () => {
+	let component: MultiModalComponent;
+	let fixture: ComponentFixture<MultiModalComponent>;
 
 	beforeEach(() => {
 		TestBed.configureTestingModule({
-			declarations: [ModelSpecializationComponent]
+			declarations: [MultiModalComponent]
 		});
-		fixture = TestBed.createComponent(ModelSpecializationComponent);
+		fixture = TestBed.createComponent(MultiModalComponent);
 		component = fixture.componentInstance;
 		fixture.detectChanges();
 	});

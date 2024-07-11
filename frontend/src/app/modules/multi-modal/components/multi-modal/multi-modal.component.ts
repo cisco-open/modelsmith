@@ -26,11 +26,11 @@ import { MsPanelParametersComponent } from '../../../shared/standalone/ms-panel-
 
 @UntilDestroy()
 @Component({
-	selector: 'ms-model-specialization',
-	templateUrl: './model-specialization.component.html',
-	styleUrls: ['./model-specialization.component.scss']
+	selector: 'ms-multi-modal',
+	templateUrl: './multi-modal.component.html',
+	styleUrls: ['./multi-modal.component.scss']
 })
-export class ModelSpecializationComponent {
+export class MultiModalComponent {
 	readonly AlgorithmType: typeof AlgorithmType = AlgorithmType;
 	readonly MultiflowAlgorithmsEnum: typeof MultiflowAlgorithmsEnum = MultiflowAlgorithmsEnum;
 
