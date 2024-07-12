@@ -21,11 +21,11 @@ import { StoreModule } from '@ngrx/store';
 import { NgxColorsModule } from 'ngx-colors';
 import { runRecordsReducers } from '../../state/run-records';
 import { RecordsEffects } from '../../state/run-records/records';
-import { EllipsisDirective } from '../shared/standalone/ellipsis.directive';
-import { DrawerService, MsDrawerComponent } from '../shared/standalone/ms-drawer';
-import { MsEmptyStateComponent } from '../shared/standalone/ms-empty-state/ms-empty-state.component';
-import { MsLineChartComponent } from '../shared/standalone/ms-line-chart/ms-line-chart.component';
-import { ChartToolsGlobalSignalsService } from '../shared/standalone/ms-line-chart/services/chart-tools-global-signals.service';
+import { DrawerService, MsDrawerComponent } from '../shared/components/ms-drawer';
+import { MsEmptyStateComponent } from '../shared/components/ms-empty-state/ms-empty-state.component';
+import { MsLineChartComponent } from '../shared/components/ms-line-chart/ms-line-chart.component';
+import { ChartToolsGlobalSignalsService } from '../shared/components/ms-line-chart/services/chart-tools-global-signals.service';
+import { EllipsisDirective } from '../shared/directives/ellipsis.directive';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';

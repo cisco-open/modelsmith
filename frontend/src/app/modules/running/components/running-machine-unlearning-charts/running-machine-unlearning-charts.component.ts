@@ -24,12 +24,12 @@ import { ChartActions } from '../../../../state/core/charts';
 import { ChartsFacadeService } from '../../../core/services/charts-facade.service';
 import { isEmptyObject } from '../../../shared/shared.utils';
 
-import { ChartColorEnum } from '../../../shared/standalone/ms-line-chart/models/enums/chart-color.enum';
-import { RealtimeUpdateMetricEnum } from '../../../shared/standalone/ms-line-chart/models/enums/realtime-update-metric.enum';
+import { ChartColorEnum } from '../../../shared/components/ms-line-chart/models/enums/chart-color.enum';
+import { RealtimeUpdateMetricEnum } from '../../../shared/components/ms-line-chart/models/enums/realtime-update-metric.enum';
 import {
 	ChartDataStructure,
 	ChartDisplaySettings
-} from '../../../shared/standalone/ms-line-chart/models/interfaces/ms-chart-display-settings.interface';
+} from '../../../shared/components/ms-line-chart/models/interfaces/ms-chart-display-settings.interface';
 import {
 	MetricType,
 	mapMachineUnlearningData,

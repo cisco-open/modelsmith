@@ -23,8 +23,8 @@ import { ScriptActions } from '../../../../state/core/script';
 import { ScriptFacadeService } from '../../../core/services';
 import { AlgorithmType } from '../../../model-compression/models/enums/algorithms.enum';
 import { isScriptActive } from '../../../model-compression/models/enums/script-status.enum';
+import { ChartToolsGlobalSignalsService } from '../../../shared/components/ms-line-chart/services/chart-tools-global-signals.service';
 import { isNilOrEmptyString } from '../../../shared/shared.utils';
-import { ChartToolsGlobalSignalsService } from '../../../shared/standalone/ms-line-chart/services/chart-tools-global-signals.service';
 
 @UntilDestroy()
 @Component({

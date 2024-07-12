@@ -29,14 +29,14 @@ import {
 	DEFAULT_NR_OF_STEPS_PER_EPOCH,
 	DEFAULT_NR_OF_STEPS_PER_TRAINING_EPOCH,
 	DEFAULT_PRUNING_CHART_DISPLAY_SETTINGS
-} from '../../../shared/standalone/ms-line-chart/models/constants/chart.constants';
-import { ChartColorEnum } from '../../../shared/standalone/ms-line-chart/models/enums/chart-color.enum';
-import { ChartTypeEnum } from '../../../shared/standalone/ms-line-chart/models/enums/chart-type.enum';
-import { RealtimeUpdateMetricEnum } from '../../../shared/standalone/ms-line-chart/models/enums/realtime-update-metric.enum';
+} from '../../../shared/components/ms-line-chart/models/constants/chart.constants';
+import { ChartColorEnum } from '../../../shared/components/ms-line-chart/models/enums/chart-color.enum';
+import { ChartTypeEnum } from '../../../shared/components/ms-line-chart/models/enums/chart-type.enum';
+import { RealtimeUpdateMetricEnum } from '../../../shared/components/ms-line-chart/models/enums/realtime-update-metric.enum';
 import {
 	ChartDataStructure,
 	ChartDisplaySettings
-} from '../../../shared/standalone/ms-line-chart/models/interfaces/ms-chart-display-settings.interface';
+} from '../../../shared/components/ms-line-chart/models/interfaces/ms-chart-display-settings.interface';
 import { MetricType, mapPruningChartData, mapSparsityChartData } from '../../utils/process-charts-data.utils';
 
 @UntilDestroy()

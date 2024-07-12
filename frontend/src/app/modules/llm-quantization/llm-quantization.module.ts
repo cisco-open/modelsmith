@@ -18,9 +18,9 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-import { MsPanelModelComponent } from '../shared/standalone/ms-panel-model/ms-panel-model.component';
-import { MsPanelParametersComponent } from '../shared/standalone/ms-panel-parameters/ms-panel-parameters.component';
-import { MsTerminalComponent } from '../shared/standalone/ms-terminal/ms-terminal.component';
+import { MsPanelModelComponent } from '../shared/components/ms-panel-model/ms-panel-model.component';
+import { MsPanelParametersComponent } from '../shared/components/ms-panel-parameters/ms-panel-parameters.component';
+import { MsTerminalComponent } from '../shared/components/ms-terminal/ms-terminal.component';
 import { LlmQuantizationComponent } from './components/llm-quantization/llm-quantization.component';
 import { LlmQuantizationRoutingModule } from './llm-quantization-routing.module';
 

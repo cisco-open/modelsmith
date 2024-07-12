@@ -15,7 +15,7 @@
 //   SPDX-License-Identifier: Apache-2.0
 
 import { AlgorithmKey } from '../../../../modules/model-compression/models/enums/algorithms.enum';
-import { ChartTypeEnum } from '../../../../modules/shared/standalone/ms-line-chart/models/enums/chart-type.enum';
+import { ChartTypeEnum } from '../../../../modules/shared/components/ms-line-chart/models/enums/chart-type.enum';
 
 export interface ChartConfigurationSettings {
 	alg?: AlgorithmKey;

@@ -29,8 +29,8 @@ import {
 	TrainAlgorithmsEnum
 } from '../../../model-compression/models/enums/algorithms.enum';
 import { isScriptActive } from '../../../model-compression/models/enums/script-status.enum';
+import { MsPanelParametersComponent } from '../../../shared/components/ms-panel-parameters/ms-panel-parameters.component';
 import { isNil, isNilOrEmptyString } from '../../../shared/shared.utils';
-import { MsPanelParametersComponent } from '../../../shared/standalone/ms-panel-parameters/ms-panel-parameters.component';
 
 @UntilDestroy()
 @Component({

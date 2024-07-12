@@ -17,7 +17,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { AlgorithmType } from '../../model-compression/models/enums/algorithms.enum';
-import { ChartToolsGlobalSignalsService } from '../../shared/standalone/ms-line-chart/services/chart-tools-global-signals.service';
+import { ChartToolsGlobalSignalsService } from '../../shared/components/ms-line-chart/services/chart-tools-global-signals.service';
 import { RecordComparisonItem } from '../models/record-comparisson.interface';
 
 @Injectable()

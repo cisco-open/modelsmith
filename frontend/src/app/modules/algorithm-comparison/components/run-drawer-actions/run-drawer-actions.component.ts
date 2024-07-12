@@ -27,15 +27,15 @@ import {
 } from '../../../../services/interceptor/app-loading-interceptor';
 import { RunRecordsActions } from '../../../../state/run-records/records';
 import { AlgorithmType } from '../../../model-compression/models/enums/algorithms.enum';
-import { isEmptyObject, isNilOrEmptyString } from '../../../shared/shared.utils';
-import { DRAWER_DATA, DrawerConfig, DrawerRef, DrawerStatus } from '../../../shared/standalone/ms-drawer';
-import { DrawerActionTypeEnum } from '../../../shared/standalone/ms-drawer/models/drawer-action-type.enum';
-import { chartColorsSettings } from '../../../shared/standalone/ms-line-chart/models/constants/chart-color-settings.constants';
-import { ChartColorEnum } from '../../../shared/standalone/ms-line-chart/models/enums/chart-color.enum';
+import { DRAWER_DATA, DrawerConfig, DrawerRef, DrawerStatus } from '../../../shared/components/ms-drawer';
+import { DrawerActionTypeEnum } from '../../../shared/components/ms-drawer/models/drawer-action-type.enum';
+import { chartColorsSettings } from '../../../shared/components/ms-line-chart/models/constants/chart-color-settings.constants';
+import { ChartColorEnum } from '../../../shared/components/ms-line-chart/models/enums/chart-color.enum';
 import {
 	ChartDataStructure,
 	ChartDisplaySettings
-} from '../../../shared/standalone/ms-line-chart/models/interfaces/ms-chart-display-settings.interface';
+} from '../../../shared/components/ms-line-chart/models/interfaces/ms-chart-display-settings.interface';
+import { isEmptyObject, isNilOrEmptyString } from '../../../shared/shared.utils';
 import { RecordComparisonChartColors, RecordComparisonItem } from '../../models/record-comparisson.interface';
 import { RecordsDataService } from '../../services/records-data.service';
 import { RecordsFacadeService } from '../../services/records-facade.service';

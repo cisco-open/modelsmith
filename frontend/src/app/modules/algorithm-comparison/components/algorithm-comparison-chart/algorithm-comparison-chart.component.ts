@@ -18,13 +18,13 @@ import { Component } from '@angular/core';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { ChartDatasets } from '../../../../services/client/models/charts/chart-data.interface-dto';
-import { isEmptyArray } from '../../../shared/shared.utils';
-import { ChartColorEnum } from '../../../shared/standalone/ms-line-chart/models/enums/chart-color.enum';
+import { ChartColorEnum } from '../../../shared/components/ms-line-chart/models/enums/chart-color.enum';
 import {
 	ChartDataStructure,
 	ChartDisplaySettings
-} from '../../../shared/standalone/ms-line-chart/models/interfaces/ms-chart-display-settings.interface';
-import { ChartToolsGlobalSignalsService } from '../../../shared/standalone/ms-line-chart/services/chart-tools-global-signals.service';
+} from '../../../shared/components/ms-line-chart/models/interfaces/ms-chart-display-settings.interface';
+import { ChartToolsGlobalSignalsService } from '../../../shared/components/ms-line-chart/services/chart-tools-global-signals.service';
+import { isEmptyArray } from '../../../shared/shared.utils';
 import { RecordComparisonItem } from '../../models/record-comparisson.interface';
 import { RecordsDataService } from '../../services/records-data.service';
 
