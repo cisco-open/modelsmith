@@ -17,11 +17,12 @@
 import { ComponentRef, Directive, HostListener, OnDestroy, OnInit, ViewContainerRef } from '@angular/core';
 import { NgControl } from '@angular/forms';
 import { Subject, takeUntil } from 'rxjs';
-import { MsErrorMessageComponent } from '../components/ms-error-message/ms-error-message.component';
-import { getValidationErrorMessage } from '../utils/form.utils';
+import { MsErrorMessageComponent } from './components/ms-error-message/ms-error-message.component';
+import { getValidationErrorMessage } from './utils/form.utils';
 
 @Directive({
-	selector: '[msErrorDisplay]'
+	selector: '[msErrorDisplay]',
+	standalone: true
 })
 export class ErrorDisplayDirective implements OnInit, OnDestroy {
 	componentRef?: ComponentRef<MsErrorMessageComponent | null>;

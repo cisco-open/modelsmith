@@ -34,6 +34,7 @@ import { MatTableModule } from '@angular/material/table';
 import { RouterModule } from '@angular/router';
 import { MsCardSelectorComponent } from '../shared/components/ms-card-selector/ms-card-selector.component';
 import { DrawerService, MsDrawerComponent } from '../shared/components/ms-drawer';
+import { ErrorDisplayDirective } from '../shared/directives/error-display/error-display.directive';
 import { ButtonsDemoComponent } from './components/buttons-demo/buttons-demo.component';
 import { CardsDemoComponent } from './components/cards-demo/cards-demo.component';
 import { CheckboxesDemoComponent } from './components/checkboxes-demo/checkboxes-demo.component';
@@ -102,7 +103,8 @@ import { DemoRoutingModule } from './demo-routing.module';
 		MatButtonToggleModule,
 		MatChipsModule,
 		MatCheckboxModule,
-		MatSlideToggleModule
+		MatSlideToggleModule,
+		ErrorDisplayDirective
 	],
 	providers: [DrawerService]
 })

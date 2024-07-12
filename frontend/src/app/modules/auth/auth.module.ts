@@ -22,6 +22,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MsBackgroundGradientComponent } from '../shared/components/ms-background-gradient/ms-background-gradient.component';
 import { MsFooterComponent } from '../shared/components/ms-footer/ms-footer.component';
+import { ErrorDisplayDirective } from '../shared/directives/error-display/error-display.directive';
 import { PasswordToggleDirective } from '../shared/directives/password-toggle.directive';
 import { AuthRoutingModule } from './auth-routing.module';
 import { LoginComponent } from './components/login/login.component';
@@ -38,7 +39,8 @@ import { LoginComponent } from './components/login/login.component';
 		PasswordToggleDirective,
 		MsBackgroundGradientComponent,
 		MsFooterComponent,
-		MatButtonModule
+		MatButtonModule,
+		ErrorDisplayDirective
 	]
 })
 export class AuthModule {}

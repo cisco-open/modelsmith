@@ -14,13 +14,16 @@
 
 //   SPDX-License-Identifier: Apache-2.0
 
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Component, Input } from '@angular/core';
+import { MatError } from '@angular/material/form-field';
 
 @Component({
 	selector: 'ms-error-message',
 	templateUrl: './ms-error-message.component.html',
 	styleUrls: ['./ms-error-message.component.scss'],
-	changeDetection: ChangeDetectionStrategy.OnPush
+	standalone: true,
+	imports: [CommonModule, MatError]
 })
 export class MsErrorMessageComponent {
 	@Input() text?: string;

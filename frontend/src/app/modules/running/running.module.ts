@@ -24,7 +24,6 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MsEmptyStateComponent } from '../shared/components/ms-empty-state/ms-empty-state.component';
 import { MsLineChartComponent } from '../shared/components/ms-line-chart/ms-line-chart.component';
 import { ChartToolsGlobalSignalsService } from '../shared/components/ms-line-chart/services/chart-tools-global-signals.service';
-import { MsFormsModule } from '../shared/modules/ms-forms/ms-forms.module';
 import { RunningAnimationComponent } from './components/running-animation/running-animation.component';
 import { RunningMachineUnlearningChartsComponent } from './components/running-machine-unlearning-charts/running-machine-unlearning-charts.component';
 import { RunningPruningChartsComponent } from './components/running-pruning-charts/running-pruning-charts.component';
@@ -56,8 +55,7 @@ import { RunningRoutingModule } from './running-routing.module';
 		MatCardModule,
 		FormsModule,
 		ReactiveFormsModule,
-		MatSlideToggleModule,
-		MsFormsModule
+		MatSlideToggleModule
 	],
 	providers: [ChartToolsGlobalSignalsService]
 })
