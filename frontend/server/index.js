@@ -15,8 +15,12 @@
 //  SPDX-License-Identifier: Apache-2.0
 
 const express = require('express');
+const compression = require('compression');
 const app = express();
 const path = require('path');
+
+// Enable compression middleware
+app.use(compression());
 
 // Serve static files from the 'modelsmith-build/browser' directory
 app.use(express.static(path.join(__dirname, 'modelsmith-build', 'browser')));
