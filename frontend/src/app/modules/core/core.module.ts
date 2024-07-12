@@ -20,22 +20,12 @@ import { NgModule, Optional, SkipSelf } from '@angular/core';
 import { MatIconRegistry } from '@angular/material/icon';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { EffectsModule } from '@ngrx/effects';
-import { StoreModule } from '@ngrx/store';
 import { MAT_SELECTSEARCH_DEFAULT_OPTIONS, MatSelectSearchOptions } from 'ngx-mat-select-search';
 import { CLIENT } from '../../app.tokens';
 import { ClientBackend } from '../../services/client/client-backend';
 import { AppErrorHandlingInterceptor } from '../../services/interceptor/app-error-handling-interceptor';
 import { AppLoadingInterceptor } from '../../services/interceptor/app-loading-interceptor';
-import { coreReducers } from '../../state/core';
-import { AuthEffects } from '../../state/core/auth';
-import { ChartsEffects } from '../../state/core/charts';
-import { FileEffects } from '../../state/core/file';
-import { ModelsEffects } from '../../state/core/models/models.effects';
-import { ParametersEffects } from '../../state/core/parameters';
-import { ScriptActions, ScriptEffects } from '../../state/core/script';
-import { StatisticsEffects } from '../../state/core/statistics';
-import { TerminalEffects } from '../../state/core/terminal';
+import { ScriptActions } from '../../state/core/script';
 import { AuthGuard } from './guards/auth.guard';
 import { ModeSelectGuard } from './guards/mode-select.guard';
 import { RedirectIfAuthenticatedGuard } from './guards/redirect-if-authenticated.guard';
@@ -56,22 +46,7 @@ import { ModelsFacadeService } from './services/models-facade.service';
 import { PageRunningScriptSpiningIndicatorService } from './services/page-running-script-spinning-indicator.service';
 
 @NgModule({
-	imports: [
-		CommonModule,
-		BrowserModule,
-		BrowserAnimationsModule,
-		StoreModule.forFeature('core', coreReducers),
-		EffectsModule.forFeature([
-			AuthEffects,
-			ScriptEffects,
-			FileEffects,
-			ChartsEffects,
-			ParametersEffects,
-			TerminalEffects,
-			StatisticsEffects,
-			ModelsEffects
-		])
-	],
+	imports: [CommonModule, BrowserModule, BrowserAnimationsModule],
 	providers: [
 		WebsocketService,
 		AuthGuard,

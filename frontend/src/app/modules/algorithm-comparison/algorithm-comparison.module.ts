@@ -16,11 +16,7 @@
 
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { EffectsModule } from '@ngrx/effects';
-import { StoreModule } from '@ngrx/store';
 import { NgxColorsModule } from 'ngx-colors';
-import { runRecordsReducers } from '../../state/run-records';
-import { RecordsEffects } from '../../state/run-records/records';
 import { DrawerService, MsDrawerComponent } from '../shared/components/ms-drawer';
 import { MsEmptyStateComponent } from '../shared/components/ms-empty-state/ms-empty-state.component';
 import { MsLineChartComponent } from '../shared/components/ms-line-chart/ms-line-chart.component';
@@ -69,8 +65,6 @@ import { RecordsFacadeService } from './services/records-facade.service';
 		AlgorithmComparisonRoutingModule,
 		MsDrawerComponent,
 		NgxColorsModule,
-		StoreModule.forFeature('runRecords', runRecordsReducers),
-		EffectsModule.forFeature([RecordsEffects]),
 		MsLineChartComponent,
 		ReadableDurationPipe,
 		ParametersLabelPipe,

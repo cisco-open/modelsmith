@@ -8,11 +8,13 @@ import { routes } from './app.routes';
 import { CoreModule } from './modules/core/core.module';
 import { provideCustomMaterial } from './modules/shared/material.providers';
 import { metaReducers } from './state/app.metareducers';
+import { provideGlobalState } from './state/global-state.providers';
 
 export const appConfig: ApplicationConfig = {
 	providers: [
 		provideRouter(routes),
 		provideCustomMaterial(),
+		provideGlobalState(),
 		importProvidersFrom(
 			CoreModule,
 			StoreModule.forRoot({}, { metaReducers }),
