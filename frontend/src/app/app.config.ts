@@ -1,4 +1,5 @@
 import { ApplicationConfig, importProvidersFrom, isDevMode } from '@angular/core';
+import { provideClientHydration } from '@angular/platform-browser';
 import { provideRouter } from '@angular/router';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
@@ -21,6 +22,7 @@ export const appConfig: ApplicationConfig = {
 				connectInZone: true
 			}),
 			EffectsModule.forRoot([])
-		)
+		),
+		provideClientHydration()
 	]
 };
