@@ -14,8 +14,8 @@
 
 //   SPDX-License-Identifier: Apache-2.0
 
-import { PageKey } from '../enums/page-key.enum';
-import { RoutesList } from '../enums/routes-list.enum';
+import { PageKey } from '../../../../../core/models/enums/page-key.enum';
+import { RoutesList } from '../../../../../core/models/enums/routes-list.enum';
 import { Sidenav, SidenavItem } from '../interfaces/sidenav.interface';
 
 const common: SidenavItem[] = [

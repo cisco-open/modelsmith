@@ -17,9 +17,9 @@
 import { ChangeDetectionStrategy, Component, ElementRef, Input, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { DotLottie } from '@lottiefiles/dotlottie-web';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { Required } from '../../../core/decorators/required.decorator';
 import { ScriptFacadeService } from '../../../core/services/script-facade.service';
 import { isScriptActive } from '../../../model-compression/models/enums/script-status.enum';
+import { Required } from '../../../shared/decorators/required.decorator';
 import { ANIMATION_CONFIGS } from '../../models/constants/animation-config.constants';
 import { AnimationType } from '../../models/enums/animation-type.enum';
 import { AnimationConfig } from '../../models/interfaces/animation-config.interface';

@@ -22,12 +22,12 @@ import { MatIconModule } from '@angular/material/icon';
 import { Router } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { ConfigActions } from '../../../../state/core/configs/configs.actions';
-import { SidenavConstants } from '../../../core/models/constants/sidenav.constants';
 import { AppModes } from '../../../core/models/enums/app-modes.enum';
 import { RoutesList } from '../../../core/models/enums/routes-list.enum';
-import { SidenavItem } from '../../../core/models/interfaces/sidenav.interface';
 import { ConfigsFacadeService } from '../../../core/services/configs-facade.service';
 import { MsSidenavItemComponent } from './components/ms-sidenav-item/ms-sidenav-item.component';
+import { SidenavConstants } from './models/constants/sidenav.constants';
+import { SidenavItem } from './models/interfaces/sidenav.interface';
 
 @UntilDestroy()
 @Component({

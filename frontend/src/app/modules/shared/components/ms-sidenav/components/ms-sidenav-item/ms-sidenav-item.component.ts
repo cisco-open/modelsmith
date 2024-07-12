@@ -18,9 +18,9 @@ import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterModule } from '@angular/router';
-import { SidenavItem } from '../../../../../core/models/interfaces/sidenav.interface';
 import { PageRunningScriptSpiningIndicatorService } from '../../../../../core/services/page-running-script-spinning-indicator.service';
 import { MsSpiningIndicatorComponent } from '../../../ms-spining-indicator/ms-spining-indicator.component';
+import { SidenavItem } from '../../models/interfaces/sidenav.interface';
 
 @Component({
 	selector: 'ms-sidenav-item',
