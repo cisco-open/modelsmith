@@ -16,7 +16,7 @@
 
 import { Chart, ChartConfiguration } from 'chart.js';
 import zoomPlugin from 'chartjs-plugin-zoom';
-import { isEmptyObject } from '../../../../core/utils/core.utils';
+import { isEmptyObject } from '../../../shared.utils';
 import { chartColorsSettings } from '../models/constants/chart-color-settings.constants';
 import {
 	DEFAULT_DATASET_COLOR_SETTINGS_KEY,

@@ -22,7 +22,7 @@ import {
 } from '../../../../services/client/models/charts/chart-data.interface-dto';
 import { ChartActions } from '../../../../state/core/charts';
 import { ChartsFacadeService } from '../../../core/services/charts-facade.service';
-import { isEmptyObject } from '../../../core/utils/core.utils';
+import { isEmptyObject } from '../../../shared/shared.utils';
 
 import { ChartColorEnum } from '../../../shared/standalone/ms-line-chart/models/enums/chart-color.enum';
 import { RealtimeUpdateMetricEnum } from '../../../shared/standalone/ms-line-chart/models/enums/realtime-update-metric.enum';

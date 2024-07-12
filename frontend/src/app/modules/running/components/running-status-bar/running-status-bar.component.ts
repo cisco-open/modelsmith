@@ -21,9 +21,9 @@ import { filter, skip, take } from 'rxjs';
 import { ScriptDetails } from '../../../../services/client/models/script/script-details.interface-dto';
 import { ScriptActions } from '../../../../state/core/script';
 import { ScriptFacadeService } from '../../../core/services';
-import { isNilOrEmptyString } from '../../../core/utils/core.utils';
 import { AlgorithmType } from '../../../model-compression/models/enums/algorithms.enum';
 import { isScriptActive } from '../../../model-compression/models/enums/script-status.enum';
+import { isNilOrEmptyString } from '../../../shared/shared.utils';
 import { ChartToolsGlobalSignalsService } from '../../../shared/standalone/ms-line-chart/services/chart-tools-global-signals.service';
 
 @UntilDestroy()

@@ -34,9 +34,9 @@ import { RoutesList } from '../../../core/models/enums/routes-list.enum';
 import { ModelsFacadeService } from '../../../core/services/models-facade.service';
 import { PageRunningScriptSpiningIndicatorService } from '../../../core/services/page-running-script-spinning-indicator.service';
 import { ScriptFacadeService } from '../../../core/services/script-facade.service';
-import { isEmptyArray, isNilOrEmptyString } from '../../../core/utils/core.utils';
 import { AlgorithmType } from '../../../model-compression/models/enums/algorithms.enum';
 import { isScriptActive } from '../../../model-compression/models/enums/script-status.enum';
+import { isEmptyArray, isNilOrEmptyString } from '../../shared.utils';
 import { MsSpiningIndicatorComponent } from '../ms-spining-indicator/ms-spining-indicator.component';
 
 @UntilDestroy()

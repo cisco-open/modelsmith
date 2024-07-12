@@ -14,14 +14,20 @@
 
 //   SPDX-License-Identifier: Apache-2.0
 
+import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
+import { MatIconModule } from '@angular/material/icon';
+import { RouterModule } from '@angular/router';
 import { SidenavItem } from '../../../../../core/models/interfaces/sidenav.interface';
 import { PageRunningScriptSpiningIndicatorService } from '../../../../../core/services/page-running-script-spinning-indicator.service';
+import { MsSpiningIndicatorComponent } from '../../../ms-spining-indicator/ms-spining-indicator.component';
 
 @Component({
 	selector: 'ms-sidenav-item',
 	templateUrl: './ms-sidenav-item.component.html',
-	styleUrls: ['./ms-sidenav-item.component.scss']
+	styleUrls: ['./ms-sidenav-item.component.scss'],
+	standalone: true,
+	imports: [CommonModule, MatIconModule, MsSpiningIndicatorComponent, RouterModule]
 })
 export class MsSidenavItemComponent {
 	@Input() item!: SidenavItem;

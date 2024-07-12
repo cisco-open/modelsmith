@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { isEmptyArray, isNil } from '../../../core/utils/core.utils';
+import { isEmptyArray, isNil } from '../shared.utils';
 
 @Pipe({
 	name: 'reverseArray',

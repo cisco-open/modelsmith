@@ -27,12 +27,13 @@ import { DrawerService, MsDrawerComponent } from '../shared/standalone/ms-drawer
 import { MsEmptyStateComponent } from '../shared/standalone/ms-empty-state/ms-empty-state.component';
 import { MsLineChartComponent } from '../shared/standalone/ms-line-chart/ms-line-chart.component';
 import { ChartToolsGlobalSignalsService } from '../shared/standalone/ms-line-chart/services/chart-tools-global-signals.service';
-import { AdaptiveFileSizePipe } from '../shared/standalone/pipes/adaptive-file-size.pipe';
-import { EmptyTableFieldPipe } from '../shared/standalone/pipes/empty-table-field.pipe';
-import { HasKeysPipe } from '../shared/standalone/pipes/has-keys.pipe';
-import { ParametersLabelPipe } from '../shared/standalone/pipes/parameters-label.pipe';
-import { ReadableDurationPipe } from '../shared/standalone/pipes/readable-duration.pipe';
-import { ReverseArrayPipe } from '../shared/standalone/pipes/reverse-array.pipe';
+
+import { AdaptiveFileSizePipe } from '../shared/pipes/adaptive-file-size.pipe';
+import { EmptyTableFieldPipe } from '../shared/pipes/empty-table-field.pipe';
+import { HasKeysPipe } from '../shared/pipes/has-keys.pipe';
+import { ParametersLabelPipe } from '../shared/pipes/parameters-label.pipe';
+import { ReadableDurationPipe } from '../shared/pipes/readable-duration.pipe';
+import { ReverseArrayPipe } from '../shared/pipes/reverse-array.pipe';
 import { AlgorithmComparisonRoutingModule } from './algorithm-comparison-routing.module';
 import { AlgorithmComparisonChartComponent } from './components/algorithm-comparison-chart/algorithm-comparison-chart.component';
 import { AlgorithmComparisonListComponent } from './components/algorithm-comparison-list/algorithm-comparison-list.component';

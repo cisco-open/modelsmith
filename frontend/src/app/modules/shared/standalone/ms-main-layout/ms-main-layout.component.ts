@@ -15,10 +15,16 @@
 //   SPDX-License-Identifier: Apache-2.0
 
 import { Component } from '@angular/core';
+import { RouterModule } from '@angular/router';
+import { MsFooterComponent } from '../ms-footer/ms-footer.component';
+import { MsHeaderComponent } from '../ms-header/ms-header.component';
+import { MsSidenavComponent } from '../ms-sidenav/ms-sidenav.component';
 
 @Component({
 	selector: 'ms-main-layout',
 	templateUrl: './ms-main-layout.component.html',
-	styleUrls: ['./ms-main-layout.component.scss']
+	styleUrls: ['./ms-main-layout.component.scss'],
+	standalone: true,
+	imports: [MsFooterComponent, MsHeaderComponent, MsSidenavComponent, RouterModule]
 })
 export class MsMainLayoutComponent {}

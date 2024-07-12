@@ -32,8 +32,8 @@ import { BaseChartDirective, NgChartsModule } from 'ng2-charts';
 import { delay } from 'rxjs';
 import { ChartDatasets } from '../../../../services/client/models/charts/chart-data.interface-dto';
 import { ScriptFacadeService } from '../../../core/services/script-facade.service';
-import { isEmptyObject } from '../../../core/utils/core.utils';
 import { isScriptActive } from '../../../model-compression/models/enums/script-status.enum';
+import { isEmptyObject } from '../../shared.utils';
 
 import {
 	DEFAULT_UPDATE_INTERVAL_VALUE,

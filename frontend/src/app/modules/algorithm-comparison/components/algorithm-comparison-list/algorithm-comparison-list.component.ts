@@ -16,7 +16,7 @@
 
 import { Component } from '@angular/core';
 import { take } from 'rxjs';
-import { isEmptyObject } from '../../../core/utils/core.utils';
+import { isEmptyObject } from '../../../shared/shared.utils';
 import { DrawerClose, DrawerService, DrawerStatus } from '../../../shared/standalone/ms-drawer';
 import { DrawerActionTypeEnum } from '../../../shared/standalone/ms-drawer/models/drawer-action-type.enum';
 import { RecordComparisonItem } from '../../models/record-comparisson.interface';

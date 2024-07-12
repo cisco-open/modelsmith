@@ -3,7 +3,7 @@ import { Subject, Subscription } from 'rxjs';
 import { ChartWebsocketMessageTypes } from '../../../../core/models/enums/websocket-message-types.enum';
 import { ChartsMessages } from '../../../../core/models/interfaces/charts-messages.interface';
 import { WebsocketService } from '../../../../core/services';
-import { isNilOrEmptyString } from '../../../../core/utils/core.utils';
+import { isNilOrEmptyString } from '../../../shared.utils';
 import { RealtimeUpdateMetricEnum } from '../models/enums/realtime-update-metric.enum';
 import { ChartsRealtimeUpdateValues } from '../models/interfaces/ms-charts-realtime-update-values.interface';
 

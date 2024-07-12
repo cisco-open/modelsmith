@@ -21,7 +21,8 @@ import { FileService } from '../../../core/services/file.service';
 @Component({
 	selector: 'ms-file-upload',
 	templateUrl: './ms-file-upload.component.html',
-	styleUrls: ['./ms-file-upload.component.scss']
+	styleUrls: ['./ms-file-upload.component.scss'],
+	standalone: true
 })
 export class MsFileUploadComponent {
 	uploadedFileName: string | null = null;

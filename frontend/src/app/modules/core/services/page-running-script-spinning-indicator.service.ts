@@ -20,8 +20,8 @@ import { ScriptDetails } from '../../../services/client/models/script/script-det
 import { ScriptActions } from '../../../state/core/script';
 import { AlgorithmType } from '../../model-compression/models/enums/algorithms.enum';
 import { ScriptStatusEnum } from '../../model-compression/models/enums/script-status.enum';
+import { isNilOrEmptyString } from '../../shared/shared.utils';
 import { PageKey } from '../models/enums/page-key.enum';
-import { isNilOrEmptyString } from '../utils/core.utils';
 import { ScriptFacadeService } from './script-facade.service';
 
 @Injectable()

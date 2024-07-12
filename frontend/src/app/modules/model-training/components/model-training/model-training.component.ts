@@ -23,13 +23,13 @@ import { ModelsActions } from '../../../../state/core/models/models.actions';
 import { ScriptActions } from '../../../../state/core/script';
 import { BannerService, NavigationService, ScriptFacadeService } from '../../../core/services';
 import { ModelsFacadeService } from '../../../core/services/models-facade.service';
-import { isNil, isNilOrEmptyString } from '../../../core/utils/core.utils';
 import {
 	AlgorithmType,
 	AlgorithmTypeTrainAlgoritmMap,
 	TrainAlgorithmsEnum
 } from '../../../model-compression/models/enums/algorithms.enum';
 import { isScriptActive } from '../../../model-compression/models/enums/script-status.enum';
+import { isNil, isNilOrEmptyString } from '../../../shared/shared.utils';
 import { MsPanelParametersComponent } from '../../../shared/standalone/ms-panel-parameters/ms-panel-parameters.component';
 
 @UntilDestroy()

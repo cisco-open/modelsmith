@@ -18,11 +18,20 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { SharedModule } from '../shared/shared.module';
 import { MsBackgroundGradientComponent } from '../shared/standalone/ms-background-gradient/ms-background-gradient.component';
+import { MsFooterComponent } from '../shared/standalone/ms-footer/ms-footer.component';
+import { MsHeaderComponent } from '../shared/standalone/ms-header/ms-header.component';
 import { ModeSelectComponent } from './components/mode-select/mode-select.component';
 import { ModeSelectRoutingModule } from './mode-select-routing.module';
 
 @NgModule({
 	declarations: [ModeSelectComponent],
-	imports: [ModeSelectRoutingModule, SharedModule, CommonModule, MsBackgroundGradientComponent]
+	imports: [
+		ModeSelectRoutingModule,
+		SharedModule,
+		CommonModule,
+		MsBackgroundGradientComponent,
+		MsFooterComponent,
+		MsHeaderComponent
+	]
 })
 export class ModeSelectModule {}

@@ -19,25 +19,11 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { MsBannerComponent } from './components/ms-banner/ms-banner.component';
-import { MsFooterComponent } from './components/ms-footer/ms-footer.component';
-import { MsHeaderComponent } from './components/ms-header/ms-header.component';
-import { MsMainLayoutComponent } from './components/ms-main-layout/ms-main-layout.component';
-import { MsSidenavItemComponent } from './components/ms-sidenav/components/ms-sidenav-item/ms-sidenav-item.component';
-import { MsSidenavComponent } from './components/ms-sidenav/ms-sidenav.component';
-import { MsUserNavigationComponent } from './components/ms-user-navigation/ms-user-navigation.component';
 import { MaterialModule } from './modules/material.module';
 import { MsFormsModule } from './modules/ms-forms/ms-forms.module';
 import { MsSpiningIndicatorComponent } from './standalone/ms-spining-indicator/ms-spining-indicator.component';
 
-const COMPONENTS = [
-	MsBannerComponent,
-	MsFooterComponent,
-	MsHeaderComponent,
-	MsUserNavigationComponent,
-	MsMainLayoutComponent,
-	MsSidenavComponent,
-	MsSidenavItemComponent
-];
+const COMPONENTS = [MsBannerComponent];
 
 @NgModule({
 	imports: [

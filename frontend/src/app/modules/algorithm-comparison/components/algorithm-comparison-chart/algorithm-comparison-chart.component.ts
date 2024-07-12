@@ -18,7 +18,7 @@ import { Component } from '@angular/core';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { ChartDatasets } from '../../../../services/client/models/charts/chart-data.interface-dto';
-import { isEmptyArray } from '../../../core/utils/core.utils';
+import { isEmptyArray } from '../../../shared/shared.utils';
 import { ChartColorEnum } from '../../../shared/standalone/ms-line-chart/models/enums/chart-color.enum';
 import {
 	ChartDataStructure,

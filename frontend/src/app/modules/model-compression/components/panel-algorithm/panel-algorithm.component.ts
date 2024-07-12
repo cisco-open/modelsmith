@@ -21,7 +21,7 @@ import { filter, skip, take } from 'rxjs';
 import { ScriptDetails } from '../../../../services/client/models/script/script-details.interface-dto';
 import { ScriptActions } from '../../../../state/core/script';
 import { ScriptFacadeService } from '../../../core/services/script-facade.service';
-import { isNilOrEmptyString } from '../../../core/utils/core.utils';
+import { isNilOrEmptyString } from '../../../shared/shared.utils';
 import {
 	DEFAULT_SELECTED_ALGORITHM,
 	PRUNING_ALGORITHMS_LIST,

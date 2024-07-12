@@ -18,12 +18,20 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { SharedModule } from '../shared/shared.module';
 import { MsBackgroundGradientComponent } from '../shared/standalone/ms-background-gradient/ms-background-gradient.component';
+import { MsFooterComponent } from '../shared/standalone/ms-footer/ms-footer.component';
 import { PasswordToggleDirective } from '../shared/standalone/password-toggle.directive';
 import { AuthRoutingModule } from './auth-routing.module';
 import { LoginComponent } from './components/login/login.component';
 
 @NgModule({
 	declarations: [LoginComponent],
-	imports: [CommonModule, AuthRoutingModule, SharedModule, PasswordToggleDirective, MsBackgroundGradientComponent]
+	imports: [
+		CommonModule,
+		AuthRoutingModule,
+		SharedModule,
+		PasswordToggleDirective,
+		MsBackgroundGradientComponent,
+		MsFooterComponent
+	]
 })
 export class AuthModule {}

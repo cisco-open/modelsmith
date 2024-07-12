@@ -26,8 +26,8 @@ import {
 	RequestsConfigKeyEnum
 } from '../../../../services/interceptor/app-loading-interceptor';
 import { RunRecordsActions } from '../../../../state/run-records/records';
-import { isEmptyObject, isNilOrEmptyString } from '../../../core/utils/core.utils';
 import { AlgorithmType } from '../../../model-compression/models/enums/algorithms.enum';
+import { isEmptyObject, isNilOrEmptyString } from '../../../shared/shared.utils';
 import { DRAWER_DATA, DrawerConfig, DrawerRef, DrawerStatus } from '../../../shared/standalone/ms-drawer';
 import { DrawerActionTypeEnum } from '../../../shared/standalone/ms-drawer/models/drawer-action-type.enum';
 import { chartColorsSettings } from '../../../shared/standalone/ms-line-chart/models/constants/chart-color-settings.constants';

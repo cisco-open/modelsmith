@@ -22,7 +22,6 @@ import { KeyValueObject } from '../../../../services/client/models/key-value/key
 import { ScriptDetails } from '../../../../services/client/models/script/script-details.interface-dto';
 import { ScriptActions } from '../../../../state/core/script';
 import { ScriptFacadeService } from '../../../core/services';
-import { isNilOrEmptyString } from '../../../core/utils/core.utils';
 import {
 	AlgorithmKey,
 	AlgorithmType,
@@ -30,6 +29,7 @@ import {
 	TrainAlgorithmsEnum
 } from '../../../model-compression/models/enums/algorithms.enum';
 import { isScriptActive } from '../../../model-compression/models/enums/script-status.enum';
+import { isNilOrEmptyString } from '../../../shared/shared.utils';
 
 @UntilDestroy()
 @Component({

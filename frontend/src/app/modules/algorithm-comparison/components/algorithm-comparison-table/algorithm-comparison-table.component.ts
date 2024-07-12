@@ -18,7 +18,7 @@ import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { isEmptyObject } from '../../../core/utils/core.utils';
+import { isEmptyObject } from '../../../shared/shared.utils';
 import { AlgorithmComparisonTableItem } from '../../models/algorithm-comparison-table-item.interface';
 import { RecordComparisonItem } from '../../models/record-comparisson.interface';
 import { RecordsDataService } from '../../services/records-data.service';

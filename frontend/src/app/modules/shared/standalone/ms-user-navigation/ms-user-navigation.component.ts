@@ -14,7 +14,11 @@
 
 //   SPDX-License-Identifier: Apache-2.0
 
+import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatMenuModule } from '@angular/material/menu';
 import { Observable } from 'rxjs';
 import { UserDto } from '../../../../services/client/models/user/user.interface-dto';
 import { AuthActions } from '../../../../state/core/auth';
@@ -24,7 +28,9 @@ import { AuthFacadeService } from '../../../core/services/auth-facade.service';
 @Component({
 	selector: 'ms-user-navigation',
 	templateUrl: './ms-user-navigation.component.html',
-	styleUrls: ['./ms-user-navigation.component.scss']
+	styleUrls: ['./ms-user-navigation.component.scss'],
+	standalone: true,
+	imports: [CommonModule, MatIconModule, MatMenuModule, MatButtonModule]
 })
 export class MsUserNavigationComponent {
 	readonly RoutesList = RoutesList;

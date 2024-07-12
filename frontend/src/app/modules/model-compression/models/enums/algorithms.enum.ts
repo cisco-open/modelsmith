@@ -14,7 +14,7 @@
 //   SPDX-License-Identifier: Apache-2.0
 
 import { KeyValueObject } from '../../../../services/client/models/key-value/key-value.interface-dto';
-import { toTitleCase } from '../../../core/utils/core.utils';
+import { toTitleCase } from '../../../shared/shared.utils';
 
 export type AlgorithmKey =
 	| PruningAlgorithmsEnum

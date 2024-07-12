@@ -21,8 +21,8 @@ import { ScriptDetails } from '../../../../services/client/models/script/script-
 import { ScriptActions } from '../../../../state/core/script/script.actions';
 import { NavigationService } from '../../../core/services/navigation.service';
 import { ScriptFacadeService } from '../../../core/services/script-facade.service';
-import { isEmptyObject, isNilOrEmptyString } from '../../../core/utils/core.utils';
 import { AlgorithmType } from '../../../model-compression/models/enums/algorithms.enum';
+import { isEmptyObject, isNilOrEmptyString } from '../../../shared/shared.utils';
 import { AnimationType } from '../../models/enums/animation-type.enum';
 
 @UntilDestroy()

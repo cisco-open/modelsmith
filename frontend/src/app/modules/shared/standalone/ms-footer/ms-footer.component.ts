@@ -14,14 +14,18 @@
 
 //   SPDX-License-Identifier: Apache-2.0
 
-import { Component } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { Component, Input } from '@angular/core';
+import { MatDividerModule } from '@angular/material/divider';
 
 @Component({
-	selector: 'ms-header',
-	templateUrl: './ms-header.component.html',
-	styleUrls: ['./ms-header.component.scss']
+	selector: 'ms-footer',
+	templateUrl: './ms-footer.component.html',
+	styleUrls: ['./ms-footer.component.scss'],
+	standalone: true,
+	imports: [CommonModule, MatDividerModule]
 })
-export class MsHeaderComponent {
-	search = new FormControl();
+export class MsFooterComponent {
+	@Input() styleMode: 'fullWidth' | 'mainLayout' = 'fullWidth';
+	currentYear: number = new Date().getFullYear();
 }

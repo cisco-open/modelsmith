@@ -15,7 +15,10 @@
 //   SPDX-License-Identifier: Apache-2.0
 
 import { animate, state, style, transition, trigger } from '@angular/animations';
+import { NgFor, NgIf } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatIconModule } from '@angular/material/icon';
 import { Router } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { ConfigActions } from '../../../../state/core/configs/configs.actions';
@@ -24,12 +27,15 @@ import { AppModes } from '../../../core/models/enums/app-modes.enum';
 import { RoutesList } from '../../../core/models/enums/routes-list.enum';
 import { SidenavItem } from '../../../core/models/interfaces/sidenav.interface';
 import { ConfigsFacadeService } from '../../../core/services/configs-facade.service';
+import { MsSidenavItemComponent } from './components/ms-sidenav-item/ms-sidenav-item.component';
 
 @UntilDestroy()
 @Component({
 	selector: 'ms-sidenav',
 	templateUrl: './ms-sidenav.component.html',
 	styleUrls: ['./ms-sidenav.component.scss'],
+	standalone: true,
+	imports: [MsSidenavItemComponent, MatIconModule, NgIf, NgFor, MatDividerModule],
 	animations: [
 		trigger('expandCollapse', [
 			state('expanded', style({ width: '230px' })),
