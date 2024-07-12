@@ -18,11 +18,11 @@ import { Inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { of } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
-import { CLIENT } from '../../../app.tokens';
 import { Client } from '../../../services/client/client';
 import { GetCurrentOrPreviousSelectedModel } from '../../../services/client/serviceCalls/models/get-current-or-previous-selected-model';
 import { GetModelMetadata } from '../../../services/client/serviceCalls/models/get-model-metadata';
 import { GetModelsList } from '../../../services/client/serviceCalls/models/get-models-list';
+import { CLIENT } from '../../../services/services.tokens';
 import { ModelsActions } from './models.actions';
 
 @Injectable()

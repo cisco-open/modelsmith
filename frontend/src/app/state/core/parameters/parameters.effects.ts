@@ -18,9 +18,9 @@ import { Inject, Injectable } from '@angular/core';
 
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, of, switchMap } from 'rxjs';
-import { CLIENT } from '../../../app.tokens';
 import { Client } from '../../../services/client/client';
 import { GetParameters } from '../../../services/client/serviceCalls/parameters/get-parameters';
+import { CLIENT } from '../../../services/services.tokens';
 import { ParameterActions } from './parameters.actions';
 
 @Injectable()

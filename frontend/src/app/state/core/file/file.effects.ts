@@ -18,10 +18,10 @@ import { Inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { of } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
-import { CLIENT } from '../../../app.tokens';
 import { BannerService } from '../../../modules/shared/components/ms-banner/services/banner.service';
 import { Client } from '../../../services/client/client';
 import { PostUploadModel } from '../../../services/client/serviceCalls/upload-file/post-upload-file';
+import { CLIENT } from '../../../services/services.tokens';
 import { ScriptActions } from '../script/script.actions';
 import { FileActions } from './file.actions';
 

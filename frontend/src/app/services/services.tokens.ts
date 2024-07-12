@@ -15,6 +15,6 @@
 //   SPDX-License-Identifier: Apache-2.0
 
 import { InjectionToken } from '@angular/core';
-import { Client } from './services/client/client';
+import { Client } from './client/client';
 
 export const CLIENT = new InjectionToken<Client>('CLIENT');

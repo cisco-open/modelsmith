@@ -17,12 +17,12 @@
 import { Inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, of, switchMap } from 'rxjs';
-import { CLIENT } from '../../../app.tokens';
 import { Client } from '../../../services/client/client';
 import { GetChartConfigurationSettings } from '../../../services/client/serviceCalls/charts/get-chart-configuration-settings';
 import { GetCurrentMachineUnlearningChartData } from '../../../services/client/serviceCalls/charts/get-current-machine-unlearning-chart-data copy';
 import { GetCurrentPruningChartData } from '../../../services/client/serviceCalls/charts/get-current-pruning-chart-data';
 import { GetCurrentQuantizationChartData } from '../../../services/client/serviceCalls/charts/get-current-quantization-chart-data';
+import { CLIENT } from '../../../services/services.tokens';
 import { ChartActions } from './charts.actions';
 
 @Injectable()

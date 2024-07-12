@@ -1,8 +1,5 @@
-import { HttpClient } from '@angular/common/http';
 import { ENVIRONMENT_INITIALIZER, inject, Provider } from '@angular/core';
 import { MatIconRegistry } from '@angular/material/icon';
-import { CLIENT } from '../../app.tokens';
-import { ClientBackend } from '../../services/client/client-backend';
 import { ScriptActions } from '../../state/core/script';
 import { AuthGuard } from './guards/auth.guard';
 import { ModeSelectGuard } from './guards/mode-select.guard';
@@ -23,7 +20,7 @@ import {
 import { ModelsFacadeService } from './services/models-facade.service';
 import { PageRunningScriptSpiningIndicatorService } from './services/page-running-script-spinning-indicator.service';
 
-export function provideCore(): Provider[] {
+export function provideCoreServices(): Provider[] {
 	return [
 		WebsocketService,
 		AuthGuard,
@@ -41,13 +38,6 @@ export function provideCore(): Provider[] {
 		StatisticsFacadeService,
 		PageRunningScriptSpiningIndicatorService,
 		ModelsFacadeService,
-		{
-			provide: CLIENT,
-			useFactory: (httpClient: HttpClient) => {
-				return new ClientBackend(httpClient);
-			},
-			deps: [HttpClient]
-		},
 		{
 			provide: ENVIRONMENT_INITIALIZER,
 			multi: true,

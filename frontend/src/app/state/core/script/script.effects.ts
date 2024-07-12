@@ -17,12 +17,12 @@
 import { Inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, of, switchMap } from 'rxjs';
-import { CLIENT } from '../../../app.tokens';
 import { Client } from '../../../services/client/client';
 import { GetCurrentOrLastActiveScriptDetails } from '../../../services/client/serviceCalls/script/get-current-or-last-active-script-details';
 import { GetScriptStatus } from '../../../services/client/serviceCalls/script/get-script-status';
 import { PostRunScript } from '../../../services/client/serviceCalls/script/post-run-script';
 import { PostStopScript } from '../../../services/client/serviceCalls/script/post-stop-script';
+import { CLIENT } from '../../../services/services.tokens';
 import { ScriptActions } from './script.actions';
 
 @Injectable()

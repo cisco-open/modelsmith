@@ -17,10 +17,10 @@
 import { Inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, of, switchMap } from 'rxjs';
-import { CLIENT } from '../../../app.tokens';
 import { Client } from '../../../services/client/client';
 import { GetLatestMessages } from '../../../services/client/serviceCalls/terminal/get-latest-messages';
 import { PostClearHistory } from '../../../services/client/serviceCalls/terminal/post-clear-history';
+import { CLIENT } from '../../../services/services.tokens';
 import { TerminalActions } from './terminal.actions';
 
 @Injectable()

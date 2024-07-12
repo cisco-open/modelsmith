@@ -17,10 +17,10 @@
 import { Inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, of, switchMap } from 'rxjs';
-import { CLIENT } from '../../../app.tokens';
 import { Client } from '../../../services/client/client';
 import { GetRunRecordsFilenames } from '../../../services/client/serviceCalls/run-records/get-run-records-filenames';
 import { GetRunRecordsSummarizedData } from '../../../services/client/serviceCalls/run-records/get-run-records-summarized-data';
+import { CLIENT } from '../../../services/services.tokens';
 import { RunRecordsActions } from './records.actions';
 
 @Injectable()

@@ -4,8 +4,9 @@ import { provideClientHydration } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
-import { provideCore } from './modules/core/core.provide';
+import { provideCoreServices } from './modules/core/core-services.provide';
 import { provideCustomMaterialConfigs } from './modules/shared/material.providers';
+import { provideBEServices } from './services/be-services.provide';
 import { provideInterceptors } from './services/interceptors.provide';
 import { provideGlobalStore } from './state/global-store.providers';
 
@@ -15,7 +16,8 @@ export const appConfig: ApplicationConfig = {
 		provideRouter(routes),
 		provideCustomMaterialConfigs(),
 		provideGlobalStore(),
-		provideCore(),
+		provideBEServices(),
+		provideCoreServices(),
 		provideInterceptors(),
 		provideClientHydration(),
 		provideHttpClient(withInterceptorsFromDi())
