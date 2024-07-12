@@ -16,7 +16,7 @@
 
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { NotificationTypes } from '../../../../core/models/enums/snackbar-types.enum';
+import { NotificationTypes } from '../models/snackbar-types.enum';
 import { MsBannerComponent } from '../ms-banner.component';
 
 export const DEFAULT_SUCCESS_SNACKBAR_DURATION: number = 5000;

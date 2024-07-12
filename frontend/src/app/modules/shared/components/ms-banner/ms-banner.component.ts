@@ -18,7 +18,7 @@ import { CommonModule } from '@angular/common';
 import { Component, Inject } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MAT_SNACK_BAR_DATA, MatSnackBarRef } from '@angular/material/snack-bar';
-import { NotificationTypes } from '../../../core/models/enums/snackbar-types.enum';
+import { NotificationTypes } from './models/snackbar-types.enum';
 
 @Component({
 	selector: 'ms-banner',

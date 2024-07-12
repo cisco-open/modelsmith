@@ -16,7 +16,7 @@
 
 import { ActionReducer, MetaReducer } from '@ngrx/store';
 import { localStorageSync } from 'ngrx-store-localstorage';
-import { StorageKeys } from '../modules/core/models/constants/storage.constants';
+import { StorageKeys } from '../modules/shared/storage/storage.constants';
 
 /**
  * `localStorageSyncReducer` is a meta-reducer for synchronizing specific parts of the state

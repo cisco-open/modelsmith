@@ -18,11 +18,11 @@ import { Injectable } from '@angular/core';
 import { Router, UrlTree } from '@angular/router';
 import { Observable } from 'rxjs';
 import { ConfigActions } from '../../../state/core/configs/configs.actions';
-import { StorageKeys } from '../models/constants/storage.constants';
+import { StorageApp } from '../../shared/storage/storage-app';
+import { StorageKeys } from '../../shared/storage/storage.constants';
 import { AppModes } from '../models/enums/app-modes.enum';
 import { RoutesList } from '../models/enums/routes-list.enum';
 import { ConfigsFacadeService } from '../services/configs-facade.service';
-import { StorageApp } from '../storage/storage-app';
 
 @Injectable()
 export class ModeSelectGuard {

@@ -17,9 +17,9 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, Router, UrlTree } from '@angular/router';
 import { Observable } from 'rxjs';
-import { StorageKeys } from '../models/constants/storage.constants';
+import { StorageApp } from '../../shared/storage/storage-app';
+import { StorageKeys } from '../../shared/storage/storage.constants';
 import { RoutesList } from '../models/enums/routes-list.enum';
-import { StorageApp } from '../storage/storage-app';
 
 @Injectable()
 export class RedirectIfAuthenticatedGuard implements CanActivate {

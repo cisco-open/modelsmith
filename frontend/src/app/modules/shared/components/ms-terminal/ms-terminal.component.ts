@@ -23,13 +23,13 @@ import { KeyValue } from '../../../../services/client/models/key-value/key-value
 import { ScriptDetails } from '../../../../services/client/models/script/script-details.interface-dto';
 import { ModelsActions } from '../../../../state/core/models/models.actions';
 import { TerminalActions } from '../../../../state/core/terminal/terminal.actions';
-import { NotificationTypes } from '../../../core/models/enums/snackbar-types.enum';
 import { TerminalMessage } from '../../../core/models/interfaces/terminal-message.interface';
 import { ScriptFacadeService } from '../../../core/services';
 import { ModelsFacadeService } from '../../../core/services/models-facade.service';
 import { TerminalFacadeService } from '../../../core/services/terminal-facade.service';
 import { WebsocketService } from '../../../core/services/websocket.service';
 import { AlgorithmType, TrainAlgorithmsEnum } from '../../../model-compression/models/enums/algorithms.enum';
+import { NotificationTypes } from '../ms-banner/models/snackbar-types.enum';
 import { MsTerminalToolbarComponent } from './components/terminal-toolbar/terminal-toolbar.component';
 
 @UntilDestroy()

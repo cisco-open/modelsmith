@@ -1,4 +1,4 @@
-import { NotificationTypes } from '../enums/snackbar-types.enum';
+import { NotificationTypes } from '../../../shared/components/ms-banner/models/snackbar-types.enum';
 
 export interface TerminalMessage {
 	data: string;
