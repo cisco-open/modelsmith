@@ -16,7 +16,8 @@
 
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { SharedModule } from '../shared/shared.module';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MsBackgroundGradientComponent } from '../shared/standalone/ms-background-gradient/ms-background-gradient.component';
 import { MsFooterComponent } from '../shared/standalone/ms-footer/ms-footer.component';
 import { MsHeaderComponent } from '../shared/standalone/ms-header/ms-header.component';
@@ -27,11 +28,12 @@ import { ModeSelectRoutingModule } from './mode-select-routing.module';
 	declarations: [ModeSelectComponent],
 	imports: [
 		ModeSelectRoutingModule,
-		SharedModule,
 		CommonModule,
 		MsBackgroundGradientComponent,
 		MsFooterComponent,
-		MsHeaderComponent
+		MsHeaderComponent,
+		MatCheckboxModule,
+		MatButtonModule
 	]
 })
 export class ModeSelectModule {}

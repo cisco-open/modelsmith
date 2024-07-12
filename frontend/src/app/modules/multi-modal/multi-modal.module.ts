@@ -16,7 +16,8 @@
 
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { SharedModule } from '../shared/shared.module';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
 import { MsPanelParametersComponent } from '../shared/standalone/ms-panel-parameters/ms-panel-parameters.component';
 import { MsTerminalComponent } from '../shared/standalone/ms-terminal/ms-terminal.component';
 import { MultiModalComponent } from './components/multi-modal/multi-modal.component';
@@ -24,6 +25,14 @@ import { MultiModalRoutingModule } from './multi-modal-routing.module';
 
 @NgModule({
 	declarations: [MultiModalComponent],
-	imports: [CommonModule, SharedModule, MsPanelParametersComponent, MsTerminalComponent, MultiModalRoutingModule]
+	imports: [
+		CommonModule,
+		MsPanelParametersComponent,
+		MsTerminalComponent,
+		MultiModalRoutingModule,
+		FormsModule,
+		ReactiveFormsModule,
+		MatButtonModule
+	]
 })
 export class MultiModalModule {}

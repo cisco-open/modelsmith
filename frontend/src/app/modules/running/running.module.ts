@@ -16,7 +16,12 @@
 
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { SharedModule } from '../shared/shared.module';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MsFormsModule } from '../shared/modules/ms-forms/ms-forms.module';
 import { MsEmptyStateComponent } from '../shared/standalone/ms-empty-state/ms-empty-state.component';
 import { MsLineChartComponent } from '../shared/standalone/ms-line-chart/ms-line-chart.component';
 import { ChartToolsGlobalSignalsService } from '../shared/standalone/ms-line-chart/services/chart-tools-global-signals.service';
@@ -41,7 +46,19 @@ import { RunningRoutingModule } from './running-routing.module';
 		ReadableStatisticsLabelPipe,
 		RunningStatusBarComponent
 	],
-	imports: [RunningRoutingModule, CommonModule, SharedModule, MsEmptyStateComponent, MsLineChartComponent],
+	imports: [
+		CommonModule,
+		RunningRoutingModule,
+		MsEmptyStateComponent,
+		MsLineChartComponent,
+		MatIconModule,
+		MatButtonModule,
+		MatCardModule,
+		FormsModule,
+		ReactiveFormsModule,
+		MatSlideToggleModule,
+		MsFormsModule
+	],
 	providers: [ChartToolsGlobalSignalsService]
 })
 export class RunningModule {}

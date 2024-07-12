@@ -16,7 +16,10 @@
 
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { SharedModule } from '../shared/shared.module';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 import { MsBackgroundGradientComponent } from '../shared/standalone/ms-background-gradient/ms-background-gradient.component';
 import { MsFooterComponent } from '../shared/standalone/ms-footer/ms-footer.component';
 import { PasswordToggleDirective } from '../shared/standalone/password-toggle.directive';
@@ -27,11 +30,15 @@ import { LoginComponent } from './components/login/login.component';
 	declarations: [LoginComponent],
 	imports: [
 		CommonModule,
+		FormsModule,
+		ReactiveFormsModule,
+		MatFormFieldModule,
+		MatInputModule,
 		AuthRoutingModule,
-		SharedModule,
 		PasswordToggleDirective,
 		MsBackgroundGradientComponent,
-		MsFooterComponent
+		MsFooterComponent,
+		MatButtonModule
 	]
 })
 export class AuthModule {}

@@ -21,13 +21,24 @@ import { StoreModule } from '@ngrx/store';
 import { NgxColorsModule } from 'ngx-colors';
 import { runRecordsReducers } from '../../state/run-records';
 import { RecordsEffects } from '../../state/run-records/records';
-import { SharedModule } from '../shared/shared.module';
 import { EllipsisDirective } from '../shared/standalone/ellipsis.directive';
 import { DrawerService, MsDrawerComponent } from '../shared/standalone/ms-drawer';
 import { MsEmptyStateComponent } from '../shared/standalone/ms-empty-state/ms-empty-state.component';
 import { MsLineChartComponent } from '../shared/standalone/ms-line-chart/ms-line-chart.component';
 import { ChartToolsGlobalSignalsService } from '../shared/standalone/ms-line-chart/services/chart-tools-global-signals.service';
 
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSelectModule } from '@angular/material/select';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatTableModule } from '@angular/material/table';
 import { AdaptiveFileSizePipe } from '../shared/pipes/adaptive-file-size.pipe';
 import { EmptyTableFieldPipe } from '../shared/pipes/empty-table-field.pipe';
 import { HasKeysPipe } from '../shared/pipes/has-keys.pipe';
@@ -58,7 +69,6 @@ import { RecordsFacadeService } from './services/records-facade.service';
 		AlgorithmComparisonRoutingModule,
 		MsDrawerComponent,
 		NgxColorsModule,
-		SharedModule,
 		StoreModule.forFeature('runRecords', runRecordsReducers),
 		EffectsModule.forFeature([RecordsEffects]),
 		MsLineChartComponent,
@@ -69,7 +79,20 @@ import { RecordsFacadeService } from './services/records-facade.service';
 		EllipsisDirective,
 		EmptyTableFieldPipe,
 		AdaptiveFileSizePipe,
-		HasKeysPipe
+		HasKeysPipe,
+		MatExpansionModule,
+		FormsModule,
+		ReactiveFormsModule,
+		MatFormFieldModule,
+		MatSelectModule,
+		MatDividerModule,
+		MatProgressSpinnerModule,
+		MatIconModule,
+		MatCardModule,
+		MatTableModule,
+		MatSlideToggleModule,
+		MatButtonModule,
+		MatInputModule
 	],
 	providers: [DrawerService, RecordsFacadeService, RecordsDataService, ChartToolsGlobalSignalsService]
 })

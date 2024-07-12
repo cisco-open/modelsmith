@@ -16,7 +16,8 @@
 
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { SharedModule } from '../shared/shared.module';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatIconModule } from '@angular/material/icon';
 import { MsCardSelectorComponent } from '../shared/standalone/ms-card-selector/ms-card-selector.component';
 import { MsTerminalComponent } from '../shared/standalone/ms-terminal/ms-terminal.component';
 import { StepHigherAccuracyComponent } from './components/step-higher-accuracy/step-higher-accuracy.component';
@@ -49,7 +50,14 @@ import { WizardRoutingModule } from './wizard-routing.module';
 		StepRecommendBasicPtqComponent,
 		StepRecommendMinmaxComponent
 	],
-	imports: [CommonModule, SharedModule, WizardRoutingModule, MsTerminalComponent, MsCardSelectorComponent],
+	imports: [
+		CommonModule,
+		WizardRoutingModule,
+		MsTerminalComponent,
+		MsCardSelectorComponent,
+		MatIconModule,
+		MatChipsModule
+	],
 	providers: [WizardUtilsService]
 })
 export class WizardModule {}

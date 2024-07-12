@@ -16,8 +16,22 @@
 
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatCardModule } from '@angular/material/card';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatSelectModule } from '@angular/material/select';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatStepperModule } from '@angular/material/stepper';
+import { MatTableModule } from '@angular/material/table';
 import { RouterModule } from '@angular/router';
-import { SharedModule } from '../shared/shared.module';
 import { MsCardSelectorComponent } from '../shared/standalone/ms-card-selector/ms-card-selector.component';
 import { DrawerService, MsDrawerComponent } from '../shared/standalone/ms-drawer';
 import { ButtonsDemoComponent } from './components/buttons-demo/buttons-demo.component';
@@ -67,7 +81,29 @@ import { DemoRoutingModule } from './demo-routing.module';
 		DrawerWithButtonsActionsComponent,
 		DrawerWithCustomizableWidthComponent
 	],
-	imports: [RouterModule, CommonModule, SharedModule, DemoRoutingModule, MsCardSelectorComponent, MsDrawerComponent],
+	imports: [
+		RouterModule,
+		CommonModule,
+		DemoRoutingModule,
+		MsCardSelectorComponent,
+		MsDrawerComponent,
+		MatIconModule,
+		MatStepperModule,
+		MatDividerModule,
+		FormsModule,
+		ReactiveFormsModule,
+		MatButtonModule,
+		MatTableModule,
+		MatCardModule,
+		MatMenuModule,
+		MatFormFieldModule,
+		MatInputModule,
+		MatSelectModule,
+		MatButtonToggleModule,
+		MatChipsModule,
+		MatCheckboxModule,
+		MatSlideToggleModule
+	],
 	providers: [DrawerService]
 })
 export class DemoModule {}

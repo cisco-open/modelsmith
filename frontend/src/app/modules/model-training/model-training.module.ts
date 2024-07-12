@@ -16,10 +16,16 @@
 
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatSelectModule } from '@angular/material/select';
 import { AdaptiveFileSizePipe } from '../shared/pipes/adaptive-file-size.pipe';
 import { ParametersLabelPipe } from '../shared/pipes/parameters-label.pipe';
 import { ReadableDurationPipe } from '../shared/pipes/readable-duration.pipe';
-import { SharedModule } from '../shared/shared.module';
 import { MsEmptyStateComponent } from '../shared/standalone/ms-empty-state/ms-empty-state.component';
 import { MsPanelModelTrainingComponent } from '../shared/standalone/ms-panel-model-training/ms-panel-model-training.component';
 import { MsPanelParametersComponent } from '../shared/standalone/ms-panel-parameters/ms-panel-parameters.component';
@@ -33,7 +39,6 @@ import { ModelTrainingRoutingModule } from './model-training-routing.module';
 	declarations: [ModelTrainingComponent, PanelAlgorithmTypeForTrainingComponent, PanelModelMetadataComponent],
 	imports: [
 		CommonModule,
-		SharedModule,
 		ModelTrainingRoutingModule,
 		MsTerminalComponent,
 		MsPanelModelTrainingComponent,
@@ -41,7 +46,15 @@ import { ModelTrainingRoutingModule } from './model-training-routing.module';
 		AdaptiveFileSizePipe,
 		ReadableDurationPipe,
 		ParametersLabelPipe,
-		MsEmptyStateComponent
+		MsEmptyStateComponent,
+		MatCardModule,
+		MatDividerModule,
+		MatSelectModule,
+		MatFormFieldModule,
+		FormsModule,
+		ReactiveFormsModule,
+		MatIconModule,
+		MatButtonModule
 	]
 })
 export class ModelTrainingModule {}

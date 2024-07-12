@@ -16,7 +16,8 @@
 
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { SharedModule } from '../shared/shared.module';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
 import { MsPanelModelComponent } from '../shared/standalone/ms-panel-model/ms-panel-model.component';
 import { MsPanelParametersComponent } from '../shared/standalone/ms-panel-parameters/ms-panel-parameters.component';
 import { MsTerminalComponent } from '../shared/standalone/ms-terminal/ms-terminal.component';
@@ -27,11 +28,13 @@ import { MachineUnlearningRoutingModule } from './machine-unlearning-routing.mod
 	declarations: [MachineUnlearningComponent],
 	imports: [
 		CommonModule,
-		SharedModule,
 		MachineUnlearningRoutingModule,
 		MsTerminalComponent,
 		MsPanelParametersComponent,
-		MsPanelModelComponent
+		MsPanelModelComponent,
+		MatButtonModule,
+		FormsModule,
+		ReactiveFormsModule
 	]
 })
 export class MachineUnlearningModule {}
