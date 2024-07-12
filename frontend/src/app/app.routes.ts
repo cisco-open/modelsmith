@@ -14,15 +14,14 @@
 
 //   SPDX-License-Identifier: Apache-2.0
 
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { Routes } from '@angular/router';
 import { AuthGuard } from './modules/core/guards/auth.guard';
 import { ModeSelectGuard } from './modules/core/guards/mode-select.guard';
 import { RedirectIfAuthenticatedGuard } from './modules/core/guards/redirect-if-authenticated.guard';
 import { RoutesList } from './modules/core/models/enums/routes-list.enum';
 import { MsMainLayoutComponent } from './modules/shared/components/ms-main-layout/ms-main-layout.component';
 
-const routes: Routes = [
+export const routes: Routes = [
 	{
 		path: RoutesList.AUTH.ROOT,
 		loadChildren: () => import('./modules/auth/auth.module').then((m) => m.AuthModule),
@@ -87,9 +86,3 @@ const routes: Routes = [
 		]
 	}
 ];
-
-@NgModule({
-	imports: [RouterModule.forRoot(routes)],
-	exports: [RouterModule]
-})
-export class AppRoutingModule {}

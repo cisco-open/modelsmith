@@ -8,8 +8,8 @@ describe('AlgorithmComparisonComponent', () => {
 
 	beforeEach(() => {
 		TestBed.configureTestingModule({
-			declarations: [AlgorithmComparisonComponent]
-		});
+    declarations: [AlgorithmComparisonComponent]
+});
 		fixture = TestBed.createComponent(AlgorithmComparisonComponent);
 		component = fixture.componentInstance;
 		fixture.detectChanges();

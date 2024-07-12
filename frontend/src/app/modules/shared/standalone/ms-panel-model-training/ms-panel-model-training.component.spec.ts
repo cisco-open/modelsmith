@@ -24,8 +24,8 @@ describe('MsPanelModelTrainingComponent', () => {
 
 	beforeEach(() => {
 		TestBed.configureTestingModule({
-			declarations: [MsPanelModelTrainingComponent]
-		});
+    imports: [MsPanelModelTrainingComponent]
+});
 		fixture = TestBed.createComponent(MsPanelModelTrainingComponent);
 		component = fixture.componentInstance;
 		fixture.detectChanges();

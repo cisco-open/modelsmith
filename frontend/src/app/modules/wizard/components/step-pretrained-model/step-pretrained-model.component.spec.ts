@@ -24,8 +24,8 @@ describe('StepPretrainedModelComponent', () => {
 
 	beforeEach(() => {
 		TestBed.configureTestingModule({
-			declarations: [StepPretrainedModelComponent]
-		});
+    declarations: [StepPretrainedModelComponent]
+});
 		fixture = TestBed.createComponent(StepPretrainedModelComponent);
 		component = fixture.componentInstance;
 		fixture.detectChanges();

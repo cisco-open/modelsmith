@@ -24,8 +24,8 @@ describe('MsTerminalComponent', () => {
 
 	beforeEach(() => {
 		TestBed.configureTestingModule({
-			declarations: [MsTerminalComponent]
-		});
+    imports: [MsTerminalComponent]
+});
 		fixture = TestBed.createComponent(MsTerminalComponent);
 		component = fixture.componentInstance;
 		fixture.detectChanges();

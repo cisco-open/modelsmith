@@ -24,8 +24,8 @@ describe('MsPanelParametersComponent', () => {
 
 	beforeEach(() => {
 		TestBed.configureTestingModule({
-			declarations: [MsPanelParametersComponent]
-		});
+    imports: [MsPanelParametersComponent]
+});
 		fixture = TestBed.createComponent(MsPanelParametersComponent);
 		component = fixture.componentInstance;
 		fixture.detectChanges();

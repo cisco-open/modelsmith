@@ -24,8 +24,8 @@ describe('RunningQuantizationChartsComponent', () => {
 
 	beforeEach(() => {
 		TestBed.configureTestingModule({
-			declarations: [RunningQuantizationChartsComponent]
-		});
+    declarations: [RunningQuantizationChartsComponent]
+});
 		fixture = TestBed.createComponent(RunningQuantizationChartsComponent);
 		component = fixture.componentInstance;
 		fixture.detectChanges();

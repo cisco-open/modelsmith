@@ -24,8 +24,8 @@ describe('StepRecommendBasicPtqComponent', () => {
 
 	beforeEach(() => {
 		TestBed.configureTestingModule({
-			declarations: [StepRecommendBasicPtqComponent]
-		});
+    declarations: [StepRecommendBasicPtqComponent]
+});
 		fixture = TestBed.createComponent(StepRecommendBasicPtqComponent);
 		component = fixture.componentInstance;
 		fixture.detectChanges();

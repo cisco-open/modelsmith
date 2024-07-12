@@ -24,8 +24,8 @@ describe('MsHeaderComponent', () => {
 
 	beforeEach(() => {
 		TestBed.configureTestingModule({
-			declarations: [MsHeaderComponent]
-		});
+    declarations: [MsHeaderComponent]
+});
 		fixture = TestBed.createComponent(MsHeaderComponent);
 		component = fixture.componentInstance;
 		fixture.detectChanges();

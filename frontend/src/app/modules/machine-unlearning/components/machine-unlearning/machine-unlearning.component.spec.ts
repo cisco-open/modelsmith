@@ -24,8 +24,8 @@ describe('MachineUnlearningComponent', () => {
 
 	beforeEach(() => {
 		TestBed.configureTestingModule({
-			declarations: [MachineUnlearningComponent]
-		});
+    declarations: [MachineUnlearningComponent]
+});
 		fixture = TestBed.createComponent(MachineUnlearningComponent);
 		component = fixture.componentInstance;
 		fixture.detectChanges();

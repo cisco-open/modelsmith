@@ -24,8 +24,8 @@ describe('StepHigherAccuracyComponent', () => {
 
 	beforeEach(() => {
 		TestBed.configureTestingModule({
-			declarations: [StepHigherAccuracyComponent]
-		});
+    declarations: [StepHigherAccuracyComponent]
+});
 		fixture = TestBed.createComponent(StepHigherAccuracyComponent);
 		component = fixture.componentInstance;
 		fixture.detectChanges();

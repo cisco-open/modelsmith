@@ -24,8 +24,8 @@ describe('RunningStatusBarComponent', () => {
 
 	beforeEach(() => {
 		TestBed.configureTestingModule({
-			declarations: [RunningStatusBarComponent]
-		});
+    declarations: [RunningStatusBarComponent]
+});
 		fixture = TestBed.createComponent(RunningStatusBarComponent);
 		component = fixture.componentInstance;
 		fixture.detectChanges();

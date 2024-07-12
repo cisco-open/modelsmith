@@ -24,8 +24,8 @@ describe('ModelTrainingComponent', () => {
 
 	beforeEach(() => {
 		TestBed.configureTestingModule({
-			declarations: [ModelTrainingComponent]
-		});
+    declarations: [ModelTrainingComponent]
+});
 		fixture = TestBed.createComponent(ModelTrainingComponent);
 		component = fixture.componentInstance;
 		fixture.detectChanges();

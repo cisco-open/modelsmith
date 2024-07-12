@@ -24,8 +24,8 @@ describe('RunningPruningChartsComponent', () => {
 
 	beforeEach(() => {
 		TestBed.configureTestingModule({
-			declarations: [RunningPruningChartsComponent]
-		});
+    declarations: [RunningPruningChartsComponent]
+});
 		fixture = TestBed.createComponent(RunningPruningChartsComponent);
 		component = fixture.componentInstance;
 		fixture.detectChanges();

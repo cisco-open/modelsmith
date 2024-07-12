@@ -24,8 +24,8 @@ describe('NotificationsDemoComponent', () => {
 
 	beforeEach(() => {
 		TestBed.configureTestingModule({
-			declarations: [NotificationsDemoComponent]
-		});
+    declarations: [NotificationsDemoComponent]
+});
 		fixture = TestBed.createComponent(NotificationsDemoComponent);
 		component = fixture.componentInstance;
 		fixture.detectChanges();

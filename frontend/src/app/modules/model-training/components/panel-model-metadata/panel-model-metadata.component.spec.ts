@@ -8,8 +8,8 @@ describe('PanelModelMetadataComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [PanelModelMetadataComponent]
-    });
+    declarations: [PanelModelMetadataComponent]
+});
     fixture = TestBed.createComponent(PanelModelMetadataComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

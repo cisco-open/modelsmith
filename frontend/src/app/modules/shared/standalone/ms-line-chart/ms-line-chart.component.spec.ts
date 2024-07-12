@@ -24,8 +24,8 @@ describe('MsLineChartComponent', () => {
 
 	beforeEach(() => {
 		TestBed.configureTestingModule({
-			declarations: [MsLineChartComponent]
-		});
+    imports: [MsLineChartComponent]
+});
 		fixture = TestBed.createComponent(MsLineChartComponent);
 		component = fixture.componentInstance;
 		fixture.detectChanges();

@@ -24,8 +24,8 @@ describe('ModeSelectComponent', () => {
 
 	beforeEach(() => {
 		TestBed.configureTestingModule({
-			declarations: [ModeSelectComponent]
-		});
+    declarations: [ModeSelectComponent]
+});
 		fixture = TestBed.createComponent(ModeSelectComponent);
 		component = fixture.componentInstance;
 		fixture.detectChanges();

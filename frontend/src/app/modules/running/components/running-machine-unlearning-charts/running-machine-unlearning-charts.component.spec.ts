@@ -24,8 +24,8 @@ describe('RunningMachineUnlearningChartsComponent', () => {
 
 	beforeEach(() => {
 		TestBed.configureTestingModule({
-			declarations: [RunningMachineUnlearningChartsComponent]
-		});
+    declarations: [RunningMachineUnlearningChartsComponent]
+});
 		fixture = TestBed.createComponent(RunningMachineUnlearningChartsComponent);
 		component = fixture.componentInstance;
 		fixture.detectChanges();

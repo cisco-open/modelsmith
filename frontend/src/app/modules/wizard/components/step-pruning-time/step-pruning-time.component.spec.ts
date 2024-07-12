@@ -24,8 +24,8 @@ describe('StepPruningTimeComponent', () => {
 
 	beforeEach(() => {
 		TestBed.configureTestingModule({
-			declarations: [StepPruningTimeComponent]
-		});
+    declarations: [StepPruningTimeComponent]
+});
 		fixture = TestBed.createComponent(StepPruningTimeComponent);
 		component = fixture.componentInstance;
 		fixture.detectChanges();

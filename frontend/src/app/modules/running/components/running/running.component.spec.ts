@@ -24,8 +24,8 @@ describe('RunningComponent', () => {
 
 	beforeEach(() => {
 		TestBed.configureTestingModule({
-			declarations: [RunningComponent]
-		});
+    declarations: [RunningComponent]
+});
 		fixture = TestBed.createComponent(RunningComponent);
 		component = fixture.componentInstance;
 		fixture.detectChanges();

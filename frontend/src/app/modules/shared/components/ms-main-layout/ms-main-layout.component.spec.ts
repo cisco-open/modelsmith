@@ -24,8 +24,8 @@ describe('MsMainLayoutComponent', () => {
 
 	beforeEach(() => {
 		TestBed.configureTestingModule({
-			declarations: [MsMainLayoutComponent]
-		});
+    declarations: [MsMainLayoutComponent]
+});
 		fixture = TestBed.createComponent(MsMainLayoutComponent);
 		component = fixture.componentInstance;
 		fixture.detectChanges();

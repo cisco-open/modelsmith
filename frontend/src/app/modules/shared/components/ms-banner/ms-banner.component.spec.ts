@@ -31,19 +31,19 @@ describe('MsBannerComponent', () => {
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			imports: MODULE_IMPORTS,
-			declarations: [MsBannerComponent],
-			providers: [
-				{
-					provide: MAT_SNACK_BAR_DATA,
-					useValue: {}
-				},
-				{
-					provide: MatSnackBarRef,
-					useValue: {}
-				}
-			]
-		}).compileComponents();
+    imports: MODULE_IMPORTS,
+    declarations: [MsBannerComponent],
+    providers: [
+        {
+            provide: MAT_SNACK_BAR_DATA,
+            useValue: {}
+        },
+        {
+            provide: MatSnackBarRef,
+            useValue: {}
+        }
+    ]
+}).compileComponents();
 	});
 
 	beforeEach(() => {

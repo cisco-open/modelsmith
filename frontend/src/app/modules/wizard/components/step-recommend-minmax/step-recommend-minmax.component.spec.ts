@@ -24,8 +24,8 @@ describe('StepRecommendMinmaxComponent', () => {
 
 	beforeEach(() => {
 		TestBed.configureTestingModule({
-			declarations: [StepRecommendMinmaxComponent]
-		});
+    declarations: [StepRecommendMinmaxComponent]
+});
 		fixture = TestBed.createComponent(StepRecommendMinmaxComponent);
 		component = fixture.componentInstance;
 		fixture.detectChanges();

@@ -24,8 +24,8 @@ describe('MsEmptyStateComponent', () => {
 
 	beforeEach(() => {
 		TestBed.configureTestingModule({
-			declarations: [MsEmptyStateComponent]
-		});
+    imports: [MsEmptyStateComponent]
+});
 		fixture = TestBed.createComponent(MsEmptyStateComponent);
 		component = fixture.componentInstance;
 		fixture.detectChanges();

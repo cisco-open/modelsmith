@@ -24,8 +24,8 @@ describe('AlgorithmComparisonTableComponent', () => {
 
 	beforeEach(() => {
 		TestBed.configureTestingModule({
-			declarations: [AlgorithmComparisonTableComponent]
-		});
+    declarations: [AlgorithmComparisonTableComponent]
+});
 		fixture = TestBed.createComponent(AlgorithmComparisonTableComponent);
 		component = fixture.componentInstance;
 		fixture.detectChanges();

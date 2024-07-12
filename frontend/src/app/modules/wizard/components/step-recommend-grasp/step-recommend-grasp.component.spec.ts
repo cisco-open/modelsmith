@@ -24,8 +24,8 @@ describe('StepRecommendGraspComponent', () => {
 
 	beforeEach(() => {
 		TestBed.configureTestingModule({
-			declarations: [StepRecommendGraspComponent]
-		});
+    declarations: [StepRecommendGraspComponent]
+});
 		fixture = TestBed.createComponent(StepRecommendGraspComponent);
 		component = fixture.componentInstance;
 		fixture.detectChanges();

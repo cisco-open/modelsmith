@@ -24,8 +24,8 @@ describe('PanelAlgorithmTypeForTrainingComponent', () => {
 
 	beforeEach(() => {
 		TestBed.configureTestingModule({
-			declarations: [PanelAlgorithmTypeForTrainingComponent]
-		});
+    declarations: [PanelAlgorithmTypeForTrainingComponent]
+});
 		fixture = TestBed.createComponent(PanelAlgorithmTypeForTrainingComponent);
 		component = fixture.componentInstance;
 		fixture.detectChanges();

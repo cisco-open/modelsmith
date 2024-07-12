@@ -24,8 +24,8 @@ describe('StepPtqTimeComponent', () => {
 
 	beforeEach(() => {
 		TestBed.configureTestingModule({
-			declarations: [StepPtqTimeComponent]
-		});
+    declarations: [StepPtqTimeComponent]
+});
 		fixture = TestBed.createComponent(StepPtqTimeComponent);
 		component = fixture.componentInstance;
 		fixture.detectChanges();

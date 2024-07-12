@@ -24,8 +24,8 @@ describe('MsSidenavItemComponent', () => {
 
 	beforeEach(() => {
 		TestBed.configureTestingModule({
-			declarations: [MsSidenavItemComponent]
-		});
+    declarations: [MsSidenavItemComponent]
+});
 		fixture = TestBed.createComponent(MsSidenavItemComponent);
 		component = fixture.componentInstance;
 		fixture.detectChanges();

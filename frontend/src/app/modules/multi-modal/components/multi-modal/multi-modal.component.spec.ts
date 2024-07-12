@@ -24,8 +24,8 @@ describe('MultiModalComponent', () => {
 
 	beforeEach(() => {
 		TestBed.configureTestingModule({
-			declarations: [MultiModalComponent]
-		});
+    declarations: [MultiModalComponent]
+});
 		fixture = TestBed.createComponent(MultiModalComponent);
 		component = fixture.componentInstance;
 		fixture.detectChanges();

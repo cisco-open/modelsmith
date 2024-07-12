@@ -24,8 +24,8 @@ describe('TerminalToolbarComponent', () => {
 
 	beforeEach(() => {
 		TestBed.configureTestingModule({
-			declarations: [MsTerminalToolbarComponent]
-		});
+    imports: [MsTerminalToolbarComponent]
+});
 		fixture = TestBed.createComponent(MsTerminalToolbarComponent);
 		component = fixture.componentInstance;
 		fixture.detectChanges();

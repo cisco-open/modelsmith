@@ -24,8 +24,8 @@ describe('StepRecommendIterativeOneShotComponent', () => {
 
 	beforeEach(() => {
 		TestBed.configureTestingModule({
-			declarations: [StepRecommendIterativeOneShotComponent]
-		});
+    declarations: [StepRecommendIterativeOneShotComponent]
+});
 		fixture = TestBed.createComponent(StepRecommendIterativeOneShotComponent);
 		component = fixture.componentInstance;
 		fixture.detectChanges();

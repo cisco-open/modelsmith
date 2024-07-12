@@ -24,8 +24,8 @@ describe('ProjectSettingsComponent', () => {
 
 	beforeEach(() => {
 		TestBed.configureTestingModule({
-			declarations: [ProjectSettingsComponent]
-		});
+    declarations: [ProjectSettingsComponent]
+});
 		fixture = TestBed.createComponent(ProjectSettingsComponent);
 		component = fixture.componentInstance;
 		fixture.detectChanges();

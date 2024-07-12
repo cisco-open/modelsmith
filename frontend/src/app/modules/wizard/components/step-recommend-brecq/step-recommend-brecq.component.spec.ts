@@ -24,8 +24,8 @@ describe('StepRecommendBrecqComponent', () => {
 
 	beforeEach(() => {
 		TestBed.configureTestingModule({
-			declarations: [StepRecommendBrecqComponent]
-		});
+    declarations: [StepRecommendBrecqComponent]
+});
 		fixture = TestBed.createComponent(StepRecommendBrecqComponent);
 		component = fixture.componentInstance;
 		fixture.detectChanges();

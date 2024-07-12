@@ -24,8 +24,8 @@ describe('RunningAnimationComponent', () => {
 
 	beforeEach(() => {
 		TestBed.configureTestingModule({
-			declarations: [RunningAnimationComponent]
-		});
+    declarations: [RunningAnimationComponent]
+});
 		fixture = TestBed.createComponent(RunningAnimationComponent);
 		component = fixture.componentInstance;
 		fixture.detectChanges();

@@ -24,8 +24,8 @@ describe('MsFileUploadComponent', () => {
 
 	beforeEach(() => {
 		TestBed.configureTestingModule({
-			declarations: [MsFileUploadComponent]
-		});
+    declarations: [MsFileUploadComponent]
+});
 		fixture = TestBed.createComponent(MsFileUploadComponent);
 		component = fixture.componentInstance;
 		fixture.detectChanges();

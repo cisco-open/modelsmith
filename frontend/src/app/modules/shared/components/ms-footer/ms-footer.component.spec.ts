@@ -24,8 +24,8 @@ describe('MsFooterComponent', () => {
 
 	beforeEach(() => {
 		TestBed.configureTestingModule({
-			declarations: [MsFooterComponent]
-		});
+    declarations: [MsFooterComponent]
+});
 		fixture = TestBed.createComponent(MsFooterComponent);
 		component = fixture.componentInstance;
 		fixture.detectChanges();

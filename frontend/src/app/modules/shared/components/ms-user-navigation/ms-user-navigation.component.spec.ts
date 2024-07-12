@@ -24,8 +24,8 @@ describe('MsUserNavigationComponent', () => {
 
 	beforeEach(() => {
 		TestBed.configureTestingModule({
-			declarations: [MsUserNavigationComponent]
-		});
+    declarations: [MsUserNavigationComponent]
+});
 		fixture = TestBed.createComponent(MsUserNavigationComponent);
 		component = fixture.componentInstance;
 		fixture.detectChanges();

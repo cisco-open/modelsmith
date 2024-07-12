@@ -24,8 +24,8 @@ describe('StepSimilarAccuracyComponent', () => {
 
 	beforeEach(() => {
 		TestBed.configureTestingModule({
-			declarations: [StepSimilarAccuracyComponent]
-		});
+    declarations: [StepSimilarAccuracyComponent]
+});
 		fixture = TestBed.createComponent(StepSimilarAccuracyComponent);
 		component = fixture.componentInstance;
 		fixture.detectChanges();

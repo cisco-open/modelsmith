@@ -24,8 +24,8 @@ describe('MsCardSelectorComponent', () => {
 
 	beforeEach(() => {
 		TestBed.configureTestingModule({
-			declarations: [MsCardSelectorComponent]
-		});
+    imports: [MsCardSelectorComponent]
+});
 		fixture = TestBed.createComponent(MsCardSelectorComponent);
 		component = fixture.componentInstance;
 		fixture.detectChanges();

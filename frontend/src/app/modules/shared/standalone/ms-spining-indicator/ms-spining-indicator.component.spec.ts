@@ -24,8 +24,8 @@ describe('MsSpiningIndicatorComponent', () => {
 
 	beforeEach(() => {
 		TestBed.configureTestingModule({
-			declarations: [MsSpiningIndicatorComponent]
-		});
+    imports: [MsSpiningIndicatorComponent]
+});
 		fixture = TestBed.createComponent(MsSpiningIndicatorComponent);
 		component = fixture.componentInstance;
 		fixture.detectChanges();

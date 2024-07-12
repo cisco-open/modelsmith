@@ -24,8 +24,8 @@ describe('StepRecommendIterativeComponent', () => {
 
 	beforeEach(() => {
 		TestBed.configureTestingModule({
-			declarations: [StepRecommendIterativeComponent]
-		});
+    declarations: [StepRecommendIterativeComponent]
+});
 		fixture = TestBed.createComponent(StepRecommendIterativeComponent);
 		component = fixture.componentInstance;
 		fixture.detectChanges();

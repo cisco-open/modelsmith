@@ -24,8 +24,8 @@ describe('MsBackgroundGradientComponent', () => {
 
 	beforeEach(() => {
 		TestBed.configureTestingModule({
-			declarations: [MsBackgroundGradientComponent]
-		});
+    imports: [MsBackgroundGradientComponent]
+});
 		fixture = TestBed.createComponent(MsBackgroundGradientComponent);
 		component = fixture.componentInstance;
 		fixture.detectChanges();

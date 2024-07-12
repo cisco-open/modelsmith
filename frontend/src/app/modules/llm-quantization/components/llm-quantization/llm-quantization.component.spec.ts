@@ -8,8 +8,8 @@ describe('LlmQuantizationComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [LlmQuantizationComponent]
-    });
+    declarations: [LlmQuantizationComponent]
+});
     fixture = TestBed.createComponent(LlmQuantizationComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

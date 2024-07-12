@@ -24,8 +24,8 @@ describe('ChartColorsFormControlsComponent', () => {
 
 	beforeEach(() => {
 		TestBed.configureTestingModule({
-			declarations: [ChartColorsFormControlsComponent]
-		});
+    declarations: [ChartColorsFormControlsComponent]
+});
 		fixture = TestBed.createComponent(ChartColorsFormControlsComponent);
 		component = fixture.componentInstance;
 		fixture.detectChanges();
