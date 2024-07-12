@@ -19,7 +19,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { of } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
 import { CLIENT } from '../../../app.tokens';
-import { BannerService } from '../../../modules/core/services/banner.service';
+import { BannerService } from '../../../modules/shared/standalone/ms-banner/services/banner.service';
 import { Client } from '../../../services/client/client';
 import { PostUploadModel } from '../../../services/client/serviceCalls/upload-file/post-upload-file';
 import { ScriptActions } from '../script/script.actions';

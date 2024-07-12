@@ -41,7 +41,6 @@ import { ModeSelectGuard } from './guards/mode-select.guard';
 import { RedirectIfAuthenticatedGuard } from './guards/redirect-if-authenticated.guard';
 import {
 	AuthFacadeService,
-	BannerService,
 	ChartsFacadeService,
 	ConfigsFacadeService,
 	FileFacadeService,
@@ -79,7 +78,6 @@ import { PageRunningScriptSpiningIndicatorService } from './services/page-runnin
 		NavigationService,
 		RedirectIfAuthenticatedGuard,
 		ModeSelectGuard,
-		BannerService,
 		ScriptFacadeService,
 		ConfigsFacadeService,
 		AuthFacadeService,

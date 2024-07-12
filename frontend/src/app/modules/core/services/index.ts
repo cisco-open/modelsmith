@@ -14,8 +14,8 @@
 
 //   SPDX-License-Identifier: Apache-2.0
 
+export * from '../../shared/standalone/ms-banner/services/banner.service';
 export * from './auth-facade.service';
-export * from './banner.service';
 export * from './charts-facade.service';
 export * from './configs-facade.service';
 export * from './file-facade.service';

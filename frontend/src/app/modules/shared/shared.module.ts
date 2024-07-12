@@ -18,12 +18,9 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { MsBannerComponent } from './components/ms-banner/ms-banner.component';
 import { MaterialModule } from './modules/material.module';
 import { MsFormsModule } from './modules/ms-forms/ms-forms.module';
 import { MsSpiningIndicatorComponent } from './standalone/ms-spining-indicator/ms-spining-indicator.component';
-
-const COMPONENTS = [MsBannerComponent];
 
 @NgModule({
 	imports: [
@@ -35,7 +32,6 @@ const COMPONENTS = [MsBannerComponent];
 		MsFormsModule,
 		MsSpiningIndicatorComponent
 	],
-	declarations: [...COMPONENTS],
-	exports: [...COMPONENTS, MaterialModule, FormsModule, ReactiveFormsModule, MsFormsModule]
+	exports: [MaterialModule, FormsModule, ReactiveFormsModule, MsFormsModule]
 })
 export class SharedModule {}

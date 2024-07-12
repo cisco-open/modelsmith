@@ -14,14 +14,18 @@
 
 //   SPDX-License-Identifier: Apache-2.0
 
+import { CommonModule } from '@angular/common';
 import { Component, Inject } from '@angular/core';
+import { MatIconModule } from '@angular/material/icon';
 import { MAT_SNACK_BAR_DATA, MatSnackBarRef } from '@angular/material/snack-bar';
 import { NotificationTypes } from '../../../core/models/enums/snackbar-types.enum';
 
 @Component({
 	selector: 'ms-banner',
 	templateUrl: './ms-banner.component.html',
-	styleUrls: ['./ms-banner.component.scss']
+	styleUrls: ['./ms-banner.component.scss'],
+	standalone: true,
+	imports: [CommonModule, MatIconModule]
 })
 export class MsBannerComponent {
 	readonly NotificationTypes: typeof NotificationTypes = NotificationTypes;

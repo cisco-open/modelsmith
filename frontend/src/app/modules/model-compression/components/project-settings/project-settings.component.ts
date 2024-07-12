@@ -22,10 +22,10 @@ import { debounceTime, distinctUntilChanged, filter, map } from 'rxjs';
 import { ScriptConfigsDto } from '../../../../services/client/models/script/script-configs.interface-dto';
 import { ScriptActions } from '../../../../state/core/script';
 import { RoutesList } from '../../../core/models/enums/routes-list.enum';
-import { BannerService } from '../../../core/services/banner.service';
 import { FileService } from '../../../core/services/file.service';
 import { ScriptFacadeService } from '../../../core/services/script-facade.service';
 import { isNil } from '../../../shared/shared.utils';
+import { BannerService } from '../../../shared/standalone/ms-banner/services/banner.service';
 import { MsPanelParametersComponent } from '../../../shared/standalone/ms-panel-parameters/ms-panel-parameters.component';
 import { CUSTOM_MODEL } from '../../models/constants/supported-models.constants';
 import {

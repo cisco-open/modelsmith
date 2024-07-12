@@ -17,7 +17,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { FileActions } from '../../../state/core/file/file.actions';
-import { BannerService } from './banner.service';
+import { BannerService } from '../../shared/standalone/ms-banner/services/banner.service';
 import { FileFacadeService } from './file-facade.service';
 
 @Injectable()

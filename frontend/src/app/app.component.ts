@@ -17,6 +17,7 @@
 import { Component, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { UntilDestroy } from '@ngneat/until-destroy';
+import { BannerService } from './modules/core/services';
 
 @UntilDestroy()
 @Component({
@@ -29,7 +30,9 @@ import { UntilDestroy } from '@ngneat/until-destroy';
 export class AppComponent implements OnInit {
 	title = 'modelsmith';
 
-	constructor() {}
+	constructor(private bannerService: BannerService) {}
 
-	ngOnInit(): void {}
+	ngOnInit(): void {
+		this.bannerService.showSuccess('test');
+	}
 }

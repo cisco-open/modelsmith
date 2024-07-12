@@ -15,8 +15,8 @@
 //   SPDX-License-Identifier: Apache-2.0
 
 import { Component, ElementRef, ViewChild } from '@angular/core';
-import { BannerService } from '../../../core/services/banner.service';
 import { FileService } from '../../../core/services/file.service';
+import { BannerService } from '../ms-banner/services/banner.service';
 
 @Component({
 	selector: 'ms-file-upload',
