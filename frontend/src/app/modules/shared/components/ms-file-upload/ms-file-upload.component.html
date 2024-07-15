@@ -1,18 +1,18 @@
 <!-- Copyright 2024 Cisco Systems, Inc. and its affiliates
 
-  Licensed under the Apache License, Version 2.0 (the "License");
-  you may not use this file except in compliance with the License.
-  You may obtain a copy of the License at
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+http://www.apache.org/licenses/LICENSE-2.0
 
-  Unless required by applicable law or agreed to in writing, software
-  distributed under the License is distributed on an "AS IS" BASIS,
-  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  See the License for the specific language governing permissions and
-  limitations under the License.
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
 
-  SPDX-License-Identifier: Apache-2.0 -->
+SPDX-License-Identifier: Apache-2.0 -->
 
 <div
 	class="dropzone"
@@ -22,22 +22,20 @@
 	role="button"
 	aria-label="File upload drop zone"
 	#dropzone>
-	<ng-container *ngIf="uploadedFileName; else uploadPrompt">
-		<div class="uploaded-file-container">
-			<span class="uploaded-file-name">
-				Uploaded: <b>{{ uploadedFileName }}</b>
-			</span>
-			<button mat-raised-button color="warn" (click)="removeFile(); $event.stopPropagation()">Remove</button>
+	@if (uploadedFileName) {
+	<div class="uploaded-file-container">
+		<span class="uploaded-file-name">
+			Uploaded: <b>{{ uploadedFileName }}</b>
+		</span>
+		<button mat-raised-button color="warn" (click)="removeFile(); $event.stopPropagation()">Remove</button>
+	</div>
+	} @else {
+	<input type="file" hidden #fileInput (change)="onFileSelected($event)" />
+	<div class="upload-prompt">
+		<mat-icon fontSet="ms" fontIcon="icon-UploadSimple"></mat-icon>
+		<div>
+			Drag & Drop your file here or <span class="select-file" (click)="fileInput.click()">browse</span> to select.
 		</div>
-	</ng-container>
-
-	<ng-template #uploadPrompt>
-		<input type="file" hidden #fileInput (change)="onFileSelected($event)" />
-		<div class="upload-prompt">
-			<mat-icon fontSet="ms" fontIcon="icon-UploadSimple"></mat-icon>
-			<div>
-				Drag & Drop your file here or <span class="select-file" (click)="fileInput.click()">browse</span> to select.
-			</div>
-		</div>
-	</ng-template>
+	</div>
+	}
 </div>

@@ -1,37 +1,37 @@
 <!-- Copyright 2024 Cisco Systems, Inc. and its affiliates
 
-  Licensed under the Apache License, Version 2.0 (the "License");
-  you may not use this file except in compliance with the License.
-  You may obtain a copy of the License at
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+http://www.apache.org/licenses/LICENSE-2.0
 
-  Unless required by applicable law or agreed to in writing, software
-  distributed under the License is distributed on an "AS IS" BASIS,
-  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  See the License for the specific language governing permissions and
-  limitations under the License.
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
 
-  SPDX-License-Identifier: Apache-2.0
-   -->
+SPDX-License-Identifier: Apache-2.0
+-->
 
 <div class="items-wrapper">
-	<ng-container *ngIf="recordsDataService.records$ | async as records">
-		<mat-card class="ms-card comparison-item" *ngFor="let item of records; index as i">
-			<div class="item-wrapper">
-				<div msUseEllipsis>{{ item.recordName }}</div>
-				<div class="record-summary-buttons-wrapper">
-					<button mat-icon-button color="primary" (click)="viewRecord(item)">
-						<mat-icon fontSet="ms" fontIcon="icon-Eye" class="mat-primary"></mat-icon>
-					</button>
-					<button mat-icon-button color="primary" (click)="editRecord(i, item)">
-						<mat-icon fontSet="ms" fontIcon="icon-PencilSimple" class="mat-primary"></mat-icon>
-					</button>
-					<button mat-icon-button color="error" (click)="removeRecord(i)">
-						<mat-icon class="mat-error">delete</mat-icon>
-					</button>
-				</div>
+	@if (recordsDataService.records$ | async; as records) { @for (item of records; track item; let i = $index) {
+	<mat-card class="ms-card comparison-item">
+		<div class="item-wrapper">
+			<div msUseEllipsis>{{ item.recordName }}</div>
+			<div class="record-summary-buttons-wrapper">
+				<button mat-icon-button color="primary" (click)="viewRecord(item)">
+					<mat-icon fontSet="ms" fontIcon="icon-Eye" class="mat-primary"></mat-icon>
+				</button>
+				<button mat-icon-button color="primary" (click)="editRecord(i, item)">
+					<mat-icon fontSet="ms" fontIcon="icon-PencilSimple" class="mat-primary"></mat-icon>
+				</button>
+				<button mat-icon-button color="error" (click)="removeRecord(i)">
+					<mat-icon class="mat-error">delete</mat-icon>
+				</button>
 			</div>
-		</mat-card>
-	</ng-container>
+		</div>
+	</mat-card>
+	} }
 </div>

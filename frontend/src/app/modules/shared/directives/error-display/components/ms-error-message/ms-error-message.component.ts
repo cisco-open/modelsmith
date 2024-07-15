@@ -14,7 +14,6 @@
 
 //   SPDX-License-Identifier: Apache-2.0
 
-import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { MatError } from '@angular/material/form-field';
 
@@ -23,7 +22,7 @@ import { MatError } from '@angular/material/form-field';
 	templateUrl: './ms-error-message.component.html',
 	styleUrls: ['./ms-error-message.component.scss'],
 	standalone: true,
-	imports: [CommonModule, MatError]
+	imports: [MatError]
 })
 export class MsErrorMessageComponent {
 	@Input() text?: string;

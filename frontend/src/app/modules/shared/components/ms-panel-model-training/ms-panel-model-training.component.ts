@@ -211,10 +211,6 @@ export class MsPanelModelTrainingComponent implements OnInit, OnChanges, OnDestr
 		return this.models.filter((model) => model.name.toLowerCase().includes(filterValue));
 	}
 
-	trackByModel(_: number, model: ModelDto): any {
-		return model.name;
-	}
-
 	ngOnDestroy() {
 		this.parentFormGroup.removeControl(this.controlKey);
 	}

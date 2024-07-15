@@ -15,7 +15,6 @@
 //   SPDX-License-Identifier: Apache-2.0
 
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { NgFor, NgIf } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
@@ -27,7 +26,6 @@ import { RoutesList } from '../../../core/models/enums/routes-list.enum';
 import { ConfigsFacadeService } from '../../../core/services/configs-facade.service';
 import { MsSidenavItemComponent } from './components/ms-sidenav-item/ms-sidenav-item.component';
 import { SidenavConstants } from './models/constants/sidenav.constants';
-import { SidenavItem } from './models/interfaces/sidenav.interface';
 
 @UntilDestroy()
 @Component({
@@ -35,7 +33,7 @@ import { SidenavItem } from './models/interfaces/sidenav.interface';
 	templateUrl: './ms-sidenav.component.html',
 	styleUrls: ['./ms-sidenav.component.scss'],
 	standalone: true,
-	imports: [MsSidenavItemComponent, MatIconModule, NgIf, NgFor, MatDividerModule],
+	imports: [MsSidenavItemComponent, MatIconModule, MatDividerModule],
 	animations: [
 		trigger('expandCollapse', [
 			state('expanded', style({ width: '230px' })),
@@ -77,9 +75,5 @@ export class MsSidenavComponent implements OnInit {
 
 	toggleSidebar(): void {
 		this.isExpanded = !this.isExpanded;
-	}
-
-	trackByRoute(_: number, item: SidenavItem): string {
-		return item.route;
 	}
 }

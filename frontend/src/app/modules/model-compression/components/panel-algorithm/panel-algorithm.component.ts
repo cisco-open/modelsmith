@@ -119,10 +119,6 @@ export class PanelAlgorithmComponent {
 		});
 	}
 
-	trackByAlgorithmKey(_: number, algorithm: { key: any; value: any }): any {
-		return algorithm.key;
-	}
-
 	ngOnDestroy() {
 		this.parentFormGroup.removeControl(this.controlKey);
 	}

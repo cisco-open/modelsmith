@@ -18,7 +18,6 @@ import { Component, Input, OnInit, inject } from '@angular/core';
 import { ControlContainer, FormControl, FormGroup, Validators } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { filter, map, skip, take } from 'rxjs';
-import { KeyValueObject } from '../../../../services/client/models/key-value/key-value.interface-dto';
 import { ScriptDetails } from '../../../../services/client/models/script/script-details.interface-dto';
 import { ScriptActions } from '../../../../state/core/script';
 import { ScriptFacadeService } from '../../../core/services';
@@ -119,9 +118,5 @@ export class PanelAlgorithmTypeForTrainingComponent implements OnInit {
 		this.scriptFacadeService.scriptStatus$.pipe(untilDestroyed(this)).subscribe((state) => {
 			isScriptActive(state) ? this.algorithmTypeFormGroup.disable() : this.algorithmTypeFormGroup.enable();
 		});
-	}
-
-	trackByAlgorithmType(_: number, algorithmType: KeyValueObject<string>): any {
-		return algorithmType.key;
 	}
 }

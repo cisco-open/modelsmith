@@ -14,7 +14,6 @@
 
 //   SPDX-License-Identifier: Apache-2.0
 
-import { NgFor } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 
@@ -23,7 +22,7 @@ import { MatCardModule } from '@angular/material/card';
 	templateUrl: './ms-card-selector.component.html',
 	styleUrls: ['./ms-card-selector.component.scss'],
 	standalone: true,
-	imports: [NgFor, MatCardModule]
+	imports: [MatCardModule]
 })
 export class MsCardSelectorComponent {
 	@Input() options: string[] = [];
@@ -34,9 +33,5 @@ export class MsCardSelectorComponent {
 	selectCard(option: string) {
 		this.activeCard = this.activeCard === option ? null : option;
 		this.selectedOption.emit(this.activeCard);
-	}
-
-	trackByOption(_: number, option: string): string {
-		return option;
 	}
 }

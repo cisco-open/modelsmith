@@ -14,7 +14,6 @@
 
 //   SPDX-License-Identifier: Apache-2.0
 
-import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit, SimpleChanges, inject } from '@angular/core';
 import { ControlContainer, FormArray, FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
@@ -42,7 +41,6 @@ import { isScriptActive } from '../../../model-compression/models/enums/script-s
 	selector: 'ms-panel-parameters',
 	standalone: true,
 	imports: [
-		CommonModule,
 		MatInputModule,
 		ReactiveFormsModule,
 		MatCardModule,

@@ -1,18 +1,18 @@
 <!-- Copyright 2024 Cisco Systems, Inc. and its affiliates
 
-  Licensed under the Apache License, Version 2.0 (the "License");
-  you may not use this file except in compliance with the License.
-  You may obtain a copy of the License at
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+http://www.apache.org/licenses/LICENSE-2.0
 
-  Unless required by applicable law or agreed to in writing, software
-  distributed under the License is distributed on an "AS IS" BASIS,
-  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  See the License for the specific language governing permissions and
-  limitations under the License.
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
 
-  SPDX-License-Identifier: Apache-2.0 -->
+SPDX-License-Identifier: Apache-2.0 -->
 
 <div class="sidenav-wrapper" [@expandCollapse]="isExpanded ? 'expanded' : 'collapsed'">
 	<div class="top-section-items">
@@ -20,7 +20,8 @@
 			<div class="left">
 				<mat-icon fontSet="ms" fontIcon="icon-User"></mat-icon>
 			</div>
-			<div class="right" *ngIf="isExpanded">
+			@if (isExpanded) {
+			<div class="right">
 				<div class="paragraph-semibold-p3-default-emphasis text-container">
 					{{ currentMode === Modes.GUIDED ? 'Guided mode' : 'Expert mode' }}
 				</div>
@@ -29,31 +30,32 @@
 					<mat-icon class="switch-icon" fontSet="ms" fontIcon="icon-ArrowRight"></mat-icon>
 				</div>
 			</div>
+			}
 		</div>
 
 		<div class="mt-3">
 			<mat-divider></mat-divider>
 		</div>
 
-		<ng-container *ngIf="currentMode === Modes.GUIDED; else expertModeBlock">
-			<div class="sidenav-items-wrapper" *ngFor="let item of SidenavConstants.guided; trackBy: trackByRoute">
-				<ms-sidenav-item [item]="item" [isExpanded]="isExpanded" itemStyle="grey"></ms-sidenav-item>
-			</div>
-		</ng-container>
-
-		<ng-template #expertModeBlock>
-			<div class="sidenav-items-wrapper" *ngFor="let item of SidenavConstants.expert; trackBy: trackByRoute">
-				<ms-sidenav-item [item]="item" itemStyle="grey" [isExpanded]="isExpanded"></ms-sidenav-item>
-			</div>
-		</ng-template>
+		@if (currentMode === Modes.GUIDED) { @for (item of SidenavConstants.guided; track item.route) {
+		<div class="sidenav-items-wrapper">
+			<ms-sidenav-item [item]="item" [isExpanded]="isExpanded" itemStyle="grey"></ms-sidenav-item>
+		</div>
+		} } @else { @for (item of SidenavConstants.expert; track item.route) {
+		<div class="sidenav-items-wrapper">
+			<ms-sidenav-item [item]="item" itemStyle="grey" [isExpanded]="isExpanded"></ms-sidenav-item>
+		</div>
+		} }
 
 		<div class="mt-5">
 			<mat-divider></mat-divider>
 		</div>
 
-		<div class="sidenav-items-wrapper" *ngFor="let item of SidenavConstants.common; trackBy: trackByRoute">
+		@for (item of SidenavConstants.common; track item.route) {
+		<div class="sidenav-items-wrapper">
 			<ms-sidenav-item [item]="item" itemStyle="accent" [isExpanded]="isExpanded"></ms-sidenav-item>
 		</div>
+		}
 	</div>
 
 	<div class="mt-2 mb-4">
@@ -63,7 +65,9 @@
 	<div class="bottom-section-items">
 		<div class="sidebar-toggle" (click)="toggleSidebar()">
 			<mat-icon>{{ isExpanded ? 'chevron_left' : 'chevron_right' }}</mat-icon>
-			<span class="paragraph-semibold-p3-small-emphasis" *ngIf="isExpanded">Collapse</span>
+			@if (isExpanded) {
+			<span class="paragraph-semibold-p3-small-emphasis">Collapse</span>
+			}
 		</div>
 	</div>
 </div>

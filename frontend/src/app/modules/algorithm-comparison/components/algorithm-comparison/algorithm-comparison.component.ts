@@ -18,7 +18,6 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { take } from 'rxjs';
-import { KeyValueObject } from '../../../../services/client/models/key-value/key-value.interface-dto';
 import { AlgorithmType } from '../../../model-compression/models/enums/algorithms.enum';
 import { DrawerClose, DrawerService, DrawerStatus } from '../../../shared/components/ms-drawer';
 import { DrawerActionTypeEnum } from '../../../shared/components/ms-drawer/models/drawer-action-type.enum';
@@ -100,9 +99,5 @@ export class AlgorithmComparisonComponent implements OnInit {
 		this.algorithmTypeFormControl.valueChanges.pipe(untilDestroyed(this)).subscribe((algorithmType: AlgorithmType) => {
 			this.recordsDataService.algorithmType = algorithmType;
 		});
-	}
-
-	trackByAlgorithmType(_: number, algorithmType: KeyValueObject<string>): any {
-		return algorithmType.key;
 	}
 }

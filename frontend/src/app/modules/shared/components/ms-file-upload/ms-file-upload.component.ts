@@ -15,6 +15,7 @@
 //   SPDX-License-Identifier: Apache-2.0
 
 import { Component, ElementRef, ViewChild } from '@angular/core';
+import { MatIconModule } from '@angular/material/icon';
 import { FileService } from '../../../core/services/file.service';
 import { BannerService } from '../ms-banner/services/banner.service';
 
@@ -22,7 +23,8 @@ import { BannerService } from '../ms-banner/services/banner.service';
 	selector: 'ms-file-upload',
 	templateUrl: './ms-file-upload.component.html',
 	styleUrls: ['./ms-file-upload.component.scss'],
-	standalone: true
+	standalone: true,
+	imports: [MatIconModule]
 })
 export class MsFileUploadComponent {
 	uploadedFileName: string | null = null;

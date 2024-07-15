@@ -188,10 +188,6 @@ export class MsPanelModelComponent implements OnInit, OnChanges, OnDestroy {
 		return this.models.filter((model) => model.name.toLowerCase().includes(filterValue));
 	}
 
-	trackByModel(_: number, model: ModelDto): any {
-		return model.name;
-	}
-
 	ngOnDestroy() {
 		this.parentFormGroup.removeControl(this.controlKey);
 	}
