@@ -1,19 +1,3 @@
-//   Copyright 2024 Cisco Systems, Inc. and its affiliates
-
-//  Licensed under the Apache License, Version 2.0 (the "License");
-//  you may not use this file except in compliance with the License.
-//  You may obtain a copy of the License at
-
-//       http://www.apache.org/licenses/LICENSE-2.0
-
-//  Unless required by applicable law or agreed to in writing, software
-//  distributed under the License is distributed on an "AS IS" BASIS,
-//  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-//  See the License for the specific language governing permissions and
-//  limitations under the License.
-
-//  SPDX-License-Identifier: Apache-2.0
-
 const express = require('express');
 const compression = require('compression');
 const app = express();
@@ -37,6 +21,27 @@ app.get('*', (_, res) => {
 });
 
 const port = 4200;
-app.listen(port, () => {
+const server = app.listen(port, () => {
 	console.log(`Server is running on port ${port}`);
+});
+
+var signals = {
+	SIGHUP: 1,
+	SIGINT: 2,
+	SIGTERM: 15
+};
+
+const shutdown = (signal, value) => {
+	console.log('Shutdown!');
+	server.close(() => {
+		console.log(`Server stopped by ${signal} with value ${value}.`);
+		process.exit(128 + value);
+	});
+};
+
+Object.keys(signals).forEach((signal) => {
+	process.on(signal, () => {
+		console.log(`Process received a ${signal} signal.`);
+		shutdown(signal, signals[signal]);
+	});
 });
