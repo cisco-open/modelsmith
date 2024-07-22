@@ -1,0 +1,8 @@
+version: '3.8'
+
+services:
+  backend:
+    image: ms-backend
+    container_name: ms-backend-container
+    ports:
+      - '3000:3000'

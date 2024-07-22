@@ -3,11 +3,23 @@
 	"version": "1.0.0",
 	"description": "BE for ModelSmith",
 	"main": "index.js",
+	"config": {
+		"docker_image_name": "ms-backend",
+		"docker_container_name": "ms-backend-container",
+		"docker_container_port": "3000"
+	},
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
 		"start": "nodemon src/index.js",
 		"start:prod": "node src/index.js",
-		"prettier:fix": "npx prettier --write . --config ./.prettierrc.js"
+		"prettier:fix": "npx prettier --write . --config ./.prettierrc.js",
+		"docker:deploy": "npm run docker:stop-container && npm run docker:remove-container && npm run docker:build-image && npm run docker:remove-dangling && npm run docker:run-container",
+		"docker:build-image": "docker build -t ${npm_package_config_docker_image_name} .",
+		"docker:stop-container": "docker stop ${npm_package_config_docker_container_name} || true",
+		"docker:remove-container": "docker rm ${npm_package_config_docker_container_name} || true",
+		"docker:run-container": "docker run -d --name ${npm_package_config_docker_container_name} -p ${npm_package_config_docker_container_port}:${npm_package_config_docker_container_port} ${npm_package_config_docker_image_name}",
+		"docker:remove-dangling": "docker image prune -f",
+		"docker:restart": "docker stop ${npm_package_config_docker_container_name} && docker start ${npm_package_config_docker_container_name}"
 	},
 	"author": "Pop Ioan (John)",
 	"license": "ISC",
