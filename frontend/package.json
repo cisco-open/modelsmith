@@ -18,7 +18,7 @@
 		"docker:build-image": "docker build -t ${npm_package_config_docker_image_name} .",
 		"docker:stop-container": "docker stop ${npm_package_config_docker_container_name} || true",
 		"docker:remove-container": "docker rm ${npm_package_config_docker_container_name} || true",
-		"docker:run-container": "docker run -d --name ${npm_package_config_docker_container_name} -p ${npm_package_config_docker_image_port}:${npm_package_config_docker_image_port} ${npm_package_config_docker_image_name}",
+		"docker:run-container": "docker run -d --name ${npm_package_config_docker_container_name} -p ${npm_package_config_docker_container_port}:${npm_package_config_docker_container_port} ${npm_package_config_docker_image_name}",
 		"docker:remove-dangling": "docker image prune -f",
 		"docker:restart": "docker stop ${npm_package_config_docker_container_name} && docker start ${npm_package_config_docker_container_name}",
 		"docker:copy-index": "docker cp server/index.js ${npm_package_config_docker_container_name}:/app/frontend/server/index.js"
