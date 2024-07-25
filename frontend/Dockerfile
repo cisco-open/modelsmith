@@ -1,4 +1,3 @@
-# Step 1: Build the angular app
 FROM node:20.15.1
 
 WORKDIR /app/frontend
