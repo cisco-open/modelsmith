@@ -2,17 +2,6 @@ FROM node:20.15.1
 
 WORKDIR /app/backend
 
-ENV PORT=3000
-ENV MACHINE_LEARNING_CORE_PATH=machine_learning_core
-ENV CONDA_SH_PATH=miniconda3/etc/profile.d/conda.sh
-ENV HUGGING_FACE_ACCESS_TOKEN=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
-ENV CONNECTION_TYPE=VM
-ENV PRIMARY_SSH_HOST=eti-research-dev6
-ENV PRIMARY_SSH_PORT=22
-ENV PRIMARY_SSH_USERNAME=ipop
-ENV PRIMARY_SSH_PASSWORD=Passw0rd!
-ENV PRIMARY_SSH_PRIVATE_KEY_PATH=default_key_path
-
 COPY . .
 
 RUN npm install
@@ -28,6 +17,6 @@ RUN echo "PORT=${PORT}" > .env && \
     echo "PRIMARY_SSH_PASSWORD=${PRIMARY_SSH_PASSWORD}" >> .env && \
     echo "PRIMARY_SSH_PRIVATE_KEY_PATH=${PRIMARY_SSH_PRIVATE_KEY_PATH}" >> .env
 
-EXPOSE 3000
+EXPOSE ${PORT}
 
 CMD ["node", "src/index.js"]

@@ -2,7 +2,19 @@ version: '3.8'
 
 services:
   backend:
+    network_mode: 'host'
     image: ms-backend
     container_name: ms-backend-container
+    environment:
+      - PORT=3000
+      - MACHINE_LEARNING_CORE_PATH=machine_learning_core
+      - CONDA_SH_PATH=miniconda3/etc/profile.d/conda.sh
+      - HUGGING_FACE_ACCESS_TOKEN=hugging_face_token
+      - CONNECTION_TYPE=VM
+      - PRIMARY_SSH_HOST=ssh_IPv4_address
+      - PRIMARY_SSH_PORT=ssh_port
+      - PRIMARY_SSH_USERNAME=username
+      - PRIMARY_SSH_PASSWORD=password
+      - PRIMARY_SSH_PRIVATE_KEY_PATH=private_key_path
     ports:
-      - '3000:3000'
+      - '${PORT}:${PORT}'
