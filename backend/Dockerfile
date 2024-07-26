@@ -6,7 +6,7 @@ COPY . .
 
 RUN npm install
 
-RUN echo "PORT=${PORT}" > .env && \
+RUN echo "PORT=3000" > .env && \
     echo "MACHINE_LEARNING_CORE_PATH=${MACHINE_LEARNING_CORE_PATH}" >> .env && \
     echo "CONDA_SH_PATH=${CONDA_SH_PATH}" >> .env && \
     echo "HUGGING_FACE_ACCESS_TOKEN=${HUGGING_FACE_ACCESS_TOKEN}" >> .env && \
@@ -17,6 +17,6 @@ RUN echo "PORT=${PORT}" > .env && \
     echo "PRIMARY_SSH_PASSWORD=${PRIMARY_SSH_PASSWORD}" >> .env && \
     echo "PRIMARY_SSH_PRIVATE_KEY_PATH=${PRIMARY_SSH_PRIVATE_KEY_PATH}" >> .env
 
-EXPOSE ${PORT}
+EXPOSE 3000
 
 CMD ["node", "src/index.js"]

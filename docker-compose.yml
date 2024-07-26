@@ -1,0 +1,30 @@
+version: "3.8"
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    network_mode: "host"
+    image: ms-backend
+    container_name: ms-backend-container
+    environment:
+      - MACHINE_LEARNING_CORE_PATH
+      - CONDA_SH_PATH
+      - HUGGING_FACE_ACCESS_TOKEN
+      - CONNECTION_TYPE
+      - PRIMARY_SSH_HOST
+      - PRIMARY_SSH_PORT
+      - PRIMARY_SSH_USERNAME
+      - PRIMARY_SSH_PASSWORD
+      - PRIMARY_SSH_PRIVATE_KEY_PATH
+    ports:
+      - "3000:3000"
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    image: ms-frontend
+    container_name: ms-frontend-container
+    ports:
+      - "4200:4200"
