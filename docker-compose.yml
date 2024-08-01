@@ -3,8 +3,8 @@ version: "3.8"
 services:
   backend:
     build:
-      context: ./backend
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: backend/Dockerfile
     network_mode: "host"
     image: ms-backend
     container_name: ms-backend-container
