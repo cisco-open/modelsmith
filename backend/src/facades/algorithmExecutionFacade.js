@@ -57,7 +57,8 @@ const executorFactory = {
 		machineUnlearningParserInstance
 	),
 	[ALGORITHM_TYPES.AWQ]: new ScriptExecutor(ALGORITHM_TYPES.AWQ, { reset: () => {}, parseLine: () => {} }),
-	[ALGORITHM_TYPES.MULTIFLOW]: new ScriptExecutor(ALGORITHM_TYPES.MULTIFLOW, { reset: () => {}, parseLine: () => {} })
+	[ALGORITHM_TYPES.MULTIFLOW]: new ScriptExecutor(ALGORITHM_TYPES.MULTIFLOW, { reset: () => {}, parseLine: () => {} }),
+	[ALGORITHM_TYPES.TRAIN]: new ScriptExecutor(ALGORITHM_TYPES.TRAIN, { reset: () => {}, parseLine: () => {} })
 };
 
 module.exports = module.exports = {
