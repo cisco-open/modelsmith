@@ -27,9 +27,15 @@ To get started with ModelSmith, follow these steps:
 
 ## FAQ
 
-### 1. How do I configure ModelSmith to run locally? [Read here](docs/configure-the-project-locally.md).
+### 1. How do I configure ModelSmith to run locally?
 
-### 2. How do I configure ModelSmith to run on VM? [Read here](docs/configure-modelsmith-on-vm.md).
+- **Manual Configuration**: [Read here](docs/configure-the-project-locally.md).
+- **Docker Configuration**: [Read here](docs/configure-modelsmith-on-local-machine-docker.md).
+
+### 2. How do I configure ModelSmith to run on VM?
+
+- **Manual Configuration**: [Read here](docs/configure-modelsmith-on-vm.md).
+- **Docker Configuration**: [Read here](docs/configure-modelsmith-on-vm-docker.md).
 
 ## Features
 
