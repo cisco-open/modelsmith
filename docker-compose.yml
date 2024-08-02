@@ -20,6 +20,12 @@ services:
       - PRIMARY_SSH_PRIVATE_KEY_PATH
     ports:
       - "3000:3000"
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - count: all
+              capabilities: [gpu]
   frontend:
     build:
       context: ./frontend

@@ -7,8 +7,21 @@ PRIMARY_SSH_HOST=$2
 PRIMARY_SSH_PORT=$3
 PRIMARY_SSH_USERNAME=$4
 PRIMARY_SSH_PASSWORD=$5
+MACHINE_LEARNING_CORE_PATH=$6
+CONDA_SH_PATH=$7
+HUGGING_FACE_ACCESS_TOKEN=$8
+PRIMARY_SSH_PRIVATE_KEY_PATH=$9
 
-echo "CONNECTION_TYPE is set to: $CONNECTION_TYPE"
+echo "PORT=3000" > /app/backend/.env
+echo "MACHINE_LEARNING_CORE_PATH=${MACHINE_LEARNING_CORE_PATH}" >> /app/backend/.env
+echo "CONDA_SH_PATH=${CONDA_SH_PATH}" >> /app/backend/.env
+echo "HUGGING_FACE_ACCESS_TOKEN=${HUGGING_FACE_ACCESS_TOKEN}" >> /app/backend/.env
+echo "CONNECTION_TYPE=${CONNECTION_TYPE}" >> /app/backend/.env
+echo "PRIMARY_SSH_HOST=${PRIMARY_SSH_HOST}" >> /app/backend/.env
+echo "PRIMARY_SSH_PORT=${PRIMARY_SSH_PORT}" >> /app/backend/.env
+echo "PRIMARY_SSH_USERNAME=${PRIMARY_SSH_USERNAME}" >> /app/backend/.env
+echo "PRIMARY_SSH_PASSWORD=${PRIMARY_SSH_PASSWORD}" >> /app/backend/.env
+echo "PRIMARY_SSH_PRIVATE_KEY_PATH=${PRIMARY_SSH_PRIVATE_KEY_PATH}" >> /app/backend/.env
 
 install_miniconda3() {
     echo "Installing Miniconda..."
@@ -21,6 +34,10 @@ install_miniconda3() {
 }
 
 setup_local_environment() {
+    if [ -f /root/miniconda3/etc/profile.d/conda.sh ]; then
+        source /root/miniconda3/etc/profile.d/conda.sh
+    fi
+
     if ! command -v conda &> /dev/null; then
         echo "Conda command not found. Installing Miniconda3..."
         install_miniconda3

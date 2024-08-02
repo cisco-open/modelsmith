@@ -44,10 +44,10 @@ This command runs the frontend container in detached mode (`-d`), names it `ms-f
 
 Before running the backend container, you need to set up the environment variables. These variables configure various aspects of the backend, including paths, access tokens, and connection details. Here's an explanation of each variable:
 
-- `MACHINE_LEARNING_CORE_PATH`: Path to the machine learning core within the container.
-- `CONDA_SH_PATH`: Path to the Conda shell script for environment activation.
+- `MACHINE_LEARNING_CORE_PATH`: Path to the machine learning core within the container. The default value is "machine_learning_core".
+- `CONDA_SH_PATH`: Path to the Conda shell script for environment activation. The default value is "miniconda3/etc/profile.d/conda.sh".
 - `HUGGING_FACE_ACCESS_TOKEN`: Your Hugging Face access token for model downloads. Please refer to the [AutoAWQ Configuration Guide](configure-autoawq.md)
-- `CONNECTION_TYPE`: Type of connection (e.g., "VM" for virtual machine).
+- `CONNECTION_TYPE`: Type of connection "VM" for virtual machine.
 - `PRIMARY_SSH_HOST`: Hostname or IP address of the primary SSH server.
 - `PRIMARY_SSH_PORT`: Port number for SSH connection.
 - `PRIMARY_SSH_USERNAME`: Username for SSH authentication.
@@ -58,15 +58,15 @@ Now, run the backend container with the following command, replacing the placeho
 
 ```shell
 docker run -d --name ms-backend-container \
-  -e MACHINE_LEARNING_CORE_PATH=machine_learning_core \
-  -e CONDA_SH_PATH=miniconda3/etc/profile.d/conda.sh \
-  -e HUGGING_FACE_ACCESS_TOKEN=your_hugging_face_token_here \
-  -e CONNECTION_TYPE=VM \
-  -e PRIMARY_SSH_HOST=your_ssh_host_here \
-  -e PRIMARY_SSH_PORT=22 \
-  -e PRIMARY_SSH_USERNAME=your_ssh_username \
-  -e PRIMARY_SSH_PASSWORD=your_ssh_password \
-  -e PRIMARY_SSH_PRIVATE_KEY_PATH=/path/to/your/private/key/or_empty \
+  -e "MACHINE_LEARNING_CORE_PATH=machine_learning_core" \
+  -e "CONDA_SH_PATH=miniconda3/etc/profile.d/conda.sh" \
+  -e "HUGGING_FACE_ACCESS_TOKEN=your_hugging_face_token_here" \
+  -e "CONNECTION_TYPE=VM" \
+  -e "PRIMARY_SSH_HOST=your_ssh_host_here" \
+  -e "PRIMARY_SSH_PORT=22" \
+  -e "PRIMARY_SSH_USERNAME=your_ssh_username" \
+  -e "PRIMARY_SSH_PASSWORD=your_ssh_password" \
+  -e "PRIMARY_SSH_PRIVATE_KEY_PATH=/path/to/your/private/key/or_empty" \
   -p 3000:3000 \
   ms-backend
 ```
