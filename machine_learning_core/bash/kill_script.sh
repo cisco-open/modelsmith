@@ -26,7 +26,7 @@ fi
 PROCESS_NAME="$1"
 
 # Fetch all processes that have the name $PROCESS_NAME
-PIDS=$(ps aux | grep $PROCESS_NAME | grep -v grep | awk '{print $2}')
+PIDS=$(ps -ef | grep "$PROCESS_NAME" | grep -v grep | awk '{print $2}')
 
 if [ -z "$PIDS" ]; then
     echo "No process found for $PROCESS_NAME"

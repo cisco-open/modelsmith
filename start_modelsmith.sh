@@ -96,7 +96,7 @@ env_file="$PROJECT_ROOT/backend/.env"
 # Check if .env file exists and call setup_environment.sh if needed
 if [ ! -f "$env_file" ]; then
     # Call the setup script from the utils directory
-    bash "$PROJECT_ROOT/utils/setup_environment.sh"
+    bash "$PROJECT_ROOT/backend/setup_environment.sh"
 fi
 
 # Start backend and frontend servers

@@ -1,5 +1,7 @@
 # Configure ModelSmith with Pruning, Quantization, and Machine Unlearning
 
+**Note**: The training of models can also be performed from the frontend page after starting the app - [Model Training](http://localhost:4200/model-training).
+
 This guide provides detailed steps to configure and train models using ModelSmith for pruning, quantization, and machine unlearning.
 
 ## Prerequisites

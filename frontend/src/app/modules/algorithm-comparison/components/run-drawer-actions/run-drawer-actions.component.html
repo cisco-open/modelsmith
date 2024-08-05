@@ -51,7 +51,7 @@ SPDX-License-Identifier: Apache-2.0
 				<mat-expansion-panel-header>
 					<mat-panel-title class="paragraph-bold-p3-small-bold"> Statistics </mat-panel-title>
 				</mat-expansion-panel-header>
-				@if (summarizedRecord?.statistics | keyvalue; as statisticsItems) { @for (item of statisticsItems; track item;
+				@if (summarizedRecord.statistics | keyvalue; as statisticsItems) { @for (item of statisticsItems; track item;
 				let last = $last) {
 				<div class="key-value-container single">
 					<div class="key-value-pair space-between">
@@ -78,7 +78,7 @@ SPDX-License-Identifier: Apache-2.0
 				<mat-expansion-panel-header>
 					<mat-panel-title class="paragraph-bold-p3-small-bold"> Model training details </mat-panel-title>
 				</mat-expansion-panel-header>
-				@if (summarizedRecord?.modelTrainingDetails | hasKeys) { @for (item of summarizedRecord?.modelTrainingDetails |
+				@if (summarizedRecord.modelTrainingDetails | hasKeys) { @for (item of summarizedRecord.modelTrainingDetails |
 				keyvalue; track item; let last = $last) {
 				<div class="key-value-container single">
 					<div class="key-value-pair space-between">

@@ -128,7 +128,14 @@ router.get('/models-list/:type', checkSshConnection, (req, res) => {
 
 			res.status(OK).send(modelsWithTrainingInfo);
 		},
-		() => {},
+		() => {
+			const modelsAreNotTrained = models.map((modelName) => ({
+				name: modelName,
+				isTrained: false
+			}));
+
+			res.status(OK).send(modelsAreNotTrained);
+		},
 		(error) => {
 			if (error.includes('No such file or directory')) {
 				const modelsWithTrainingInfo = models.map((modelName) => ({

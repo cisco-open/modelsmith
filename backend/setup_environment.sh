@@ -1,3 +1,5 @@
+#!/bin/bash
+
 #    Copyright 2024 Cisco Systems, Inc. and its affiliates
 
 #   Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,8 +15,6 @@
 #   limitations under the License.
 
 #   SPDX-License-Identifier: Apache-2.0
-
-#!/bin/bash
 
 cd "$(dirname "$0")/.."
 PROJECT_ROOT="$(pwd)"
@@ -60,8 +60,9 @@ create_update_env_file() {
     mkdir -p "$backend_path"
 
     local machine_learning_core_path="../machine_learning_core"
-    echo -e "${YELLOW}Enter CONDA_SH_PATH:${NC}"
-    read -p "(e.g., ~/miniconda3/etc/profile.d/conda.sh): " conda_sh_path
+    echo -e "${YELLOW}Enter CONDA_SH_PATH (press Enter for default):${NC}"
+    read -p "(default: ~/miniconda3/etc/profile.d/conda.sh): " conda_sh_path
+    conda_sh_path=${conda_sh_path:-~/miniconda3/etc/profile.d/conda.sh}
 
     if [[ $env_choice == "2" ]]; then
         echo -e "${YELLOW}Enter MACHINE_LEARNING_CORE_PATH for VM:${NC}"
@@ -69,10 +70,14 @@ create_update_env_file() {
         machine_learning_core_path="$machine_learning_core_vm_path"
     fi
 
+    echo -e "${YELLOW}Enter HUGGING_FACE_ACCESS_TOKEN:${NC}"
+    read -p "(e.g., your_hugging_face_access_token): " hugging_face_access_token
+
     {
         echo "PORT=3000"
         echo "MACHINE_LEARNING_CORE_PATH=$machine_learning_core_path"
         echo "CONDA_SH_PATH=$conda_sh_path"
+        echo "HUGGING_FACE_ACCESS_TOKEN=$hugging_face_access_token"
         echo ""
     } > "$env_file"
 

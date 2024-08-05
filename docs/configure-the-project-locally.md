@@ -26,7 +26,41 @@ node -v
 
 To get started, you need to set up the Python environment for ModelSmith. This involves creating a new Conda environment and installing the necessary packages. Follow these steps:
 
-1. **Create and Activate a New Conda Environment**
+1. **Install Miniconda**: Miniconda is a minimal installer for Conda, which is an open-source package management system and environment management system. Installing Miniconda on the VM will help manage the Python environment and dependencies required for the ModelSmith project. Here's how to download and install Miniconda:
+
+   1.1. Download the Miniconda installer for Linux:
+
+   ```bash
+   wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
+   ```
+
+   1.2. Make the installer script executable:
+
+   ```bash
+   chmod +x Miniconda3-latest-Linux-x86_64.sh
+   ```
+
+   1.3. Run the installer script:
+
+   ```bash
+   ./Miniconda3-latest-Linux-x86_64.sh
+   ```
+
+   Follow the on-screen prompts to complete the installation. It is generally safe to accept the default installation settings. Make sure to agree to initialize Miniconda by running `conda init`.
+
+   1.4. After installation, restart your terminal or source your `.bashrc` file to make the `conda` command available:
+
+   ```bash
+   source ~/.bashrc
+   ```
+
+   1.5. Verify the installation by checking the Conda version:
+
+   ```bash
+   conda --version
+   ```
+
+2. **Create and Activate a New Conda Environment**
    Open a terminal and run the following commands:
 
    ```bash
@@ -34,33 +68,33 @@ To get started, you need to set up the Python environment for ModelSmith. This i
    conda activate modelsmith
    ```
 
-2. **Install PyTorch and Related Libraries**
+3. **Install PyTorch and Related Libraries**
    With the environment activated, install PyTorch, torchvision, and torchaudio for CUDA 11.8 by running:
 
    ```bash
    pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
    ```
 
-3. **Configure Pruning, Quantization, Machine Unlearning Python Projects**:
+4. **Configure Pruning, Quantization, Machine Unlearning Python Projects**:
 
    Please refer to the [Pruning, Quantization, Machine Unlearning Configuration Guide](configure-pruning-quant-ml.md) for detailed instructions.
 
-4. **Configure AutoAWQ for Model Quantization**:
+5. **Configure AutoAWQ for Model Quantization**:
 
    Please refer to the [AutoAWQ Configuration Guide](configure-autoawq.md) for detailed instructions.
 
-5. **Configure Multiflow Python Project**:
+6. **Configure Multiflow Python Project**:
 
    Please refer to the [Multiflow Configuration Guide](configure-multiflow.md) for detailed instructions.
 
 ## Phase 2: Run the Environment Setup Script
 
-After configuring the Python environment, the next step involves setting up the project environment. This is done by executing the `setup_environment.sh` script located in the `utils` directory. The script performs several tasks, including setting up the `.env` file for the backend server.
+After configuring the Python environment, the next step involves setting up the project environment. This is done by executing the `setup_environment.sh` script located in the `backend` directory. The script performs several tasks, including setting up the `.env` file for the backend server.
 
 Execute the script by running:
 
 ```bash
-bash utils/setup_environment.sh
+bash backend/setup_environment.sh
 ```
 
 When asked about "Select the environment for model training:" -> choose 1. Local

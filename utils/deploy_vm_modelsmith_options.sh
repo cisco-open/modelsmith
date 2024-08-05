@@ -1,3 +1,5 @@
+#!/bin/bash
+
 #    Copyright 2024 Cisco Systems, Inc. and its affiliates
 
 #   Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +16,6 @@
 
 #   SPDX-License-Identifier: Apache-2.0
 
-#!/bin/bash
 
 # ANSI color codes
 GREEN="\033[0;32m"

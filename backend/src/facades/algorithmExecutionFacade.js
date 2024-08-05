@@ -32,6 +32,7 @@ class ScriptExecutor {
 		if (this.type === ALGORITHM_TYPES.MULTIFLOW) {
 			return `bash -c "source ${process.env.CONDA_SH_PATH} && cd ${process.env.MACHINE_LEARNING_CORE_PATH}/multiflow && conda activate modelsmith && python3 ${algorithm} ${args}"`;
 		}
+
 		return `bash -c "source ${process.env.CONDA_SH_PATH} && conda activate modelsmith && python3 ${scriptPath}${algorithm} ${args}"`;
 	}
 

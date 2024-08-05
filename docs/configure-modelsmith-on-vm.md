@@ -100,7 +100,15 @@ conda --version
 
 ## Phase 2: Configure the Environment
 
-On your local machine, run the `setup_environment.sh` script located in the `utils` directory of the repository. This script configures the `.env` file for the backend server. When prompted for the environment for model training, select "2. VM" and provide the necessary SSH details for the primary and, optionally, backup VMs.
+After configuring the Python environment, the next step involves setting up the project environment. This is done by executing the `setup_environment.sh` script located in the `backend` directory. The script performs several tasks, including setting up the `.env` file for the backend server.
+
+Execute the script by running:
+
+```bash
+bash backend/setup_environment.sh
+```
+
+When asked about "Select the environment for model training:" -> choose 2. VM
 
 ### Example .env Configuration for VM Usage
 
