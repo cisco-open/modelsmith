@@ -24,7 +24,6 @@ import { ScriptFacadeService } from '../../../core/services';
 import {
 	AlgorithmKey,
 	AlgorithmType,
-	AlgorithmTypeKeyValue,
 	TrainAlgorithmsEnum
 } from '../../../model-compression/models/enums/algorithms.enum';
 import { isScriptActive } from '../../../model-compression/models/enums/script-status.enum';
@@ -45,9 +44,20 @@ import { isNilOrEmptyString } from '../../../shared/shared.utils';
 export class PanelAlgorithmTypeForTrainingComponent implements OnInit {
 	@Input({ required: true }) controlKey = '';
 
-	readonly algorithmTypesOptions = AlgorithmTypeKeyValue.filter(
-		(option) => option.key !== AlgorithmType.TRAIN && option.key !== AlgorithmType.AWQ
-	);
+	readonly algorithmTypesOptions = [
+		{
+			key: AlgorithmType.QUANTIZATION,
+			value: 'Quantization'
+		},
+		{
+			key: AlgorithmType.PRUNING,
+			value: 'Pruning'
+		},
+		{
+			key: AlgorithmType.MACHINE_UNLEARNING,
+			value: 'Machine Unlearning'
+		}
+	];
 	readonly ALGORITHM_TYPE_CONTROL_NAME = 'algorithmType';
 
 	get parentFormGroup() {
