@@ -126,25 +126,18 @@ router.get('/models-list/:type', checkSshConnection, (req, res) => {
 				isTrained: files.includes(modelName)
 			}));
 
-			res.status(OK).send(modelsWithTrainingInfo);
+			return res.status(OK).send(modelsWithTrainingInfo);
 		},
-		() => {
-			const modelsAreNotTrained = models.map((modelName) => ({
-				name: modelName,
-				isTrained: false
-			}));
-
-			res.status(OK).send(modelsAreNotTrained);
-		},
+		() => {},
 		(error) => {
-			if (error.includes('No such file or directory')) {
+			if (!error || error.includes('No such file or directory')) {
 				const modelsWithTrainingInfo = models.map((modelName) => ({
 					name: modelName,
 					isTrained: false
 				}));
-				res.status(OK).send(modelsWithTrainingInfo);
+				return res.status(OK).send(modelsWithTrainingInfo);
 			} else {
-				res.status(INTERNAL_SERVER_ERROR).send({ error: `Error listing model checkpoint files: ${error}` });
+				return res.status(INTERNAL_SERVER_ERROR).send({ error: `Error listing model checkpoint files: ${error}` });
 			}
 		}
 	);

@@ -47,12 +47,16 @@ function getConnectionStatus() {
  */
 function executeCommand(cmd, onData, onEnd = () => {}, onError = () => {}, accumulateOutput = false) {
 	if (process.env.CONNECTION_TYPE === CONNECTION_TYPE.LOCAL) {
-		// RUN ON LOCAL MACHINE
 		const child = exec(cmd);
+		let stdoutData = '';
 		let stderrData = '';
 
 		child.stdout.on('data', (data) => {
-			onData(data.toString());
+			if (accumulateOutput) {
+				stdoutData += data.toString();
+			} else {
+				onData(data.toString());
+			}
 		});
 
 		child.stderr.on('data', (data) => {
@@ -64,12 +68,11 @@ function executeCommand(cmd, onData, onEnd = () => {}, onError = () => {}, accum
 				const errorMessage = `Process exited with code ${code}` + (stderrData ? `: ${stderrData}` : '');
 				onError(errorMessage);
 			} else {
-				onEnd();
+				onEnd(accumulateOutput ? stdoutData : undefined);
 			}
 		});
 
 		child.on('error', (err) => {
-			// Handling process spawning errors
 			onError(`Failed to start subprocess: ${err.message}`);
 		});
 	} else {
