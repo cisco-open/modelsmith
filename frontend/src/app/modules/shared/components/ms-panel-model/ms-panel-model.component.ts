@@ -16,7 +16,7 @@
 
 import { CommonModule } from '@angular/common';
 import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, inject } from '@angular/core';
-import { ControlContainer, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ControlContainer, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
@@ -44,12 +44,13 @@ import { MsSpiningIndicatorComponent } from '../ms-spining-indicator/ms-spining-
 	selector: 'ms-panel-model',
 	standalone: true,
 	imports: [
+		CommonModule,
+		FormsModule,
 		ReactiveFormsModule,
 		MatCardModule,
 		MatFormFieldModule,
 		MatSelectModule,
 		MatIconModule,
-		CommonModule,
 		NgxMatSelectSearchModule,
 		RouterLink,
 		MatProgressSpinnerModule,

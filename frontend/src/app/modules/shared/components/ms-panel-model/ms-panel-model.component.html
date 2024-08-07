@@ -31,11 +31,11 @@ SPDX-License-Identifier: Apache-2.0 -->
 	<div class="form-field-container" [formGroupName]="controlKey">
 		<mat-form-field appearance="outline" subscriptSizing="dynamic">
 			<mat-select formControlName="model" placeholder="Select a model...">
-				<mat-optgroup label="Predefined Models">
-					<mat-option>
-						<ngx-mat-select-search [formControl]="searchModel"> </ngx-mat-select-search>
-					</mat-option>
+				<mat-option>
+					<ngx-mat-select-search [formControl]="searchModel"> </ngx-mat-select-search>
+				</mat-option>
 
+				<mat-optgroup label="Predefined Models">
 					@if (filteredModels | async; as models) { @for (model of models; track model.name) {
 					<mat-option [value]="model.name" [disabled]="!model.isTrained">
 						{{ model.name }}

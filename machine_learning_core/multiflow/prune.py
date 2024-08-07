@@ -209,6 +209,8 @@ def main(args):
     runtimes = pd.DataFrame(runtimes)
     runtimes.to_csv(os.path.join(args.output_dir, f"{args.model}_{args.pruner}_seed{args.seed}_runtimes.csv"), index=False)
 
+    print(f"Pruning task completed successfully! The pruned weights are saved in the directory: {args.output_dir}")
+
 if __name__ == "__main__":
     parser = ArgumentParser()
     parser.add_argument('-p', '--pruner', type=str, required=True, choices=available_pruners)
