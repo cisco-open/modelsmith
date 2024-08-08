@@ -43,9 +43,6 @@ export const RoutesList = {
 	MULTI_MODAL: {
 		ROOT: 'multi-modal'
 	},
-	MODEL_SPECIALIZATION: {
-		ROOT: 'model-specialization'
-	},
 	AWQ: {
 		ROOT: 'awq'
 	},

@@ -37,7 +37,7 @@ const guided: SidenavItem[] = [
 const expert: SidenavItem[] = [
 	{
 		route: RoutesList.MODEL_COMPRESSION.ROOT,
-		label: 'Model Compression',
+		label: 'Clasic Model Compression',
 		icon: 'icon-GearSix',
 		key: PageKey.MODEL_COMPRESSION
 	},
@@ -58,11 +58,6 @@ const expert: SidenavItem[] = [
 		label: 'Multi-modal',
 		icon: 'icon-Environmental',
 		key: PageKey.MODEL_SPECIALIZATION
-	},
-	{
-		route: RoutesList.MODEL_SPECIALIZATION.ROOT,
-		label: 'Model Specialization',
-		icon: 'icon-MapTrifold'
 	},
 	{
 		route: RoutesList.ALGORITHM_COMPARISON.ROOT,
