@@ -91,6 +91,10 @@ export const routes: Routes = [
 			{
 				path: RoutesList.MULTI_MODAL.ROOT,
 				loadChildren: () => import('./modules/multi-modal/multi-modal.module').then((m) => m.MultiModalModule)
+			},
+			{
+				path: RoutesList.ADMIN.ROOT,
+				loadChildren: () => import('./modules/admin/admin.module').then((m) => m.AdminModule)
 			}
 		]
 	}

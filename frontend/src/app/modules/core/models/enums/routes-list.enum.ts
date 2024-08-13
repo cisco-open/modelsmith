@@ -46,6 +46,9 @@ export const RoutesList = {
 	AWQ: {
 		ROOT: 'awq'
 	},
+	ADMIN: {
+		ROOT: 'admin'
+	},
 	DEMO: {
 		ROOT: 'demo',
 		BUTTONS: 'buttons',

@@ -16,6 +16,7 @@
 
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatIconModule } from '@angular/material/icon';
 import { MsCardSelectorComponent } from '../shared/components/ms-card-selector/ms-card-selector.component';
@@ -56,7 +57,8 @@ import { WizardRoutingModule } from './wizard-routing.module';
 		MsTerminalComponent,
 		MsCardSelectorComponent,
 		MatIconModule,
-		MatChipsModule
+		MatChipsModule,
+		MatButtonModule
 	],
 	providers: [WizardUtilsService]
 })

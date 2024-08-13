@@ -20,7 +20,7 @@ import { Sidenav, SidenavItem } from '../interfaces/sidenav.interface';
 
 const common: SidenavItem[] = [
 	{
-		route: 'admin',
+		route: RoutesList.ADMIN.ROOT,
 		label: 'Admin',
 		icon: 'icon-Admin'
 	}

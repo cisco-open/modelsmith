@@ -14,28 +14,19 @@
 
 //   SPDX-License-Identifier: Apache-2.0
 
-mat-card.ms-card {
-	border-radius: 8px;
-	padding: 24px;
-	box-shadow: 0px 3px 8px 0px #00000014;
-	border: 2px solid transparent;
-	transition:
-		transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
-		box-shadow 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
-		border-color 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { AdminComponent } from './components/admin/admin.component';
 
-	&.action-card {
-		cursor: pointer;
-
-		&:hover {
-			box-shadow: 0px 5px 15px 0px #0000001f;
-			background-color: var(--backgrounds-80);
-		}
-
-		&.selected {
-			background-color: var(--backgrounds-80);
-			box-shadow: inset 0 3px 8px rgba(0, 0, 0, 0.1);
-			border-color: var(--accent-400);
-		}
+const ADMIN_ROUTES: Routes = [
+	{
+		path: '',
+		component: AdminComponent
 	}
-}
+];
+
+@NgModule({
+	imports: [RouterModule.forChild(ADMIN_ROUTES)],
+	exports: [RouterModule]
+})
+export class AdminRoutingModule {}
