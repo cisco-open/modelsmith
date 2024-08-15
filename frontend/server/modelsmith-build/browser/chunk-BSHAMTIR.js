@@ -1,0 +1,1 @@
+function n(t){return(t===void 0||Object.prototype.toString.call(t)==="[object Object]")&&Object.keys(t||{}).length===0}function r(t){return t==null}function i(t){return t==null||t===""}function o(t){return Array.isArray(t)&&t.length===0}var p=t=>t.toLowerCase().split("_").map(e=>e.charAt(0).toUpperCase()+e.slice(1)).join(" ");export{n as a,r as b,i as c,o as d,p as e};
