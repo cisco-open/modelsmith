@@ -33,14 +33,14 @@ export class ModeSelectComponent {
 
 	constructor(
 		public authFacadeService: AuthFacadeService,
-		private configFacadeService: ConfigsFacadeService,
+		private configsFacadeService: ConfigsFacadeService,
 		private router: Router
 	) {}
 
 	setModeAndNavigate(mode?: AppModes) {
 		const selectedMode = this.defaultModeCheckbox.checked ? mode : undefined;
-		this.configFacadeService.dispatch(ConfigActions.setDefaultMode({ mode: selectedMode }));
-		this.configFacadeService.dispatch(ConfigActions.setCurrentMode({ mode: selectedMode }));
+		this.configsFacadeService.dispatch(ConfigActions.setDefaultMode({ mode: selectedMode }));
+		this.configsFacadeService.dispatch(ConfigActions.setCurrentMode({ mode: selectedMode }));
 	}
 
 	goToExpertMode() {

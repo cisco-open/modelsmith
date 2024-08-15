@@ -32,7 +32,7 @@
 				<mat-icon
 					fontSet="ms"
 					fontIcon="icon-Info"
-					matTooltip="Allows users to choose the default startup mode for the app, determining how it will open each time. Users can select their preferred interface or workflow, ensuring the app starts in the most convenient way for their needs.">
+					matTooltip="Allows users to choose the default startup mode for the app.">
 				</mat-icon>
 			</div>
 
@@ -43,9 +43,9 @@
 			<mat-divider></mat-divider>
 		</div>
 
-		<mat-button-toggle-group class="mode-toggle-group">
-			<mat-button-toggle value="guided">Guided</mat-button-toggle>
-			<mat-button-toggle value="expert">Expert</mat-button-toggle>
+		<mat-button-toggle-group [formControl]="selectedModeControl" class="mode-toggle-group">
+			<mat-button-toggle [value]="AppModes.GUIDED">Guided</mat-button-toggle>
+			<mat-button-toggle [value]="AppModes.EXPERT">Expert</mat-button-toggle>
 		</mat-button-toggle-group>
 	</mat-card>
 </div>
