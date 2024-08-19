@@ -14,10 +14,17 @@
 
 //   SPDX-License-Identifier: Apache-2.0
 
-import { TerminalMessage } from '../../../modules/core/models/interfaces/terminal-message.interface';
+import { Component, Inject } from '@angular/core';
+import { DIALOG_DATA, DialogConfig, DialogRef } from '../../../../shared/components/ms-dialog';
 
-export interface TerminalState {
-	messages: TerminalMessage[];
-	allMessages: TerminalMessage[];
-	error: any | null;
+@Component({
+	selector: 'ms-dialog-basic-demo',
+	templateUrl: './dialog-basic-demo.component.html',
+	styleUrl: './dialog-basic-demo.component.scss'
+})
+export class DialogBasicDemoComponent {
+	constructor(
+		private dialogRef: DialogRef,
+		@Inject(DIALOG_DATA) public dialogConfig: DialogConfig
+	) {}
 }

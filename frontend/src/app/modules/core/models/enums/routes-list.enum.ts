@@ -62,6 +62,7 @@ export const RoutesList = {
 		CHIPS: 'chips',
 		CHECKBOXES: 'checkboxes',
 		NOTIFICATIONS: 'notifications',
-		DRAWER: 'drawer'
+		DRAWER: 'drawer',
+		DIALOG: 'dialog'
 	}
 };

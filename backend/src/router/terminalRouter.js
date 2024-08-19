@@ -17,11 +17,16 @@
 const express = require('express');
 const router = express.Router();
 const { OK } = require('../constants/httpStatusCodes');
-const { clearMessageHistory, getMessagesHistory } = require('../state/terminalMessagesState');
+const { clearMessageHistory, getMessagesHistory, getFullMessageHistory } = require('../state/terminalMessagesState');
 
 router.get('/latest-messages', (req, res) => {
 	const latestMessages = getMessagesHistory();
 	res.status(OK).send(latestMessages);
+});
+
+router.get('/all-messages', (req, res) => {
+	const allMessages = getFullMessageHistory();
+	res.status(200).send(allMessages);
 });
 
 router.post('/clear-history', (req, res) => {

@@ -14,10 +14,8 @@
 
 //   SPDX-License-Identifier: Apache-2.0
 
-import { TerminalMessage } from '../../../modules/core/models/interfaces/terminal-message.interface';
-
-export interface TerminalState {
-	messages: TerminalMessage[];
-	allMessages: TerminalMessage[];
-	error: any | null;
+export enum DialogActionTypeEnum {
+	ADD = 'add',
+	EDIT = 'edit',
+	VIEW = 'view'
 }

@@ -33,6 +33,7 @@ import { MatStepperModule } from '@angular/material/stepper';
 import { MatTableModule } from '@angular/material/table';
 import { RouterModule } from '@angular/router';
 import { MsCardSelectorComponent } from '../shared/components/ms-card-selector/ms-card-selector.component';
+import { DialogService, MsDialogComponent } from '../shared/components/ms-dialog';
 import { DrawerService, MsDrawerComponent } from '../shared/components/ms-drawer';
 import { ErrorDisplayDirective } from '../shared/directives/error-display/error-display.directive';
 import { ButtonsDemoComponent } from './components/buttons-demo/buttons-demo.component';
@@ -40,6 +41,9 @@ import { CardsDemoComponent } from './components/cards-demo/cards-demo.component
 import { CheckboxesDemoComponent } from './components/checkboxes-demo/checkboxes-demo.component';
 import { ChipsDemoComponent } from './components/chips-demo/chips-demo.component';
 import { DemoComponent } from './components/demo/demo.component';
+import { DialogBasicDemoComponent } from './components/dialog-demo/dialog-basic-demo/dialog-basic-demo.component';
+import { DialogCustomWidthComponent } from './components/dialog-demo/dialog-custom-width/dialog-custom-width.component';
+import { DialogDemoComponent } from './components/dialog-demo/dialog-demo.component';
 import { DrawerBasicDemoComponent } from './components/drawer-demo/drawer-basic-demo/drawer-basic-demo.component';
 import { DrawerDemoComponent } from './components/drawer-demo/drawer-demo.component';
 import { DrawerWithAlternativeActionsTemplateComponent } from './components/drawer-demo/drawer-with-alternative-actions-template/drawer-with-alternative-actions-template.component';
@@ -80,7 +84,10 @@ import { DemoRoutingModule } from './demo-routing.module';
 		DrawerWithOnlyOneButtonComponent,
 		DrawerWithAlternativeActionsTemplateComponent,
 		DrawerWithButtonsActionsComponent,
-		DrawerWithCustomizableWidthComponent
+		DrawerWithCustomizableWidthComponent,
+		DialogDemoComponent,
+		DialogBasicDemoComponent,
+		DialogCustomWidthComponent
 	],
 	imports: [
 		RouterModule,
@@ -88,6 +95,7 @@ import { DemoRoutingModule } from './demo-routing.module';
 		DemoRoutingModule,
 		MsCardSelectorComponent,
 		MsDrawerComponent,
+		MsDialogComponent,
 		MatIconModule,
 		MatStepperModule,
 		MatDividerModule,
@@ -106,6 +114,6 @@ import { DemoRoutingModule } from './demo-routing.module';
 		MatSlideToggleModule,
 		ErrorDisplayDirective
 	],
-	providers: [DrawerService]
+	providers: [DrawerService, DialogService]
 })
 export class DemoModule {}

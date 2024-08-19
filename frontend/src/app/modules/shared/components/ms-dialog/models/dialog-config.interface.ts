@@ -14,10 +14,22 @@
 
 //   SPDX-License-Identifier: Apache-2.0
 
-import { TerminalMessage } from '../../../modules/core/models/interfaces/terminal-message.interface';
+import { OverlayConfig } from '@angular/cdk/overlay';
+import { DialogActionTypeEnum } from './dialog-action-type.enum';
+import { DialogStatus } from './dialog-status.enum';
 
-export interface TerminalState {
-	messages: TerminalMessage[];
-	allMessages: TerminalMessage[];
-	error: any | null;
+export interface DialogConfig extends OverlayConfig {
+	data?: any;
+	title?: string;
+	showSaveButton?: boolean;
+	showCloseButton?: boolean;
+	saveButtonLabel?: string;
+	closeButtonLabel?: string;
+	width?: string;
+	actionType?: DialogActionTypeEnum;
+}
+
+export interface DialogClose<T> {
+	result?: T;
+	status: DialogStatus;
 }

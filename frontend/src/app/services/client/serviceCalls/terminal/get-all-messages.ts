@@ -14,10 +14,11 @@
 
 //   SPDX-License-Identifier: Apache-2.0
 
-import { TerminalMessage } from '../../../modules/core/models/interfaces/terminal-message.interface';
+import { TerminalMessage } from '../../../../modules/core/models/interfaces/terminal-message.interface';
+import { ServiceCallGET } from '../service-call';
 
-export interface TerminalState {
-	messages: TerminalMessage[];
-	allMessages: TerminalMessage[];
-	error: any | null;
+export class GetAllMessages extends ServiceCallGET<TerminalMessage[]> {
+	constructor() {
+		super(`all-messages`, undefined, undefined, false);
+	}
 }

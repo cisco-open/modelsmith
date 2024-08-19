@@ -14,10 +14,9 @@
 
 //   SPDX-License-Identifier: Apache-2.0
 
-import { TerminalMessage } from '../../../modules/core/models/interfaces/terminal-message.interface';
-
-export interface TerminalState {
-	messages: TerminalMessage[];
-	allMessages: TerminalMessage[];
-	error: any | null;
-}
+export * from './component/ms-dialog.component';
+export * from './dialog.ref';
+export * from './dialog.tokens';
+export * from './models/dialog-config.interface';
+export * from './models/dialog-status.enum';
+export * from './service/dialog.service';

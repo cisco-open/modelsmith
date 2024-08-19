@@ -14,10 +14,6 @@
 
 //   SPDX-License-Identifier: Apache-2.0
 
-import { TerminalMessage } from '../../../modules/core/models/interfaces/terminal-message.interface';
+import { InjectionToken } from '@angular/core';
 
-export interface TerminalState {
-	messages: TerminalMessage[];
-	allMessages: TerminalMessage[];
-	error: any | null;
-}
+export const DIALOG_DATA = new InjectionToken<any>('DIALOG_DATA');

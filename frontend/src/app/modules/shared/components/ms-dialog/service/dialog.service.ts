@@ -17,43 +17,42 @@
 import { Overlay } from '@angular/cdk/overlay';
 import { ComponentPortal, ComponentType } from '@angular/cdk/portal';
 import { Injectable, Injector } from '@angular/core';
-import { DrawerRef } from '../drawer.ref';
-import { DRAWER_DATA } from '../drawer.tokens';
-import { DrawerConfig } from '../models/drawer-config.interface';
-import { DEFAUlT_DRAWER_WIDTH } from '../models/drawer.constants';
+import { DialogRef } from '../dialog.ref';
+import { DIALOG_DATA } from '../dialog.tokens';
+import { DialogConfig } from '../models/dialog-config.interface';
+import { DEFAULT_DIALOG_WIDTH } from '../models/dialog.constants';
 
 @Injectable()
-export class DrawerService {
+export class DialogService {
 	constructor(
 		private overlay: Overlay,
 		private injector: Injector
 	) {}
 
-	open<T>(component: ComponentType<T>, config?: DrawerConfig): DrawerRef {
-		const positionStrategy = this.overlay.position().global().right();
+	open<T>(component: ComponentType<T>, config?: DialogConfig): DialogRef {
+		const positionStrategy = this.overlay.position().global().centerHorizontally().centerVertically();
 
 		const overlayRef = this.overlay.create({
 			positionStrategy,
 			hasBackdrop: true,
-			backdropClass: 'drawer-backdrop',
-			height: '100vh',
+			backdropClass: 'dialog-backdrop',
 			...config
 		});
 
-		const drawerRef = new DrawerRef(overlayRef);
+		const dialogRef = new DialogRef(overlayRef);
 
 		const injector = Injector.create({
 			parent: this.injector,
 			providers: [
-				{ provide: DrawerRef, useValue: drawerRef },
+				{ provide: DialogRef, useValue: dialogRef },
 				{
-					provide: DRAWER_DATA,
+					provide: DIALOG_DATA,
 					useValue: {
 						saveButtonLabel: 'Save',
 						closeButtonLabel: 'Close',
 						showSaveButton: true,
 						showCloseButton: true,
-						width: DEFAUlT_DRAWER_WIDTH,
+						width: config?.width || DEFAULT_DIALOG_WIDTH,
 						...config
 					}
 				}
@@ -63,6 +62,6 @@ export class DrawerService {
 		const portal = new ComponentPortal(component, null, injector);
 		overlayRef.attach(portal);
 
-		return drawerRef;
+		return dialogRef;
 	}
 }

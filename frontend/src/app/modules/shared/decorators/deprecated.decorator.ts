@@ -14,10 +14,20 @@
 
 //   SPDX-License-Identifier: Apache-2.0
 
-import { TerminalMessage } from '../../../modules/core/models/interfaces/terminal-message.interface';
+import { environment } from '../../../../environments/environment';
 
-export interface TerminalState {
-	messages: TerminalMessage[];
-	allMessages: TerminalMessage[];
-	error: any | null;
+type Constructor<T = {}> = new (...args: any[]) => T;
+
+export function Deprecated(oldSelector: string) {
+	return <T extends Constructor>(Base: T) => {
+		return class Deprecated extends Base {
+			selectors = [];
+			constructor(...args: any[]) {
+				super(...args);
+				if (!environment.production) {
+					console.warn(`The selector ${oldSelector} is going to be deprecated. Please avoid using it.`);
+				}
+			}
+		};
+	};
 }

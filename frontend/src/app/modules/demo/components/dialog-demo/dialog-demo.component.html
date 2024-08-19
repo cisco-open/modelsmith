@@ -1,0 +1,70 @@
+<!-- Copyright 2024 Cisco Systems, Inc. and its affiliates
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+  SPDX-License-Identifier: Apache-2.0 -->
+
+<h1>Dialog</h1>
+
+<div>
+	<h2>Description:</h2>
+
+	<p>Dialog panel it's opened using the dialog service. (ex. this.dialogService.open(COMPONENT, customData)</p>
+	<p>
+		Those are the custom data available for <b>dialog config:</b> <br />
+		<b>data?: any;</b> | Custom data that you would need to add from outside inside the dialog. <br />
+		<b>title?: string;</b> | Dialog title <br />
+		<b>showSaveButton?: boolean;</b> | Option to configure the show/hide of the save button. <br />
+		<b>showDismissButton?: boolean;</b> | Option to configure the show/hide of the dismiss button. <br />
+		<b>saveButtonLabel?: string;</b> | Option to configure the save button label.<br />
+		<b>dismissButtonLabel?: string;</b> | Option to configure the dismiss button label.<br />
+		<b>width?: string;</b> | Option to configure the width of the dialog.<br />
+	</p>
+	<p>
+		On each dialog action an event it's emitted: If you click on the X icon, the event emitted it's DialogStatus.CLOSE,
+		if you click on save the event emitted is DialogStatus.SAVE, if you click on dismiss the event it's
+		DialogStatus.DISMISS. By using this action on the actionEvent output event emitter, you can bind your function and
+		listen to events for your custom functionality.
+	</p>
+
+	<p>
+		Additionaly, you can change the templates of the header and footer and provide a totally custom implementation as
+		you would need it. Check the "alternative templates" examples
+	</p>
+</div>
+
+<div class="section">
+	<h2>Basic Dialogs</h2>
+
+	<div class="parent items-per-row-5">
+		<div>Open basic drawer</div>
+		<div>Open basic dialog with custom width</div>
+		<div></div>
+		<div></div>
+		<div></div>
+
+		<div>
+			<button mat-raised-button (click)="openBasicDialog()">Open Dialog</button>
+		</div>
+		<div>
+			<button mat-raised-button (click)="openCustomWidthDialog()">Open Custom Width Dialog</button>
+		</div>
+		<div></div>
+		<div></div>
+		<div></div>
+	</div>
+
+	<div class="line">
+		<mat-divider></mat-divider>
+	</div>
+</div>

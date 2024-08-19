@@ -18,6 +18,7 @@ import { Inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, of, switchMap } from 'rxjs';
 import { Client } from '../../../services/client/client';
+import { GetAllMessages } from '../../../services/client/serviceCalls/terminal/get-all-messages';
 import { GetLatestMessages } from '../../../services/client/serviceCalls/terminal/get-latest-messages';
 import { PostClearHistory } from '../../../services/client/serviceCalls/terminal/post-clear-history';
 import { CLIENT } from '../../../services/services.tokens';
@@ -32,6 +33,18 @@ export class TerminalEffects {
 				this.apiClient.serviceCall(new GetLatestMessages()).pipe(
 					map((messages: any) => TerminalActions.getLatestMessagesSuccess({ messages })),
 					catchError((error) => of(TerminalActions.getLatestMessagesFailure({ error })))
+				)
+			)
+		)
+	);
+
+	getAllMessages$ = createEffect(() =>
+		this.actions$.pipe(
+			ofType(TerminalActions.getAllMessages),
+			switchMap(() =>
+				this.apiClient.serviceCall(new GetAllMessages()).pipe(
+					map((allMessages: any) => TerminalActions.getAllMessagesSuccess({ allMessages })),
+					catchError((error) => of(TerminalActions.getAllMessagesFailure({ error })))
 				)
 			)
 		)

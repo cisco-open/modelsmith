@@ -14,10 +14,26 @@
 
 //   SPDX-License-Identifier: Apache-2.0
 
-import { TerminalMessage } from '../../../modules/core/models/interfaces/terminal-message.interface';
+import { OverlayRef } from '@angular/cdk/overlay';
+import { Observable, Subject } from 'rxjs';
+import { DialogClose } from './models/dialog-config.interface';
 
-export interface TerminalState {
-	messages: TerminalMessage[];
-	allMessages: TerminalMessage[];
-	error: any | null;
+export class DialogRef {
+	private afterClosedSubject = new Subject<any>();
+
+	constructor(private overlayRef: OverlayRef) {}
+
+	public backdropClick(): Observable<MouseEvent> {
+		return this.overlayRef.backdropClick();
+	}
+
+	public close(result?: DialogClose<any>) {
+		this.overlayRef.dispose();
+		this.afterClosedSubject.next(result);
+		this.afterClosedSubject.complete();
+	}
+
+	public afterClosed(): Observable<any> {
+		return this.afterClosedSubject.asObservable();
+	}
 }

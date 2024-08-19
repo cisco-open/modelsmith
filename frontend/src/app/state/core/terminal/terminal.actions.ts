@@ -23,6 +23,9 @@ export const TerminalActions = createActionGroup({
 		'Get Latest Messages': emptyProps(),
 		'Get Latest Messages Success': props<{ messages: TerminalMessage[] }>(),
 		'Get Latest Messages Failure': props<{ error: any }>(),
+		'Get All Messages': emptyProps(),
+		'Get All Messages Success': props<{ allMessages: TerminalMessage[] }>(),
+		'Get All Messages Failure': props<{ error: any }>(),
 		'Post Clear History': emptyProps(),
 		'Post Clear History Success': emptyProps(),
 		'Post Clear History Failure': props<{ error: any }>()

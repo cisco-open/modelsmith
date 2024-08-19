@@ -15,18 +15,24 @@
 //  SPDX-License-Identifier: Apache-2.0
 
 const MESSAGE_TYPES = require('../constants/messageTypes');
+
 let messageHistory = [];
+let fullMessageHistory = [];
 
 const MAX_HISTORY_MESSAGES = 50;
 
 module.exports = {
 	getMessagesHistory: () => messageHistory,
+	getFullMessageHistory: () => fullMessageHistory,
 	addToMessageHistory: (messageObject) => {
 		if (typeof messageObject === 'string') {
 			messageObject = { data: messageObject, type: MESSAGE_TYPES.INFO };
 		}
-		messageHistory.push(messageObject);
 
+		fullMessageHistory.push(messageObject);
+
+		// Add to limited message history (latest 50)
+		messageHistory.push(messageObject);
 		if (messageHistory.length > MAX_HISTORY_MESSAGES) {
 			messageHistory.shift();
 		}

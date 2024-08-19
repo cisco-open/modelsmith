@@ -14,10 +14,17 @@
 
 //   SPDX-License-Identifier: Apache-2.0
 
-import { TerminalMessage } from '../../../modules/core/models/interfaces/terminal-message.interface';
+import { Component, Inject } from '@angular/core';
+import { DIALOG_DATA, DialogConfig, DialogRef } from '../../../../shared/components/ms-dialog';
 
-export interface TerminalState {
-	messages: TerminalMessage[];
-	allMessages: TerminalMessage[];
-	error: any | null;
+@Component({
+	selector: 'ms-dialog-custom-width',
+	templateUrl: './dialog-custom-width.component.html',
+	styleUrl: './dialog-custom-width.component.scss'
+})
+export class DialogCustomWidthComponent {
+	constructor(
+		private dialogRef: DialogRef,
+		@Inject(DIALOG_DATA) public dialogConfig: DialogConfig
+	) {}
 }

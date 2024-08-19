@@ -22,6 +22,7 @@ import { CardsDemoComponent } from './components/cards-demo/cards-demo.component
 import { CheckboxesDemoComponent } from './components/checkboxes-demo/checkboxes-demo.component';
 import { ChipsDemoComponent } from './components/chips-demo/chips-demo.component';
 import { DemoComponent } from './components/demo/demo.component';
+import { DialogDemoComponent } from './components/dialog-demo/dialog-demo.component';
 import { DrawerDemoComponent } from './components/drawer-demo/drawer-demo.component';
 import { FormFieldsDemoComponent } from './components/form-fields-demo/form-fields-demo.component';
 import { IconsDemoComponent } from './components/icons-demo/icons-demo.component';
@@ -88,6 +89,10 @@ const routes: Routes = [
 			{
 				path: RoutesList.DEMO.DRAWER,
 				component: DrawerDemoComponent
+			},
+			{
+				path: RoutesList.DEMO.DIALOG,
+				component: DialogDemoComponent
 			}
 		]
 	}
