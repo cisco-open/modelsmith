@@ -20,7 +20,7 @@ import { Injectable, Injector } from '@angular/core';
 import { DialogRef } from '../dialog.ref';
 import { DIALOG_DATA } from '../dialog.tokens';
 import { DialogConfig } from '../models/dialog-config.interface';
-import { DEFAULT_DIALOG_WIDTH } from '../models/dialog.constants';
+import { DEFAULT_DIALOG_HEIGHT, DEFAULT_DIALOG_WIDTH } from '../models/dialog.constants';
 
 @Injectable()
 export class DialogService {
@@ -53,6 +53,7 @@ export class DialogService {
 						showSaveButton: true,
 						showCloseButton: true,
 						width: config?.width || DEFAULT_DIALOG_WIDTH,
+						height: config?.height || DEFAULT_DIALOG_HEIGHT,
 						...config
 					}
 				}

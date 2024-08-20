@@ -28,7 +28,8 @@
 		<b>showDismissButton?: boolean;</b> | Option to configure the show/hide of the dismiss button. <br />
 		<b>saveButtonLabel?: string;</b> | Option to configure the save button label.<br />
 		<b>dismissButtonLabel?: string;</b> | Option to configure the dismiss button label.<br />
-		<b>width?: string;</b> | Option to configure the width of the dialog.<br />
+		<b>width?: number;</b> | Option to configure the width in pixels of the dialog.<br />
+		<b>height?: number;</b> | Option to configure the height in pixels of the dialog.<br />
 	</p>
 	<p>
 		On each dialog action an event it's emitted: If you click on the X icon, the event emitted it's DialogStatus.CLOSE,
@@ -48,7 +49,7 @@
 
 	<div class="parent items-per-row-5">
 		<div>Open basic drawer</div>
-		<div>Open basic dialog with custom width</div>
+		<div>Open basic dialog with custom size</div>
 		<div></div>
 		<div></div>
 		<div></div>
@@ -57,7 +58,7 @@
 			<button mat-raised-button (click)="openBasicDialog()">Open Dialog</button>
 		</div>
 		<div>
-			<button mat-raised-button (click)="openCustomWidthDialog()">Open Custom Width Dialog</button>
+			<button mat-raised-button (click)="openCustomSizeDialog()">Open Custom Size Dialog</button>
 		</div>
 		<div></div>
 		<div></div>

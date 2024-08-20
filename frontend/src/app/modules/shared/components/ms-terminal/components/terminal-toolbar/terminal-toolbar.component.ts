@@ -20,22 +20,36 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ScriptActions } from '../../../../../../state/core/script/script.actions';
 import { ScriptFacadeService } from '../../../../../core/services/script-facade.service';
+import { DialogConfig, DialogService } from '../../../ms-dialog';
+import { TerminalMessagesHistoryDialogComponent } from '../terminal-messages-history-dialog/terminal-messages-history-dialog.component';
 
 @Component({
 	selector: 'ms-terminal-toolbar',
 	templateUrl: './terminal-toolbar.component.html',
 	styleUrls: ['./terminal-toolbar.component.scss'],
 	standalone: true,
-	imports: [MatButtonModule, MatIconModule, MatTooltipModule]
+	imports: [MatButtonModule, MatIconModule, MatTooltipModule],
+	providers: [DialogService]
 })
 export class MsTerminalToolbarComponent {
 	@Output() clearTerminal = new EventEmitter<string>();
 	@Output() scrollToTopTerminal = new EventEmitter<string>();
 	@Output() scrollToBottomTerminal = new EventEmitter<string>();
 
-	constructor(private scriptFacadeService: ScriptFacadeService) {}
+	constructor(
+		private scriptFacadeService: ScriptFacadeService,
+		private dialogService: DialogService
+	) {}
 
 	ctaStopScript() {
 		this.scriptFacadeService.dispatch(ScriptActions.stopScript());
+	}
+
+	openTerminalMessagesHistoryDialog() {
+		this.dialogService.open(TerminalMessagesHistoryDialogComponent, {
+			title: 'Terminal history',
+			showSaveButton: false,
+			height: 680
+		} as DialogConfig);
 	}
 }

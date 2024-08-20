@@ -18,11 +18,11 @@ import { Component, Inject } from '@angular/core';
 import { DIALOG_DATA, DialogConfig, DialogRef } from '../../../../shared/components/ms-dialog';
 
 @Component({
-	selector: 'ms-dialog-custom-width',
-	templateUrl: './dialog-custom-width.component.html',
-	styleUrl: './dialog-custom-width.component.scss'
+	selector: 'ms-dialog-custom-size',
+	templateUrl: './dialog-custom-size.component.html',
+	styleUrl: './dialog-custom-size.component.scss'
 })
-export class DialogCustomWidthComponent {
+export class DialogCustomSizeComponent {
 	constructor(
 		private dialogRef: DialogRef,
 		@Inject(DIALOG_DATA) public dialogConfig: DialogConfig

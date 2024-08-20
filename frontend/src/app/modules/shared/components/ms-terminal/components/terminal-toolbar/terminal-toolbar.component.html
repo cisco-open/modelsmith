@@ -15,6 +15,10 @@
   SPDX-License-Identifier: Apache-2.0 -->
 
 <div class="buttons-wrapper">
+	<button mat-icon-button color="primary" matTooltip="Terminal history" (click)="openTerminalMessagesHistoryDialog()">
+		<mat-icon>history</mat-icon>
+	</button>
+
 	<button mat-icon-button color="primary" matTooltip="Scroll to top" (click)="scrollToTopTerminal.emit()">
 		<mat-icon fontSet="ms" fontIcon="icon-ArrowUp"></mat-icon>
 	</button>
@@ -27,7 +31,7 @@
 		<mat-icon> clear_all</mat-icon>
 	</button>
 
-	<button mat-icon-button color="warn" matTooltip="Stop current process." (click)="ctaStopScript()">
+	<button mat-icon-button color="warn" matTooltip="Stop current process" (click)="ctaStopScript()">
 		<mat-icon fontSet="ms" fontIcon="icon-X" class="mat-error"></mat-icon>
 	</button>
 </div>

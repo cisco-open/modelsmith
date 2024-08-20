@@ -15,7 +15,7 @@ limitations under the License.
 SPDX-License-Identifier: Apache-2.0
 -->
 
-<div class="dialog-wrapper" [style.width.px]="data.width">
+<div class="dialog-wrapper" [style.width.px]="data.width" [style.height.px]="data.height">
 	<div class="dialog-header">
 		<ng-container *ngTemplateOutlet="headerTemplate || defaultDialogHeader"></ng-container>
 		<ng-template #defaultDialogHeader>

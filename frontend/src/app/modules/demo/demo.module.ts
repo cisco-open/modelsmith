@@ -42,7 +42,7 @@ import { CheckboxesDemoComponent } from './components/checkboxes-demo/checkboxes
 import { ChipsDemoComponent } from './components/chips-demo/chips-demo.component';
 import { DemoComponent } from './components/demo/demo.component';
 import { DialogBasicDemoComponent } from './components/dialog-demo/dialog-basic-demo/dialog-basic-demo.component';
-import { DialogCustomWidthComponent } from './components/dialog-demo/dialog-custom-width/dialog-custom-width.component';
+import { DialogCustomSizeComponent } from './components/dialog-demo/dialog-custom-size/dialog-custom-size.component';
 import { DialogDemoComponent } from './components/dialog-demo/dialog-demo.component';
 import { DrawerBasicDemoComponent } from './components/drawer-demo/drawer-basic-demo/drawer-basic-demo.component';
 import { DrawerDemoComponent } from './components/drawer-demo/drawer-demo.component';
@@ -87,7 +87,7 @@ import { DemoRoutingModule } from './demo-routing.module';
 		DrawerWithCustomizableWidthComponent,
 		DialogDemoComponent,
 		DialogBasicDemoComponent,
-		DialogCustomWidthComponent
+		DialogCustomSizeComponent
 	],
 	imports: [
 		RouterModule,

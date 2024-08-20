@@ -18,7 +18,7 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { take } from 'rxjs';
 import { DialogConfig, DialogService } from '../../../shared/components/ms-dialog';
 import { DialogBasicDemoComponent } from './dialog-basic-demo/dialog-basic-demo.component';
-import { DialogCustomWidthComponent } from './dialog-custom-width/dialog-custom-width.component';
+import { DialogCustomSizeComponent } from './dialog-custom-size/dialog-custom-size.component';
 
 @Component({
 	selector: 'ms-dialog-demo',
@@ -42,10 +42,11 @@ export class DialogDemoComponent implements OnInit {
 			});
 	}
 
-	openCustomWidthDialog() {
-		const dialogRef = this.dialogService.open(DialogCustomWidthComponent, {
+	openCustomSizeDialog() {
+		const dialogRef = this.dialogService.open(DialogCustomSizeComponent, {
 			title: 'Lorem Ipsum',
-			width: '200px'
+			width: 200,
+			height: 600
 		} as DialogConfig);
 
 		dialogRef
