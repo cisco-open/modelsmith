@@ -19,10 +19,10 @@ import { Observable, Subject, timer } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import { ScriptActions } from '../../../state/core/script/script.actions';
 import { StatisticsActions } from '../../../state/core/statistics';
+import { TerminalMessage } from '../../shared/components/ms-terminal/models/terminal-message.interface';
 import { RECONNECT_DELAY } from '../models/constants/websocket.constants';
 import { WebsocketMessageTopics } from '../models/enums/websocket-message-types.enum';
 import { ChartsMessages } from '../models/interfaces/charts-messages.interface';
-import { TerminalMessage } from '../models/interfaces/terminal-message.interface';
 import { ScriptFacadeService } from './script-facade.service';
 import { StatisticsFacadeService } from './statistics-facade.service';
 

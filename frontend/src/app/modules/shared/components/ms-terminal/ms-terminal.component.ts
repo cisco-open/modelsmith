@@ -23,14 +23,14 @@ import { KeyValue } from '../../../../services/client/models/key-value/key-value
 import { ScriptDetails } from '../../../../services/client/models/script/script-details.interface-dto';
 import { ModelsActions } from '../../../../state/core/models/models.actions';
 import { TerminalActions } from '../../../../state/core/terminal/terminal.actions';
-import { TerminalMessage } from '../../../core/models/interfaces/terminal-message.interface';
 import { ScriptFacadeService } from '../../../core/services';
 import { ModelsFacadeService } from '../../../core/services/models-facade.service';
 import { TerminalFacadeService } from '../../../core/services/terminal-facade.service';
 import { WebsocketService } from '../../../core/services/websocket.service';
 import { AlgorithmType, TrainAlgorithmsEnum } from '../../../model-compression/models/enums/algorithms.enum';
-import { NotificationTypes } from '../ms-banner/models/snackbar-types.enum';
 import { MsTerminalToolbarComponent } from './components/terminal-toolbar/terminal-toolbar.component';
+import { TerminalMessage } from './models/terminal-message.interface';
+import { formatMessageByType } from './utils/terminal.utils';
 
 @UntilDestroy()
 @Component({
@@ -74,7 +74,7 @@ export class MsTerminalComponent implements OnInit, AfterViewInit, OnDestroy {
 				this.updateModelsListOnTrainAlgorithmCompletion();
 			}
 
-			const formattedMessage = this.formatMessageByType(message);
+			const formattedMessage = formatMessageByType(message);
 			if (this.displayWebSocketMessages) {
 				this.writeToTerminal(formattedMessage);
 			} else {
@@ -105,49 +105,18 @@ export class MsTerminalComponent implements OnInit, AfterViewInit, OnDestroy {
 	private loadLatestMessages() {
 		this.terminalFacadeService.messages$.pipe(skip(1), take(1)).subscribe((messages: TerminalMessage[]) => {
 			messages.forEach((messageObj: TerminalMessage) => {
-				const formattedMessage = this.formatMessageByType(messageObj);
+				const formattedMessage = formatMessageByType(messageObj);
 				this.writeToTerminal(formattedMessage);
 			});
 
 			this.messagesBuffer.forEach((bufferedMessageObj: TerminalMessage) => {
-				const formattedMessage = this.formatMessageByType(bufferedMessageObj);
+				const formattedMessage = formatMessageByType(bufferedMessageObj);
 				this.writeToTerminal(formattedMessage);
 			});
 			this.messagesBuffer = [];
 			this.displayWebSocketMessages = true;
 		});
 		this.terminalFacadeService.dispatch(TerminalActions.getLatestMessages());
-	}
-
-	private logMessageWithControlChars(message: string): void {
-		const visibleMessage = message.replace(/\n/g, '\\n').replace(/\r/g, '\\r');
-		console.log(visibleMessage);
-	}
-
-	private formatMessageByType(message: TerminalMessage): string {
-		let colorCode = '';
-		switch (message.type) {
-			case NotificationTypes.ERROR:
-				colorCode = '\x1b[38;5;124m';
-				break;
-			case NotificationTypes.SUCCESS:
-				colorCode = '\x1b[38;5;22m';
-				break;
-			case NotificationTypes.WARNING:
-				colorCode = '\x1b[38;5;136m';
-				break;
-			case NotificationTypes.INFO:
-			default:
-				colorCode = '\x1b[38;5;0m';
-				break;
-		}
-
-		let formattedData = message.data;
-		if (formattedData.endsWith('\n')) {
-			formattedData = formattedData.slice(0, -1);
-		}
-
-		return `${colorCode}${formattedData}\x1b[0m`;
 	}
 
 	private initializeTerminal(): void {

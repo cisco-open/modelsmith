@@ -15,7 +15,7 @@
 //   SPDX-License-Identifier: Apache-2.0
 
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
-import { TerminalMessage } from '../../../modules/core/models/interfaces/terminal-message.interface';
+import { TerminalMessage } from '../../../modules/shared/components/ms-terminal/models/terminal-message.interface';
 
 export const TerminalActions = createActionGroup({
 	source: '[Core -> Terminal]',

@@ -43,3 +43,7 @@ export const toTitleCase = (str: string) =>
 		.split('_')
 		.map((word) => word.charAt(0).toUpperCase() + word.slice(1))
 		.join(' ');
+
+export const disableBackgroundScroll = (): void => document.body.classList.add('cdk-global-scrollblock');
+
+export const enableBackgroundScroll = (): void => document.body.classList.remove('cdk-global-scrollblock');

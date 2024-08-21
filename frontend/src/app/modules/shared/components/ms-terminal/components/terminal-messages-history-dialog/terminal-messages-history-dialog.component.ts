@@ -20,10 +20,11 @@ import { skip, take } from 'rxjs';
 import { Terminal } from 'xterm';
 import { FitAddon } from 'xterm-addon-fit';
 import { TerminalActions } from '../../../../../../state/core/terminal';
-import { TerminalMessage } from '../../../../../core/models/interfaces/terminal-message.interface';
 import { TerminalFacadeService } from '../../../../../core/services';
-import { NotificationTypes } from '../../../ms-banner/models/snackbar-types.enum';
+import { disableBackgroundScroll, enableBackgroundScroll } from '../../../../shared.utils';
 import { DIALOG_DATA, DialogConfig, MsDialogComponent } from '../../../ms-dialog';
+import { TerminalMessageType } from '../../models/terminal-message-type.enum';
+import { TerminalMessage } from '../../models/terminal-message.interface';
 
 @UntilDestroy()
 @Component({
@@ -56,6 +57,8 @@ export class TerminalMessagesHistoryDialogComponent implements OnInit, OnDestroy
 	ngOnInit(): void {
 		this.initializeTerminal();
 		this.loadData();
+
+		disableBackgroundScroll();
 	}
 
 	private loadData() {
@@ -79,16 +82,16 @@ export class TerminalMessagesHistoryDialogComponent implements OnInit, OnDestroy
 	private formatMessageByType(message: TerminalMessage): string {
 		let colorCode = '';
 		switch (message.type) {
-			case NotificationTypes.ERROR:
+			case TerminalMessageType.ERROR:
 				colorCode = '\x1b[38;5;124m';
 				break;
-			case NotificationTypes.SUCCESS:
+			case TerminalMessageType.SUCCESS:
 				colorCode = '\x1b[38;5;22m';
 				break;
-			case NotificationTypes.WARNING:
+			case TerminalMessageType.WARNING:
 				colorCode = '\x1b[38;5;136m';
 				break;
-			case NotificationTypes.INFO:
+			case TerminalMessageType.INFO:
 			default:
 				colorCode = '\x1b[38;5;0m';
 				break;
@@ -125,5 +128,6 @@ export class TerminalMessagesHistoryDialogComponent implements OnInit, OnDestroy
 
 	ngOnDestroy(): void {
 		this.resizeObserver?.disconnect();
+		enableBackgroundScroll();
 	}
 }

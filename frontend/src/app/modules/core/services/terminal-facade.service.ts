@@ -19,7 +19,7 @@ import { Action, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { selectAllMessages, selectLatestMessages } from '../../../state/core/terminal/terminal.selector';
 import { TerminalState } from '../../../state/core/terminal/terminal.state';
-import { TerminalMessage } from '../models/interfaces/terminal-message.interface';
+import { TerminalMessage } from '../../shared/components/ms-terminal/models/terminal-message.interface';
 
 @Injectable()
 export class TerminalFacadeService {
