@@ -15,6 +15,8 @@
 //   SPDX-License-Identifier: Apache-2.0
 
 import { Component, ElementRef, Inject, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 import { UntilDestroy } from '@ngneat/until-destroy';
 import { skip, take } from 'rxjs';
 import { Terminal } from 'xterm';
@@ -30,7 +32,7 @@ import { TerminalMessage } from '../../models/terminal-message.interface';
 @Component({
 	selector: 'ms-terminal-messages-history-dialog',
 	standalone: true,
-	imports: [MsDialogComponent],
+	imports: [MsDialogComponent, MatIconModule, MatButtonModule],
 	templateUrl: './terminal-messages-history-dialog.component.html',
 	styleUrl: './terminal-messages-history-dialog.component.scss',
 	encapsulation: ViewEncapsulation.None
@@ -124,6 +126,14 @@ export class TerminalMessagesHistoryDialogComponent implements OnInit, OnDestroy
 
 	private fitTerminalToContainer(): void {
 		this.fitAddon.fit();
+	}
+
+	scrollToTopTerminal() {
+		this.terminal.scrollToTop();
+	}
+
+	scrollToBottomTerminal() {
+		this.terminal.scrollToBottom();
 	}
 
 	ngOnDestroy(): void {

@@ -16,6 +16,16 @@
 
 <ms-dialog>
 	<div class="ms-terminal-wrapper">
+		<div class="top-terminal-section">
+			<button mat-icon-button color="primary" matTooltip="Scroll to top" (click)="scrollToTopTerminal()">
+				<mat-icon fontSet="ms" fontIcon="icon-ArrowUp"></mat-icon>
+			</button>
+
+			<button mat-icon-button color="primary" matTooltip="Scroll to bottom" (click)="scrollToBottomTerminal()">
+				<mat-icon fontSet="ms" fontIcon="icon-ArrowDown"></mat-icon>
+			</button>
+		</div>
+
 		<div class="terminal">
 			<div class="terminal-wrapper" #terminalHistory></div>
 		</div>
