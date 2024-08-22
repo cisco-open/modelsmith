@@ -8,6 +8,7 @@ import { DIALOG_DATA } from '../dialog.tokens';
 import { getDialogSizeStyles } from '../dialog.utils';
 import { DialogStatus } from '../models/enums/dialog-status.enum';
 import { DialogConfig } from '../models/interfaces/dialog-config.interface';
+import { DialogSizeStylesPipe } from '../pipes/dialog-size-style.pipe';
 
 @UntilDestroy()
 @Component({
@@ -15,7 +16,7 @@ import { DialogConfig } from '../models/interfaces/dialog-config.interface';
 	templateUrl: './ms-dialog.component.html',
 	styleUrls: ['./ms-dialog.component.scss'],
 	standalone: true,
-	imports: [CommonModule, MatButtonModule, MatIconModule]
+	imports: [CommonModule, MatButtonModule, MatIconModule, DialogSizeStylesPipe]
 })
 export class MsDialogComponent {
 	@Input() headerTemplate!: TemplateRef<any>;

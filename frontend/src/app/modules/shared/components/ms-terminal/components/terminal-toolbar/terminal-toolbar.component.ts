@@ -50,7 +50,7 @@ export class MsTerminalToolbarComponent {
 			title: 'Terminal history',
 			showSaveButton: false,
 			width: '60vw',
-			height: '80vh'
+			height: '75vh'
 		} as DialogConfig);
 	}
 }
