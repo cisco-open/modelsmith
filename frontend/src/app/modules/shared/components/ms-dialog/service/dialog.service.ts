@@ -19,8 +19,8 @@ import { ComponentPortal, ComponentType } from '@angular/cdk/portal';
 import { Injectable, Injector } from '@angular/core';
 import { DialogRef } from '../dialog.ref';
 import { DIALOG_DATA } from '../dialog.tokens';
-import { DialogConfig } from '../models/dialog-config.interface';
-import { DEFAULT_DIALOG_HEIGHT, DEFAULT_DIALOG_WIDTH } from '../models/dialog.constants';
+import { DEFAULT_DIALOG_HEIGHT, DEFAULT_DIALOG_WIDTH } from '../models/constants/dialog.constants';
+import { DialogConfig } from '../models/interfaces/dialog-config.interface';
 
 @Injectable()
 export class DialogService {

@@ -49,7 +49,8 @@ export class MsTerminalToolbarComponent {
 		this.dialogService.open(TerminalMessagesHistoryDialogComponent, {
 			title: 'Terminal history',
 			showSaveButton: false,
-			height: 680
+			width: '60vw',
+			height: '80vh'
 		} as DialogConfig);
 	}
 }

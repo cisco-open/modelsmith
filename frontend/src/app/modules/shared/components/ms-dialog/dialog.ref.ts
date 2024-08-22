@@ -16,7 +16,7 @@
 
 import { OverlayRef } from '@angular/cdk/overlay';
 import { Observable, Subject } from 'rxjs';
-import { DialogClose } from './models/dialog-config.interface';
+import { DialogClose } from './models/interfaces/dialog-config.interface';
 
 export class DialogRef {
 	private afterClosedSubject = new Subject<any>();

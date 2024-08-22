@@ -1,2 +1,0 @@
-export const DEFAULT_DIALOG_WIDTH = 1024;
-export const DEFAULT_DIALOG_HEIGHT = 400;

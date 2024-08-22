@@ -15,8 +15,9 @@
 //   SPDX-License-Identifier: Apache-2.0
 
 import { OverlayConfig } from '@angular/cdk/overlay';
-import { DialogActionTypeEnum } from './dialog-action-type.enum';
-import { DialogStatus } from './dialog-status.enum';
+import { DialogActionTypeEnum } from '../enums/dialog-action-type.enum';
+import { DialogStatus } from '../enums/dialog-status.enum';
+import { CSSSize } from '../types/css-size.type';
 
 export interface DialogConfig extends OverlayConfig {
 	data?: any;
@@ -25,8 +26,8 @@ export interface DialogConfig extends OverlayConfig {
 	showCloseButton?: boolean;
 	saveButtonLabel?: string;
 	closeButtonLabel?: string;
-	width?: number;
-	height?: number;
+	width?: CSSSize;
+	height?: CSSSize;
 	actionType?: DialogActionTypeEnum;
 }
 
