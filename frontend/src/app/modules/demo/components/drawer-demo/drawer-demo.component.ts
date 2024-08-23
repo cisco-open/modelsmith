@@ -135,7 +135,7 @@ export class DrawerDemoComponent implements OnInit {
 	openDrawerWithCustomizableWidth() {
 		const drawerRef = this.drawerService.open(DrawerWithCustomizableWidthComponent, {
 			title: 'Drawer With Customizable Width',
-			width: 500
+			width: '20vw'
 		} as DrawerConfig);
 
 		drawerRef

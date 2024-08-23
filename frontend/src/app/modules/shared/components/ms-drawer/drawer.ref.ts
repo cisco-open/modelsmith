@@ -16,7 +16,7 @@
 
 import { OverlayRef } from '@angular/cdk/overlay';
 import { Observable, Subject } from 'rxjs';
-import { DrawerClose } from './models/drawer-config.interface';
+import { DrawerClose } from './models/interfaces/drawer-config.interface';
 
 export class DrawerRef {
 	private afterClosedSubject = new Subject<any>();

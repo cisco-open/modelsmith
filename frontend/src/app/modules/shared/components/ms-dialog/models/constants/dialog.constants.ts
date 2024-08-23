@@ -1,2 +1,4 @@
-export const DEFAULT_DIALOG_WIDTH: string = '1024px';
-export const DEFAULT_DIALOG_HEIGHT: string = '400px';
+import { DialogCSSSize } from '../types/dialog-css-size.type';
+
+export const DEFAULT_DIALOG_WIDTH: DialogCSSSize = '1024px';
+export const DEFAULT_DIALOG_HEIGHT: DialogCSSSize = '400px';

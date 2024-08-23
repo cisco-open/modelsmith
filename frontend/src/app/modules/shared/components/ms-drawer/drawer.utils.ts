@@ -14,8 +14,8 @@
 
 //   SPDX-License-Identifier: Apache-2.0
 
-import { DialogCSSSize } from './models/types/dialog-css-size.type';
-import { DialogCSSUnit } from './models/types/dialog-css-unit.type';
+import { DrawerCSSSize } from './models/types/drawer-css-size.type';
+import { DrawerCSSUnit } from './models/types/drawer-css-unit.type';
 
 /**
  * Generate style object for the dialog width and height based on provided units.
@@ -25,15 +25,11 @@ import { DialogCSSUnit } from './models/types/dialog-css-unit.type';
  * @param height - The height as a CSSSize string (e.g., '400px', '80vh')
  * @returns An object containing the styles for width and height
  */
-export function getDialogSizeStyles(width?: DialogCSSSize, height?: DialogCSSSize): { [klass: string]: any } {
+export function getDrawerSizeStyles(width?: DrawerCSSSize): { [klass: string]: any } {
 	const styles: { [klass: string]: any } = {};
 
 	if (width) {
 		applySizeStyle(styles, width, 'width');
-	}
-
-	if (height) {
-		applySizeStyle(styles, height, 'height');
 	}
 
 	return styles;
@@ -46,7 +42,7 @@ export function getDialogSizeStyles(width?: DialogCSSSize, height?: DialogCSSSiz
  * @param value - The CSSSize value (e.g., '100px', '20rem', '80vh')
  * @param dimension - Either 'width' or 'height'
  */
-function applySizeStyle(styles: { [klass: string]: any }, value: DialogCSSSize, dimension: 'width' | 'height'): void {
+function applySizeStyle(styles: { [klass: string]: any }, value: DrawerCSSSize, dimension: 'width'): void {
 	const unit = extractUnit(value);
 
 	if (unit === 'px' || unit === 'rem' || unit === 'em') {
@@ -62,8 +58,8 @@ function applySizeStyle(styles: { [klass: string]: any }, value: DialogCSSSize, 
  * @param value - The CSSSize value (e.g., '100px', '20rem', '80vh')
  * @returns The unit (e.g., 'px', 'rem', 'vh') or 'px' as default
  */
-function extractUnit(value: DialogCSSSize): DialogCSSUnit {
+function extractUnit(value: DrawerCSSSize): DrawerCSSUnit {
 	const valueAsString = typeof value === 'string' ? value : '';
 	const match = valueAsString.match(/(px|rem|em|vw|vh|%)$/);
-	return match ? (match[0] as DialogCSSUnit) : 'px';
+	return match ? (match[0] as DrawerCSSUnit) : 'px';
 }

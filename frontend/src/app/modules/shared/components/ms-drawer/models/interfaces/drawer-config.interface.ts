@@ -15,8 +15,9 @@
 //   SPDX-License-Identifier: Apache-2.0
 
 import { OverlayConfig } from '@angular/cdk/overlay';
-import { DrawerActionTypeEnum } from './drawer-action-type.enum';
-import { DrawerStatus } from './drawer-status.enum';
+import { DrawerActionTypeEnum } from '../enums/drawer-action-type.enum';
+import { DrawerStatus } from '../enums/drawer-status.enum';
+import { DrawerCSSSize } from '../types/drawer-css-size.type';
 
 export interface DrawerConfig extends OverlayConfig {
 	data?: any;
@@ -25,6 +26,7 @@ export interface DrawerConfig extends OverlayConfig {
 	showCloseButton?: boolean;
 	saveButtonLabel?: string;
 	closeButtonLabel?: string;
+	width?: DrawerCSSSize;
 	actionType?: DrawerActionTypeEnum;
 }
 

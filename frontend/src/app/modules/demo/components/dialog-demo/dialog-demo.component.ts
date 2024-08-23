@@ -46,7 +46,7 @@ export class DialogDemoComponent implements OnInit {
 		const dialogRef = this.dialogService.open(DialogCustomSizeComponent, {
 			title: 'Lorem Ipsum',
 			width: '40vw',
-			height: '600px'
+			height: '50vh'
 		} as DialogConfig);
 
 		dialogRef

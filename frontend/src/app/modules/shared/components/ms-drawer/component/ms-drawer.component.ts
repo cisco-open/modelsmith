@@ -21,8 +21,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { DrawerRef } from '../drawer.ref';
 import { DRAWER_DATA } from '../drawer.tokens';
-import { DrawerConfig } from '../models/drawer-config.interface';
-import { DrawerStatus } from '../models/drawer-status.enum';
+import { DrawerStatus } from '../models/enums/drawer-status.enum';
+import { DrawerConfig } from '../models/interfaces/drawer-config.interface';
+import { DrawerSizeStylesPipe } from '../pipes/drawer-size-style.pipe';
 
 @UntilDestroy()
 @Component({
@@ -30,7 +31,7 @@ import { DrawerStatus } from '../models/drawer-status.enum';
 	templateUrl: './ms-drawer.component.html',
 	styleUrls: ['./ms-drawer.component.scss'],
 	standalone: true,
-	imports: [CommonModule, MatButtonModule, MatIconModule]
+	imports: [CommonModule, MatButtonModule, MatIconModule, DrawerSizeStylesPipe]
 })
 export class MsDrawerComponent {
 	@Input() headerTemplate!: TemplateRef<any>;

@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { getDialogSizeStyles } from '../dialog.utils';
-import { CSSSize } from '../models/types/css-size.type';
+import { DialogCSSSize } from '../models/types/dialog-css-size.type';
 
 @Pipe({
 	name: 'dialogSizeStyles',
@@ -8,7 +8,7 @@ import { CSSSize } from '../models/types/css-size.type';
 	pure: true
 })
 export class DialogSizeStylesPipe implements PipeTransform {
-	transform(width?: CSSSize, height?: CSSSize): { [klass: string]: any } {
+	transform(width?: DialogCSSSize, height?: DialogCSSSize): { [klass: string]: any } {
 		return getDialogSizeStyles(width, height);
 	}
 }

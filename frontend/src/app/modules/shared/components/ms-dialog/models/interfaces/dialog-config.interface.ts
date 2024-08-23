@@ -17,7 +17,7 @@
 import { OverlayConfig } from '@angular/cdk/overlay';
 import { DialogActionTypeEnum } from '../enums/dialog-action-type.enum';
 import { DialogStatus } from '../enums/dialog-status.enum';
-import { CSSSize } from '../types/css-size.type';
+import { DialogCSSSize } from '../types/dialog-css-size.type';
 
 export interface DialogConfig extends OverlayConfig {
 	data?: any;
@@ -26,8 +26,8 @@ export interface DialogConfig extends OverlayConfig {
 	showCloseButton?: boolean;
 	saveButtonLabel?: string;
 	closeButtonLabel?: string;
-	width?: CSSSize;
-	height?: CSSSize;
+	width?: DialogCSSSize;
+	height?: DialogCSSSize;
 	actionType?: DialogActionTypeEnum;
 }
 

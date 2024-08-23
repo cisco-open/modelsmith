@@ -20,7 +20,7 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { take } from 'rxjs';
 import { AlgorithmType } from '../../../model-compression/models/enums/algorithms.enum';
 import { DrawerClose, DrawerService, DrawerStatus } from '../../../shared/components/ms-drawer';
-import { DrawerActionTypeEnum } from '../../../shared/components/ms-drawer/models/drawer-action-type.enum';
+import { DrawerActionTypeEnum } from '../../../shared/components/ms-drawer/models/enums/drawer-action-type.enum';
 import { RecordComparisonItem } from '../../models/record-comparisson.interface';
 import { RecordsDataService } from '../../services/records-data.service';
 import { RunDrawerActionsComponent } from '../run-drawer-actions/run-drawer-actions.component';
@@ -67,7 +67,8 @@ export class AlgorithmComparisonComponent implements OnInit {
 			saveButtonLabel: 'Add',
 			showCloseButton: true,
 			closeButtonLabel: 'Close',
-			actionType: DrawerActionTypeEnum.ADD
+			actionType: DrawerActionTypeEnum.ADD,
+			width: '40vw'
 		});
 
 		drawerRef

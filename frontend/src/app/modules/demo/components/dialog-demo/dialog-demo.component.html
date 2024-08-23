@@ -28,8 +28,8 @@
 		<b>showDismissButton?: boolean;</b> | Option to configure the show/hide of the dismiss button. <br />
 		<b>saveButtonLabel?: string;</b> | Option to configure the save button label.<br />
 		<b>dismissButtonLabel?: string;</b> | Option to configure the dismiss button label.<br />
-		<b>width?: number;</b> | Option to configure the width in pixels of the dialog.<br />
-		<b>height?: number;</b> | Option to configure the height in pixels of the dialog.<br />
+		<b>width?: DialogCSSSize;</b> | Option to configure the width in 'px', 'vw' | 'vh', 'em', 'rem' of the dialog.<br />
+		<b>height?: DialogCSSSize;</b> | Option to configure the height 'px', 'vw', 'vh', 'em', 'rem' of the dialog.<br />
 	</p>
 	<p>
 		On each dialog action an event it's emitted: If you click on the X icon, the event emitted it's DialogStatus.CLOSE,
@@ -48,8 +48,8 @@
 	<h2>Basic Dialogs</h2>
 
 	<div class="parent items-per-row-5">
-		<div>Open basic drawer</div>
-		<div>Open basic dialog with custom size</div>
+		<div>Open basic dialog with fixed size</div>
+		<div>Open basic dialog with custom size with resizable units (vw, vh)</div>
 		<div></div>
 		<div></div>
 		<div></div>

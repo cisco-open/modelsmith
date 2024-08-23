@@ -15,7 +15,7 @@ limitations under the License.
 SPDX-License-Identifier: Apache-2.0
 -->
 
-<div class="drawer-wrapper" [style.width.px]="data.width">
+<div class="drawer-wrapper" [ngStyle]="data.width | drawerSizeStyles">
 	<div class="drawer-header">
 		<ng-container *ngTemplateOutlet="headerTemplate || defaultDrawerHeader"></ng-container>
 		<ng-template #defaultDrawerHeader>

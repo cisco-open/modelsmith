@@ -28,7 +28,7 @@ import {
 import { RunRecordsActions } from '../../../../state/run-records/records';
 import { AlgorithmType } from '../../../model-compression/models/enums/algorithms.enum';
 import { DRAWER_DATA, DrawerConfig, DrawerRef, DrawerStatus } from '../../../shared/components/ms-drawer';
-import { DrawerActionTypeEnum } from '../../../shared/components/ms-drawer/models/drawer-action-type.enum';
+import { DrawerActionTypeEnum } from '../../../shared/components/ms-drawer/models/enums/drawer-action-type.enum';
 import { chartColorsSettings } from '../../../shared/components/ms-line-chart/models/constants/chart-color-settings.constants';
 import { ChartColorEnum } from '../../../shared/components/ms-line-chart/models/enums/chart-color.enum';
 import {
