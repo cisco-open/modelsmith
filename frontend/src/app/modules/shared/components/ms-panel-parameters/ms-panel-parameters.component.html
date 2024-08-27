@@ -28,7 +28,12 @@ SPDX-License-Identifier: Apache-2.0 -->
 				<div class="form-field-container">
 					<mat-label>{{ param.label }}</mat-label>
 					<mat-form-field appearance="outline">
-						<input matInput [formControlName]="i" [placeholder]="param.placeholder" [type]="param.inputType" />
+						<input
+							matInput
+							msErrorDisplay
+							[formControlName]="i"
+							[placeholder]="param.placeholder"
+							[type]="param.inputType" />
 						<mat-icon fontSet="ms" fontIcon="icon-Info" matSuffix matTooltip="{{ param.help }}"></mat-icon>
 					</mat-form-field>
 				</div>
@@ -38,7 +43,7 @@ SPDX-License-Identifier: Apache-2.0 -->
 				<div class="form-field-container">
 					<mat-label>{{ param.label }}</mat-label>
 					<mat-form-field appearance="outline">
-						<mat-select [formControlName]="i">
+						<mat-select msErrorDisplay [formControlName]="i">
 							@for (option of param.options; track option) {
 							<mat-option [value]="option.value">
 								{{ option.viewValue }}

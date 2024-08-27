@@ -35,6 +35,8 @@ import { ScriptFacadeService } from '../../../core/services/script-facade.servic
 import { DEFAULT_SELECTED_ALGORITHM } from '../../../model-compression/models/constants/algorithm.constants';
 import { AlgorithmKey } from '../../../model-compression/models/enums/algorithms.enum';
 import { isScriptActive } from '../../../model-compression/models/enums/script-status.enum';
+import { ErrorDisplayDirective } from '../../directives/error-display/error-display.directive';
+import { getValidators } from './parameters.utils';
 
 @UntilDestroy()
 @Component({
@@ -48,7 +50,8 @@ import { isScriptActive } from '../../../model-compression/models/enums/script-s
 		MatSelectModule,
 		MatTooltipModule,
 		MatCheckboxModule,
-		MatIconModule
+		MatIconModule,
+		ErrorDisplayDirective
 	],
 	templateUrl: './ms-panel-parameters.component.html',
 	styleUrls: ['./ms-panel-parameters.component.scss'],
@@ -133,7 +136,8 @@ export class MsPanelParametersComponent implements OnInit {
 		this.parametersFormArray.clear();
 
 		parameters.forEach((param) => {
-			this.parametersFormArray.push(this.fb.control(param.defaultValue));
+			const control = this.fb.control(param.defaultValue, getValidators(param));
+			this.parametersFormArray.push(control);
 		});
 
 		if (this.isScriptActive) {

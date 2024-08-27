@@ -15,26 +15,43 @@
 //   SPDX-License-Identifier: Apache-2.0
 
 import { AbstractControl, FormArray, FormControl, FormGroup, ValidationErrors } from '@angular/forms';
+import { COMMA_SEPARATED_VALUES_VALIDATOR_IDENTIFIER } from '../validators/comma-separated-values.validator';
+import { INTERVAL_VALIDATOR_IDENTIFIER } from '../validators/interval.validator';
+import { MAX_DATE_VALIDATOR_IDENTIFIER } from '../validators/max-date.validator';
+import { MAX_DECIMALS_VALIDATOR_IDENTIFIER } from '../validators/max-decimals.validator';
+import { MIN_DATE_VALIDATOR_IDENTIFIER } from '../validators/min-date.validator';
 import { ONLY_DIGITS_VALIDATOR_IDENTIFIER } from '../validators/only-digits.validator';
 
 export function getValidationErrorMessage(errors: ValidationErrors | null): string | undefined {
-	if (!errors) {
-		return;
-	}
+	if (!errors) return;
 
-	const error = Object.keys(errors)[0];
+	const [[error, details]] = Object.entries(errors);
 
-	switch (error) {
-		case 'required':
-			return 'Field required';
-		case 'email':
-			return 'Email required';
-		case ONLY_DIGITS_VALIDATOR_IDENTIFIER:
-			return 'Only numeric characters allowed';
-		default: {
-			return error;
-		}
-	}
+	const errorMessages: Record<string, string | ((details: any) => string)> = {
+		required: 'Field is required',
+		email: 'Invalid email format',
+		min: (d) => `Minimum allowed value is ${d.min}`,
+		max: (d) => `Maximum allowed value is ${d.max}`,
+		minLength: (d) => `Minimum length is ${d.requiredLength} characters`,
+		maxLength: (d) => `Maximum length is ${d.requiredLength} characters`,
+		pattern: 'Invalid format',
+		nullValidator: 'Field must not be null',
+		requiredTrue: 'Field must be true (checked)',
+		url: 'Invalid URL format',
+		unique: 'Value must be unique',
+		whitespace: 'Field cannot be empty or contain only whitespace',
+		ip: 'Invalid IP address format',
+		uuid: 'Invalid UUID format',
+		[MAX_DATE_VALIDATOR_IDENTIFIER]: (d) => `Date must be before ${d.maxDate}`,
+		[MIN_DATE_VALIDATOR_IDENTIFIER]: (d) => `Date must be after ${d.minDate}`,
+		[ONLY_DIGITS_VALIDATOR_IDENTIFIER]: 'Only digits are allowed',
+		[MAX_DECIMALS_VALIDATOR_IDENTIFIER]: (d) => `Maximum ${d.maxDecimals} decimal places allowed`,
+		[COMMA_SEPARATED_VALUES_VALIDATOR_IDENTIFIER]: 'Values must be a comma-separated list of numbers',
+		[INTERVAL_VALIDATOR_IDENTIFIER]: (d) => `Value must be between ${d.min} and ${d.max}.`
+	};
+
+	const message = errorMessages[error];
+	return typeof message === 'function' ? message(details) : message || `Unknown validation error: ${error}`;
 }
 
 export function isFormValid(form: FormGroup): any {

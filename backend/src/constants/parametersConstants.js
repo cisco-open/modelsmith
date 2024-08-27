@@ -22,7 +22,10 @@ const QUANTIZATION_PARAMETERS = {
 			inputType: 'number',
 			label: 'Random Seed',
 			placeholder: 'Enter random seed',
-			help: 'random seed for results reproduction'
+			help: 'Random seed for results reproduction',
+			validators: {
+				min: 0
+			}
 		},
 		{
 			argName: 'dataset',
@@ -30,7 +33,7 @@ const QUANTIZATION_PARAMETERS = {
 			inputType: 'select',
 			label: 'Dataset Name',
 			placeholder: 'Select dataset',
-			help: 'dataset name',
+			help: 'Dataset name',
 			options: [
 				{ value: 'cifar10', viewValue: 'CIFAR-10' },
 				{ value: 'cifar100', viewValue: 'CIFAR-100' }
@@ -42,7 +45,10 @@ const QUANTIZATION_PARAMETERS = {
 			inputType: 'number',
 			label: 'Batch Size',
 			placeholder: 'Enter batch size',
-			help: 'mini-batch size for data loader'
+			help: 'Mini-batch size for data loader',
+			validators: {
+				interval: [1, 1024]
+			}
 		},
 		{
 			argName: 'workers',
@@ -50,7 +56,10 @@ const QUANTIZATION_PARAMETERS = {
 			inputType: 'number',
 			label: 'Number of Workers',
 			placeholder: 'Enter number of workers',
-			help: 'number of workers for data loader'
+			help: 'Number of workers for data loader',
+			validators: {
+				min: 1
+			}
 		},
 		{
 			argName: 'n_bits_w',
@@ -58,7 +67,10 @@ const QUANTIZATION_PARAMETERS = {
 			inputType: 'number',
 			label: 'Bitwidth for Weight Quantization',
 			placeholder: 'Enter bitwidth for weight quantization',
-			help: 'bitwidth for weight quantization'
+			help: 'Bitwidth for weight quantization',
+			validators: {
+				min: 1
+			}
 		},
 		{
 			argName: 'n_bits_a',
@@ -66,7 +78,10 @@ const QUANTIZATION_PARAMETERS = {
 			inputType: 'number',
 			label: 'Bitwidth for Activation Quantization',
 			placeholder: 'Enter bitwidth for activation quantization',
-			help: 'bitwidth for activation quantization'
+			help: 'Bitwidth for activation quantization',
+			validators: {
+				min: 1
+			}
 		},
 		{
 			argName: 'num_samples',
@@ -74,7 +89,10 @@ const QUANTIZATION_PARAMETERS = {
 			inputType: 'number',
 			label: 'Calibration Dataset Size',
 			placeholder: 'Enter size of the calibration dataset',
-			help: 'size of the calibration dataset'
+			help: 'Size of the calibration dataset',
+			validators: {
+				min: 1
+			}
 		},
 		{
 			argName: 'iters_w',
@@ -82,7 +100,10 @@ const QUANTIZATION_PARAMETERS = {
 			inputType: 'number',
 			label: 'Iterations for AdaRound',
 			placeholder: 'Enter number of iterations for AdaRound',
-			help: 'number of iteration for adaround'
+			help: 'Number of iterations for AdaRound',
+			validators: {
+				min: 1
+			}
 		},
 		{
 			argName: 'weight',
@@ -90,7 +111,10 @@ const QUANTIZATION_PARAMETERS = {
 			inputType: 'number',
 			label: 'Weight of Rounding Cost',
 			placeholder: 'Enter weight of rounding cost',
-			help: 'weight of rounding cost vs the reconstruction loss.'
+			help: 'Weight of rounding cost vs. the reconstruction loss',
+			validators: {
+				interval: [0, 1]
+			}
 		},
 		{
 			argName: 'b_start',
@@ -98,7 +122,10 @@ const QUANTIZATION_PARAMETERS = {
 			inputType: 'number',
 			label: 'Beginning Temperature',
 			placeholder: 'Enter beginning temperature',
-			help: 'temperature at the beginning of calibration'
+			help: 'Temperature at the beginning of calibration',
+			validators: {
+				min: 0
+			}
 		},
 		{
 			argName: 'b_end',
@@ -106,7 +133,10 @@ const QUANTIZATION_PARAMETERS = {
 			inputType: 'number',
 			label: 'End Temperature',
 			placeholder: 'Enter end temperature',
-			help: 'temperature at the end of calibration'
+			help: 'Temperature at the end of calibration',
+			validators: {
+				min: 0
+			}
 		},
 		{
 			argName: 'warmup',
@@ -114,7 +144,10 @@ const QUANTIZATION_PARAMETERS = {
 			inputType: 'number',
 			label: 'Warmup Period',
 			placeholder: 'Enter warmup period',
-			help: 'in the warmup period no regularization is applied'
+			help: 'In the warmup period, no regularization is applied',
+			validators: {
+				interval: [0, 1]
+			}
 		},
 		{
 			argName: 'lr',
@@ -122,7 +155,10 @@ const QUANTIZATION_PARAMETERS = {
 			inputType: 'number',
 			label: 'Learning Rate for LSQ',
 			placeholder: 'Enter learning rate for LSQ',
-			help: 'learning rate for LSQ'
+			help: 'Learning rate for LSQ',
+			validators: {
+				interval: [0, 1]
+			}
 		},
 		{
 			argName: 'init_wmode',
@@ -130,7 +166,7 @@ const QUANTIZATION_PARAMETERS = {
 			inputType: 'select',
 			label: 'Initialization Mode for Weight',
 			placeholder: 'Select initialization mode for weight',
-			help: 'init opt mode for weight',
+			help: 'Initialization mode for weight',
 			options: [
 				{ value: 'minmax', viewValue: 'MinMax' },
 				{ value: 'mse', viewValue: 'MSE' },
@@ -143,7 +179,7 @@ const QUANTIZATION_PARAMETERS = {
 			inputType: 'select',
 			label: 'Initialization Mode for Activation',
 			placeholder: 'Select initialization mode for activation',
-			help: 'init opt mode for activation',
+			help: 'Initialization mode for activation',
 			options: [
 				{ value: 'minmax', viewValue: 'MinMax' },
 				{ value: 'mse', viewValue: 'MSE' },
@@ -156,7 +192,7 @@ const QUANTIZATION_PARAMETERS = {
 			inputType: 'select',
 			label: 'Quantization Order',
 			placeholder: 'Select quantization order',
-			help: 'order about activation compare to weight',
+			help: 'Order about activation compared to weight',
 			options: [
 				{ value: 'before', viewValue: 'Before' },
 				{ value: 'after', viewValue: 'After' },
@@ -169,7 +205,10 @@ const QUANTIZATION_PARAMETERS = {
 			inputType: 'number',
 			label: 'Probability',
 			placeholder: 'Enter probability',
-			help: 'probability'
+			help: 'Probability value',
+			validators: {
+				interval: [0, 1]
+			}
 		},
 		{
 			argName: 'input_prob',
@@ -177,7 +216,10 @@ const QUANTIZATION_PARAMETERS = {
 			inputType: 'number',
 			label: 'Input Probability',
 			placeholder: 'Enter input probability',
-			help: 'input probability'
+			help: 'Input probability',
+			validators: {
+				interval: [0, 1]
+			}
 		}
 	],
 	BRECQ: [
@@ -187,7 +229,10 @@ const QUANTIZATION_PARAMETERS = {
 			inputType: 'number',
 			label: 'Seed',
 			placeholder: 'Enter random seed',
-			help: 'Random seed for results reproduction'
+			help: 'Random seed for results reproduction',
+			validators: {
+				min: 0
+			}
 		},
 		{
 			argName: 'dataset',
@@ -207,7 +252,10 @@ const QUANTIZATION_PARAMETERS = {
 			inputType: 'number',
 			label: 'Batch Size',
 			placeholder: 'Enter mini-batch size',
-			help: 'Mini-batch size for data loader'
+			help: 'Mini-batch size for data loader',
+			validators: {
+				interval: [1, 1024]
+			}
 		},
 		{
 			argName: 'workers',
@@ -215,7 +263,10 @@ const QUANTIZATION_PARAMETERS = {
 			inputType: 'number',
 			label: 'Workers',
 			placeholder: 'Enter number of workers',
-			help: 'Number of workers for data loader'
+			help: 'Number of workers for data loader',
+			validators: {
+				min: 1
+			}
 		},
 		{
 			argName: 'n_bits_w',
@@ -223,16 +274,21 @@ const QUANTIZATION_PARAMETERS = {
 			inputType: 'number',
 			label: 'Bitwidth for Weight Quantization',
 			placeholder: 'Enter bitwidth for weight quantization',
-			help: 'Bitwidth for weight quantization'
+			help: 'Bitwidth for weight quantization',
+			validators: {
+				min: 1
+			}
 		},
-
 		{
 			argName: 'n_bits_a',
 			defaultValue: 4,
 			inputType: 'number',
 			label: 'Bitwidth for Activation Quantization',
 			placeholder: 'Enter bitwidth for activation quantization',
-			help: 'Bitwidth for activation quantization'
+			help: 'Bitwidth for activation quantization',
+			validators: {
+				min: 1
+			}
 		},
 		{
 			argName: 'num_samples',
@@ -240,7 +296,10 @@ const QUANTIZATION_PARAMETERS = {
 			inputType: 'number',
 			label: 'Calibration Dataset Size',
 			placeholder: 'Enter size of the calibration dataset',
-			help: 'Size of the calibration dataset'
+			help: 'Size of the calibration dataset',
+			validators: {
+				interval: [1, 1024]
+			}
 		},
 		{
 			argName: 'iters_w',
@@ -248,7 +307,10 @@ const QUANTIZATION_PARAMETERS = {
 			inputType: 'number',
 			label: 'Iterations for AdaRound',
 			placeholder: 'Enter number of iterations for AdaRound',
-			help: 'Number of iteration for adaround'
+			help: 'Number of iterations for AdaRound',
+			validators: {
+				min: 1
+			}
 		},
 		{
 			argName: 'weight',
@@ -256,7 +318,10 @@ const QUANTIZATION_PARAMETERS = {
 			inputType: 'number',
 			label: 'Weight of Rounding Cost',
 			placeholder: 'Enter weight of rounding cost',
-			help: 'Weight of rounding cost vs the reconstruction loss.'
+			help: 'Weight of rounding cost vs the reconstruction loss.',
+			validators: {
+				interval: [0, 1]
+			}
 		},
 		{
 			argName: 'waq',
@@ -272,7 +337,10 @@ const QUANTIZATION_PARAMETERS = {
 			inputType: 'number',
 			label: 'Beginning Temperature',
 			placeholder: 'Enter beginning temperature',
-			help: 'Temperature at the beginning of calibration'
+			help: 'Temperature at the beginning of calibration',
+			validators: {
+				min: 0
+			}
 		},
 		{
 			argName: 'b_end',
@@ -280,7 +348,10 @@ const QUANTIZATION_PARAMETERS = {
 			inputType: 'number',
 			label: 'End Temperature',
 			placeholder: 'Enter end temperature',
-			help: 'Temperature at the end of calibration'
+			help: 'Temperature at the end of calibration',
+			validators: {
+				min: 0
+			}
 		},
 		{
 			argName: 'warmup',
@@ -288,7 +359,10 @@ const QUANTIZATION_PARAMETERS = {
 			inputType: 'number',
 			label: 'Warmup Period',
 			placeholder: 'Enter warmup period',
-			help: 'In the warmup period no regularization is applied'
+			help: 'In the warmup period no regularization is applied',
+			validators: {
+				interval: [0, 1]
+			}
 		},
 		{
 			argName: 'lr',
@@ -296,7 +370,10 @@ const QUANTIZATION_PARAMETERS = {
 			inputType: 'number',
 			label: 'Learning Rate for LSQ',
 			placeholder: 'Enter learning rate for LSQ',
-			help: 'Learning rate for LSQ'
+			help: 'Learning rate for LSQ',
+			validators: {
+				interval: [0, 1]
+			}
 		},
 		{
 			argName: 'awq',
@@ -309,7 +386,6 @@ const QUANTIZATION_PARAMETERS = {
 		{
 			argName: 'aaq',
 			defaultValue: true,
-			type: 'bool',
 			inputType: 'checkbox',
 			label: 'Activation Quant for Activation Reconstruction',
 			placeholder: '',
@@ -347,7 +423,7 @@ const QUANTIZATION_PARAMETERS = {
 			inputType: 'select',
 			label: 'Quantization Order',
 			placeholder: 'Select quantization order',
-			help: 'Order about activation compare to weight',
+			help: 'Order about activation compared to weight',
 			options: [
 				{ value: 'before', viewValue: 'Before' },
 				{ value: 'after', viewValue: 'After' },
@@ -360,7 +436,10 @@ const QUANTIZATION_PARAMETERS = {
 			inputType: 'number',
 			label: 'Probability',
 			placeholder: 'Enter probability',
-			help: 'Probability'
+			help: 'Probability',
+			validators: {
+				interval: [0, 1]
+			}
 		},
 		{
 			argName: 'input_prob',
@@ -368,7 +447,10 @@ const QUANTIZATION_PARAMETERS = {
 			inputType: 'number',
 			label: 'Input Probability',
 			placeholder: 'Enter input probability',
-			help: 'Input probability'
+			help: 'Input probability',
+			validators: {
+				interval: [0, 1]
+			}
 		}
 	],
 	MINMAXPTQ: [
@@ -378,7 +460,10 @@ const QUANTIZATION_PARAMETERS = {
 			inputType: 'number',
 			label: 'Seed',
 			placeholder: 'Enter random seed',
-			help: 'Random seed for results reproduction'
+			help: 'Random seed for results reproduction',
+			validators: {
+				min: 0
+			}
 		},
 		{
 			argName: 'dataset',
@@ -398,7 +483,10 @@ const QUANTIZATION_PARAMETERS = {
 			inputType: 'number',
 			label: 'Batch Size',
 			placeholder: 'Enter batch size',
-			help: 'Mini-batch size for data loader'
+			help: 'Mini-batch size for data loader',
+			validators: {
+				interval: [1, 1024]
+			}
 		},
 		{
 			argName: 'workers',
@@ -406,7 +494,10 @@ const QUANTIZATION_PARAMETERS = {
 			inputType: 'number',
 			label: 'Workers',
 			placeholder: 'Enter number of workers',
-			help: 'Number of workers for data loader'
+			help: 'Number of workers for data loader',
+			validators: {
+				min: 1
+			}
 		},
 		{
 			argName: 'n_bits_w',
@@ -414,16 +505,21 @@ const QUANTIZATION_PARAMETERS = {
 			inputType: 'number',
 			label: 'Bitwidth for Weights',
 			placeholder: 'Enter bitwidth for weights',
-			help: 'Bitwidth for weight quantization'
+			help: 'Bitwidth for weight quantization',
+			validators: {
+				min: 1
+			}
 		},
-
 		{
 			argName: 'n_bits_a',
 			defaultValue: 4,
 			inputType: 'number',
 			label: 'Bitwidth for Activations',
 			placeholder: 'Enter bitwidth for activations',
-			help: 'Bitwidth for activation quantization'
+			help: 'Bitwidth for activation quantization',
+			validators: {
+				min: 1
+			}
 		},
 		{
 			argName: 'num_samples',
@@ -431,7 +527,10 @@ const QUANTIZATION_PARAMETERS = {
 			inputType: 'number',
 			label: 'Number of Samples',
 			placeholder: 'Enter number of calibration samples',
-			help: 'Size of the calibration dataset'
+			help: 'Size of the calibration dataset',
+			validators: {
+				min: 1
+			}
 		},
 		{
 			argName: 'iters_w',
@@ -439,7 +538,10 @@ const QUANTIZATION_PARAMETERS = {
 			inputType: 'number',
 			label: 'Iterations for Weight Calibration',
 			placeholder: 'Enter number of iterations for weight calibration',
-			help: 'Number of iteration for adaround'
+			help: 'Number of iteration for adaround',
+			validators: {
+				min: 1
+			}
 		},
 		{
 			argName: 'weight',
@@ -447,7 +549,10 @@ const QUANTIZATION_PARAMETERS = {
 			inputType: 'number',
 			label: 'Weight of Rounding Cost',
 			placeholder: 'Enter weight of rounding cost',
-			help: 'Weight of rounding cost vs the reconstruction loss.'
+			help: 'Weight of rounding cost vs the reconstruction loss.',
+			validators: {
+				interval: [0, 1]
+			}
 		},
 		{
 			argName: 'b_start',
@@ -455,7 +560,10 @@ const QUANTIZATION_PARAMETERS = {
 			inputType: 'number',
 			label: 'Start Temperature',
 			placeholder: 'Enter start temperature for calibration',
-			help: 'Temperature at the beginning of calibration'
+			help: 'Temperature at the beginning of calibration',
+			validators: {
+				min: 0
+			}
 		},
 		{
 			argName: 'b_end',
@@ -463,7 +571,10 @@ const QUANTIZATION_PARAMETERS = {
 			inputType: 'number',
 			label: 'End Temperature',
 			placeholder: 'Enter end temperature for calibration',
-			help: 'Temperature at the end of calibration'
+			help: 'Temperature at the end of calibration',
+			validators: {
+				min: 0
+			}
 		},
 		{
 			argName: 'warmup',
@@ -471,7 +582,10 @@ const QUANTIZATION_PARAMETERS = {
 			inputType: 'number',
 			label: 'Warmup Period',
 			placeholder: 'Enter warmup period',
-			help: 'In the warmup period no regularization is applied'
+			help: 'In the warmup period no regularization is applied',
+			validators: {
+				interval: [0, 1]
+			}
 		},
 		{
 			argName: 'lr',
@@ -479,7 +593,10 @@ const QUANTIZATION_PARAMETERS = {
 			inputType: 'number',
 			label: 'Learning Rate for LSQ',
 			placeholder: 'Enter learning rate for LSQ',
-			help: 'Learning rate for LSQ'
+			help: 'Learning rate for LSQ',
+			validators: {
+				interval: [0, 1]
+			}
 		},
 		{
 			argName: 'init_wmode',
@@ -526,7 +643,10 @@ const QUANTIZATION_PARAMETERS = {
 			inputType: 'number',
 			label: 'Probability',
 			placeholder: 'Enter probability',
-			help: 'Probability'
+			help: 'Probability',
+			validators: {
+				interval: [0, 1]
+			}
 		},
 		{
 			argName: 'input_prob',
@@ -534,7 +654,10 @@ const QUANTIZATION_PARAMETERS = {
 			inputType: 'number',
 			label: 'Input Probability',
 			placeholder: 'Enter input probability',
-			help: 'Input probability'
+			help: 'Input probability',
+			validators: {
+				interval: [0, 1]
+			}
 		}
 	]
 };
@@ -547,7 +670,10 @@ const PRUNING_PARAMETERS = {
 			inputType: 'number',
 			label: 'Learning Rate',
 			placeholder: 'Enter learning rate',
-			help: 'Learning rate'
+			help: 'Learning rate',
+			validators: {
+				interval: [0, 1]
+			}
 		},
 		{
 			argName: 'epochs',
@@ -555,7 +681,10 @@ const PRUNING_PARAMETERS = {
 			inputType: 'number',
 			label: 'Number of Epochs',
 			placeholder: 'Enter number of epochs',
-			help: 'Number of epochs for each training period'
+			help: 'Number of epochs for each training period',
+			validators: {
+				min: 1
+			}
 		},
 		{
 			argName: 'pruning_times',
@@ -563,7 +692,10 @@ const PRUNING_PARAMETERS = {
 			inputType: 'number',
 			label: 'Pruning Times',
 			placeholder: 'Enter pruning times',
-			help: 'Set this to 1 if omp is applied'
+			help: 'Set this to 1 if OMP is applied',
+			validators: {
+				min: 1
+			}
 		},
 		{
 			argName: 'pruning_ratio',
@@ -571,7 +703,10 @@ const PRUNING_PARAMETERS = {
 			inputType: 'number',
 			label: 'Pruning Ratio',
 			placeholder: 'Enter pruning ratio',
-			help: 'Pruning ratio'
+			help: 'Pruning ratio',
+			validators: {
+				interval: [0, 1]
+			}
 		},
 		{
 			argName: 'rewinding_epoch',
@@ -579,7 +714,10 @@ const PRUNING_PARAMETERS = {
 			inputType: 'number',
 			label: 'Rewinding Epoch',
 			placeholder: 'Enter rewinding epoch',
-			help: 'Rewinding epoch'
+			help: 'Rewinding epoch',
+			validators: {
+				min: 0
+			}
 		}
 	],
 	IPG: [
@@ -592,8 +730,7 @@ const PRUNING_PARAMETERS = {
 			help: 'The learning rate for the model training.',
 			validators: {
 				required: true,
-				min: 0.001,
-				max: 1
+				interval: [0, 1]
 			}
 		},
 		{
@@ -605,8 +742,7 @@ const PRUNING_PARAMETERS = {
 			help: 'The ratio of parameters to prune.',
 			validators: {
 				required: true,
-				min: 0,
-				max: 1
+				interval: [0, 1]
 			}
 		},
 		{
@@ -630,10 +766,7 @@ const PRUNING_PARAMETERS = {
 				{ value: 'cuda', viewValue: 'CUDA' },
 				{ value: 'cpu', viewValue: 'CPU' }
 			],
-			help: 'The device to use for training the model.',
-			validators: {
-				required: true
-			}
+			help: 'The device to use for training the model.'
 		},
 		{
 			argName: 'best_acc',
@@ -643,7 +776,6 @@ const PRUNING_PARAMETERS = {
 			placeholder: 'Enter best accuracy',
 			help: 'The best test accuracy achieved so far.',
 			validators: {
-				required: false,
 				min: 0,
 				max: 100
 			}
@@ -656,7 +788,6 @@ const PRUNING_PARAMETERS = {
 			placeholder: 'Enter start epoch',
 			help: 'The epoch number to start training from.',
 			validators: {
-				required: true,
 				min: 0
 			}
 		}
@@ -668,7 +799,10 @@ const PRUNING_PARAMETERS = {
 			inputType: 'number',
 			label: 'Learning Rate',
 			placeholder: 'Enter learning rate',
-			help: 'learning rate'
+			help: 'Learning rate',
+			validators: {
+				interval: [0, 1]
+			}
 		},
 		{
 			argName: 'pruning_ratio',
@@ -676,7 +810,10 @@ const PRUNING_PARAMETERS = {
 			inputType: 'number',
 			label: 'Pruning Ratio',
 			placeholder: 'Enter pruning ratio',
-			help: 'pruning ratio'
+			help: 'Pruning ratio',
+			validators: {
+				interval: [0, 1]
+			}
 		},
 		{
 			argName: 'epochs',
@@ -684,7 +821,10 @@ const PRUNING_PARAMETERS = {
 			inputType: 'number',
 			label: 'Number of Epochs',
 			placeholder: 'Enter number of epochs',
-			help: 'number of epochs'
+			help: 'Number of epochs',
+			validators: {
+				min: 1
+			}
 		},
 		{
 			argName: 'device',
@@ -692,16 +832,10 @@ const PRUNING_PARAMETERS = {
 			inputType: 'select',
 			label: 'Device',
 			placeholder: 'Select device',
-			help: 'device to use',
+			help: 'Device to use',
 			options: [
-				{
-					value: 'cuda',
-					viewValue: 'CUDA'
-				},
-				{
-					value: 'cpu',
-					viewValue: 'CPU'
-				}
+				{ value: 'cuda', viewValue: 'CUDA' },
+				{ value: 'cpu', viewValue: 'CPU' }
 			]
 		},
 		{
@@ -710,7 +844,10 @@ const PRUNING_PARAMETERS = {
 			inputType: 'number',
 			label: 'Best Test Accuracy',
 			placeholder: 'Enter best test accuracy',
-			help: 'best test accuracy'
+			help: 'Best test accuracy',
+			validators: {
+				interval: [0, 100]
+			}
 		},
 		{
 			argName: 'start_epoch',
@@ -718,7 +855,10 @@ const PRUNING_PARAMETERS = {
 			inputType: 'number',
 			label: 'Start Epoch',
 			placeholder: 'Enter start epoch',
-			help: 'start epoch'
+			help: 'Start epoch',
+			validators: {
+				min: 0
+			}
 		}
 	],
 	IPR: [
@@ -728,7 +868,10 @@ const PRUNING_PARAMETERS = {
 			inputType: 'number',
 			label: 'Learning Rate',
 			placeholder: 'Enter learning rate',
-			help: 'learning rate'
+			help: 'Learning rate',
+			validators: {
+				interval: [0, 1]
+			}
 		},
 		{
 			argName: 'pruning_ratio',
@@ -736,7 +879,10 @@ const PRUNING_PARAMETERS = {
 			inputType: 'number',
 			label: 'Pruning Ratio',
 			placeholder: 'Enter pruning ratio',
-			help: 'pruning ratio'
+			help: 'Pruning ratio',
+			validators: {
+				interval: [0, 1]
+			}
 		},
 		{
 			argName: 'epochs',
@@ -744,7 +890,10 @@ const PRUNING_PARAMETERS = {
 			inputType: 'number',
 			label: 'Number of Epochs',
 			placeholder: 'Enter number of epochs',
-			help: 'number of epochs'
+			help: 'Number of epochs',
+			validators: {
+				min: 1
+			}
 		},
 		{
 			argName: 'device',
@@ -752,16 +901,10 @@ const PRUNING_PARAMETERS = {
 			inputType: 'select',
 			label: 'Device',
 			placeholder: 'Select device',
-			help: 'device to use',
+			help: 'Device to use',
 			options: [
-				{
-					value: 'cuda',
-					viewValue: 'CUDA'
-				},
-				{
-					value: 'cpu',
-					viewValue: 'CPU'
-				}
+				{ value: 'cuda', viewValue: 'CUDA' },
+				{ value: 'cpu', viewValue: 'CPU' }
 			]
 		},
 		{
@@ -770,7 +913,10 @@ const PRUNING_PARAMETERS = {
 			inputType: 'number',
 			label: 'Best Test Accuracy',
 			placeholder: 'Enter best test accuracy',
-			help: 'best test accuracy'
+			help: 'Best test accuracy',
+			validators: {
+				interval: [0, 100]
+			}
 		},
 		{
 			argName: 'start_epoch',
@@ -778,7 +924,10 @@ const PRUNING_PARAMETERS = {
 			inputType: 'number',
 			label: 'Start Epoch',
 			placeholder: 'Enter start epoch',
-			help: 'start epoch'
+			help: 'Start epoch',
+			validators: {
+				min: 0
+			}
 		}
 	],
 	IPS: [
@@ -788,7 +937,10 @@ const PRUNING_PARAMETERS = {
 			inputType: 'number',
 			label: 'Learning Rate',
 			placeholder: 'Enter learning rate',
-			help: 'learning rate'
+			help: 'Learning rate',
+			validators: {
+				interval: [0, 100]
+			}
 		},
 		{
 			argName: 'pruning_ratio',
@@ -796,7 +948,10 @@ const PRUNING_PARAMETERS = {
 			inputType: 'number',
 			label: 'Pruning Ratio',
 			placeholder: 'Enter pruning ratio',
-			help: 'pruning ratio'
+			help: 'Pruning ratio',
+			validators: {
+				interval: [0, 100]
+			}
 		},
 		{
 			argName: 'epochs',
@@ -804,7 +959,10 @@ const PRUNING_PARAMETERS = {
 			inputType: 'number',
 			label: 'Number of Epochs',
 			placeholder: 'Enter number of epochs',
-			help: 'number of epochs'
+			help: 'Number of epochs',
+			validators: {
+				min: 1
+			}
 		},
 		{
 			argName: 'device',
@@ -812,16 +970,10 @@ const PRUNING_PARAMETERS = {
 			inputType: 'select',
 			label: 'Device',
 			placeholder: 'Select device',
-			help: 'device to use',
+			help: 'Device to use',
 			options: [
-				{
-					value: 'cuda',
-					viewValue: 'CUDA'
-				},
-				{
-					value: 'cpu',
-					viewValue: 'CPU'
-				}
+				{ value: 'cuda', viewValue: 'CUDA' },
+				{ value: 'cpu', viewValue: 'CPU' }
 			]
 		},
 		{
@@ -830,7 +982,10 @@ const PRUNING_PARAMETERS = {
 			inputType: 'number',
 			label: 'Best Test Accuracy',
 			placeholder: 'Enter best test accuracy',
-			help: 'best test accuracy'
+			help: 'Best test accuracy',
+			validators: {
+				interval: [0, 100]
+			}
 		},
 		{
 			argName: 'start_epoch',
@@ -838,7 +993,10 @@ const PRUNING_PARAMETERS = {
 			inputType: 'number',
 			label: 'Start Epoch',
 			placeholder: 'Enter start epoch',
-			help: 'start epoch'
+			help: 'Start epoch',
+			validators: {
+				min: 0
+			}
 		}
 	],
 	IPSY: [
@@ -848,7 +1006,10 @@ const PRUNING_PARAMETERS = {
 			inputType: 'number',
 			label: 'Learning Rate',
 			placeholder: 'Enter learning rate',
-			help: 'learning rate'
+			help: 'Learning rate',
+			validators: {
+				interval: [0, 1]
+			}
 		},
 		{
 			argName: 'pruning_ratio',
@@ -856,7 +1017,10 @@ const PRUNING_PARAMETERS = {
 			inputType: 'number',
 			label: 'Pruning Ratio',
 			placeholder: 'Enter pruning ratio',
-			help: 'pruning ratio'
+			help: 'Pruning ratio',
+			validators: {
+				interval: [0, 1]
+			}
 		},
 		{
 			argName: 'epochs',
@@ -864,7 +1028,10 @@ const PRUNING_PARAMETERS = {
 			inputType: 'number',
 			label: 'Number of Epochs',
 			placeholder: 'Enter number of epochs',
-			help: 'number of epochs'
+			help: 'Number of epochs',
+			validators: {
+				min: 1
+			}
 		},
 		{
 			argName: 'device',
@@ -872,16 +1039,10 @@ const PRUNING_PARAMETERS = {
 			inputType: 'select',
 			label: 'Device',
 			placeholder: 'Select device',
-			help: 'device to use',
+			help: 'Device to use',
 			options: [
-				{
-					value: 'cuda',
-					viewValue: 'CUDA'
-				},
-				{
-					value: 'cpu',
-					viewValue: 'CPU'
-				}
+				{ value: 'cuda', viewValue: 'CUDA' },
+				{ value: 'cpu', viewValue: 'CPU' }
 			]
 		},
 		{
@@ -890,7 +1051,10 @@ const PRUNING_PARAMETERS = {
 			inputType: 'number',
 			label: 'Best Test Accuracy',
 			placeholder: 'Enter best test accuracy',
-			help: 'best test accuracy'
+			help: 'Best test accuracy',
+			validators: {
+				interval: [0, 100]
+			}
 		},
 		{
 			argName: 'start_epoch',
@@ -898,7 +1062,10 @@ const PRUNING_PARAMETERS = {
 			inputType: 'number',
 			label: 'Start Epoch',
 			placeholder: 'Enter start epoch',
-			help: 'start epoch'
+			help: 'Start epoch',
+			validators: {
+				min: 0
+			}
 		}
 	],
 	OMP: [
@@ -908,7 +1075,10 @@ const PRUNING_PARAMETERS = {
 			inputType: 'number',
 			label: 'Learning Rate',
 			placeholder: 'Enter learning rate',
-			help: 'learning rate'
+			help: 'Learning rate',
+			validators: {
+				interval: [0, 1]
+			}
 		},
 		{
 			argName: 'epochs',
@@ -916,7 +1086,10 @@ const PRUNING_PARAMETERS = {
 			inputType: 'number',
 			label: 'Number of Epochs',
 			placeholder: 'Enter number of epochs',
-			help: 'number of epochs for each training period'
+			help: 'Number of epochs for each training period',
+			validators: {
+				min: 1
+			}
 		},
 		{
 			argName: 'device',
@@ -924,16 +1097,10 @@ const PRUNING_PARAMETERS = {
 			inputType: 'select',
 			label: 'Device',
 			placeholder: 'Select device',
-			help: 'device to use',
+			help: 'Device to use',
 			options: [
-				{
-					value: 'cuda',
-					viewValue: 'CUDA'
-				},
-				{
-					value: 'cpu',
-					viewValue: 'CPU'
-				}
+				{ value: 'cuda', viewValue: 'CUDA' },
+				{ value: 'cpu', viewValue: 'CPU' }
 			]
 		},
 		{
@@ -942,7 +1109,10 @@ const PRUNING_PARAMETERS = {
 			inputType: 'number',
 			label: 'Best Test Accuracy',
 			placeholder: 'Enter best test accuracy',
-			help: 'best test accuracy'
+			help: 'Best test accuracy',
+			validators: {
+				interval: [0, 100]
+			}
 		},
 		{
 			argName: 'start_epoch',
@@ -950,7 +1120,10 @@ const PRUNING_PARAMETERS = {
 			inputType: 'number',
 			label: 'Start Epoch',
 			placeholder: 'Enter start epoch',
-			help: 'start epoch'
+			help: 'Start epoch',
+			validators: {
+				min: 0
+			}
 		},
 		{
 			argName: 'pruning_times',
@@ -958,7 +1131,10 @@ const PRUNING_PARAMETERS = {
 			inputType: 'number',
 			label: 'Pruning Times',
 			placeholder: 'Enter number of pruning times',
-			help: 'number of pruning times'
+			help: 'Number of pruning times',
+			validators: {
+				min: 1
+			}
 		},
 		{
 			argName: 'pruning_ratio',
@@ -966,7 +1142,10 @@ const PRUNING_PARAMETERS = {
 			inputType: 'number',
 			label: 'Pruning Ratio',
 			placeholder: 'Enter pruning ratio',
-			help: 'pruning ratio'
+			help: 'Pruning ratio',
+			validators: {
+				interval: [0, 1]
+			}
 		},
 		{
 			argName: 'rewinding_epoch',
@@ -974,7 +1153,10 @@ const PRUNING_PARAMETERS = {
 			inputType: 'number',
 			label: 'Rewinding Epoch',
 			placeholder: 'Enter rewinding epoch',
-			help: 'rewinding epoch'
+			help: 'Rewinding epoch',
+			validators: {
+				min: 0
+			}
 		}
 	],
 	IPMB: [
@@ -984,7 +1166,10 @@ const PRUNING_PARAMETERS = {
 			inputType: 'number',
 			label: 'Learning Rate',
 			placeholder: 'Enter learning rate',
-			help: 'learning rate'
+			help: 'Learning rate',
+			validators: {
+				interval: [0, 1]
+			}
 		},
 		{
 			argName: 'pruning_ratio',
@@ -992,7 +1177,10 @@ const PRUNING_PARAMETERS = {
 			inputType: 'number',
 			label: 'Pruning Ratio',
 			placeholder: 'Enter pruning ratio',
-			help: 'pruning ratio'
+			help: 'Pruning ratio',
+			validators: {
+				interval: [0, 1]
+			}
 		},
 		{
 			argName: 'epochs',
@@ -1000,7 +1188,10 @@ const PRUNING_PARAMETERS = {
 			inputType: 'number',
 			label: 'Number of Epochs',
 			placeholder: 'Enter number of epochs',
-			help: 'number of epochs'
+			help: 'Number of epochs',
+			validators: {
+				min: 1
+			}
 		},
 		{
 			argName: 'best_acc',
@@ -1008,7 +1199,10 @@ const PRUNING_PARAMETERS = {
 			inputType: 'number',
 			label: 'Best Test Accuracy',
 			placeholder: 'Enter best test accuracy',
-			help: 'best test accuracy'
+			help: 'Best test accuracy',
+			validators: {
+				interval: [0, 100]
+			}
 		},
 		{
 			argName: 'start_epoch',
@@ -1016,7 +1210,10 @@ const PRUNING_PARAMETERS = {
 			inputType: 'number',
 			label: 'Start Epoch',
 			placeholder: 'Enter start epoch',
-			help: 'start epoch'
+			help: 'Start epoch',
+			validators: {
+				min: 0
+			}
 		}
 	]
 };
@@ -1029,7 +1226,10 @@ const MACHINE_UNLEARNING_PARAMETERS = {
 			inputType: 'number',
 			label: 'Unlearning Epochs',
 			placeholder: 'Enter number of unlearning epochs',
-			help: 'Number of epochs for l1-sparse unlearning'
+			help: 'Number of epochs for l1-sparse unlearning',
+			validators: {
+				min: 1
+			}
 		},
 		{
 			argName: 'num-indexes-to-replace',
@@ -1037,7 +1237,10 @@ const MACHINE_UNLEARNING_PARAMETERS = {
 			inputType: 'number',
 			label: 'Number of Indexes to Replace',
 			placeholder: 'Enter number of indexes to replace',
-			help: 'Defines how many indexes (data points) will be replaced during the unlearning process.'
+			help: 'Defines how many indexes (data points) will be replaced during the unlearning process.',
+			validators: {
+				min: 1
+			}
 		},
 		{
 			argName: 'class_to_replace',
@@ -1045,7 +1248,10 @@ const MACHINE_UNLEARNING_PARAMETERS = {
 			inputType: 'number',
 			label: 'Class to Forget',
 			placeholder: 'Enter class to forget',
-			help: 'Identifies the specific class label that the model should selectively forget.'
+			help: 'Identifies the specific class label that the model should selectively forget.',
+			validators: {
+				min: 0
+			}
 		}
 	]
 };
@@ -1114,7 +1320,10 @@ const TRAIN_PARAMETERS = {
 			inputType: 'number',
 			label: 'Epochs',
 			placeholder: 'Enter number of epochs',
-			help: 'Number of epochs for training the machine unlearning'
+			help: 'Number of epochs for training the machine unlearning',
+			validators: {
+				min: 1
+			}
 		},
 		{
 			argName: 'lr',
@@ -1122,7 +1331,10 @@ const TRAIN_PARAMETERS = {
 			inputType: 'number',
 			label: 'Learning Rate',
 			placeholder: 'Enter learning rate',
-			help: 'Learning rate'
+			help: 'Learning rate',
+			validators: {
+				interval: [0, 1]
+			}
 		}
 	],
 	Q_TRAIN: [
@@ -1132,7 +1344,10 @@ const TRAIN_PARAMETERS = {
 			inputType: 'number',
 			label: 'Epochs',
 			placeholder: 'Enter number of epochs',
-			help: 'Number of epochs for training the machine unlearning'
+			help: 'Number of epochs for training the machine unlearning',
+			validators: {
+				min: 1
+			}
 		},
 		{
 			argName: 'lr',
@@ -1140,7 +1355,10 @@ const TRAIN_PARAMETERS = {
 			inputType: 'number',
 			label: 'Learning Rate',
 			placeholder: 'Enter learning rate',
-			help: 'Learning rate'
+			help: 'Learning rate',
+			validators: {
+				interval: [0, 1]
+			}
 		}
 	],
 	MU_TRAIN: [
@@ -1150,7 +1368,10 @@ const TRAIN_PARAMETERS = {
 			inputType: 'number',
 			label: 'Epochs',
 			placeholder: 'Enter number of epochs',
-			help: 'Number of epochs for training the machine unlearning'
+			help: 'Number of epochs for training the machine unlearning',
+			validators: {
+				min: 1
+			}
 		},
 		{
 			argName: 'lr',
@@ -1158,7 +1379,10 @@ const TRAIN_PARAMETERS = {
 			inputType: 'number',
 			label: 'Learning Rate',
 			placeholder: 'Enter learning rate',
-			help: 'Learning rate'
+			help: 'Learning rate',
+			validators: {
+				interval: [0, 1]
+			}
 		}
 	]
 };
@@ -1203,7 +1427,10 @@ const MULTIFLOW_PARAMETERS = {
 			inputType: 'text',
 			label: 'Sparsities',
 			placeholder: 'Enter comma separated list of sparsities',
-			help: 'Comma separated list of sparsities to prune at. Default: 63,75,90'
+			help: 'Comma separated list of sparsities to prune at. Default: 63,75,90',
+			validators: {
+				commaSeparatedValues: true
+			}
 		},
 		{
 			argName: 'seed',
@@ -1211,7 +1438,10 @@ const MULTIFLOW_PARAMETERS = {
 			inputType: 'number',
 			label: 'Seed',
 			placeholder: 'Enter seed for random number generator',
-			help: 'Seed for the random number generator. Default: 42'
+			help: 'Seed for the random number generator. Default: 42',
+			validators: {
+				min: 0
+			}
 		},
 		{
 			argName: 'num_batches',
@@ -1219,7 +1449,10 @@ const MULTIFLOW_PARAMETERS = {
 			inputType: 'number',
 			label: 'Number of Batches',
 			placeholder: 'Enter number of batches to use',
-			help: 'Number of batches to use. Default: 3000'
+			help: 'Number of batches to use. Default: 3000',
+			validators: {
+				min: 1
+			}
 		},
 		{
 			argName: 'epochs',
@@ -1227,7 +1460,10 @@ const MULTIFLOW_PARAMETERS = {
 			inputType: 'number',
 			label: 'Epochs',
 			placeholder: 'Enter total number of pruning iterations',
-			help: 'Total number of pruning iterations. Default: 1'
+			help: 'Total number of pruning iterations. Default: 1',
+			validators: {
+				min: 1
+			}
 		},
 		{
 			argName: 'schedule',
@@ -1240,7 +1476,10 @@ const MULTIFLOW_PARAMETERS = {
 				{ value: 'linear', viewValue: 'linear' },
 				{ value: 'exp', viewValue: 'exp' },
 				{ value: 'const', viewValue: 'const' }
-			]
+			],
+			validators: {
+				required: true
+			}
 		},
 		{
 			argName: 'lambda_',
@@ -1248,7 +1487,10 @@ const MULTIFLOW_PARAMETERS = {
 			inputType: 'number',
 			label: 'Lambda',
 			placeholder: 'Enter ridge penalty for CHITA and CHITA++',
-			help: 'Ridge penalty for CHITA and CHITA++, unused otherwise. Default: 1e-5'
+			help: 'Ridge penalty for CHITA and CHITA++, unused otherwise. Default: 1e-5',
+			validators: {
+				min: 0
+			}
 		}
 	]
 };

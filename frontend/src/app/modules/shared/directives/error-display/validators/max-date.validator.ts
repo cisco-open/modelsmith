@@ -14,23 +14,18 @@
 
 //   SPDX-License-Identifier: Apache-2.0
 
-export interface ParametersDto {
-	argName: string;
-	defaultValue: number | string;
-	inputType: 'text' | 'number' | 'select' | 'checkbox';
-	label: string;
-	placeholder: string;
-	help: string;
-	validators?: { [key: string]: any };
-	options?: Array<{ value: string | number | boolean; viewValue: string }>;
-}
+import { AbstractControl, ValidatorFn } from '@angular/forms';
 
-export interface ActiveParameters {
-	[key: string]: string;
-}
+export const MAX_DATE_VALIDATOR_IDENTIFIER: string = 'maxDate';
 
-export interface ValidatorsConfig {
-	required?: boolean;
-	min?: number;
-	max?: number;
+export function maxDateValidator(maxDate: string): ValidatorFn {
+	return (control: AbstractControl): { [key: string]: any } | null => {
+		const controlDate = new Date(control.value);
+		const maxDateValue = new Date(maxDate);
+
+		if (control.value && controlDate > maxDateValue) {
+			return { maxDate: { requiredDate: maxDate, actualDate: control.value } };
+		}
+		return null;
+	};
 }

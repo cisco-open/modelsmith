@@ -14,23 +14,24 @@
 
 //   SPDX-License-Identifier: Apache-2.0
 
-export interface ParametersDto {
-	argName: string;
-	defaultValue: number | string;
-	inputType: 'text' | 'number' | 'select' | 'checkbox';
-	label: string;
-	placeholder: string;
-	help: string;
-	validators?: { [key: string]: any };
-	options?: Array<{ value: string | number | boolean; viewValue: string }>;
-}
+import { AbstractControl, ValidatorFn } from '@angular/forms';
 
-export interface ActiveParameters {
-	[key: string]: string;
-}
+export const INTERVAL_VALIDATOR_IDENTIFIER: string = 'interval';
 
-export interface ValidatorsConfig {
-	required?: boolean;
-	min?: number;
-	max?: number;
+export function intervalValidator(interval: [number, number]): ValidatorFn {
+	return (control: AbstractControl): { [key: string]: any } | null => {
+		const value = control.value;
+
+		if (value === null || value === undefined) {
+			return null; // Allow empty or non-numeric values, other validators like 'required' should handle this
+		}
+
+		const [min, max] = interval;
+
+		if (value < min || value > max) {
+			return { interval: { min, max, actual: value } };
+		}
+
+		return null;
+	};
 }

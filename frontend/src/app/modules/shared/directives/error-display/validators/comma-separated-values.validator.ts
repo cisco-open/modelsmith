@@ -14,23 +14,23 @@
 
 //   SPDX-License-Identifier: Apache-2.0
 
-export interface ParametersDto {
-	argName: string;
-	defaultValue: number | string;
-	inputType: 'text' | 'number' | 'select' | 'checkbox';
-	label: string;
-	placeholder: string;
-	help: string;
-	validators?: { [key: string]: any };
-	options?: Array<{ value: string | number | boolean; viewValue: string }>;
-}
+import { AbstractControl, ValidatorFn } from '@angular/forms';
 
-export interface ActiveParameters {
-	[key: string]: string;
-}
+export const COMMA_SEPARATED_VALUES_VALIDATOR_IDENTIFIER: string = 'commaSeparatedValues';
 
-export interface ValidatorsConfig {
-	required?: boolean;
-	min?: number;
-	max?: number;
+export function commaSeparatedValuesValidator(): ValidatorFn {
+	return (control: AbstractControl): { [key: string]: any } | null => {
+		const { value } = control;
+		if (!value) {
+			return null;
+		}
+
+		// Regular expression to match comma-separated values (integers)
+		const reg = /^(\d+)(,\d+)*$/;
+		if (reg.test(value) === false) {
+			return { [COMMA_SEPARATED_VALUES_VALIDATOR_IDENTIFIER]: { actual: value } };
+		}
+
+		return null;
+	};
 }
