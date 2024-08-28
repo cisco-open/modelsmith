@@ -18,6 +18,7 @@ export interface ParametersDto {
 	argName: string;
 	defaultValue: number | string;
 	inputType: 'text' | 'number' | 'select' | 'checkbox';
+	inputArrowsStepRate?: number;
 	label: string;
 	placeholder: string;
 	help: string;

@@ -33,7 +33,8 @@ SPDX-License-Identifier: Apache-2.0 -->
 							msErrorDisplay
 							[formControlName]="i"
 							[placeholder]="param.placeholder"
-							[type]="param.inputType" />
+							[type]="param.inputType"
+							[step]="param.inputArrowsStepRate || 1" />
 						<mat-icon fontSet="ms" fontIcon="icon-Info" matSuffix matTooltip="{{ param.help }}"></mat-icon>
 					</mat-form-field>
 				</div>

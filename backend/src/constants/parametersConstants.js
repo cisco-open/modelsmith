@@ -108,6 +108,7 @@ const QUANTIZATION_PARAMETERS = {
 		{
 			argName: 'weight',
 			defaultValue: 0.01,
+			inputArrowsStepRate: 0.01,
 			inputType: 'number',
 			label: 'Weight of Rounding Cost',
 			placeholder: 'Enter weight of rounding cost',
@@ -141,6 +142,7 @@ const QUANTIZATION_PARAMETERS = {
 		{
 			argName: 'warmup',
 			defaultValue: 0.2,
+			inputArrowsStepRate: 0.1,
 			inputType: 'number',
 			label: 'Warmup Period',
 			placeholder: 'Enter warmup period',
@@ -152,6 +154,7 @@ const QUANTIZATION_PARAMETERS = {
 		{
 			argName: 'lr',
 			defaultValue: 4e-5,
+			inputArrowsStepRate: 0.01,
 			inputType: 'number',
 			label: 'Learning Rate for LSQ',
 			placeholder: 'Enter learning rate for LSQ',
@@ -202,6 +205,7 @@ const QUANTIZATION_PARAMETERS = {
 		{
 			argName: 'prob',
 			defaultValue: 1.0,
+			inputArrowsStepRate: 0.1,
 			inputType: 'number',
 			label: 'Probability',
 			placeholder: 'Enter probability',
@@ -213,6 +217,7 @@ const QUANTIZATION_PARAMETERS = {
 		{
 			argName: 'input_prob',
 			defaultValue: 1.0,
+			inputArrowsStepRate: 0.1,
 			inputType: 'number',
 			label: 'Input Probability',
 			placeholder: 'Enter input probability',
@@ -315,6 +320,7 @@ const QUANTIZATION_PARAMETERS = {
 		{
 			argName: 'weight',
 			defaultValue: 0.01,
+			inputArrowsStepRate: 0.01,
 			inputType: 'number',
 			label: 'Weight of Rounding Cost',
 			placeholder: 'Enter weight of rounding cost',
@@ -356,6 +362,7 @@ const QUANTIZATION_PARAMETERS = {
 		{
 			argName: 'warmup',
 			defaultValue: 0.2,
+			inputArrowsStepRate: 0.1,
 			inputType: 'number',
 			label: 'Warmup Period',
 			placeholder: 'Enter warmup period',
@@ -367,6 +374,7 @@ const QUANTIZATION_PARAMETERS = {
 		{
 			argName: 'lr',
 			defaultValue: 4e-5,
+			inputArrowsStepRate: 0.01,
 			inputType: 'number',
 			label: 'Learning Rate for LSQ',
 			placeholder: 'Enter learning rate for LSQ',
@@ -433,6 +441,7 @@ const QUANTIZATION_PARAMETERS = {
 		{
 			argName: 'prob',
 			defaultValue: 1.0,
+			inputArrowsStepRate: 0.1,
 			inputType: 'number',
 			label: 'Probability',
 			placeholder: 'Enter probability',
@@ -444,6 +453,7 @@ const QUANTIZATION_PARAMETERS = {
 		{
 			argName: 'input_prob',
 			defaultValue: 1.0,
+			inputArrowsStepRate: 0.1,
 			inputType: 'number',
 			label: 'Input Probability',
 			placeholder: 'Enter input probability',
@@ -546,6 +556,7 @@ const QUANTIZATION_PARAMETERS = {
 		{
 			argName: 'weight',
 			defaultValue: 0.01,
+			inputArrowsStepRate: 0.01,
 			inputType: 'number',
 			label: 'Weight of Rounding Cost',
 			placeholder: 'Enter weight of rounding cost',
@@ -579,6 +590,7 @@ const QUANTIZATION_PARAMETERS = {
 		{
 			argName: 'warmup',
 			defaultValue: 0.2,
+			inputArrowsStepRate: 0.1,
 			inputType: 'number',
 			label: 'Warmup Period',
 			placeholder: 'Enter warmup period',
@@ -590,6 +602,7 @@ const QUANTIZATION_PARAMETERS = {
 		{
 			argName: 'lr',
 			defaultValue: 4e-5,
+			inputArrowsStepRate: 0.01,
 			inputType: 'number',
 			label: 'Learning Rate for LSQ',
 			placeholder: 'Enter learning rate for LSQ',
@@ -640,6 +653,7 @@ const QUANTIZATION_PARAMETERS = {
 		{
 			argName: 'prob',
 			defaultValue: 1.0,
+			inputArrowsStepRate: 0.1,
 			inputType: 'number',
 			label: 'Probability',
 			placeholder: 'Enter probability',
@@ -651,6 +665,7 @@ const QUANTIZATION_PARAMETERS = {
 		{
 			argName: 'input_prob',
 			defaultValue: 1.0,
+			inputArrowsStepRate: 0.1,
 			inputType: 'number',
 			label: 'Input Probability',
 			placeholder: 'Enter input probability',
@@ -667,6 +682,7 @@ const PRUNING_PARAMETERS = {
 		{
 			argName: 'lr',
 			defaultValue: 0.1,
+			inputArrowsStepRate: 0.1,
 			inputType: 'number',
 			label: 'Learning Rate',
 			placeholder: 'Enter learning rate',
@@ -700,6 +716,7 @@ const PRUNING_PARAMETERS = {
 		{
 			argName: 'pruning_ratio',
 			defaultValue: 0.2,
+			inputArrowsStepRate: 0.1,
 			inputType: 'number',
 			label: 'Pruning Ratio',
 			placeholder: 'Enter pruning ratio',
@@ -724,6 +741,7 @@ const PRUNING_PARAMETERS = {
 		{
 			argName: 'lr',
 			defaultValue: 0.1,
+			inputArrowsStepRate: 0.1,
 			inputType: 'number',
 			label: 'Learning Rate',
 			placeholder: 'Enter learning rate',
@@ -736,6 +754,7 @@ const PRUNING_PARAMETERS = {
 		{
 			argName: 'pruning_ratio',
 			defaultValue: 0.99,
+			inputArrowsStepRate: 0.01,
 			inputType: 'number',
 			label: 'Pruning Ratio',
 			placeholder: 'Enter pruning ratio',
@@ -796,6 +815,7 @@ const PRUNING_PARAMETERS = {
 		{
 			argName: 'lr',
 			defaultValue: 0.1,
+			inputArrowsStepRate: 0.1,
 			inputType: 'number',
 			label: 'Learning Rate',
 			placeholder: 'Enter learning rate',
@@ -807,6 +827,7 @@ const PRUNING_PARAMETERS = {
 		{
 			argName: 'pruning_ratio',
 			defaultValue: 0.99,
+			inputArrowsStepRate: 0.01,
 			inputType: 'number',
 			label: 'Pruning Ratio',
 			placeholder: 'Enter pruning ratio',
@@ -865,6 +886,7 @@ const PRUNING_PARAMETERS = {
 		{
 			argName: 'lr',
 			defaultValue: 0.1,
+			inputArrowsStepRate: 0.1,
 			inputType: 'number',
 			label: 'Learning Rate',
 			placeholder: 'Enter learning rate',
@@ -876,6 +898,7 @@ const PRUNING_PARAMETERS = {
 		{
 			argName: 'pruning_ratio',
 			defaultValue: 0.99,
+			inputArrowsStepRate: 0.01,
 			inputType: 'number',
 			label: 'Pruning Ratio',
 			placeholder: 'Enter pruning ratio',
@@ -1003,6 +1026,7 @@ const PRUNING_PARAMETERS = {
 		{
 			argName: 'lr',
 			defaultValue: 0.1,
+			inputArrowsStepRate: 0.1,
 			inputType: 'number',
 			label: 'Learning Rate',
 			placeholder: 'Enter learning rate',
@@ -1014,6 +1038,7 @@ const PRUNING_PARAMETERS = {
 		{
 			argName: 'pruning_ratio',
 			defaultValue: 0.99,
+			inputArrowsStepRate: 0.01,
 			inputType: 'number',
 			label: 'Pruning Ratio',
 			placeholder: 'Enter pruning ratio',
@@ -1072,6 +1097,7 @@ const PRUNING_PARAMETERS = {
 		{
 			argName: 'lr',
 			defaultValue: 0.1,
+			inputArrowsStepRate: 0.1,
 			inputType: 'number',
 			label: 'Learning Rate',
 			placeholder: 'Enter learning rate',
@@ -1139,6 +1165,7 @@ const PRUNING_PARAMETERS = {
 		{
 			argName: 'pruning_ratio',
 			defaultValue: 0.2,
+			inputArrowsStepRate: 0.1,
 			inputType: 'number',
 			label: 'Pruning Ratio',
 			placeholder: 'Enter pruning ratio',
@@ -1163,6 +1190,7 @@ const PRUNING_PARAMETERS = {
 		{
 			argName: 'lr',
 			defaultValue: 0.1,
+			inputArrowsStepRate: 0.1,
 			inputType: 'number',
 			label: 'Learning Rate',
 			placeholder: 'Enter learning rate',
@@ -1174,6 +1202,7 @@ const PRUNING_PARAMETERS = {
 		{
 			argName: 'pruning_ratio',
 			defaultValue: 0.99,
+			inputArrowsStepRate: 0.01,
 			inputType: 'number',
 			label: 'Pruning Ratio',
 			placeholder: 'Enter pruning ratio',
@@ -1328,6 +1357,7 @@ const TRAIN_PARAMETERS = {
 		{
 			argName: 'lr',
 			defaultValue: 0.1,
+			inputArrowsStepRate: 0.1,
 			inputType: 'number',
 			label: 'Learning Rate',
 			placeholder: 'Enter learning rate',
@@ -1352,6 +1382,7 @@ const TRAIN_PARAMETERS = {
 		{
 			argName: 'lr',
 			defaultValue: 0.1,
+			inputArrowsStepRate: 0.1,
 			inputType: 'number',
 			label: 'Learning Rate',
 			placeholder: 'Enter learning rate',
@@ -1376,6 +1407,7 @@ const TRAIN_PARAMETERS = {
 		{
 			argName: 'lr',
 			defaultValue: 0.1,
+			inputArrowsStepRate: 0.1,
 			inputType: 'number',
 			label: 'Learning Rate',
 			placeholder: 'Enter learning rate',
