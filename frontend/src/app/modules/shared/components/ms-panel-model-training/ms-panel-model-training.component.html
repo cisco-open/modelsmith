@@ -28,7 +28,7 @@ SPDX-License-Identifier: Apache-2.0 -->
 
 				<mat-optgroup label="Predefined Models">
 					@if (filteredModels | async; as models) { @for (model of models; track model.name) {
-					<mat-option [value]="model.name" [disabled]="!model.isTrained">
+					<mat-option [value]="model.name">
 						{{ model.name }}
 						@if (!model.isTrained) {
 						<mat-icon class="mat-error" fontSet="ms" fontIcon="icon-X"></mat-icon>
