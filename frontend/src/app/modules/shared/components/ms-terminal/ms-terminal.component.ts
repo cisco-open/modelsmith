@@ -140,13 +140,14 @@ export class MsTerminalComponent implements OnInit, AfterViewInit, OnDestroy {
 		this.fitAddon.fit();
 	}
 
-	// Hack to fit on full height.
 	private adjustHeightToParent(): void {
-		const parentElement = this.terminalDiv.nativeElement.parentElement.parentElement.parentElement;
-		if (parentElement && parentElement.parentElement) {
-			const heightCorrection = 170;
-			const parentHeight = parentElement.parentElement.offsetHeight - heightCorrection;
-			this.terminalDiv.nativeElement.style.height = `${parentHeight}px`;
+		const rightSideElement = this.terminalDiv.nativeElement.parentElement.parentElement.parentElement.parentElement;
+
+		if (rightSideElement) {
+			let finalHeight: number;
+			const heightCorrection = 100;
+			finalHeight = rightSideElement.offsetHeight - heightCorrection;
+			this.terminalDiv.nativeElement.style.height = `${finalHeight}px`;
 		}
 	}
 
