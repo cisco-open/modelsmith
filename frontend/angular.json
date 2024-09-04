@@ -40,7 +40,8 @@
 								"bundleName": "theme"
 							}
 						],
-						"browser": "src/main.ts"
+						"browser": "src/main.ts",
+						"webWorkerTsConfig": "tsconfig.worker.json"
 					},
 					"configurations": {
 						"production": {
@@ -109,7 +110,8 @@
 								"bundleName": "theme"
 							}
 						],
-						"scripts": []
+						"scripts": [],
+						"webWorkerTsConfig": "tsconfig.worker.json"
 					}
 				}
 			}

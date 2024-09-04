@@ -37,7 +37,6 @@ import { TerminalFacadeService } from '../../../../../core/services';
 import { disableBackgroundScroll, enableBackgroundScroll } from '../../../../shared.utils';
 import { DIALOG_DATA, DialogConfig, MsDialogComponent } from '../../../ms-dialog';
 import { TerminalMessage } from '../../models/terminal-message.interface';
-import { formatMessageByType, highlightText } from '../../utils/terminal.utils';
 
 @UntilDestroy()
 @Component({
@@ -64,6 +63,7 @@ export class TerminalMessagesHistoryDialogComponent implements OnInit, OnDestroy
 	private fitAddon: FitAddon = new FitAddon();
 	private resizeObserver?: ResizeObserver;
 	private messages: TerminalMessage[] = [];
+	private worker: Worker | null = null;
 
 	constructor(
 		@Inject(DIALOG_DATA) public dialogConfig: DialogConfig,
@@ -73,9 +73,7 @@ export class TerminalMessagesHistoryDialogComponent implements OnInit, OnDestroy
 	ngOnInit(): void {
 		this.initializeTerminal();
 		this.loadData();
-
 		disableBackgroundScroll();
-
 		this.setupSearch();
 	}
 
@@ -89,18 +87,26 @@ export class TerminalMessagesHistoryDialogComponent implements OnInit, OnDestroy
 
 		this.terminalFacadeService.allMessages$.pipe(skip(1), take(1)).subscribe((messages: TerminalMessage[]) => {
 			this.messages = messages;
-			this.displayMessages(this.messages);
+			this.processMessagesWithWorker(this.messages);
 		});
 	}
 
-	private displayMessages(messages: TerminalMessage[], searchTerm: string = ''): void {
+	private processMessagesWithWorker(messages: TerminalMessage[], searchTerm: string = ''): void {
+		if (!this.worker) {
+			this.worker = new Worker(new URL('../../utils/message-formatter.worker.ts', import.meta.url));
+
+			this.worker.onmessage = ({ data }) => {
+				this.displayMessagesInTerminal(data);
+			};
+		}
+
+		this.worker.postMessage({ messages, searchTerm });
+	}
+
+	private displayMessagesInTerminal(formattedMessages: string[]): void {
 		this.terminal.clear();
-		messages.forEach((messageObj: TerminalMessage) => {
-			let formattedMessage = formatMessageByType(messageObj);
-			if (searchTerm) {
-				formattedMessage = highlightText(formattedMessage, searchTerm);
-			}
-			this.writeToTerminal(formattedMessage);
+		formattedMessages.forEach((message) => {
+			this.writeToTerminal(message);
 		});
 	}
 
@@ -134,7 +140,7 @@ export class TerminalMessagesHistoryDialogComponent implements OnInit, OnDestroy
 
 	private setupSearch(): void {
 		this.searchControl.valueChanges.pipe(debounceTime(300)).subscribe((searchTerm) => {
-			this.displayMessages(this.messages, searchTerm ?? '');
+			this.processMessagesWithWorker(this.messages, searchTerm ?? '');
 		});
 	}
 
