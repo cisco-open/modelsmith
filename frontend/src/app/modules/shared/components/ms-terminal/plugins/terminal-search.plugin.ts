@@ -4,7 +4,7 @@ import { Terminal } from 'xterm';
 import { TerminalMessage } from '../models/terminal-message.interface';
 import { arraysAreEqual, getTerminalLines } from '../utils/terminal.utils';
 
-interface TerminalSearchConfig {
+export interface TerminalSearchPluginConfig {
 	caseSensitive?: boolean;
 	debounceTimeMs?: number;
 }
@@ -17,7 +17,7 @@ export class TerminalSearchPlugin {
 
 	constructor(
 		private terminal: Terminal,
-		config?: TerminalSearchConfig
+		config?: TerminalSearchPluginConfig
 	) {
 		const defaultConfig = {
 			caseSensitive: false,
@@ -44,7 +44,7 @@ export class TerminalSearchPlugin {
 
 	private processMessagesWithWorker(messages: TerminalMessage[], searchTerm: string): void {
 		if (!this.worker) {
-			this.worker = new Worker(new URL('./message-formatter.worker.ts', import.meta.url), { type: 'module' });
+			this.worker = new Worker(new URL('../utils/message-formatter.worker.ts', import.meta.url), { type: 'module' });
 
 			this.worker.onmessage = ({ data }: MessageEvent<string[]>) => {
 				this.displayMessagesInTerminal(data);
@@ -83,5 +83,9 @@ export class TerminalSearchPlugin {
 			this.worker.terminate();
 			this.worker = null;
 		}
+	}
+
+	public clearSearch(): void {
+		this.searchControl.setValue('');
 	}
 }

@@ -22,7 +22,14 @@
 					<mat-label>Search</mat-label>
 					<mat-form-field subscriptSizing="dynamic">
 						<input matInput [formControl]="terminalSearch.searchControl" placeholder="Search terminal messages" />
-						<mat-icon matSuffix>search</mat-icon>
+						<mat-icon
+							matSuffix
+							*ngIf="terminalSearch.searchControl.value"
+							(click)="terminalSearch.clearSearch()"
+							class="mat-error scale-on-hover"
+							>close</mat-icon
+						>
+						<mat-icon matSuffix *ngIf="!terminalSearch.searchControl.value">search</mat-icon>
 					</mat-form-field>
 				</div>
 			</div>

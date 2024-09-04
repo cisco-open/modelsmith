@@ -64,3 +64,16 @@ mat-icon {
 		@include mat-icons($icons-error);
 	}
 }
+
+.scale-on-hover {
+	cursor: pointer;
+	transition: transform 0.3s ease;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.scale-on-hover:hover {
+	transform: scale(1.1);
+	transform-origin: center;
+}

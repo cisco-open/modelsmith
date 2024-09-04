@@ -14,6 +14,7 @@
 
 //   SPDX-License-Identifier: Apache-2.0
 
+import { CommonModule } from '@angular/common';
 import {
 	AfterViewInit,
 	Component,
@@ -28,6 +29,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { UntilDestroy } from '@ngneat/until-destroy';
 import { skip, take } from 'rxjs';
 import { Terminal } from 'xterm';
@@ -37,13 +39,22 @@ import { TerminalFacadeService } from '../../../../../core/services';
 import { disableBackgroundScroll, enableBackgroundScroll } from '../../../../shared.utils';
 import { DIALOG_DATA, DialogConfig, MsDialogComponent } from '../../../ms-dialog';
 import { TerminalMessage } from '../../models/terminal-message.interface';
-import { TerminalSearchPlugin } from '../../plugins/terminal-search.plugin';
+import { TerminalSearchPlugin, TerminalSearchPluginConfig } from '../../plugins/terminal-search.plugin';
 
 @UntilDestroy()
 @Component({
 	selector: 'ms-terminal-messages-history-dialog',
 	standalone: true,
-	imports: [MsDialogComponent, MatIconModule, MatButtonModule, FormsModule, ReactiveFormsModule, MatInputModule],
+	imports: [
+		CommonModule,
+		MsDialogComponent,
+		MatIconModule,
+		MatButtonModule,
+		FormsModule,
+		ReactiveFormsModule,
+		MatInputModule,
+		MatTooltipModule
+	],
 	templateUrl: './terminal-messages-history-dialog.component.html',
 	styleUrl: './terminal-messages-history-dialog.component.scss',
 	encapsulation: ViewEncapsulation.None
@@ -69,7 +80,10 @@ export class TerminalMessagesHistoryDialogComponent implements OnInit, OnDestroy
 		@Inject(DIALOG_DATA) public dialogConfig: DialogConfig,
 		private terminalFacadeService: TerminalFacadeService
 	) {
-		this.terminalSearch = new TerminalSearchPlugin(this.terminal, { caseSensitive: false, debounceTimeMs: 300 });
+		this.terminalSearch = new TerminalSearchPlugin(this.terminal, {
+			caseSensitive: false,
+			debounceTimeMs: 300
+		} as TerminalSearchPluginConfig);
 	}
 
 	ngOnInit(): void {
