@@ -24,12 +24,12 @@ import {
 	ViewChild,
 	ViewEncapsulation
 } from '@angular/core';
-import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { UntilDestroy } from '@ngneat/until-destroy';
-import { debounceTime, skip, take } from 'rxjs';
+import { skip, take } from 'rxjs';
 import { Terminal } from 'xterm';
 import { FitAddon } from 'xterm-addon-fit';
 import { TerminalActions } from '../../../../../../state/core/terminal';
@@ -37,6 +37,7 @@ import { TerminalFacadeService } from '../../../../../core/services';
 import { disableBackgroundScroll, enableBackgroundScroll } from '../../../../shared.utils';
 import { DIALOG_DATA, DialogConfig, MsDialogComponent } from '../../../ms-dialog';
 import { TerminalMessage } from '../../models/terminal-message.interface';
+import { TerminalSearch } from '../../utils/terminal-search.class';
 
 @UntilDestroy()
 @Component({
@@ -50,7 +51,7 @@ import { TerminalMessage } from '../../models/terminal-message.interface';
 export class TerminalMessagesHistoryDialogComponent implements OnInit, OnDestroy, AfterViewInit {
 	@ViewChild('terminalHistory', { static: true }) terminalHistoryDiv!: ElementRef;
 
-	searchControl = new FormControl('');
+	public terminalSearch!: TerminalSearch;
 
 	private terminal: Terminal = new Terminal({
 		theme: {
@@ -63,18 +64,18 @@ export class TerminalMessagesHistoryDialogComponent implements OnInit, OnDestroy
 	private fitAddon: FitAddon = new FitAddon();
 	private resizeObserver?: ResizeObserver;
 	private messages: TerminalMessage[] = [];
-	private worker: Worker | null = null;
 
 	constructor(
 		@Inject(DIALOG_DATA) public dialogConfig: DialogConfig,
 		private terminalFacadeService: TerminalFacadeService
-	) {}
+	) {
+		this.terminalSearch = new TerminalSearch(this.terminal, { caseSensitive: false, debounceTimeMs: 300 });
+	}
 
 	ngOnInit(): void {
 		this.initializeTerminal();
 		this.loadData();
 		disableBackgroundScroll();
-		this.setupSearch();
 	}
 
 	ngAfterViewInit(): void {
@@ -87,33 +88,8 @@ export class TerminalMessagesHistoryDialogComponent implements OnInit, OnDestroy
 
 		this.terminalFacadeService.allMessages$.pipe(skip(1), take(1)).subscribe((messages: TerminalMessage[]) => {
 			this.messages = messages;
-			this.processMessagesWithWorker(this.messages);
-		});
-	}
 
-	private processMessagesWithWorker(messages: TerminalMessage[], searchTerm: string = ''): void {
-		if (!this.worker) {
-			this.worker = new Worker(new URL('../../utils/message-formatter.worker.ts', import.meta.url));
-
-			this.worker.onmessage = ({ data }) => {
-				this.displayMessagesInTerminal(data);
-			};
-		}
-
-		this.worker.postMessage({ messages, searchTerm });
-	}
-
-	private displayMessagesInTerminal(formattedMessages: string[]): void {
-		this.terminal.clear();
-		formattedMessages.forEach((message) => {
-			this.writeToTerminal(message);
-		});
-	}
-
-	private writeToTerminal(message: string): void {
-		const lines = message.split('\n');
-		lines.forEach((line) => {
-			this.terminal.writeln(line);
+			this.terminalSearch.initialize(this.messages);
 		});
 	}
 
@@ -136,12 +112,6 @@ export class TerminalMessagesHistoryDialogComponent implements OnInit, OnDestroy
 
 	private fitTerminalToContainer(): void {
 		this.fitAddon.fit();
-	}
-
-	private setupSearch(): void {
-		this.searchControl.valueChanges.pipe(debounceTime(300)).subscribe((searchTerm) => {
-			this.processMessagesWithWorker(this.messages, searchTerm ?? '');
-		});
 	}
 
 	private adjustHeightToParent(): void {
@@ -167,5 +137,9 @@ export class TerminalMessagesHistoryDialogComponent implements OnInit, OnDestroy
 	ngOnDestroy(): void {
 		this.resizeObserver?.disconnect();
 		enableBackgroundScroll();
+
+		if (this.terminalSearch) {
+			this.terminalSearch.terminateWorker();
+		}
 	}
 }
