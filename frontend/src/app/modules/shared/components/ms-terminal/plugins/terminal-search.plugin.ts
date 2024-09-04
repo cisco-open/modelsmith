@@ -2,14 +2,14 @@ import { FormControl } from '@angular/forms';
 import { debounceTime } from 'rxjs';
 import { Terminal } from 'xterm';
 import { TerminalMessage } from '../models/terminal-message.interface';
-import { arraysAreEqual, getTerminalLines } from './terminal.utils';
+import { arraysAreEqual, getTerminalLines } from '../utils/terminal.utils';
 
 interface TerminalSearchConfig {
 	caseSensitive?: boolean;
 	debounceTimeMs?: number;
 }
 
-export class TerminalSearch {
+export class TerminalSearchPlugin {
 	public searchControl: FormControl = new FormControl('');
 	private caseSensitive: boolean;
 	private debounceTimeMs: number;

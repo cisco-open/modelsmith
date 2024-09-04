@@ -1,7 +1,7 @@
 /// <reference lib="webworker" />
 
 import { TerminalMessage } from '../models/terminal-message.interface';
-import { formatMessageByType, highlightText } from './terminal.utils';
+import { formatMessageByType, highlightText } from '../utils/terminal.utils';
 
 addEventListener('message', ({ data }) => {
 	const { messages, searchTerm } = data;

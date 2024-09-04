@@ -20,7 +20,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatIconModule } from '@angular/material/icon';
 import { MsCardSelectorComponent } from '../shared/components/ms-card-selector/ms-card-selector.component';
-import { MsTerminalComponent } from '../shared/components/ms-terminal/ms-terminal.component';
+import { MsTerminalComponent } from '../shared/components/ms-terminal/components/ms-terminal/ms-terminal.component';
 import { StepHigherAccuracyComponent } from './components/step-higher-accuracy/step-higher-accuracy.component';
 import { StepPretrainedModelComponent } from './components/step-pretrained-model/step-pretrained-model.component';
 import { StepPruningTimeComponent } from './components/step-pruning-time/step-pruning-time.component';

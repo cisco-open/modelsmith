@@ -19,18 +19,16 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { firstValueFrom, skip, take } from 'rxjs';
 import { Terminal } from 'xterm';
 import { FitAddon } from 'xterm-addon-fit';
-import { KeyValue } from '../../../../services/client/models/key-value/key-value.interface-dto';
-import { ScriptDetails } from '../../../../services/client/models/script/script-details.interface-dto';
-import { ModelsActions } from '../../../../state/core/models/models.actions';
-import { TerminalActions } from '../../../../state/core/terminal/terminal.actions';
-import { ScriptFacadeService } from '../../../core/services';
-import { ModelsFacadeService } from '../../../core/services/models-facade.service';
-import { TerminalFacadeService } from '../../../core/services/terminal-facade.service';
-import { WebsocketService } from '../../../core/services/websocket.service';
-import { AlgorithmType, TrainAlgorithmsEnum } from '../../../model-compression/models/enums/algorithms.enum';
-import { MsTerminalToolbarComponent } from './components/terminal-toolbar/terminal-toolbar.component';
-import { TerminalMessage } from './models/terminal-message.interface';
-import { formatMessageByType } from './utils/terminal.utils';
+import { KeyValue } from '../../../../../../services/client/models/key-value/key-value.interface-dto';
+import { ScriptDetails } from '../../../../../../services/client/models/script/script-details.interface-dto';
+import { ModelsActions } from '../../../../../../state/core/models/models.actions';
+import { TerminalActions } from '../../../../../../state/core/terminal';
+import { ScriptFacadeService, TerminalFacadeService, WebsocketService } from '../../../../../core/services';
+import { ModelsFacadeService } from '../../../../../core/services/models-facade.service';
+import { AlgorithmType, TrainAlgorithmsEnum } from '../../../../../model-compression/models/enums/algorithms.enum';
+import { TerminalMessage } from '../../models/terminal-message.interface';
+import { formatMessageByType } from '../../utils/terminal.utils';
+import { MsTerminalToolbarComponent } from '../terminal-toolbar/terminal-toolbar.component';
 
 @UntilDestroy()
 @Component({

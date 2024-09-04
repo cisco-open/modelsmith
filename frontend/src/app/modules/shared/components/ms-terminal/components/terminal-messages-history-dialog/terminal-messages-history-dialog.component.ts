@@ -37,7 +37,7 @@ import { TerminalFacadeService } from '../../../../../core/services';
 import { disableBackgroundScroll, enableBackgroundScroll } from '../../../../shared.utils';
 import { DIALOG_DATA, DialogConfig, MsDialogComponent } from '../../../ms-dialog';
 import { TerminalMessage } from '../../models/terminal-message.interface';
-import { TerminalSearch } from '../../utils/terminal-search.class';
+import { TerminalSearchPlugin } from '../../plugins/terminal-search.plugin';
 
 @UntilDestroy()
 @Component({
@@ -51,7 +51,7 @@ import { TerminalSearch } from '../../utils/terminal-search.class';
 export class TerminalMessagesHistoryDialogComponent implements OnInit, OnDestroy, AfterViewInit {
 	@ViewChild('terminalHistory', { static: true }) terminalHistoryDiv!: ElementRef;
 
-	public terminalSearch!: TerminalSearch;
+	public terminalSearch!: TerminalSearchPlugin;
 
 	private terminal: Terminal = new Terminal({
 		theme: {
@@ -69,7 +69,7 @@ export class TerminalMessagesHistoryDialogComponent implements OnInit, OnDestroy
 		@Inject(DIALOG_DATA) public dialogConfig: DialogConfig,
 		private terminalFacadeService: TerminalFacadeService
 	) {
-		this.terminalSearch = new TerminalSearch(this.terminal, { caseSensitive: false, debounceTimeMs: 300 });
+		this.terminalSearch = new TerminalSearchPlugin(this.terminal, { caseSensitive: false, debounceTimeMs: 300 });
 	}
 
 	ngOnInit(): void {
