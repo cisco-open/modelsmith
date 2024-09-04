@@ -14,6 +14,7 @@
 
 //   SPDX-License-Identifier: Apache-2.0
 
+import { IBuffer } from 'xterm';
 import { TerminalMessageType } from '../models/terminal-message-type.enum';
 import { TerminalMessage } from '../models/terminal-message.interface';
 
@@ -69,4 +70,25 @@ export const highlightText = (text: string, searchTerm: string): string => {
 
 	result += text.slice(lastIndex);
 	return result;
+};
+
+export const arraysAreEqual = (arr1: string[], arr2: string[]): boolean => {
+	if (arr1.length !== arr2.length) return false;
+	for (let i = 0; i < arr1.length; i++) {
+		if (arr1[i] !== arr2[i]) return false;
+	}
+	return true;
+};
+
+export const getTerminalLines = (buffer: IBuffer): string[] => {
+	const lines: string[] = [];
+
+	for (let i = 0; i < buffer.length; i++) {
+		const line = buffer.getLine(i);
+		if (line) {
+			lines.push(line.translateToString(true));
+		}
+	}
+
+	return lines;
 };

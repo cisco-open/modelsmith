@@ -2,6 +2,7 @@ import { FormControl } from '@angular/forms';
 import { debounceTime } from 'rxjs';
 import { Terminal } from 'xterm';
 import { TerminalMessage } from '../models/terminal-message.interface';
+import { arraysAreEqual, getTerminalLines } from './terminal.utils';
 
 interface TerminalSearchConfig {
 	caseSensitive?: boolean;
@@ -58,10 +59,16 @@ export class TerminalSearch {
 	}
 
 	private displayMessagesInTerminal(formattedMessages: string[]): void {
-		this.terminal.clear();
-		formattedMessages.forEach((message) => {
-			this.writeToTerminal(message);
-		});
+		const currentMessages = getTerminalLines(this.terminal.buffer.active);
+
+		if (formattedMessages.length !== currentMessages.length || !arraysAreEqual(formattedMessages, currentMessages)) {
+			this.terminal.clear();
+			formattedMessages.forEach((message) => {
+				this.writeToTerminal(message);
+			});
+
+			this.terminal.clearSelection();
+		}
 	}
 
 	private writeToTerminal(message: string): void {
