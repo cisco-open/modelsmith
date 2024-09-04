@@ -15,7 +15,7 @@
 //   SPDX-License-Identifier: Apache-2.0
 
 import { IBuffer } from 'xterm';
-import { TerminalMessageType } from '../models/terminal-message-type.enum';
+import { colorCodeMap } from '../models/color-code.map';
 import { TerminalMessage } from '../models/terminal-message.interface';
 
 export const logMessageWithControlChars = (message: string): void => {
@@ -24,28 +24,8 @@ export const logMessageWithControlChars = (message: string): void => {
 };
 
 export const formatMessageByType = (message: TerminalMessage): string => {
-	let colorCode = '';
-	switch (message.type) {
-		case TerminalMessageType.ERROR:
-			colorCode = '\x1b[38;5;124m';
-			break;
-		case TerminalMessageType.SUCCESS:
-			colorCode = '\x1b[38;5;22m';
-			break;
-		case TerminalMessageType.WARNING:
-			colorCode = '\x1b[38;5;136m';
-			break;
-		case TerminalMessageType.INFO:
-		default:
-			colorCode = '\x1b[38;5;0m';
-			break;
-	}
-
-	let formattedData = message.data;
-	if (formattedData.endsWith('\n')) {
-		formattedData = formattedData.slice(0, -1);
-	}
-
+	const colorCode = colorCodeMap.get(message.type) || '\x1b[38;5;0m';
+	const formattedData = message.data.endsWith('\n') ? message.data.slice(0, -1) : message.data;
 	return `${colorCode}${formattedData}\x1b[0m`;
 };
 
@@ -56,28 +36,28 @@ export const highlightText = (text: string, searchTerm: string): string => {
 	const lowerSearchTerm = searchTerm.toLowerCase();
 	const highlightStart = '\x1b[48;5;220m';
 	const highlightEnd = '\x1b[0m';
-	let result = '';
+	const parts: string[] = [];
 	let lastIndex = 0;
 	let index: number;
 
 	while ((index = lowerText.indexOf(lowerSearchTerm, lastIndex)) !== -1) {
-		result += text.slice(lastIndex, index);
-		result += highlightStart;
-		result += text.slice(index, index + searchTerm.length);
-		result += highlightEnd;
+		parts.push(
+			text.slice(lastIndex, index),
+			highlightStart,
+			text.slice(index, index + searchTerm.length),
+			highlightEnd
+		);
 		lastIndex = index + searchTerm.length;
 	}
 
-	result += text.slice(lastIndex);
-	return result;
+	parts.push(text.slice(lastIndex));
+	return parts.join('');
 };
 
 export const arraysAreEqual = (arr1: string[], arr2: string[]): boolean => {
 	if (arr1.length !== arr2.length) return false;
-	for (let i = 0; i < arr1.length; i++) {
-		if (arr1[i] !== arr2[i]) return false;
-	}
-	return true;
+	const set1 = new Set(arr1);
+	return arr2.every((item) => set1.has(item));
 };
 
 export const getTerminalLines = (buffer: IBuffer): string[] => {
