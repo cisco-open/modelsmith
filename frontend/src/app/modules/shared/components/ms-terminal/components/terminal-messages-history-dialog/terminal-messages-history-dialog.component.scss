@@ -28,6 +28,12 @@
 
 	.top-terminal-section {
 		display: flex;
-		justify-content: flex-end;
+		justify-content: space-between;
+		margin-bottom: 10px;
+
+		.right {
+			display: flex;
+			align-items: flex-end;
+		}
 	}
 }

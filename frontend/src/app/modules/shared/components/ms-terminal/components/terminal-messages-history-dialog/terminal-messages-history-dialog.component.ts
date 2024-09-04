@@ -14,31 +14,44 @@
 
 //   SPDX-License-Identifier: Apache-2.0
 
-import { Component, ElementRef, Inject, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import {
+	AfterViewInit,
+	Component,
+	ElementRef,
+	Inject,
+	OnDestroy,
+	OnInit,
+	ViewChild,
+	ViewEncapsulation
+} from '@angular/core';
+import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
 import { UntilDestroy } from '@ngneat/until-destroy';
-import { skip, take } from 'rxjs';
+import { debounceTime, skip, take } from 'rxjs';
 import { Terminal } from 'xterm';
 import { FitAddon } from 'xterm-addon-fit';
 import { TerminalActions } from '../../../../../../state/core/terminal';
 import { TerminalFacadeService } from '../../../../../core/services';
 import { disableBackgroundScroll, enableBackgroundScroll } from '../../../../shared.utils';
 import { DIALOG_DATA, DialogConfig, MsDialogComponent } from '../../../ms-dialog';
-import { TerminalMessageType } from '../../models/terminal-message-type.enum';
 import { TerminalMessage } from '../../models/terminal-message.interface';
+import { formatMessageByType, highlightText } from '../../utils/terminal.utils';
 
 @UntilDestroy()
 @Component({
 	selector: 'ms-terminal-messages-history-dialog',
 	standalone: true,
-	imports: [MsDialogComponent, MatIconModule, MatButtonModule],
+	imports: [MsDialogComponent, MatIconModule, MatButtonModule, FormsModule, ReactiveFormsModule, MatInputModule],
 	templateUrl: './terminal-messages-history-dialog.component.html',
 	styleUrl: './terminal-messages-history-dialog.component.scss',
 	encapsulation: ViewEncapsulation.None
 })
-export class TerminalMessagesHistoryDialogComponent implements OnInit, OnDestroy {
+export class TerminalMessagesHistoryDialogComponent implements OnInit, OnDestroy, AfterViewInit {
 	@ViewChild('terminalHistory', { static: true }) terminalHistoryDiv!: ElementRef;
+
+	searchControl = new FormControl('');
 
 	private terminal: Terminal = new Terminal({
 		theme: {
@@ -50,6 +63,7 @@ export class TerminalMessagesHistoryDialogComponent implements OnInit, OnDestroy
 
 	private fitAddon: FitAddon = new FitAddon();
 	private resizeObserver?: ResizeObserver;
+	private messages: TerminalMessage[] = [];
 
 	constructor(
 		@Inject(DIALOG_DATA) public dialogConfig: DialogConfig,
@@ -61,16 +75,32 @@ export class TerminalMessagesHistoryDialogComponent implements OnInit, OnDestroy
 		this.loadData();
 
 		disableBackgroundScroll();
+
+		this.setupSearch();
+	}
+
+	ngAfterViewInit(): void {
+		this.adjustHeightToParent();
+		this.fitTerminalToContainer();
 	}
 
 	private loadData() {
 		this.terminalFacadeService.dispatch(TerminalActions.getAllMessages());
 
 		this.terminalFacadeService.allMessages$.pipe(skip(1), take(1)).subscribe((messages: TerminalMessage[]) => {
-			messages.forEach((messageObj: TerminalMessage) => {
-				const formattedMessage = this.formatMessageByType(messageObj);
-				this.writeToTerminal(formattedMessage);
-			});
+			this.messages = messages;
+			this.displayMessages(this.messages);
+		});
+	}
+
+	private displayMessages(messages: TerminalMessage[], searchTerm: string = ''): void {
+		this.terminal.clear();
+		messages.forEach((messageObj: TerminalMessage) => {
+			let formattedMessage = formatMessageByType(messageObj);
+			if (searchTerm) {
+				formattedMessage = highlightText(formattedMessage, searchTerm);
+			}
+			this.writeToTerminal(formattedMessage);
 		});
 	}
 
@@ -79,32 +109,6 @@ export class TerminalMessagesHistoryDialogComponent implements OnInit, OnDestroy
 		lines.forEach((line) => {
 			this.terminal.writeln(line);
 		});
-	}
-
-	private formatMessageByType(message: TerminalMessage): string {
-		let colorCode = '';
-		switch (message.type) {
-			case TerminalMessageType.ERROR:
-				colorCode = '\x1b[38;5;124m';
-				break;
-			case TerminalMessageType.SUCCESS:
-				colorCode = '\x1b[38;5;22m';
-				break;
-			case TerminalMessageType.WARNING:
-				colorCode = '\x1b[38;5;136m';
-				break;
-			case TerminalMessageType.INFO:
-			default:
-				colorCode = '\x1b[38;5;0m';
-				break;
-		}
-
-		let formattedData = message.data;
-		if (formattedData.endsWith('\n')) {
-			formattedData = formattedData.slice(0, -1);
-		}
-
-		return `${colorCode}${formattedData}\x1b[0m`;
 	}
 
 	private initializeTerminal(): void {
@@ -126,6 +130,24 @@ export class TerminalMessagesHistoryDialogComponent implements OnInit, OnDestroy
 
 	private fitTerminalToContainer(): void {
 		this.fitAddon.fit();
+	}
+
+	private setupSearch(): void {
+		this.searchControl.valueChanges.pipe(debounceTime(300)).subscribe((searchTerm) => {
+			this.displayMessages(this.messages, searchTerm ?? '');
+		});
+	}
+
+	private adjustHeightToParent(): void {
+		const rightSideElement =
+			this.terminalHistoryDiv.nativeElement.parentElement.parentElement.parentElement.parentElement;
+
+		if (rightSideElement) {
+			let finalHeight: number;
+			const heightCorrection = 320;
+			finalHeight = rightSideElement.offsetHeight - heightCorrection;
+			this.terminalHistoryDiv.nativeElement.style.height = `${finalHeight}px`;
+		}
 	}
 
 	scrollToTopTerminal() {
