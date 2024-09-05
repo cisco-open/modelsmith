@@ -134,7 +134,7 @@ export class TerminalMessagesHistoryDialogComponent implements OnInit, OnDestroy
 
 		if (rightSideElement) {
 			let finalHeight: number;
-			const heightCorrection = 320;
+			const heightCorrection = 280;
 			finalHeight = rightSideElement.offsetHeight - heightCorrection;
 			this.terminalHistoryDiv.nativeElement.style.height = `${finalHeight}px`;
 		}
