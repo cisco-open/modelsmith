@@ -4,13 +4,13 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 
 @Component({
-	selector: 'ms-tooltip',
+	selector: 'ms-tooltip-panel',
 	standalone: true,
 	imports: [CommonModule, MatIconModule, MatButtonModule],
-	templateUrl: './ms-tooltip.component.html',
-	styleUrl: './ms-tooltip.component.scss'
+	templateUrl: './ms-tooltip-panel.component.html',
+	styleUrl: './ms-tooltip-panel.component.scss'
 })
-export class MsTooltipComponent {
+export class MsTooltipPanelComponent {
 	@Input() contentTemplate?: TemplateRef<any>;
 	@Input() position: 'top' | 'bottom' | 'left' | 'right' = 'bottom';
 	@Input() showCloseButton = false;

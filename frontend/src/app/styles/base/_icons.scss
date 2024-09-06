@@ -65,6 +65,16 @@ mat-icon {
 	}
 }
 
+button[disabled] {
+	mat-icon {
+		color: var(--backgroudns-800) !important;
+	}
+}
+
+button[disabled] .scale-on-hover:hover {
+	transform: none;
+}
+
 .scale-on-hover {
 	cursor: pointer;
 	transition: transform 0.3s ease;

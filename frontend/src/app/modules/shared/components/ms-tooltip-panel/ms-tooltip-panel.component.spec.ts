@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { MsTooltipComponent } from './ms-tooltip.component';
+import { MsTooltipPanelComponent } from './ms-tooltip-panel.component';
 
-describe('MsTooltipComponent', () => {
-  let component: MsTooltipComponent;
-  let fixture: ComponentFixture<MsTooltipComponent>;
+describe('MsTooltipPanelComponent', () => {
+  let component: MsTooltipPanelComponent;
+  let fixture: ComponentFixture<MsTooltipPanelComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MsTooltipComponent]
+      imports: [MsTooltipPanelComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(MsTooltipComponent);
+    fixture = TestBed.createComponent(MsTooltipPanelComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

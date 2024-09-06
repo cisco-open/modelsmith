@@ -14,18 +14,21 @@
 
 //   SPDX-License-Identifier: Apache-2.0
 
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { ScriptActions } from '../../../../../../state/core/script/script.actions';
 import { ScriptFacadeService } from '../../../../../core/services/script-facade.service';
+import { isScriptActive } from '../../../../../model-compression/models/enums/script-status.enum';
 import { DialogConfig, DialogService } from '../../../ms-dialog';
-import { MsTooltipDirective } from '../../../ms-tooltip/directives/ms-tooltip.directive';
+import { MsTooltipPanelDirective } from '../../../ms-tooltip-panel/directives/ms-tooltip-panel.directive';
 import { TerminalMessagesHistoryDialogComponent } from '../terminal-messages-history-dialog/terminal-messages-history-dialog.component';
 
+@UntilDestroy({})
 @Component({
 	selector: 'ms-terminal-toolbar',
 	templateUrl: './terminal-toolbar.component.html',
@@ -35,14 +38,16 @@ import { TerminalMessagesHistoryDialogComponent } from '../terminal-messages-his
 		MatButtonModule,
 		MatIconModule,
 		MatTooltipModule,
-		MsTooltipDirective,
+		MsTooltipPanelDirective,
 		FormsModule,
 		ReactiveFormsModule,
 		MatFormFieldModule
 	],
 	providers: [DialogService]
 })
-export class MsTerminalToolbarComponent {
+export class MsTerminalToolbarComponent implements OnInit {
+	isScriptActive: boolean = false;
+
 	@Output() clearTerminal = new EventEmitter<string>();
 	@Output() scrollToTopTerminal = new EventEmitter<string>();
 	@Output() scrollToBottomTerminal = new EventEmitter<string>();
@@ -51,6 +56,16 @@ export class MsTerminalToolbarComponent {
 		private scriptFacadeService: ScriptFacadeService,
 		private dialogService: DialogService
 	) {}
+
+	ngOnInit(): void {
+		this.listenToScriptStateChanges();
+	}
+
+	private listenToScriptStateChanges(): void {
+		this.scriptFacadeService.scriptStatus$.pipe(untilDestroyed(this)).subscribe((state) => {
+			this.isScriptActive = isScriptActive(state);
+		});
+	}
 
 	ctaStopScript() {
 		this.scriptFacadeService.dispatch(ScriptActions.stopScript());

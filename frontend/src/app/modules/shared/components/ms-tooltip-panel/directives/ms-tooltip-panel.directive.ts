@@ -2,13 +2,13 @@ import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
 import { Directive, ElementRef, HostListener, Input, OnDestroy, TemplateRef, ViewContainerRef } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { MsTooltipComponent } from '../ms-tooltip.component';
+import { MsTooltipPanelComponent } from '../ms-tooltip-panel.component';
 
 @Directive({
 	selector: '[msTooltip]',
 	standalone: true
 })
-export class MsTooltipDirective implements OnDestroy {
+export class MsTooltipPanelDirective implements OnDestroy {
 	@Input('contentTemplate') contentTemplate!: TemplateRef<any>;
 	@Input() position: 'top' | 'bottom' | 'left' | 'right' = 'bottom';
 	@Input() showCloseButton = false;
@@ -41,7 +41,7 @@ export class MsTooltipDirective implements OnDestroy {
 			backdropClass: 'cdk-overlay-transparent-backdrop'
 		});
 
-		const tooltipPortal = new ComponentPortal(MsTooltipComponent, this.viewContainerRef);
+		const tooltipPortal = new ComponentPortal(MsTooltipPanelComponent, this.viewContainerRef);
 		const tooltipRef = this.overlayRef.attach(tooltipPortal);
 
 		tooltipRef.instance.contentTemplate = this.contentTemplate;
