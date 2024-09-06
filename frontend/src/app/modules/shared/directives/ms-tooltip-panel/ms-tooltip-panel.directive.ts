@@ -12,7 +12,7 @@ import {
 	ViewContainerRef
 } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { MsTooltipPanelComponent } from '../ms-tooltip-panel.component';
+import { MsTooltipPanelComponent } from './component/ms-tooltip-panel.component';
 
 @Directive({
 	selector: '[msTooltipPanel]',

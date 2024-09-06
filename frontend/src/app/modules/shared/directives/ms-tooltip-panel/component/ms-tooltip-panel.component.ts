@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output, TemplateRef } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { tooltipStateAnimation } from './animations/ms-tooltip-panel.animations';
+import { tooltipStateAnimation } from '../animations/ms-tooltip-panel.animations';
 
 @Component({
 	selector: 'ms-tooltip-panel',

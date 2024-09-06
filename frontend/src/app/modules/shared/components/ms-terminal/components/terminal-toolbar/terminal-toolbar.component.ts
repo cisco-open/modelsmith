@@ -24,8 +24,8 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { ScriptActions } from '../../../../../../state/core/script/script.actions';
 import { ScriptFacadeService } from '../../../../../core/services/script-facade.service';
 import { isScriptActive } from '../../../../../model-compression/models/enums/script-status.enum';
+import { MsTooltipPanelDirective } from '../../../../directives/ms-tooltip-panel/ms-tooltip-panel.directive';
 import { DialogConfig, DialogService } from '../../../ms-dialog';
-import { MsTooltipPanelDirective } from '../../../ms-tooltip-panel/directives/ms-tooltip-panel.directive';
 import { TerminalMessagesHistoryDialogComponent } from '../terminal-messages-history-dialog/terminal-messages-history-dialog.component';
 
 @UntilDestroy({})
