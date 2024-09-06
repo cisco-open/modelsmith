@@ -1,4 +1,4 @@
-<div class="tooltip-container" [ngClass]="position">
+<div class="tooltip-container" [ngClass]="position" [@tooltipState]="state">
 	<div class="tooltip-arrow"></div>
 
 	<div class="tooltip-wrapper">
@@ -9,7 +9,7 @@
 		</ng-container>
 
 		<div *ngIf="showCloseButton" class="close-button">
-			<button mat-icon-button (click)="close.emit()">
+			<button mat-icon-button (click)="triggerClose()">
 				<mat-icon fontSet="ms" fontIcon="icon-X" class="mat-error"></mat-icon>
 			</button>
 		</div>

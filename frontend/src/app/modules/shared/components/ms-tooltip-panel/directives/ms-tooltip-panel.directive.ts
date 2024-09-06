@@ -1,11 +1,21 @@
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
-import { Directive, ElementRef, HostListener, Input, OnDestroy, TemplateRef, ViewContainerRef } from '@angular/core';
+import {
+	Directive,
+	ElementRef,
+	EventEmitter,
+	HostListener,
+	Input,
+	OnDestroy,
+	Output,
+	TemplateRef,
+	ViewContainerRef
+} from '@angular/core';
 import { Subscription } from 'rxjs';
 import { MsTooltipPanelComponent } from '../ms-tooltip-panel.component';
 
 @Directive({
-	selector: '[msTooltip]',
+	selector: '[msTooltipPanel]',
 	standalone: true
 })
 export class MsTooltipPanelDirective implements OnDestroy {
@@ -13,6 +23,8 @@ export class MsTooltipPanelDirective implements OnDestroy {
 	@Input() position: 'top' | 'bottom' | 'left' | 'right' = 'bottom';
 	@Input() showCloseButton = false;
 	@Input() closeOnBackdropClick = true;
+
+	@Output() closed = new EventEmitter<void>();
 
 	private overlayRef: OverlayRef | null = null;
 	private backdropClickSubscription!: Subscription;
@@ -44,11 +56,16 @@ export class MsTooltipPanelDirective implements OnDestroy {
 		const tooltipPortal = new ComponentPortal(MsTooltipPanelComponent, this.viewContainerRef);
 		const tooltipRef = this.overlayRef.attach(tooltipPortal);
 
-		tooltipRef.instance.contentTemplate = this.contentTemplate;
-		tooltipRef.instance.position = this.position;
-		tooltipRef.instance.showCloseButton = this.showCloseButton;
+		const tooltipInstance = tooltipRef.instance;
+		tooltipInstance.contentTemplate = this.contentTemplate;
+		tooltipInstance.position = this.position;
+		tooltipInstance.showCloseButton = this.showCloseButton;
 
-		tooltipRef.instance.close.subscribe(() => {
+		setTimeout(() => {
+			tooltipInstance.state = 'visible';
+		}, 0);
+
+		tooltipInstance.close.subscribe(() => {
 			this.closePanel();
 		});
 
@@ -61,8 +78,15 @@ export class MsTooltipPanelDirective implements OnDestroy {
 
 	private closePanel() {
 		if (this.overlayRef) {
-			this.overlayRef.detach();
-			this.overlayRef = null;
+			const tooltipComponentRef = this.overlayRef.overlayElement.querySelector('ms-tooltip-panel') as any;
+			if (tooltipComponentRef) {
+				tooltipComponentRef.state = 'hidden';
+				setTimeout(() => {
+					this.overlayRef?.detach();
+					this.overlayRef = null;
+					this.closed.emit();
+				}, 150);
+			}
 
 			if (this.backdropClickSubscription) {
 				this.backdropClickSubscription.unsubscribe();
