@@ -15,12 +15,15 @@
 //   SPDX-License-Identifier: Apache-2.0
 
 import { Component, EventEmitter, Output } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ScriptActions } from '../../../../../../state/core/script/script.actions';
 import { ScriptFacadeService } from '../../../../../core/services/script-facade.service';
 import { DialogConfig, DialogService } from '../../../ms-dialog';
+import { MsTooltipDirective } from '../../../ms-tooltip/directives/ms-tooltip.directive';
 import { TerminalMessagesHistoryDialogComponent } from '../terminal-messages-history-dialog/terminal-messages-history-dialog.component';
 
 @Component({
@@ -28,7 +31,15 @@ import { TerminalMessagesHistoryDialogComponent } from '../terminal-messages-his
 	templateUrl: './terminal-toolbar.component.html',
 	styleUrls: ['./terminal-toolbar.component.scss'],
 	standalone: true,
-	imports: [MatButtonModule, MatIconModule, MatTooltipModule],
+	imports: [
+		MatButtonModule,
+		MatIconModule,
+		MatTooltipModule,
+		MsTooltipDirective,
+		FormsModule,
+		ReactiveFormsModule,
+		MatFormFieldModule
+	],
 	providers: [DialogService]
 })
 export class MsTerminalToolbarComponent {

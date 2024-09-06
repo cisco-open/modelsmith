@@ -15,6 +15,17 @@
   SPDX-License-Identifier: Apache-2.0 -->
 
 <div class="buttons-wrapper">
+	<button
+		mat-icon-button
+		color="primary"
+		msTooltip
+		[contentTemplate]="searchTooltipContent"
+		[closeOnBackdropClick]="false"
+		[showCloseButton]="true"
+		position="bottom">
+		<mat-icon fontSet="ms" fontIcon="icon-MagnifyingGlass"></mat-icon>
+	</button>
+
 	<button mat-icon-button color="primary" matTooltip="Terminal history" (click)="openTerminalMessagesHistoryDialog()">
 		<mat-icon>history</mat-icon>
 	</button>
@@ -35,3 +46,9 @@
 		<mat-icon fontSet="ms" fontIcon="icon-X" class="mat-error"></mat-icon>
 	</button>
 </div>
+
+<ng-template #searchTooltipContent>
+	<div class="search-panel">
+		<mat-label>Search Terminal</mat-label>
+	</div>
+</ng-template>

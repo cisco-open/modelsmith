@@ -1,0 +1,15 @@
+<div class="tooltip-container" [ngClass]="position">
+	<div class="tooltip-arrow"></div>
+
+	<ng-container *ngIf="contentTemplate">
+		<div class="tooltip-content">
+			<ng-container *ngTemplateOutlet="contentTemplate"></ng-container>
+		</div>
+	</ng-container>
+
+	<div *ngIf="showCloseButton" class="close-button">
+		<button mat-icon-button (click)="close.emit()">
+			<mat-icon fontSet="ms" fontIcon="icon-X" class="mat-error"></mat-icon>
+		</button>
+	</div>
+</div>
