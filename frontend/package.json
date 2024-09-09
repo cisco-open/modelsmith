@@ -40,6 +40,7 @@
 		"@ngrx/effects": "^18.0.1",
 		"@ngrx/operators": "^18.0.0",
 		"@ngrx/store": "^18.0.1",
+		"@xterm/addon-search": "^0.15.0",
 		"chart.js": "^4.4.1",
 		"chartjs-plugin-zoom": "^2.0.1",
 		"howler": "^2.2.4",

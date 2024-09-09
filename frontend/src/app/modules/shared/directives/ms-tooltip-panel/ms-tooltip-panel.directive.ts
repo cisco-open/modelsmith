@@ -1,3 +1,19 @@
+//    Copyright 2024 Cisco Systems, Inc. and its affiliates
+
+//   Licensed under the Apache License, Version 2.0 (the "License");
+//   you may not use this file except in compliance with the License.
+//   You may obtain a copy of the License at
+
+//        http://www.apache.org/licenses/LICENSE-2.0
+
+//   Unless required by applicable law or agreed to in writing, software
+//   distributed under the License is distributed on an "AS IS" BASIS,
+//   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//   See the License for the specific language governing permissions and
+//   limitations under the License.
+
+//   SPDX-License-Identifier: Apache-2.0
+
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
 import {
@@ -20,9 +36,12 @@ import { MsTooltipPanelComponent } from './component/ms-tooltip-panel.component'
 })
 export class MsTooltipPanelDirective implements OnDestroy {
 	@Input('contentTemplate') contentTemplate!: TemplateRef<any>;
+
 	@Input() position: 'top' | 'bottom' | 'left' | 'right' = 'bottom';
 	@Input() showCloseButton = false;
 	@Input() closeOnBackdropClick = true;
+	@Input() allowCloseOnEspPress = true; // Close panel on 'Esc' keypress
+	@Input() freezePageScroll = true; // Freeze page scroll, default is true
 
 	@Output() closed = new EventEmitter<void>();
 
@@ -43,14 +62,17 @@ export class MsTooltipPanelDirective implements OnDestroy {
 		}
 	}
 
+	@HostListener('document:keydown.escape', ['$event']) handleEscKey(event: KeyboardEvent) {
+		if (this.allowCloseOnEspPress) {
+			this.closePanel();
+		}
+	}
+
 	private openPanel() {
 		const positionStrategy = this.getPositionStrategy();
 
 		this.overlayRef = this.overlay.create({
-			positionStrategy,
-			hasBackdrop: true,
-			scrollStrategy: this.overlay.scrollStrategies.block(),
-			backdropClass: 'cdk-overlay-transparent-backdrop'
+			positionStrategy
 		});
 
 		const tooltipPortal = new ComponentPortal(MsTooltipPanelComponent, this.viewContainerRef);
@@ -60,6 +82,10 @@ export class MsTooltipPanelDirective implements OnDestroy {
 		tooltipInstance.contentTemplate = this.contentTemplate;
 		tooltipInstance.position = this.position;
 		tooltipInstance.showCloseButton = this.showCloseButton;
+
+		if (this.freezePageScroll) {
+			document.body.classList.add('no-scroll');
+		}
 
 		setTimeout(() => {
 			tooltipInstance.state = 'visible';
@@ -86,6 +112,10 @@ export class MsTooltipPanelDirective implements OnDestroy {
 					this.overlayRef = null;
 					this.closed.emit();
 				}, 150);
+			}
+
+			if (this.freezePageScroll) {
+				document.body.classList.remove('no-scroll');
 			}
 
 			if (this.backdropClickSubscription) {

@@ -16,6 +16,7 @@
 
 import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { SearchAddon } from '@xterm/addon-search';
 import { firstValueFrom, skip, take } from 'rxjs';
 import { Terminal } from 'xterm';
 import { FitAddon } from 'xterm-addon-fit';
@@ -51,10 +52,15 @@ export class MsTerminalComponent implements OnInit, AfterViewInit, OnDestroy {
 		theme: {
 			background: '#D0D4D9',
 			foreground: '#000000',
-			cursor: '#000000'
-		}
+			cursor: '#000000',
+			selectionBackground: '#FFDD00',
+			selectionForeground: '#000000'
+		},
+		allowProposedApi: true
 	});
+
 	private fitAddon: FitAddon = new FitAddon();
+	private searchAddon = new SearchAddon();
 	private resizeObserver?: ResizeObserver;
 
 	constructor(
@@ -93,6 +99,23 @@ export class MsTerminalComponent implements OnInit, AfterViewInit, OnDestroy {
 		this.fitTerminalToContainer();
 	}
 
+	public search(value: string) {
+		this.searchAddon.findNext(value, {
+			decorations: {
+				matchBackground: '#FFFF00',
+				matchBorder: '#FFFF00',
+				matchOverviewRuler: '#FFFF00',
+				activeMatchBackground: '#FFFF00',
+				activeMatchBorder: '#FFFF00',
+				activeMatchColorOverviewRuler: '#FFFF00'
+			}
+		});
+	}
+
+	public disposeSearch() {
+		this.searchAddon.clearDecorations();
+	}
+
 	private writeToTerminal(message: string): void {
 		const lines = message.split('\n');
 		lines.forEach((line) => {
@@ -119,6 +142,8 @@ export class MsTerminalComponent implements OnInit, AfterViewInit, OnDestroy {
 
 	private initializeTerminal(): void {
 		this.terminal.loadAddon(this.fitAddon);
+		this.terminal.loadAddon(this.searchAddon);
+
 		this.terminal.open(this.terminalDiv.nativeElement);
 		this.terminal.writeln('Welcome to ModelSmith terminal!\r\n');
 

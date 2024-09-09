@@ -19,11 +19,26 @@
 :root {
 	--mat-option-label-text-size: 0.75rem;
 	--mat-optgroup-label-text-size: 0.75rem;
+
+	/* Default light mode colors */
+	--background-color: #ffffff;
+	--border-color: #dcdcdc;
+	--text-color: #000000;
+	--placeholder-color: #888888;
+	--hover-border-color: #bcbcbc;
+
+	/* Dark mode colors */
+	--dark-background-color: #121212;
+	--dark-border-color: #2c2c2c;
+	--dark-text-color: #e0e0e0;
+	--dark-placeholder-color: #757575;
+	--dark-hover-border-color: #5e5e5e;
 }
 
 .form-field-container {
 	display: flex;
 	flex-direction: column;
+	color: var(--text-color);
 
 	&.inline-container {
 		flex-direction: row;
@@ -35,42 +50,60 @@
 		padding: 0;
 	}
 
-	&.ms-white-form-field {
-		/* Firefox */
-		::placeholder {
-			color: var(--backgrounds-50) !important;
-			opacity: 1;
-		}
-		/* Edge 12 -18 */
-		::-ms-input-placeholder {
-			color: var(--backgrounds-50) !important;
+	.mat-mdc-text-field-wrapper {
+		background-color: var(--background-color);
+		border: 1px solid var(--border-color);
+
+		&:hover {
+			border-color: var(--hover-border-color);
 		}
 
+		.mdc-text-field__input {
+			color: var(--text-color);
+		}
+
+		::placeholder {
+			color: var(--placeholder-color);
+		}
+	}
+
+	/* Apply dark mode styles when the .dark class is added */
+	&.dark {
+		color: var(--dark-text-color);
+
 		mat-label {
-			color: var(--backgrounds-50);
+			color: var(--dark-text-color);
 		}
 
 		.mat-mdc-text-field-wrapper {
-			background-color: transparent;
+			background-color: var(--dark-background-color);
+			border: 1px solid var(--dark-border-color);
 
-			border: 1px solid var(--backgrounds-50);
 			&:hover {
-				border-color: var(--backgrounds-50);
+				border-color: var(--dark-hover-border-color);
 			}
 
 			.mdc-text-field__input {
-				color: var(--backgrounds-50);
+				color: var(--dark-text-color);
+			}
+
+			::placeholder {
+				color: var(--dark-placeholder-color);
 			}
 		}
 
 		mat-icon {
-			color: var(--backgrounds-50);
+			color: var(--dark-text-color);
 		}
 	}
 
 	mat-label {
 		@include typography.paragraph-regular-p4-small;
-		color: var(--foregrounds-750);
+		color: var(--text-color);
+
+		&.dark {
+			color: var(--dark-text-color);
+		}
 	}
 
 	mat-form-field {
@@ -84,22 +117,32 @@
 		}
 
 		.mat-mdc-text-field-wrapper {
-			background-color: var(--backgrounds-50);
-
-			&.mdc-text-field--disabled {
-				background-color: var(--backgrounds-200);
-			}
-
-			border: 1px solid var(--foregrounds-550);
+			background-color: var(--background-color);
+			border: 1px solid var(--border-color);
 			border-radius: 6px;
+
 			&:hover {
-				border-color: var(--foregrounds-800);
+				border-color: var(--hover-border-color);
 			}
 
 			.mat-mdc-select-value,
 			.mdc-text-field__input {
 				@include typography.paragraph-regular-p3-default;
-				color: var(--foregrounds-550);
+				color: var(--text-color);
+			}
+
+			&.dark {
+				background-color: var(--dark-background-color);
+				border: 1px solid var(--dark-border-color);
+
+				&:hover {
+					border-color: var(--dark-hover-border-color);
+				}
+
+				.mat-mdc-select-value,
+				.mdc-text-field__input {
+					color: var(--dark-text-color);
+				}
 			}
 		}
 	}

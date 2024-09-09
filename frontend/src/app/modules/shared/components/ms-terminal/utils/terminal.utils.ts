@@ -34,7 +34,8 @@ export const highlightText = (text: string, searchTerm: string): string => {
 
 	const lowerText = text.toLowerCase();
 	const lowerSearchTerm = searchTerm.toLowerCase();
-	const highlightStart = '\x1b[48;5;220m';
+
+	const highlightStart = '\x1b[48;5;226m';
 	const highlightEnd = '\x1b[0m';
 	const parts: string[] = [];
 	let lastIndex = 0;

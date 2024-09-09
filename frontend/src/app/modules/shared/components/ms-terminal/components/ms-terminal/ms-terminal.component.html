@@ -21,7 +21,9 @@
 			<ms-terminal-toolbar
 				(clearTerminal)="clearTerminal()"
 				(scrollToTopTerminal)="scrollToTopTerminal()"
-				(scrollToBottomTerminal)="scrollToBottomTerminal()"></ms-terminal-toolbar>
+				(scrollToBottomTerminal)="scrollToBottomTerminal()"
+				(searchTerminal)="search($event)"
+				(disposeSearch)="disposeSearch()"></ms-terminal-toolbar>
 		</div>
 	</div>
 	<div class="terminal">
