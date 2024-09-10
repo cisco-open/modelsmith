@@ -35,7 +35,7 @@ import { MsTooltipPanelComponent } from './component/ms-tooltip-panel.component'
 	standalone: true
 })
 export class MsTooltipPanelDirective implements OnDestroy {
-	@Input('contentTemplate') contentTemplate!: TemplateRef<any>;
+	@Input('msTooltipPanel') contentTemplate!: TemplateRef<any>;
 
 	@Input() position: 'top' | 'bottom' | 'left' | 'right' = 'bottom';
 	@Input() showCloseButton = false;
