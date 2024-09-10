@@ -29,13 +29,13 @@ import { isScriptActive } from '../../../../../model-compression/models/enums/sc
 import { MsTooltipPanelDirective } from '../../../../directives/ms-tooltip-panel/ms-tooltip-panel.directive';
 import { isNilOrEmptyString } from '../../../../shared.utils';
 import { DialogConfig, DialogService } from '../../../ms-dialog';
-import { TerminalMessagesHistoryDialogComponent } from '../terminal-messages-history-dialog/terminal-messages-history-dialog.component';
+import { MsTerminalMessagesHistoryDialogComponent } from '../ms-terminal-messages-history-dialog/ms-terminal-messages-history-dialog.component';
 
 @UntilDestroy({})
 @Component({
 	selector: 'ms-terminal-toolbar',
-	templateUrl: './terminal-toolbar.component.html',
-	styleUrls: ['./terminal-toolbar.component.scss'],
+	templateUrl: './ms-terminal-toolbar.component.html',
+	styleUrls: ['./ms-terminal-toolbar.component.scss'],
 	standalone: true,
 	imports: [
 		MatButtonModule,
@@ -93,7 +93,7 @@ export class MsTerminalToolbarComponent implements OnInit {
 	}
 
 	openTerminalMessagesHistoryDialog() {
-		this.dialogService.open(TerminalMessagesHistoryDialogComponent, {
+		this.dialogService.open(MsTerminalMessagesHistoryDialogComponent, {
 			title: 'Terminal history',
 			showSaveButton: false,
 			width: '60vw',

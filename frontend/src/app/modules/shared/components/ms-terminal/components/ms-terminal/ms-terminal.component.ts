@@ -29,7 +29,7 @@ import { ModelsFacadeService } from '../../../../../core/services/models-facade.
 import { AlgorithmType, TrainAlgorithmsEnum } from '../../../../../model-compression/models/enums/algorithms.enum';
 import { TerminalMessage } from '../../models/terminal-message.interface';
 import { formatMessageByType } from '../../utils/terminal.utils';
-import { MsTerminalToolbarComponent } from '../terminal-toolbar/terminal-toolbar.component';
+import { MsTerminalToolbarComponent } from '../ms-terminal-toolbar/ms-terminal-toolbar.component';
 
 @UntilDestroy()
 @Component({

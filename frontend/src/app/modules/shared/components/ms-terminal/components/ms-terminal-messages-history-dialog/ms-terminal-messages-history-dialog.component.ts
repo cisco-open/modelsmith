@@ -25,21 +25,22 @@ import {
 	ViewChild,
 	ViewEncapsulation
 } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { UntilDestroy } from '@ngneat/until-destroy';
-import { skip, take } from 'rxjs';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { SearchAddon } from '@xterm/addon-search';
+import { delay, filter, skip, take } from 'rxjs';
 import { Terminal } from 'xterm';
 import { FitAddon } from 'xterm-addon-fit';
 import { TerminalActions } from '../../../../../../state/core/terminal';
 import { TerminalFacadeService } from '../../../../../core/services';
-import { disableBackgroundScroll, enableBackgroundScroll } from '../../../../shared.utils';
+import { disableBackgroundScroll, enableBackgroundScroll, isNilOrEmptyString } from '../../../../shared.utils';
 import { DIALOG_DATA, DialogConfig, MsDialogComponent } from '../../../ms-dialog';
 import { TerminalMessage } from '../../models/terminal-message.interface';
-import { TerminalSearchPlugin, TerminalSearchPluginConfig } from '../../plugins/terminal-search.plugin';
+import { formatMessageByType } from '../../utils/terminal.utils';
 
 @UntilDestroy()
 @Component({
@@ -55,40 +56,37 @@ import { TerminalSearchPlugin, TerminalSearchPluginConfig } from '../../plugins/
 		MatInputModule,
 		MatTooltipModule
 	],
-	templateUrl: './terminal-messages-history-dialog.component.html',
-	styleUrl: './terminal-messages-history-dialog.component.scss',
+	templateUrl: './ms-terminal-messages-history-dialog.component.html',
+	styleUrl: './ms-terminal-messages-history-dialog.component.scss',
 	encapsulation: ViewEncapsulation.None
 })
-export class TerminalMessagesHistoryDialogComponent implements OnInit, OnDestroy, AfterViewInit {
+export class MsTerminalMessagesHistoryDialogComponent implements OnInit, OnDestroy, AfterViewInit {
 	@ViewChild('terminalHistory', { static: true }) terminalHistoryDiv!: ElementRef;
 
-	public terminalSearch!: TerminalSearchPlugin;
+	searchFormControl = new FormControl<string>('');
 
 	private terminal: Terminal = new Terminal({
 		theme: {
 			background: '#D0D4D9',
 			foreground: '#000000',
 			cursor: '#000000'
-		}
+		},
+		allowProposedApi: true
 	});
 
 	private fitAddon: FitAddon = new FitAddon();
+	private searchAddon = new SearchAddon();
 	private resizeObserver?: ResizeObserver;
-	private messages: TerminalMessage[] = [];
 
 	constructor(
 		@Inject(DIALOG_DATA) public dialogConfig: DialogConfig,
 		private terminalFacadeService: TerminalFacadeService
-	) {
-		this.terminalSearch = new TerminalSearchPlugin(this.terminal, {
-			caseSensitive: false,
-			debounceTimeMs: 300
-		} as TerminalSearchPluginConfig);
-	}
+	) {}
 
 	ngOnInit(): void {
 		this.initializeTerminal();
 		this.loadData();
+		this.listenToSearchFormControlChanges();
 		disableBackgroundScroll();
 	}
 
@@ -101,18 +99,57 @@ export class TerminalMessagesHistoryDialogComponent implements OnInit, OnDestroy
 		this.terminalFacadeService.dispatch(TerminalActions.getAllMessages());
 
 		this.terminalFacadeService.allMessages$.pipe(skip(1), take(1)).subscribe((messages: TerminalMessage[]) => {
-			this.messages = messages;
-
-			this.terminalSearch.initialize(this.messages);
+			messages.forEach((messageObj: TerminalMessage) => {
+				const formattedMessage = formatMessageByType(messageObj);
+				this.writeToTerminal(formattedMessage);
+			});
 		});
 	}
 
 	private initializeTerminal(): void {
 		this.terminal.loadAddon(this.fitAddon);
+		this.terminal.loadAddon(this.searchAddon);
 		this.terminal.open(this.terminalHistoryDiv.nativeElement);
 		this.terminal.writeln('Welcome to ModelSmith terminal!\r\n');
 
 		this.setupResizeObserver();
+	}
+
+	private listenToSearchFormControlChanges(): void {
+		this.searchFormControl.valueChanges
+			.pipe(
+				untilDestroyed(this),
+				delay(300),
+				filter((value: string | null): value is string => !isNilOrEmptyString(value))
+			)
+			.subscribe((value: string) => {
+				this.search(value);
+			});
+	}
+
+	private search(value: string) {
+		this.searchAddon.findNext(value, {
+			decorations: {
+				matchBackground: '#FFFF00',
+				matchBorder: '#FFFF00',
+				matchOverviewRuler: '#FFFF00',
+				activeMatchBackground: '#FFFF00',
+				activeMatchBorder: '#FFFF00',
+				activeMatchColorOverviewRuler: '#FFFF00'
+			}
+		});
+	}
+
+	public disposeSearch() {
+		this.searchAddon.clearDecorations();
+		this.searchFormControl.setValue('');
+	}
+
+	private writeToTerminal(message: string): void {
+		const lines = message.split('\n');
+		lines.forEach((line) => {
+			this.terminal.writeln(line);
+		});
 	}
 
 	private setupResizeObserver(): void {
@@ -151,9 +188,5 @@ export class TerminalMessagesHistoryDialogComponent implements OnInit, OnDestroy
 	ngOnDestroy(): void {
 		this.resizeObserver?.disconnect();
 		enableBackgroundScroll();
-
-		if (this.terminalSearch) {
-			this.terminalSearch.terminateWorker();
-		}
 	}
 }

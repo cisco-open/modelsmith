@@ -14,21 +14,24 @@
 
 //   SPDX-License-Identifier: Apache-2.0
 
-/// <reference lib="webworker" />
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TerminalMessage } from '../models/terminal-message.interface';
-import { formatMessageByType, highlightText } from './terminal.utils';
+import { MsTerminalToolbarComponent } from './ms-terminal-toolbar.component';
 
-addEventListener('message', ({ data }) => {
-	const { messages, searchTerm } = data;
+describe('TerminalToolbarComponent', () => {
+	let component: MsTerminalToolbarComponent;
+	let fixture: ComponentFixture<MsTerminalToolbarComponent>;
 
-	const formattedMessages = messages.map((message: TerminalMessage) => {
-		let formattedMessage = formatMessageByType(message);
-		if (searchTerm) {
-			formattedMessage = highlightText(formattedMessage, searchTerm);
-		}
-		return formattedMessage;
+	beforeEach(() => {
+		TestBed.configureTestingModule({
+			imports: [MsTerminalToolbarComponent]
+		});
+		fixture = TestBed.createComponent(MsTerminalToolbarComponent);
+		component = fixture.componentInstance;
+		fixture.detectChanges();
 	});
 
-	postMessage(formattedMessages);
+	it('should create', () => {
+		expect(component).toBeTruthy();
+	});
 });

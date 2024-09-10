@@ -21,15 +21,15 @@
 				<div class="form-field-container">
 					<mat-label>Search</mat-label>
 					<mat-form-field subscriptSizing="dynamic">
-						<input matInput [formControl]="terminalSearch.searchControl" placeholder="Search terminal messages" />
+						<input matInput [formControl]="searchFormControl" placeholder="Search terminal messages" />
 						<mat-icon
 							matSuffix
-							*ngIf="terminalSearch.searchControl.value"
-							(click)="terminalSearch.clearSearch()"
+							*ngIf="searchFormControl.value"
+							(click)="disposeSearch()"
 							class="mat-error scale-on-hover"
 							>close</mat-icon
 						>
-						<mat-icon matSuffix *ngIf="!terminalSearch.searchControl.value" class="mat-primary">search</mat-icon>
+						<mat-icon matSuffix *ngIf="!searchFormControl.value" class="mat-primary">search</mat-icon>
 					</mat-form-field>
 				</div>
 			</div>
