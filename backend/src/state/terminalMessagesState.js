@@ -16,8 +16,19 @@
 
 const MESSAGE_TYPES = require('../constants/messageTypes');
 
-let messageHistory = [];
-let fullMessageHistory = [];
+let messageHistory = [
+	{
+		data: 'Welcome to ModelSmith terminal!',
+		type: MESSAGE_TYPES.INFO
+	}
+];
+
+let fullMessageHistory = [
+	{
+		data: 'Welcome to ModelSmith terminal!',
+		type: MESSAGE_TYPES.INFO
+	}
+];
 
 const MAX_HISTORY_MESSAGES = 50;
 

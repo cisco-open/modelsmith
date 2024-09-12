@@ -32,7 +32,8 @@ import { MsTooltipPanelComponent } from './component/ms-tooltip-panel.component'
 
 @Directive({
 	selector: '[msTooltipPanel]',
-	standalone: true
+	standalone: true,
+	exportAs: 'msTooltipPanel'
 })
 export class MsTooltipPanelDirective implements OnDestroy {
 	@Input('msTooltipPanel') contentTemplate!: TemplateRef<any>;
@@ -102,7 +103,7 @@ export class MsTooltipPanelDirective implements OnDestroy {
 		}
 	}
 
-	private closePanel() {
+	public closePanel() {
 		if (this.overlayRef) {
 			const tooltipComponentRef = this.overlayRef.overlayElement.querySelector('ms-tooltip-panel') as any;
 			if (tooltipComponentRef) {

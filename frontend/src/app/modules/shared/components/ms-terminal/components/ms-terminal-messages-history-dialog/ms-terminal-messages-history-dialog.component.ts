@@ -110,7 +110,6 @@ export class MsTerminalMessagesHistoryDialogComponent implements OnInit, OnDestr
 		this.terminal.loadAddon(this.fitAddon);
 		this.terminal.loadAddon(this.searchAddon);
 		this.terminal.open(this.terminalHistoryDiv.nativeElement);
-		this.terminal.writeln('Welcome to ModelSmith terminal!\r\n');
 
 		this.setupResizeObserver();
 	}

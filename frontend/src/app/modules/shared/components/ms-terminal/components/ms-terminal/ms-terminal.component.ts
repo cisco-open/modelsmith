@@ -27,6 +27,7 @@ import { TerminalActions } from '../../../../../../state/core/terminal';
 import { ScriptFacadeService, TerminalFacadeService, WebsocketService } from '../../../../../core/services';
 import { ModelsFacadeService } from '../../../../../core/services/models-facade.service';
 import { AlgorithmType, TrainAlgorithmsEnum } from '../../../../../model-compression/models/enums/algorithms.enum';
+import { isScriptActive } from '../../../../../model-compression/models/enums/script-status.enum';
 import { TerminalMessage } from '../../models/terminal-message.interface';
 import { formatMessageByType } from '../../utils/terminal.utils';
 import { MsTerminalToolbarComponent } from '../ms-terminal-toolbar/ms-terminal-toolbar.component';
@@ -63,6 +64,10 @@ export class MsTerminalComponent implements OnInit, AfterViewInit, OnDestroy {
 	private searchAddon = new SearchAddon();
 	private resizeObserver?: ResizeObserver;
 
+	private currentLine = '';
+	private promptString = '> ';
+	private terminalEnabled: boolean = true;
+
 	constructor(
 		private websocketService: WebsocketService,
 		private terminalFacadeService: TerminalFacadeService,
@@ -70,6 +75,7 @@ export class MsTerminalComponent implements OnInit, AfterViewInit, OnDestroy {
 		private modelsFacadeService: ModelsFacadeService
 	) {
 		this.listenToIncommingMessages();
+		this.listenToScriptStateChanges();
 	}
 
 	private listenToIncommingMessages() {
@@ -84,6 +90,12 @@ export class MsTerminalComponent implements OnInit, AfterViewInit, OnDestroy {
 			} else {
 				this.messagesBuffer.push(message);
 			}
+		});
+	}
+
+	private listenToScriptStateChanges() {
+		this.scriptFacadeService.scriptStatus$.pipe(untilDestroyed(this)).subscribe((state) => {
+			this.terminalEnabled = !isScriptActive(state);
 		});
 	}
 
@@ -136,6 +148,10 @@ export class MsTerminalComponent implements OnInit, AfterViewInit, OnDestroy {
 			});
 			this.messagesBuffer = [];
 			this.displayWebSocketMessages = true;
+
+			if (this.terminalEnabled) {
+				this.showPrompt();
+			}
 		});
 		this.terminalFacadeService.dispatch(TerminalActions.getLatestMessages());
 	}
@@ -145,9 +161,47 @@ export class MsTerminalComponent implements OnInit, AfterViewInit, OnDestroy {
 		this.terminal.loadAddon(this.searchAddon);
 
 		this.terminal.open(this.terminalDiv.nativeElement);
-		this.terminal.writeln('Welcome to ModelSmith terminal!\r\n');
 
 		this.setupResizeObserver();
+		this.setupKeyboardHandling();
+	}
+
+	private setupKeyboardHandling(): void {
+		this.terminal.onKey(({ key, domEvent }) => {
+			if (!this.terminalEnabled) {
+				return;
+			}
+
+			const printable = !domEvent.altKey && !domEvent.ctrlKey && !domEvent.metaKey;
+
+			if (domEvent.keyCode === 13) {
+				this.handleEnterKey();
+			} else if (domEvent.keyCode === 8) {
+				if (this.currentLine.length > 0) {
+					this.currentLine = this.currentLine.slice(0, -1);
+					this.terminal.write('\b \b');
+				}
+			} else if (printable) {
+				this.currentLine += key;
+				this.terminal.write(key);
+			}
+		});
+	}
+	private handleEnterKey(): void {
+		this.terminal.writeln('');
+		if (this.currentLine.trim().length > 0) {
+			this.executeCommand(this.currentLine);
+		}
+		this.currentLine = '';
+		this.showPrompt();
+	}
+
+	private showPrompt(): void {
+		this.terminal.write(this.promptString);
+	}
+
+	private executeCommand(command: string): void {
+		this.terminal.writeln(`${command}`);
 	}
 
 	private setupResizeObserver(): void {
