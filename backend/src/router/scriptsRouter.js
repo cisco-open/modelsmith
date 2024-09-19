@@ -111,7 +111,7 @@ router.post('/execute-command', (req, res) => {
 			},
 			() => {},
 			(error) => {
-				broadcastTerminal(`Error: ${error}`, MESSAGE_TYPES.ERROR);
+				broadcastTerminal(`${error}`, MESSAGE_TYPES.ERROR);
 			}
 		);
 		res.status(OK).send({ message: 'Command execution started.' });

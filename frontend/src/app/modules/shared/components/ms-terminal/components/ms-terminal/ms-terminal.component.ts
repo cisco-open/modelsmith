@@ -23,6 +23,7 @@ import { FitAddon } from 'xterm-addon-fit';
 import { KeyValue } from '../../../../../../services/client/models/key-value/key-value.interface-dto';
 import { ScriptDetails } from '../../../../../../services/client/models/script/script-details.interface-dto';
 import { ModelsActions } from '../../../../../../state/core/models/models.actions';
+import { ScriptActions } from '../../../../../../state/core/script';
 import { TerminalActions } from '../../../../../../state/core/terminal';
 import { ScriptFacadeService, TerminalFacadeService, WebsocketService } from '../../../../../core/services';
 import { ModelsFacadeService } from '../../../../../core/services/models-facade.service';
@@ -187,6 +188,7 @@ export class MsTerminalComponent implements OnInit, AfterViewInit, OnDestroy {
 			}
 		});
 	}
+
 	private handleEnterKey(): void {
 		this.terminal.writeln('');
 		if (this.currentLine.trim().length > 0) {
@@ -201,7 +203,7 @@ export class MsTerminalComponent implements OnInit, AfterViewInit, OnDestroy {
 	}
 
 	private executeCommand(command: string): void {
-		this.terminal.writeln(`${command}`);
+		this.scriptFacadeService.dispatch(ScriptActions.executeCommand({ command }));
 	}
 
 	private setupResizeObserver(): void {
