@@ -66,6 +66,11 @@ export class ProjectSettingsComponent implements OnInit {
 	ngOnInit() {
 		this.listenToAlgorithmPanelChanges();
 		this.listenToScriptStateChanges();
+
+		// Test
+		setTimeout(() => {
+			this.scriptFacadeService.dispatch(ScriptActions.executeCommand({ command: 'cd machine_learning_core && ls' }));
+		}, 1000);
 	}
 
 	private listenToAlgorithmPanelChanges(): void {

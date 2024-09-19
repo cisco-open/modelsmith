@@ -13,6 +13,7 @@
 //  limitations under the License.
 
 //  SPDX-License-Identifier: Apache-2.0
+
 const express = require('express');
 const router = express.Router();
 const { broadcastTerminal, broadcastStatus } = require('../services/websocketService');
@@ -92,6 +93,31 @@ router.post('/run-script', checkSshConnection, checkIfScriptRunning, async (req,
 	} finally {
 		setActiveScriptDetails(null);
 		changeAndBroadcastScriptState(ScriptState.NOT_RUNNING);
+	}
+});
+
+router.post('/execute-command', (req, res) => {
+	const { command } = req.body;
+
+	if (!command) {
+		return res.status(BAD_REQUEST).send({ error: 'No command provided.' });
+	}
+
+	try {
+		executeCommand(
+			command,
+			(data) => {
+				broadcastTerminal(data.toString(), MESSAGE_TYPES.INFO);
+			},
+			() => {},
+			(error) => {
+				broadcastTerminal(`Error: ${error}`, MESSAGE_TYPES.ERROR);
+			}
+		);
+		res.status(OK).send({ message: 'Command execution started.' });
+	} catch (error) {
+		broadcastTerminal(`Execution failed: ${error.message}`, MESSAGE_TYPES.ERROR);
+		res.status(BAD_REQUEST).send({ error: error.message });
 	}
 });
 

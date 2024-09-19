@@ -33,6 +33,9 @@ export const ScriptActions = createActionGroup({
 		'Stop Script Failure': props<{ error: any }>(),
 		'Get Current or Last Active Script Details': emptyProps(),
 		'Get Current or Last Active Script Details Success': props<{ scriptDetails: ScriptDetails }>(),
-		'Get Current or Last Active Script Details Failure': props<{ error: any }>()
+		'Get Current or Last Active Script Details Failure': props<{ error: any }>(),
+		'Execute Command': props<{ command: string }>(),
+		'Execute Command Success': emptyProps(),
+		'Execute Command Failure': props<{ error: any }>()
 	}
 });

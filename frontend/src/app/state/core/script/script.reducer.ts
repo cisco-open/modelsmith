@@ -70,5 +70,13 @@ export const scriptReducer = createReducer(
 	on(ScriptActions.stopScriptFailure, (state, { error }) => ({
 		...state,
 		error
+	})),
+	on(ScriptActions.executeCommandSuccess, (state) => ({
+		...state,
+		error: null
+	})),
+	on(ScriptActions.executeCommandFailure, (state, { error }) => ({
+		...state,
+		error
 	}))
 );
