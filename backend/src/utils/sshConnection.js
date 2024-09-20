@@ -15,14 +15,16 @@
 //  SPDX-License-Identifier: Apache-2.0
 
 const ssh2 = require('ssh2');
+const EventEmitter = require('events');
 const logger = require('./logger');
 const SSHConfigManager = require('./sshConfigManager');
 const { SSH_CONNECTION_NAMES, SSH_STATUS } = require('../constants/sshConstants');
 
 const DEFAULT_TIMEOUT_SEC = 30;
 
-class SSHConnection {
+class SSHConnection extends EventEmitter {
 	constructor(name, timeoutSec = DEFAULT_TIMEOUT_SEC) {
+		super(); // Call the parent constructor
 		this.currentConfig = SSHConfigManager.getConfig(name);
 
 		this.timeoutSec = timeoutSec;
@@ -55,12 +57,14 @@ class SSHConnection {
 			this.status = SSH_STATUS.ERROR;
 			this.clearTimeout();
 			this.handleConnectionError();
+			this.emit('error', err); // Emit the error event
 		});
 
 		this.connection.on('end', () => {
 			logger.info(`Connection (${config.host}) has ended.`);
 			this.status = SSH_STATUS.NOT_CONNECTED;
 			this.clearTimeout();
+			this.emit('end'); // Emit the end event
 		});
 
 		this.connection.on('close', () => {
@@ -72,12 +76,14 @@ class SSHConnection {
 			}
 
 			this.status = SSH_STATUS.NOT_CONNECTED;
+			this.emit('close'); // Emit the close event
 		});
 
 		this.connection.on('ready', () => {
 			logger.info(`Connected to the server at ${config.host}.`);
 			this.status = SSH_STATUS.READY;
 			this.clearTimeout();
+			this.emit('ready'); // Emit the ready event
 		});
 	}
 
@@ -87,6 +93,7 @@ class SSHConnection {
 				logger.error(`Connection (${this.currentConfig.host}) timed out.`);
 				this.connection.end();
 				this.status = SSH_STATUS.TIMEOUT;
+				this.emit('timeout'); // Emit the timeout event
 			}
 		}, this.timeoutSec * 1000);
 	}
@@ -109,10 +116,6 @@ class SSHConnection {
 		this.attemptConnection(SSH_CONNECTION_NAMES.BACKUP);
 	}
 
-	// This function is designed to execute a command over an SSH connection
-	// and accumulate all the output data until the command completes.
-	// It is particularly useful for handling very large files or commands
-	// that produce substantial amounts of data.
 	executeAndAccumulateOutput(command, onData, onEnd, onError) {
 		if (this.status !== SSH_STATUS.READY) {
 			onError(new Error('SSH connection is not ready'));
@@ -148,8 +151,6 @@ class SSHConnection {
 		});
 	}
 
-	// This function executes a command via an SSH connection and handles output in real-time,
-	// making it suitable for tasks requiring immediate processing of smaller amounts of data.
 	exec(command, onData, onEnd, onError) {
 		if (this.status !== SSH_STATUS.READY) {
 			onError(new Error('SSH connection is not ready'));
@@ -181,6 +182,18 @@ class SSHConnection {
 				}
 			});
 		});
+	}
+
+	shell(callback) {
+		if (this.status !== SSH_STATUS.READY) {
+			callback(new Error('SSH connection is not ready'));
+			return;
+		}
+		this.connection.shell(callback);
+	}
+
+	end() {
+		this.connection.end();
 	}
 }
 

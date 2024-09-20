@@ -23,6 +23,7 @@ const noCache = require('./middlewares/noCache');
 const websocketService = require('./services/websocketService');
 const allRoutes = require('./router/allRoutes');
 const logger = require('./utils/logger');
+const terminalWebsocketService = require('./services/terminalWebsocketService');
 
 app.use(cors());
 app.use(express.json());
@@ -35,7 +36,13 @@ const server = app.listen(process.env.PORT, () => {
 });
 
 server.on('upgrade', (request, socket, head) => {
-	websocketService.wss.handleUpgrade(request, socket, head, (ws) => {
-		websocketService.wss.emit('connection', ws, request);
-	});
+	if (request.url === '/terminal') {
+		terminalWebsocketService.terminalWss.handleUpgrade(request, socket, head, (ws) => {
+			terminalWebsocketService.terminalWss.emit('connection', ws, request);
+		});
+	} else {
+		websocketService.wss.handleUpgrade(request, socket, head, (ws) => {
+			websocketService.wss.emit('connection', ws, request);
+		});
+	}
 });

@@ -1,4 +1,3 @@
-const { broadcastTerminal } = require('../services/websocketService');
 const ALGORITHM_TYPES = require('../constants/algorithmTypesConstants');
 const { executeCommand } = require('./commandExecutionFacade');
 const { pruningParserInstance } = require('../parsers/pruningParser');
@@ -15,9 +14,6 @@ class ScriptExecutor {
 		return new Promise((resolve, reject) => {
 			this.parser.reset();
 			const cmd = this.buildCommand(scriptPath, algorithm, args);
-			const pythonCmd = this.buildPythonCommand(scriptPath, algorithm, args);
-
-			broadcastTerminal(pythonCmd);
 
 			executeCommand(
 				cmd,
@@ -45,7 +41,6 @@ class ScriptExecutor {
 
 	handleOutput(data) {
 		const formattedData = data.toString();
-		broadcastTerminal(formattedData);
 		this.parser.parseLine(formattedData);
 	}
 }

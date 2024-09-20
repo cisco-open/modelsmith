@@ -16,12 +16,9 @@
 
 const WebSocket = require('ws');
 const { getScriptState } = require('../state/scriptState');
-const { addToMessageHistory } = require('../state/terminalMessagesState');
-const MESSAGE_TYPES = require('../constants/messageTypes');
 
 // Constants
 const MessageTopics = {
-	TERMINAL: 'terminal',
 	SCRIPT_STATUS: 'script_status',
 	STATISTICS: 'statistics',
 	CHARTS_PREFIX: 'chart_'
@@ -50,11 +47,6 @@ function broadcast(data) {
 	});
 }
 
-function broadcastTerminal(data, type = MESSAGE_TYPES.INFO) {
-	addToMessageHistory({ data, type });
-	broadcast(JSON.stringify({ topic: MessageTopics.TERMINAL, data: { data, type } }));
-}
-
 function broadcastStatus() {
 	broadcast(JSON.stringify({ topic: MessageTopics.SCRIPT_STATUS, data: getScriptState() }));
 }
@@ -65,7 +57,6 @@ function broadcastChart(topic, latestValue) {
 
 module.exports = {
 	wss,
-	broadcastTerminal,
 	broadcastStatus,
 	broadcastChart,
 	MessageTopics,

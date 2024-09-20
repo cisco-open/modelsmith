@@ -16,12 +16,11 @@
 
 const express = require('express');
 const router = express.Router();
-const { broadcastTerminal, broadcastStatus } = require('../services/websocketService');
+const { broadcastStatus } = require('../services/websocketService');
 const checkSshConnection = require('../middlewares/checkSshConnection');
 const checkIfNoScriptRunning = require('../middlewares/checkIfNoScriptRunning');
 const checkIfScriptRunning = require('../middlewares/checkIfScriptRunning');
 const ALGORITHMS = require('../constants/algorithmsConstants');
-const MESSAGE_TYPES = require('../constants/messageTypes');
 const { BAD_REQUEST, OK, INTERNAL_SERVER_ERROR } = require('../constants/httpStatusCodes');
 const logger = require('../utils/logger');
 const {
@@ -83,41 +82,14 @@ router.post('/run-script', checkSshConnection, checkIfScriptRunning, async (req,
 			args
 		);
 		res.status(OK).send({ message: 'Script execution ended successfully.' });
-		broadcastTerminal('Script execution ended successfully.', MESSAGE_TYPES.SUCCESS);
 	} catch (error) {
 		logger.error(`Error executing command: ${error}`);
 		res.status(INTERNAL_SERVER_ERROR).send({
 			error: 'The script has errors and failed to start automatically. Please check the terminal.'
 		});
-		broadcastTerminal(error, MESSAGE_TYPES.ERROR);
 	} finally {
 		setActiveScriptDetails(null);
 		changeAndBroadcastScriptState(ScriptState.NOT_RUNNING);
-	}
-});
-
-router.post('/execute-command', (req, res) => {
-	const { command } = req.body;
-
-	if (!command) {
-		return res.status(BAD_REQUEST).send({ error: 'No command provided.' });
-	}
-
-	try {
-		executeCommand(
-			command,
-			(data) => {
-				broadcastTerminal(data.toString(), MESSAGE_TYPES.INFO);
-			},
-			() => {},
-			(error) => {
-				broadcastTerminal(`${error}`, MESSAGE_TYPES.ERROR);
-			}
-		);
-		res.status(OK).send({ message: 'Command execution started.' });
-	} catch (error) {
-		broadcastTerminal(`Execution failed: ${error.message}`, MESSAGE_TYPES.ERROR);
-		res.status(BAD_REQUEST).send({ error: error.message });
 	}
 });
 
@@ -138,7 +110,6 @@ router.post('/stop-script', checkSshConnection, checkIfNoScriptRunning, (req, re
 	const killCommand = `bash ${process.env.MACHINE_LEARNING_CORE_PATH}/bash/kill_script.sh ${fileName}`;
 	let responseSent = false;
 
-	broadcastTerminal('Stopping script started.');
 	setScriptState(ScriptState.STOPPING);
 
 	executeCommand(
@@ -151,7 +122,6 @@ router.post('/stop-script', checkSshConnection, checkIfNoScriptRunning, (req, re
 			if (responseSent) return;
 			setScriptState(ScriptState.NOT_RUNNING);
 			setActiveScriptDetails(null);
-			broadcastTerminal('Script stopped successfully.', MESSAGE_TYPES.SUCCESS);
 			res.status(OK).send({ message: 'Script stopped successfully.' });
 			responseSent = true;
 		},

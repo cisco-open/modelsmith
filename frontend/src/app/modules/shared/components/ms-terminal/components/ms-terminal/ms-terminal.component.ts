@@ -16,19 +16,19 @@
 
 import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { AttachAddon } from '@xterm/addon-attach';
 import { SearchAddon } from '@xterm/addon-search';
-import { firstValueFrom, skip, take } from 'rxjs';
+import { firstValueFrom } from 'rxjs';
 import { Terminal } from 'xterm';
 import { FitAddon } from 'xterm-addon-fit';
+import { environment } from '../../../../../../../environments/environment';
 import { KeyValue } from '../../../../../../services/client/models/key-value/key-value.interface-dto';
 import { ScriptDetails } from '../../../../../../services/client/models/script/script-details.interface-dto';
 import { ModelsActions } from '../../../../../../state/core/models/models.actions';
-import { ScriptActions } from '../../../../../../state/core/script';
 import { TerminalActions } from '../../../../../../state/core/terminal';
 import { ScriptFacadeService, TerminalFacadeService, WebsocketService } from '../../../../../core/services';
 import { ModelsFacadeService } from '../../../../../core/services/models-facade.service';
 import { AlgorithmType, TrainAlgorithmsEnum } from '../../../../../model-compression/models/enums/algorithms.enum';
-import { isScriptActive } from '../../../../../model-compression/models/enums/script-status.enum';
 import { TerminalMessage } from '../../models/terminal-message.interface';
 import { formatMessageByType } from '../../utils/terminal.utils';
 import { MsTerminalToolbarComponent } from '../ms-terminal-toolbar/ms-terminal-toolbar.component';
@@ -63,11 +63,8 @@ export class MsTerminalComponent implements OnInit, AfterViewInit, OnDestroy {
 
 	private fitAddon: FitAddon = new FitAddon();
 	private searchAddon = new SearchAddon();
+	private attachAddon!: AttachAddon;
 	private resizeObserver?: ResizeObserver;
-
-	private currentLine = '';
-	private promptString = '> ';
-	private terminalEnabled: boolean = true;
 
 	constructor(
 		private websocketService: WebsocketService,
@@ -76,7 +73,6 @@ export class MsTerminalComponent implements OnInit, AfterViewInit, OnDestroy {
 		private modelsFacadeService: ModelsFacadeService
 	) {
 		this.listenToIncommingMessages();
-		this.listenToScriptStateChanges();
 	}
 
 	private listenToIncommingMessages() {
@@ -94,15 +90,8 @@ export class MsTerminalComponent implements OnInit, AfterViewInit, OnDestroy {
 		});
 	}
 
-	private listenToScriptStateChanges() {
-		this.scriptFacadeService.scriptStatus$.pipe(untilDestroyed(this)).subscribe((state) => {
-			this.terminalEnabled = !isScriptActive(state);
-		});
-	}
-
 	ngOnInit(): void {
 		this.initializeTerminal();
-		this.loadLatestMessages();
 	}
 
 	ngAfterViewInit(): void {
@@ -136,27 +125,6 @@ export class MsTerminalComponent implements OnInit, AfterViewInit, OnDestroy {
 		});
 	}
 
-	private loadLatestMessages() {
-		this.terminalFacadeService.messages$.pipe(skip(1), take(1)).subscribe((messages: TerminalMessage[]) => {
-			messages.forEach((messageObj: TerminalMessage) => {
-				const formattedMessage = formatMessageByType(messageObj);
-				this.writeToTerminal(formattedMessage);
-			});
-
-			this.messagesBuffer.forEach((bufferedMessageObj: TerminalMessage) => {
-				const formattedMessage = formatMessageByType(bufferedMessageObj);
-				this.writeToTerminal(formattedMessage);
-			});
-			this.messagesBuffer = [];
-			this.displayWebSocketMessages = true;
-
-			if (this.terminalEnabled) {
-				this.showPrompt();
-			}
-		});
-		this.terminalFacadeService.dispatch(TerminalActions.getLatestMessages());
-	}
-
 	private initializeTerminal(): void {
 		this.terminal.loadAddon(this.fitAddon);
 		this.terminal.loadAddon(this.searchAddon);
@@ -164,46 +132,19 @@ export class MsTerminalComponent implements OnInit, AfterViewInit, OnDestroy {
 		this.terminal.open(this.terminalDiv.nativeElement);
 
 		this.setupResizeObserver();
-		this.setupKeyboardHandling();
-	}
 
-	private setupKeyboardHandling(): void {
-		this.terminal.onKey(({ key, domEvent }) => {
-			if (!this.terminalEnabled) {
-				return;
-			}
+		const socket = new WebSocket(environment.terminalWebSocketUrl);
 
-			const printable = !domEvent.altKey && !domEvent.ctrlKey && !domEvent.metaKey;
+		socket.onopen = () => {
+			console.log('Terminal WebSocket connected!');
+		};
 
-			if (domEvent.keyCode === 13) {
-				this.handleEnterKey();
-			} else if (domEvent.keyCode === 8) {
-				if (this.currentLine.length > 0) {
-					this.currentLine = this.currentLine.slice(0, -1);
-					this.terminal.write('\b \b');
-				}
-			} else if (printable) {
-				this.currentLine += key;
-				this.terminal.write(key);
-			}
-		});
-	}
+		socket.onerror = (error) => {
+			console.error('Terminal WebSocket Error:', error);
+		};
 
-	private handleEnterKey(): void {
-		this.terminal.writeln('');
-		if (this.currentLine.trim().length > 0) {
-			this.executeCommand(this.currentLine);
-		}
-		this.currentLine = '';
-		this.showPrompt();
-	}
-
-	private showPrompt(): void {
-		this.terminal.write(this.promptString);
-	}
-
-	private executeCommand(command: string): void {
-		this.scriptFacadeService.dispatch(ScriptActions.executeCommand({ command }));
+		this.attachAddon = new AttachAddon(socket);
+		this.terminal.loadAddon(this.attachAddon);
 	}
 
 	private setupResizeObserver(): void {
@@ -266,5 +207,7 @@ export class MsTerminalComponent implements OnInit, AfterViewInit, OnDestroy {
 
 	ngOnDestroy(): void {
 		this.resizeObserver?.disconnect();
+		this.attachAddon.dispose();
+		this.terminal.dispose();
 	}
 }
