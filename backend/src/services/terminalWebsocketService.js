@@ -14,106 +14,175 @@
 
 //  SPDX-License-Identifier: Apache-2.0
 
-// terminalWebSocketService.js
-
 const WebSocket = require('ws');
 const os = require('os');
-const url = require('url');
 const pty = require('node-pty');
 const SSHConnection = require('../utils/sshConnection');
 const CONNECTION_TYPE = require('../constants/connectionTypeConstants');
 const { SSH_CONNECTION_NAMES } = require('../constants/sshConstants');
 
-const terminalWss = new WebSocket.Server({ noServer: true });
+class TerminalWebSocketService {
+	constructor() {
+		this.terminalWss = new WebSocket.Server({ noServer: true });
 
-let sshConnection = null;
-let sshConnectionReady = false;
+		this.sshConnection = null;
+		this.sshConnectionPromise = null;
+		this.shellStream = null;
+		this.clients = [];
 
-terminalWss.on('connection', (ws) => {
-	if (process.env.CONNECTION_TYPE === CONNECTION_TYPE.LOCAL) {
-		handleLocalConnection(ws);
-	} else if (process.env.CONNECTION_TYPE === CONNECTION_TYPE.VM) {
-		handleVMConnection(ws);
-	} else {
-		ws.close();
-		console.error('Unsupported CONNECTION_TYPE:', process.env.CONNECTION_TYPE);
+		this.setupWebSocketServer();
 	}
-});
 
-function handleLocalConnection(ws) {
-	const isWindows = os.platform() === 'win32';
-	const shellPath = isWindows ? 'cmd.exe' : process.env.SHELL || '/bin/bash';
-
-	const shell = pty.spawn(shellPath, [], {
-		name: 'xterm-color',
-		cols: 80,
-		rows: 24,
-		cwd: os.homedir(),
-		env: process.env
-	});
-
-	shell.on('data', (data) => {
-		if (ws.readyState === WebSocket.OPEN) {
-			ws.send(data);
-		}
-	});
-
-	ws.on('message', (msg) => {
-		shell.write(msg);
-	});
-
-	ws.on('close', () => {
-		shell.kill();
-	});
-}
-
-function handleVMConnection(ws) {
-	if (!sshConnection) {
-		sshConnection = new SSHConnection(SSH_CONNECTION_NAMES.PRIMARY);
-
-		sshConnection.on('ready', () => {
-			sshConnectionReady = true;
-			createShellSession(ws);
-		});
-
-		sshConnection.on('error', (err) => {
-			console.error('SSH connection error:', err);
-			ws.close();
-		});
-	} else if (sshConnectionReady) {
-		createShellSession(ws);
-	} else {
-		sshConnection.once('ready', () => {
-			sshConnectionReady = true;
-			createShellSession(ws);
+	setupWebSocketServer() {
+		this.terminalWss.on('connection', (ws) => {
+			if (process.env.CONNECTION_TYPE === CONNECTION_TYPE.LOCAL) {
+				this.handleLocalConnection(ws);
+			} else if (process.env.CONNECTION_TYPE === CONNECTION_TYPE.VM) {
+				this.handleVMConnection(ws);
+			} else {
+				ws.close();
+				console.error('Unsupported CONNECTION_TYPE:', process.env.CONNECTION_TYPE);
+			}
 		});
 	}
-}
 
-function createShellSession(ws) {
-	sshConnection.shell((err, stream) => {
-		if (err) {
-			console.error('SSH shell error:', err);
-			ws.close();
-			return;
+	handleLocalConnection(ws) {
+		const isWindows = os.platform() === 'win32';
+		const shellPath = isWindows ? 'cmd.exe' : process.env.SHELL || '/bin/bash';
+
+		if (!this.localShell) {
+			this.localShell = pty.spawn(shellPath, [], {
+				name: 'xterm-color',
+				cols: 80,
+				rows: 24,
+				cwd: os.homedir(),
+				env: process.env
+			});
+
+			this.localShell.on('data', (data) => {
+				this.clients.forEach((client) => {
+					if (client.readyState === WebSocket.OPEN) {
+						client.send(data);
+					}
+				});
+			});
+
+			this.localShell.on('exit', () => {
+				console.log('Local shell exited');
+				this.localShell = null;
+			});
 		}
 
-		stream.on('data', (data) => {
-			if (ws.readyState === WebSocket.OPEN) {
-				ws.send(data.toString('utf8'));
+		this.attachClientToLocalShell(ws);
+	}
+
+	attachClientToLocalShell(ws) {
+		this.clients.push(ws);
+
+		ws.on('message', (msg) => {
+			if (this.localShell) {
+				this.localShell.write(msg);
 			}
 		});
 
+		ws.on('close', () => {
+			this.clients = this.clients.filter((client) => client !== ws);
+		});
+	}
+
+	async handleVMConnection(ws) {
+		try {
+			const sshConnection = await this.getSSHConnection();
+
+			if (!this.shellStream) {
+				await this.createShellSession(sshConnection);
+			}
+
+			this.attachClientToShellSession(ws);
+		} catch (error) {
+			console.error('Failed to establish SSH connection:', error);
+			ws.close();
+		}
+	}
+
+	getSSHConnection() {
+		if (!this.sshConnectionPromise) {
+			this.sshConnectionPromise = new Promise((resolve, reject) => {
+				if (this.sshConnection && this.sshConnection.isConnected()) {
+					resolve(this.sshConnection);
+				} else {
+					this.sshConnection = new SSHConnection(SSH_CONNECTION_NAMES.PRIMARY);
+
+					this.sshConnection.on('ready', () => {
+						resolve(this.sshConnection);
+					});
+
+					this.sshConnection.on('error', (err) => {
+						console.error('SSH connection error:', err);
+						this.sshConnection = null;
+						this.sshConnectionPromise = null;
+						reject(err);
+					});
+
+					this.sshConnection.on('close', () => {
+						console.log('SSH connection closed');
+						this.sshConnection = null;
+						this.sshConnectionPromise = null;
+
+						if (this.shellStream) {
+							this.shellStream.end();
+							this.shellStream = null;
+						}
+					});
+				}
+			});
+		}
+
+		return this.sshConnectionPromise;
+	}
+
+	createShellSession(sshConnection) {
+		return new Promise((resolve, reject) => {
+			sshConnection.shell((err, stream) => {
+				if (err) {
+					console.error('SSH shell error:', err);
+					reject(err);
+					return;
+				}
+
+				this.shellStream = stream;
+
+				stream.on('data', (data) => {
+					this.clients.forEach((client) => {
+						if (client.readyState === WebSocket.OPEN) {
+							client.send(data.toString('utf8'));
+						}
+					});
+				});
+
+				stream.on('close', () => {
+					console.log('SSH shell session closed');
+					this.shellStream = null;
+				});
+
+				resolve();
+			});
+		});
+	}
+
+	attachClientToShellSession(ws) {
+		this.clients.push(ws);
+
 		ws.on('message', (msg) => {
-			stream.write(msg);
+			if (this.shellStream) {
+				this.shellStream.write(msg);
+			}
 		});
 
 		ws.on('close', () => {
-			stream.end();
+			this.clients = this.clients.filter((client) => client !== ws);
 		});
-	});
+	}
 }
 
-module.exports = {
-	terminalWss
-};
+module.exports = new TerminalWebSocketService();
