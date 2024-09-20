@@ -15,22 +15,21 @@
 //   SPDX-License-Identifier: Apache-2.0
 
 import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { UntilDestroy } from '@ngneat/until-destroy';
 import { AttachAddon } from '@xterm/addon-attach';
 import { SearchAddon } from '@xterm/addon-search';
 import { firstValueFrom } from 'rxjs';
 import { Terminal } from 'xterm';
 import { FitAddon } from 'xterm-addon-fit';
-import { environment } from '../../../../../../../environments/environment';
 import { KeyValue } from '../../../../../../services/client/models/key-value/key-value.interface-dto';
 import { ScriptDetails } from '../../../../../../services/client/models/script/script-details.interface-dto';
 import { ModelsActions } from '../../../../../../state/core/models/models.actions';
 import { TerminalActions } from '../../../../../../state/core/terminal';
-import { ScriptFacadeService, TerminalFacadeService, WebsocketService } from '../../../../../core/services';
+import { ScriptFacadeService, TerminalFacadeService } from '../../../../../core/services';
 import { ModelsFacadeService } from '../../../../../core/services/models-facade.service';
 import { AlgorithmType, TrainAlgorithmsEnum } from '../../../../../model-compression/models/enums/algorithms.enum';
 import { TerminalMessage } from '../../models/terminal-message.interface';
-import { formatMessageByType } from '../../utils/terminal.utils';
+import { TerminalWebSocketService } from '../../services/terminal-websocket.service';
 import { MsTerminalToolbarComponent } from '../ms-terminal-toolbar/ms-terminal-toolbar.component';
 
 @UntilDestroy()
@@ -67,28 +66,11 @@ export class MsTerminalComponent implements OnInit, AfterViewInit, OnDestroy {
 	private resizeObserver?: ResizeObserver;
 
 	constructor(
-		private websocketService: WebsocketService,
 		private terminalFacadeService: TerminalFacadeService,
 		private scriptFacadeService: ScriptFacadeService,
-		private modelsFacadeService: ModelsFacadeService
-	) {
-		this.listenToIncommingMessages();
-	}
-
-	private listenToIncommingMessages() {
-		this.websocketService.terminalMessages$.pipe(untilDestroyed(this)).subscribe((message: TerminalMessage) => {
-			if (message?.data === 'Script execution ended successfully.') {
-				this.updateModelsListOnTrainAlgorithmCompletion();
-			}
-
-			const formattedMessage = formatMessageByType(message);
-			if (this.displayWebSocketMessages) {
-				this.writeToTerminal(formattedMessage);
-			} else {
-				this.messagesBuffer.push(message);
-			}
-		});
-	}
+		private modelsFacadeService: ModelsFacadeService,
+		private terminalWebSocketService: TerminalWebSocketService
+	) {}
 
 	ngOnInit(): void {
 		this.initializeTerminal();
@@ -125,7 +107,7 @@ export class MsTerminalComponent implements OnInit, AfterViewInit, OnDestroy {
 		});
 	}
 
-	private initializeTerminal(): void {
+	private async initializeTerminal(): Promise<void> {
 		this.terminal.loadAddon(this.fitAddon);
 		this.terminal.loadAddon(this.searchAddon);
 
@@ -133,18 +115,13 @@ export class MsTerminalComponent implements OnInit, AfterViewInit, OnDestroy {
 
 		this.setupResizeObserver();
 
-		const socket = new WebSocket(environment.terminalWebSocketUrl);
-
-		socket.onopen = () => {
-			console.log('Terminal WebSocket connected!');
-		};
-
-		socket.onerror = (error) => {
-			console.error('Terminal WebSocket Error:', error);
-		};
-
-		this.attachAddon = new AttachAddon(socket);
-		this.terminal.loadAddon(this.attachAddon);
+		try {
+			const socket = await this.terminalWebSocketService.getSocket();
+			this.attachAddon = new AttachAddon(socket);
+			this.terminal.loadAddon(this.attachAddon);
+		} catch (error) {
+			console.error('Failed to initialize terminal WebSocket:', error);
+		}
 	}
 
 	private setupResizeObserver(): void {
@@ -207,7 +184,9 @@ export class MsTerminalComponent implements OnInit, AfterViewInit, OnDestroy {
 
 	ngOnDestroy(): void {
 		this.resizeObserver?.disconnect();
-		this.attachAddon.dispose();
+		if (this.attachAddon) {
+			this.attachAddon.dispose();
+		}
 		this.terminal.dispose();
 	}
 }
