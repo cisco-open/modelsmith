@@ -21,6 +21,7 @@ import { SearchAddon } from '@xterm/addon-search';
 import { firstValueFrom } from 'rxjs';
 import { Terminal } from 'xterm';
 import { FitAddon } from 'xterm-addon-fit';
+import { environment } from '../../../../../../../environments/environment';
 import { KeyValue } from '../../../../../../services/client/models/key-value/key-value.interface-dto';
 import { ScriptDetails } from '../../../../../../services/client/models/script/script-details.interface-dto';
 import { ModelsActions } from '../../../../../../state/core/models/models.actions';
@@ -29,7 +30,6 @@ import { ScriptFacadeService, TerminalFacadeService } from '../../../../../core/
 import { ModelsFacadeService } from '../../../../../core/services/models-facade.service';
 import { AlgorithmType, TrainAlgorithmsEnum } from '../../../../../model-compression/models/enums/algorithms.enum';
 import { TerminalMessage } from '../../models/terminal-message.interface';
-import { TerminalWebSocketService } from '../../services/terminal-websocket.service';
 import { MsTerminalToolbarComponent } from '../ms-terminal-toolbar/ms-terminal-toolbar.component';
 
 @UntilDestroy()
@@ -64,12 +64,12 @@ export class MsTerminalComponent implements OnInit, AfterViewInit, OnDestroy {
 	private searchAddon = new SearchAddon();
 	private attachAddon!: AttachAddon;
 	private resizeObserver?: ResizeObserver;
+	private socket!: WebSocket;
 
 	constructor(
 		private terminalFacadeService: TerminalFacadeService,
 		private scriptFacadeService: ScriptFacadeService,
-		private modelsFacadeService: ModelsFacadeService,
-		private terminalWebSocketService: TerminalWebSocketService
+		private modelsFacadeService: ModelsFacadeService
 	) {}
 
 	ngOnInit(): void {
@@ -114,14 +114,32 @@ export class MsTerminalComponent implements OnInit, AfterViewInit, OnDestroy {
 		this.terminal.open(this.terminalDiv.nativeElement);
 
 		this.setupResizeObserver();
+		this.setupWebSocket();
+	}
 
-		try {
-			const socket = await this.terminalWebSocketService.getSocket();
-			this.attachAddon = new AttachAddon(socket);
-			this.terminal.loadAddon(this.attachAddon);
-		} catch (error) {
-			console.error('Failed to initialize terminal WebSocket:', error);
-		}
+	private setupWebSocket(): void {
+		const socketUrl = `${environment.terminalWebSocketUrl}`;
+		this.socket = new WebSocket(socketUrl);
+
+		this.socket.onopen = () => {
+			console.log('Terminal WebSocket connected!');
+		};
+
+		this.socket.onerror = (error) => {
+			console.error('Terminal WebSocket Error:', error);
+		};
+
+		this.socket.onmessage = (event) => {
+			this.terminal.write(event.data);
+		};
+
+		this.socket.onclose = () => {
+			console.log('Terminal WebSocket closed');
+		};
+
+		this.terminal.onData((data) => {
+			this.socket.send(data);
+		});
 	}
 
 	private setupResizeObserver(): void {

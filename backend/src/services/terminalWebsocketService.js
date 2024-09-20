@@ -29,6 +29,7 @@ class TerminalWebSocketService {
 		this.sshConnectionPromise = null;
 		this.shellStream = null;
 		this.clients = [];
+		this.outputBuffer = '';
 
 		this.setupWebSocketServer();
 	}
@@ -60,34 +61,17 @@ class TerminalWebSocketService {
 			});
 
 			this.localShell.on('data', (data) => {
-				this.clients.forEach((client) => {
-					if (client.readyState === WebSocket.OPEN) {
-						client.send(data);
-					}
-				});
+				this.handleShellData(data);
 			});
 
 			this.localShell.on('exit', () => {
 				console.log('Local shell exited');
 				this.localShell = null;
+				this.outputBuffer = '';
 			});
 		}
 
-		this.attachClientToLocalShell(ws);
-	}
-
-	attachClientToLocalShell(ws) {
-		this.clients.push(ws);
-
-		ws.on('message', (msg) => {
-			if (this.localShell) {
-				this.localShell.write(msg);
-			}
-		});
-
-		ws.on('close', () => {
-			this.clients = this.clients.filter((client) => client !== ws);
-		});
+		this.attachClientToShell(ws);
 	}
 
 	async handleVMConnection(ws) {
@@ -98,7 +82,7 @@ class TerminalWebSocketService {
 				await this.createShellSession(sshConnection);
 			}
 
-			this.attachClientToShellSession(ws);
+			this.attachClientToShell(ws);
 		} catch (error) {
 			console.error('Failed to establish SSH connection:', error);
 			ws.close();
@@ -132,6 +116,7 @@ class TerminalWebSocketService {
 						if (this.shellStream) {
 							this.shellStream.end();
 							this.shellStream = null;
+							this.outputBuffer = '';
 						}
 					});
 				}
@@ -153,16 +138,13 @@ class TerminalWebSocketService {
 				this.shellStream = stream;
 
 				stream.on('data', (data) => {
-					this.clients.forEach((client) => {
-						if (client.readyState === WebSocket.OPEN) {
-							client.send(data.toString('utf8'));
-						}
-					});
+					this.handleShellData(data);
 				});
 
 				stream.on('close', () => {
 					console.log('SSH shell session closed');
 					this.shellStream = null;
+					this.outputBuffer = '';
 				});
 
 				resolve();
@@ -170,18 +152,56 @@ class TerminalWebSocketService {
 		});
 	}
 
-	attachClientToShellSession(ws) {
+	attachClientToShell(ws) {
+		if (this.outputBuffer) {
+			ws.send(this.outputBuffer);
+		}
+
 		this.clients.push(ws);
 
 		ws.on('message', (msg) => {
+			this.checkForClearCommand(msg);
+
 			if (this.shellStream) {
 				this.shellStream.write(msg);
+			} else if (this.localShell) {
+				this.localShell.write(msg);
 			}
 		});
 
 		ws.on('close', () => {
 			this.clients = this.clients.filter((client) => client !== ws);
 		});
+	}
+
+	handleShellData(data) {
+		const output = data.toString('utf8');
+
+		if (this.detectClearScreen(output)) {
+			this.outputBuffer = '';
+		} else {
+			this.outputBuffer += output;
+		}
+
+		this.clients.forEach((client) => {
+			if (client.readyState === WebSocket.OPEN) {
+				client.send(output);
+			}
+		});
+	}
+
+	checkForClearCommand(msg) {
+		const msgString = msg.toString('utf8').trim();
+
+		if (msgString === 'clear' || msgString === 'clear\n' || msgString === 'clear\r\n') {
+			this.outputBuffer = '';
+		}
+	}
+
+	detectClearScreen(output) {
+		const clearScreenSequences = ['\x1b[H\x1b[2J', '\x1b[2J\x1b[H', '\x1b[3J', '\x1b[2J', '\x1bc'];
+
+		return clearScreenSequences.some((seq) => output.includes(seq));
 	}
 }
 
