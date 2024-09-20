@@ -16,20 +16,13 @@
 
 import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { UntilDestroy } from '@ngneat/until-destroy';
-import { AttachAddon } from '@xterm/addon-attach';
 import { SearchAddon } from '@xterm/addon-search';
-import { firstValueFrom } from 'rxjs';
 import { Terminal } from 'xterm';
 import { FitAddon } from 'xterm-addon-fit';
 import { environment } from '../../../../../../../environments/environment';
-import { KeyValue } from '../../../../../../services/client/models/key-value/key-value.interface-dto';
-import { ScriptDetails } from '../../../../../../services/client/models/script/script-details.interface-dto';
-import { ModelsActions } from '../../../../../../state/core/models/models.actions';
 import { TerminalActions } from '../../../../../../state/core/terminal';
 import { ScriptFacadeService, TerminalFacadeService } from '../../../../../core/services';
 import { ModelsFacadeService } from '../../../../../core/services/models-facade.service';
-import { AlgorithmType, TrainAlgorithmsEnum } from '../../../../../model-compression/models/enums/algorithms.enum';
-import { TerminalMessage } from '../../models/terminal-message.interface';
 import { MsTerminalToolbarComponent } from '../ms-terminal-toolbar/ms-terminal-toolbar.component';
 
 @UntilDestroy()
@@ -45,9 +38,6 @@ import { MsTerminalToolbarComponent } from '../ms-terminal-toolbar/ms-terminal-t
 export class MsTerminalComponent implements OnInit, AfterViewInit, OnDestroy {
 	@ViewChild('terminal', { static: true }) terminalDiv!: ElementRef;
 
-	private messagesBuffer: TerminalMessage[] = [];
-	private displayWebSocketMessages = false;
-
 	private terminal: Terminal = new Terminal({
 		cursorBlink: true,
 		theme: {
@@ -62,15 +52,10 @@ export class MsTerminalComponent implements OnInit, AfterViewInit, OnDestroy {
 
 	private fitAddon: FitAddon = new FitAddon();
 	private searchAddon = new SearchAddon();
-	private attachAddon!: AttachAddon;
 	private resizeObserver?: ResizeObserver;
 	private socket!: WebSocket;
 
-	constructor(
-		private terminalFacadeService: TerminalFacadeService,
-		private scriptFacadeService: ScriptFacadeService,
-		private modelsFacadeService: ModelsFacadeService
-	) {}
+	constructor(private terminalFacadeService: TerminalFacadeService) {}
 
 	ngOnInit(): void {
 		this.initializeTerminal();
@@ -98,13 +83,6 @@ export class MsTerminalComponent implements OnInit, AfterViewInit, OnDestroy {
 
 	public disposeSearch() {
 		this.searchAddon.clearDecorations();
-	}
-
-	private writeToTerminal(message: string): void {
-		const lines = message.split('\n');
-		lines.forEach((line) => {
-			this.terminal.writeln(line);
-		});
 	}
 
 	private async initializeTerminal(): Promise<void> {
@@ -166,27 +144,6 @@ export class MsTerminalComponent implements OnInit, AfterViewInit, OnDestroy {
 		}
 	}
 
-	private async updateModelsListOnTrainAlgorithmCompletion() {
-		const scriptDetails: ScriptDetails = await firstValueFrom(this.scriptFacadeService.scriptDetails$);
-		const algorithmMapping: KeyValue<AlgorithmType> = {
-			[TrainAlgorithmsEnum.MACHINE_UNLEARNING_TRAIN]: AlgorithmType.MACHINE_UNLEARNING,
-			[TrainAlgorithmsEnum.PRUNING_TRAIN]: AlgorithmType.PRUNING,
-			[TrainAlgorithmsEnum.QUANTIZATION_TRAIN]: AlgorithmType.QUANTIZATION
-		};
-
-		if (scriptDetails.algKey in algorithmMapping) {
-			this.modelsFacadeService.dispatch(
-				ModelsActions.getModelsList({ algorithmType: algorithmMapping[scriptDetails.algKey] })
-			);
-			this.modelsFacadeService.dispatch(
-				ModelsActions.getModelMetadata({
-					algorithmType: algorithmMapping[scriptDetails.algKey],
-					modelName: scriptDetails.model
-				})
-			);
-		}
-	}
-
 	clearTerminal() {
 		this.terminalFacadeService.dispatch(TerminalActions.postClearHistory());
 		this.terminal.clear();
@@ -202,9 +159,6 @@ export class MsTerminalComponent implements OnInit, AfterViewInit, OnDestroy {
 
 	ngOnDestroy(): void {
 		this.resizeObserver?.disconnect();
-		if (this.attachAddon) {
-			this.attachAddon.dispose();
-		}
 		this.terminal.dispose();
 	}
 }

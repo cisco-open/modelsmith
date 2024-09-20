@@ -23,7 +23,7 @@ const { SSH_CONNECTION_NAMES } = require('../constants/sshConstants');
 
 class TerminalWebSocketService {
 	constructor() {
-		this.terminalWss = new WebSocket.Server({ noServer: true });
+		this.terminalWss = new WebSocket.Server({ noServer: true, perMessageDeflate: false });
 
 		this.sshConnection = null;
 		this.sshConnectionPromise = null;
