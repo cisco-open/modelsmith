@@ -15,14 +15,14 @@
 //   SPDX-License-Identifier: Apache-2.0
 
 import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { UntilDestroy } from '@ngneat/until-destroy';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { SearchAddon } from '@xterm/addon-search';
 import { Terminal } from 'xterm';
 import { FitAddon } from 'xterm-addon-fit';
-import { environment } from '../../../../../../../environments/environment';
 import { TerminalActions } from '../../../../../../state/core/terminal';
 import { ScriptFacadeService, TerminalFacadeService } from '../../../../../core/services';
 import { ModelsFacadeService } from '../../../../../core/services/models-facade.service';
+import { TerminalWebSocketService } from '../../services/terminal-websocket.service';
 import { MsTerminalToolbarComponent } from '../ms-terminal-toolbar/ms-terminal-toolbar.component';
 
 @UntilDestroy()
@@ -53,12 +53,20 @@ export class MsTerminalComponent implements OnInit, AfterViewInit, OnDestroy {
 	private fitAddon: FitAddon = new FitAddon();
 	private searchAddon = new SearchAddon();
 	private resizeObserver?: ResizeObserver;
-	private socket!: WebSocket;
 
-	constructor(private terminalFacadeService: TerminalFacadeService) {}
+	constructor(
+		private terminalFacadeService: TerminalFacadeService,
+		private terminalWebSocketService: TerminalWebSocketService
+	) {}
 
 	ngOnInit(): void {
 		this.initializeTerminal();
+		this.subscribeToWebSocketMessages();
+
+		this.terminalWebSocketService.connect();
+
+		const history = this.terminalWebSocketService.getHistory();
+		history.forEach((msg) => this.terminal.write(msg));
 	}
 
 	ngAfterViewInit(): void {
@@ -85,38 +93,22 @@ export class MsTerminalComponent implements OnInit, AfterViewInit, OnDestroy {
 		this.searchAddon.clearDecorations();
 	}
 
-	private async initializeTerminal(): Promise<void> {
+	private subscribeToWebSocketMessages(): void {
+		this.terminalWebSocketService.messages$.pipe(untilDestroyed(this)).subscribe((message: string) => {
+			this.terminal.write(message);
+		});
+	}
+
+	private initializeTerminal(): void {
 		this.terminal.loadAddon(this.fitAddon);
 		this.terminal.loadAddon(this.searchAddon);
 
 		this.terminal.open(this.terminalDiv.nativeElement);
 
 		this.setupResizeObserver();
-		this.setupWebSocket();
-	}
-
-	private setupWebSocket(): void {
-		const socketUrl = `${environment.terminalWebSocketUrl}`;
-		this.socket = new WebSocket(socketUrl);
-
-		this.socket.onopen = () => {
-			console.log('Terminal WebSocket connected!');
-		};
-
-		this.socket.onerror = (error) => {
-			console.error('Terminal WebSocket Error:', error);
-		};
-
-		this.socket.onmessage = (event) => {
-			this.terminal.write(event.data);
-		};
-
-		this.socket.onclose = () => {
-			console.log('Terminal WebSocket closed');
-		};
 
 		this.terminal.onData((data) => {
-			this.socket.send(data);
+			this.terminalWebSocketService.sendMessage(data);
 		});
 	}
 
