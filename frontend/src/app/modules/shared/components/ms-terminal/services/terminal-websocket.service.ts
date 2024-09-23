@@ -77,7 +77,6 @@ export class TerminalWebSocketService {
 	public sendMessage(message: string): void {
 		if (this.socket && this.socket.readyState === WebSocket.OPEN) {
 			this.socket.send(message);
-			console.log('Sent message:', message);
 		} else {
 			console.error('WebSocket is not open. Unable to send message:', message);
 		}
