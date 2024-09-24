@@ -23,23 +23,39 @@ const { SSH_CONNECTION_NAMES } = require('../constants/sshConstants');
 
 class TerminalWebSocketService {
 	constructor() {
+		if (TerminalWebSocketService.instance) {
+			return TerminalWebSocketService.instance;
+		}
+
 		this.terminalWss = new WebSocket.Server({ noServer: true, perMessageDeflate: false });
 
 		this.sshConnection = null;
 		this.sshConnectionPromise = null;
 		this.shellStream = null;
+		this.localShell = null;
 		this.clients = [];
 		this.outputBuffer = '';
 
 		this.setupWebSocketServer();
+
+		TerminalWebSocketService.instance = this;
 	}
 
 	setupWebSocketServer() {
 		this.terminalWss.on('connection', (ws) => {
+			console.log('New WebSocket connection established.');
+
 			if (process.env.CONNECTION_TYPE === CONNECTION_TYPE.LOCAL) {
 				this.handleLocalConnection(ws);
 			} else if (process.env.CONNECTION_TYPE === CONNECTION_TYPE.VM) {
-				this.handleVMConnection(ws);
+				(async () => {
+					try {
+						await this.handleVMConnection(ws);
+					} catch (error) {
+						console.error('Error in handleVMConnection:', error);
+						ws.close();
+					}
+				})();
 			} else {
 				ws.close();
 				console.error('Unsupported CONNECTION_TYPE:', process.env.CONNECTION_TYPE);
@@ -79,7 +95,7 @@ class TerminalWebSocketService {
 			const sshConnection = await this.getSSHConnection();
 
 			if (!this.shellStream) {
-				await this.createShellSession(sshConnection);
+				this.shellStream = await this.createShellSession(sshConnection);
 			}
 
 			this.attachClientToShell(ws);
@@ -126,7 +142,7 @@ class TerminalWebSocketService {
 		return this.sshConnectionPromise;
 	}
 
-	createShellSession(sshConnection) {
+	async createShellSession(sshConnection) {
 		return new Promise((resolve, reject) => {
 			sshConnection.shell((err, stream) => {
 				if (err) {
@@ -134,8 +150,6 @@ class TerminalWebSocketService {
 					reject(err);
 					return;
 				}
-
-				this.shellStream = stream;
 
 				stream.on('data', (data) => {
 					this.handleShellData(data);
@@ -147,7 +161,8 @@ class TerminalWebSocketService {
 					this.outputBuffer = '';
 				});
 
-				resolve();
+				// Resolve the promise with the stream
+				resolve(stream);
 			});
 		});
 	}
@@ -160,8 +175,6 @@ class TerminalWebSocketService {
 		this.clients.push(ws);
 
 		ws.on('message', (msg) => {
-			this.checkForClearCommand(msg);
-
 			if (this.shellStream) {
 				this.shellStream.write(msg);
 			} else if (this.localShell) {
@@ -175,13 +188,8 @@ class TerminalWebSocketService {
 	}
 
 	handleShellData(data) {
-		const output = data.toString('utf8');
-
-		if (this.detectClearScreen(output)) {
-			this.outputBuffer = '';
-		} else {
-			this.outputBuffer += output;
-		}
+		let output = data.toString('utf8');
+		this.outputBuffer += output;
 
 		this.clients.forEach((client) => {
 			if (client.readyState === WebSocket.OPEN) {
@@ -190,19 +198,35 @@ class TerminalWebSocketService {
 		});
 	}
 
-	checkForClearCommand(msg) {
-		const msgString = msg.toString('utf8').trim();
+	sendCommand(command) {
+		const cmd = command.endsWith('\n') ? command : `${command}\n`;
 
-		if (msgString === 'clear' || msgString === 'clear\n' || msgString === 'clear\r\n') {
-			this.outputBuffer = '';
+		console.log('Attempting to send command:', cmd);
+
+		if (this.localShell) {
+			this.localShell.write(cmd);
+		} else if (this.shellStream) {
+			this.shellStream.write(cmd);
+		} else {
+			console.error('No shell session available to send the command.');
+			return;
 		}
 	}
 
-	detectClearScreen(output) {
-		const clearScreenSequences = ['\x1b[H\x1b[2J', '\x1b[2J\x1b[H', '\x1b[3J', '\x1b[2J', '\x1bc'];
-
-		return clearScreenSequences.some((seq) => output.includes(seq));
+	/**
+	 * Retrieves the current shell instance based on the connection type.
+	 * @returns {Object|null} The shell instance (`localShell` or `shellStream`) or `null` if none.
+	 */
+	getShell() {
+		if (process.env.CONNECTION_TYPE === CONNECTION_TYPE.LOCAL) {
+			return this.localShell;
+		} else if (process.env.CONNECTION_TYPE === CONNECTION_TYPE.VM) {
+			return this.shellStream;
+		}
+		return null;
 	}
 }
 
-module.exports = new TerminalWebSocketService();
+const terminalServiceInstance = new TerminalWebSocketService();
+
+module.exports = terminalServiceInstance;
