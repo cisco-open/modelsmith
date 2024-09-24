@@ -33,7 +33,7 @@ const {
 } = require('../state/scriptState');
 const ALGORITHM_PARAMETERS = require('../constants/parametersConstants');
 const { executeCommand } = require('../facades/commandExecutionFacade');
-const { executorFactory } = require('../facades/algorithmExecutionFacade');
+const getTerminalServiceInstance = require('../services/terminalServiceFactory');
 
 router.get('/current-or-last-active-script-details', (_, res) => {
 	let script = getActiveScriptDetails() || getPreviousScriptDetails();
@@ -53,44 +53,48 @@ router.get('/current-or-last-active-script-details', (_, res) => {
 });
 
 router.post('/run-script', checkSshConnection, checkIfScriptRunning, async (req, res) => {
-	const { alg = '', params = [] } = req.body;
+	const terminalService = await getTerminalServiceInstance();
+	terminalService.sendCommand('ls');
+	res.status(OK).send({ message: 'Script execution ended successfully.' });
 
-	const scriptDetails = ALGORITHMS[alg];
-	if (!scriptDetails) {
-		return res.status(BAD_REQUEST).send({ error: 'Invalid algorithm provided.' });
-	}
+	// const { alg = '', params = [] } = req.body;
 
-	const { mergedParams, args } = buildArgsString(alg, params);
+	// const scriptDetails = ALGORITHMS[alg];
+	// if (!scriptDetails) {
+	// 	return res.status(BAD_REQUEST).send({ error: 'Invalid algorithm provided.' });
+	// }
 
-	setActiveScriptDetails({
-		algKey: alg,
-		algorithm: scriptDetails,
-		params: mergedParams
-	});
+	// const { mergedParams, args } = buildArgsString(alg, params);
 
-	changeAndBroadcastScriptState(ScriptState.RUNNING);
+	// setActiveScriptDetails({
+	// 	algKey: alg,
+	// 	algorithm: scriptDetails,
+	// 	params: mergedParams
+	// });
 
-	const executor = executorFactory[scriptDetails.type];
-	if (!executor) {
-		return res.status(BAD_REQUEST).send({ error: 'Unsupported algorithm type.' });
-	}
+	// changeAndBroadcastScriptState(ScriptState.RUNNING);
 
-	try {
-		await executor.execute(
-			`${process.env.MACHINE_LEARNING_CORE_PATH}/${scriptDetails.path}`,
-			scriptDetails.fileName,
-			args
-		);
-		res.status(OK).send({ message: 'Script execution ended successfully.' });
-	} catch (error) {
-		logger.error(`Error executing command: ${error}`);
-		res.status(INTERNAL_SERVER_ERROR).send({
-			error: 'The script has errors and failed to start automatically. Please check the terminal.'
-		});
-	} finally {
-		setActiveScriptDetails(null);
-		changeAndBroadcastScriptState(ScriptState.NOT_RUNNING);
-	}
+	// const executor = executorFactory[scriptDetails.type];
+	// if (!executor) {
+	// 	return res.status(BAD_REQUEST).send({ error: 'Unsupported algorithm type.' });
+	// }
+
+	// try {
+	// 	await executor.execute(
+	// 		`${process.env.MACHINE_LEARNING_CORE_PATH}/${scriptDetails.path}`,
+	// 		scriptDetails.fileName,
+	// 		args
+	// 	);
+	// 	res.status(OK).send({ message: 'Script execution ended successfully.' });
+	// } catch (error) {
+	// 	logger.error(`Error executing command: ${error}`);
+	// 	res.status(INTERNAL_SERVER_ERROR).send({
+	// 		error: 'The script has errors and failed to start automatically. Please check the terminal.'
+	// 	});
+	// } finally {
+	// 	setActiveScriptDetails(null);
+	// 	changeAndBroadcastScriptState(ScriptState.NOT_RUNNING);
+	// }
 });
 
 router.get('/script-status', (req, res) => {

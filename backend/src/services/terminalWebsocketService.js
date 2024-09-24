@@ -22,10 +22,15 @@ const CONNECTION_TYPE = require('../constants/connectionTypeConstants');
 const { SSH_CONNECTION_NAMES } = require('../constants/sshConstants');
 
 class TerminalWebSocketService {
+	static instance = null;
+	static initializing = null;
+
 	constructor() {
 		if (TerminalWebSocketService.instance) {
 			return TerminalWebSocketService.instance;
 		}
+
+		TerminalWebSocketService.instance = this;
 
 		this.terminalWss = new WebSocket.Server({ noServer: true, perMessageDeflate: false });
 
@@ -35,30 +40,39 @@ class TerminalWebSocketService {
 		this.localShell = null;
 		this.clients = [];
 		this.outputBuffer = '';
-
-		this.setupWebSocketServer();
-
-		TerminalWebSocketService.instance = this;
 	}
 
-	setupWebSocketServer() {
-		this.terminalWss.on('connection', (ws) => {
-			console.log('New WebSocket connection established.');
+	async init() {
+		console.log('Setting up terminal WebSocket server.');
+		await this.setupWebSocketServer();
+	}
 
-			if (process.env.CONNECTION_TYPE === CONNECTION_TYPE.LOCAL) {
-				this.handleLocalConnection(ws);
-			} else if (process.env.CONNECTION_TYPE === CONNECTION_TYPE.VM) {
-				(async () => {
-					try {
-						await this.handleVMConnection(ws);
-					} catch (error) {
-						console.error('Error in handleVMConnection:', error);
+	async setupWebSocketServer() {
+		return new Promise((resolve, reject) => {
+			try {
+				this.terminalWss = new WebSocket.Server({ noServer: true, perMessageDeflate: false });
+
+				this.terminalWss.on('connection', (ws) => {
+					if (process.env.CONNECTION_TYPE === CONNECTION_TYPE.LOCAL) {
+						this.handleLocalConnection(ws);
+					} else if (process.env.CONNECTION_TYPE === CONNECTION_TYPE.VM) {
+						(async () => {
+							try {
+								await this.handleVMConnection(ws);
+							} catch (error) {
+								console.error('Error in handleVMConnection:', error);
+								ws.close();
+							}
+						})();
+					} else {
 						ws.close();
+						console.error('Unsupported CONNECTION_TYPE:', process.env.CONNECTION_TYPE);
 					}
-				})();
-			} else {
-				ws.close();
-				console.error('Unsupported CONNECTION_TYPE:', process.env.CONNECTION_TYPE);
+				});
+				resolve();
+			} catch (error) {
+				console.error('Failed to set up WebSocket server:', error);
+				reject(error);
 			}
 		});
 	}
@@ -161,7 +175,6 @@ class TerminalWebSocketService {
 					this.outputBuffer = '';
 				});
 
-				// Resolve the promise with the stream
 				resolve(stream);
 			});
 		});
@@ -198,10 +211,40 @@ class TerminalWebSocketService {
 		});
 	}
 
+	/**
+	 * Asynchronous factory method to get the singleton instance.
+	 * Ensures that only one instance is created and initialized.
+	 * @returns {Promise<TerminalWebSocketService>} The singleton instance.
+	 */
+	static async getInstance() {
+		if (this.instance) {
+			return this.instance;
+		}
+
+		if (this.initializing) {
+			await this.initializing;
+			return this.instance;
+		}
+
+		this.initializing = (async () => {
+			try {
+				const service = new TerminalWebSocketService();
+				await service.init();
+			} catch (error) {
+				console.error('Failed to initialize TerminalWebSocketService:', error);
+				TerminalWebSocketService.instance = null;
+				throw error;
+			} finally {
+				TerminalWebSocketService.initializing = null;
+			}
+		})();
+
+		await this.initializing;
+		return this.instance;
+	}
+
 	sendCommand(command) {
 		const cmd = command.endsWith('\n') ? command : `${command}\n`;
-
-		console.log('Attempting to send command:', cmd);
 
 		if (this.localShell) {
 			this.localShell.write(cmd);
@@ -227,6 +270,4 @@ class TerminalWebSocketService {
 	}
 }
 
-const terminalServiceInstance = new TerminalWebSocketService();
-
-module.exports = terminalServiceInstance;
+module.exports = TerminalWebSocketService;
