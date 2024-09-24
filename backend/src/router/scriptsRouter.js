@@ -33,7 +33,7 @@ const {
 } = require('../state/scriptState');
 const ALGORITHM_PARAMETERS = require('../constants/parametersConstants');
 const { executeCommand } = require('../facades/commandExecutionFacade');
-const getTerminalServiceInstance = require('../services/terminalServiceFactory');
+const TerminalWebSocketService = require('../services/terminalWebsocketService');
 
 router.get('/current-or-last-active-script-details', (_, res) => {
 	let script = getActiveScriptDetails() || getPreviousScriptDetails();
@@ -53,7 +53,7 @@ router.get('/current-or-last-active-script-details', (_, res) => {
 });
 
 router.post('/run-script', checkSshConnection, checkIfScriptRunning, async (req, res) => {
-	const terminalService = await getTerminalServiceInstance();
+	const terminalService = await TerminalWebSocketService.getInstance();
 	terminalService.sendCommand('ls');
 	res.status(OK).send({ message: 'Script execution ended successfully.' });
 

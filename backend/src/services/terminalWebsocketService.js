@@ -23,66 +23,44 @@ const { SSH_CONNECTION_NAMES } = require('../constants/sshConstants');
 
 class TerminalWebSocketService {
 	static instance = null;
-	static initializing = null;
 
 	constructor() {
-		if (TerminalWebSocketService.instance) {
-			return TerminalWebSocketService.instance;
-		}
-
-		TerminalWebSocketService.instance = this;
-
-		this.terminalWss = new WebSocket.Server({ noServer: true, perMessageDeflate: false });
-
-		this.sshConnection = null;
-		this.sshConnectionPromise = null;
-		this.shellStream = null;
-		this.localShell = null;
-		this.clients = [];
+		this.wss = new WebSocket.Server({ noServer: true, perMessageDeflate: false });
+		this.shell = null;
+		this.clients = new Set();
 		this.outputBuffer = '';
 	}
 
-	async init() {
-		console.log('Setting up terminal WebSocket server.');
-		await this.setupWebSocketServer();
+	static async getInstance() {
+		if (!TerminalWebSocketService.instance) {
+			TerminalWebSocketService.instance = new TerminalWebSocketService();
+			await TerminalWebSocketService.instance.init();
+		}
+		return TerminalWebSocketService.instance;
 	}
 
-	async setupWebSocketServer() {
-		return new Promise((resolve, reject) => {
-			try {
-				this.terminalWss = new WebSocket.Server({ noServer: true, perMessageDeflate: false });
+	async init() {
+		this.setupWebSocketServer();
+	}
 
-				this.terminalWss.on('connection', (ws) => {
-					if (process.env.CONNECTION_TYPE === CONNECTION_TYPE.LOCAL) {
-						this.handleLocalConnection(ws);
-					} else if (process.env.CONNECTION_TYPE === CONNECTION_TYPE.VM) {
-						(async () => {
-							try {
-								await this.handleVMConnection(ws);
-							} catch (error) {
-								console.error('Error in handleVMConnection:', error);
-								ws.close();
-							}
-						})();
-					} else {
-						ws.close();
-						console.error('Unsupported CONNECTION_TYPE:', process.env.CONNECTION_TYPE);
-					}
-				});
-				resolve();
-			} catch (error) {
-				console.error('Failed to set up WebSocket server:', error);
-				reject(error);
-			}
+	setupWebSocketServer() {
+		this.wss.on('connection', (ws) => {
+			const connectionHandler =
+				process.env.CONNECTION_TYPE === CONNECTION_TYPE.LOCAL
+					? this.handleLocalConnection.bind(this)
+					: this.handleVMConnection.bind(this);
+
+			connectionHandler(ws).catch((error) => {
+				console.error(`Error handling ${process.env.CONNECTION_TYPE} connection:`, error);
+				ws.close();
+			});
 		});
 	}
 
-	handleLocalConnection(ws) {
-		const isWindows = os.platform() === 'win32';
-		const shellPath = isWindows ? 'cmd.exe' : process.env.SHELL || '/bin/bash';
-
-		if (!this.localShell) {
-			this.localShell = pty.spawn(shellPath, [], {
+	async handleLocalConnection(ws) {
+		if (!this.shell) {
+			const shellPath = os.platform() === 'win32' ? 'cmd.exe' : process.env.SHELL || '/bin/bash';
+			this.shell = pty.spawn(shellPath, [], {
 				name: 'xterm-color',
 				cols: 80,
 				rows: 24,
@@ -90,91 +68,43 @@ class TerminalWebSocketService {
 				env: process.env
 			});
 
-			this.localShell.on('data', (data) => {
-				this.handleShellData(data);
-			});
-
-			this.localShell.on('exit', () => {
-				console.log('Local shell exited');
-				this.localShell = null;
-				this.outputBuffer = '';
-			});
+			this.shell.on('data', this.handleShellData.bind(this));
+			this.shell.on('exit', this.handleShellExit.bind(this));
 		}
 
 		this.attachClientToShell(ws);
 	}
 
 	async handleVMConnection(ws) {
-		try {
+		if (!this.shell) {
 			const sshConnection = await this.getSSHConnection();
-
-			if (!this.shellStream) {
-				this.shellStream = await this.createShellSession(sshConnection);
-			}
-
-			this.attachClientToShell(ws);
-		} catch (error) {
-			console.error('Failed to establish SSH connection:', error);
-			ws.close();
+			this.shell = await this.createShellSession(sshConnection);
 		}
+
+		this.attachClientToShell(ws);
 	}
 
-	getSSHConnection() {
-		if (!this.sshConnectionPromise) {
-			this.sshConnectionPromise = new Promise((resolve, reject) => {
-				if (this.sshConnection && this.sshConnection.isConnected()) {
-					resolve(this.sshConnection);
-				} else {
-					this.sshConnection = new SSHConnection(SSH_CONNECTION_NAMES.PRIMARY);
-
-					this.sshConnection.on('ready', () => {
-						resolve(this.sshConnection);
-					});
-
-					this.sshConnection.on('error', (err) => {
-						console.error('SSH connection error:', err);
-						this.sshConnection = null;
-						this.sshConnectionPromise = null;
-						reject(err);
-					});
-
-					this.sshConnection.on('close', () => {
-						console.log('SSH connection closed');
-						this.sshConnection = null;
-						this.sshConnectionPromise = null;
-
-						if (this.shellStream) {
-							this.shellStream.end();
-							this.shellStream = null;
-							this.outputBuffer = '';
-						}
-					});
-				}
+	async getSSHConnection() {
+		if (!this.sshConnection || !this.sshConnection.isConnected()) {
+			this.sshConnection = new SSHConnection(SSH_CONNECTION_NAMES.PRIMARY);
+			await new Promise((resolve, reject) => {
+				this.sshConnection.once('ready', resolve);
+				this.sshConnection.once('error', reject);
 			});
 		}
-
-		return this.sshConnectionPromise;
+		return this.sshConnection;
 	}
 
-	async createShellSession(sshConnection) {
+	createShellSession(sshConnection) {
 		return new Promise((resolve, reject) => {
 			sshConnection.shell((err, stream) => {
 				if (err) {
-					console.error('SSH shell error:', err);
 					reject(err);
 					return;
 				}
 
-				stream.on('data', (data) => {
-					this.handleShellData(data);
-				});
-
-				stream.on('close', () => {
-					console.log('SSH shell session closed');
-					this.shellStream = null;
-					this.outputBuffer = '';
-				});
-
+				stream.on('data', this.handleShellData.bind(this));
+				stream.on('close', this.handleShellExit.bind(this));
 				resolve(stream);
 			});
 		});
@@ -185,25 +115,15 @@ class TerminalWebSocketService {
 			ws.send(this.outputBuffer);
 		}
 
-		this.clients.push(ws);
+		this.clients.add(ws);
 
-		ws.on('message', (msg) => {
-			if (this.shellStream) {
-				this.shellStream.write(msg);
-			} else if (this.localShell) {
-				this.localShell.write(msg);
-			}
-		});
-
-		ws.on('close', () => {
-			this.clients = this.clients.filter((client) => client !== ws);
-		});
+		ws.on('message', (msg) => this.shell?.write(msg));
+		ws.on('close', () => this.clients.delete(ws));
 	}
 
 	handleShellData(data) {
-		let output = data.toString('utf8');
+		const output = data.toString('utf8');
 		this.outputBuffer += output;
-
 		this.clients.forEach((client) => {
 			if (client.readyState === WebSocket.OPEN) {
 				client.send(output);
@@ -211,62 +131,19 @@ class TerminalWebSocketService {
 		});
 	}
 
-	/**
-	 * Asynchronous factory method to get the singleton instance.
-	 * Ensures that only one instance is created and initialized.
-	 * @returns {Promise<TerminalWebSocketService>} The singleton instance.
-	 */
-	static async getInstance() {
-		if (this.instance) {
-			return this.instance;
-		}
-
-		if (this.initializing) {
-			await this.initializing;
-			return this.instance;
-		}
-
-		this.initializing = (async () => {
-			try {
-				const service = new TerminalWebSocketService();
-				await service.init();
-			} catch (error) {
-				console.error('Failed to initialize TerminalWebSocketService:', error);
-				TerminalWebSocketService.instance = null;
-				throw error;
-			} finally {
-				TerminalWebSocketService.initializing = null;
-			}
-		})();
-
-		await this.initializing;
-		return this.instance;
+	handleShellExit() {
+		console.log(`${process.env.CONNECTION_TYPE} shell exited`);
+		this.shell = null;
+		this.outputBuffer = '';
 	}
 
 	sendCommand(command) {
 		const cmd = command.endsWith('\n') ? command : `${command}\n`;
-
-		if (this.localShell) {
-			this.localShell.write(cmd);
-		} else if (this.shellStream) {
-			this.shellStream.write(cmd);
-		} else {
-			console.error('No shell session available to send the command.');
-			return;
-		}
+		this.shell?.write(cmd);
 	}
 
-	/**
-	 * Retrieves the current shell instance based on the connection type.
-	 * @returns {Object|null} The shell instance (`localShell` or `shellStream`) or `null` if none.
-	 */
 	getShell() {
-		if (process.env.CONNECTION_TYPE === CONNECTION_TYPE.LOCAL) {
-			return this.localShell;
-		} else if (process.env.CONNECTION_TYPE === CONNECTION_TYPE.VM) {
-			return this.shellStream;
-		}
-		return null;
+		return this.shell;
 	}
 }
 
