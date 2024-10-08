@@ -1,6 +1,6 @@
-const { PruningParser } = require('../parsers/pruningParser');
-const { QuantizationParser } = require('../parsers/quantizationParser');
-const { MachineUnlearningParser } = require('../parsers/machineUnlearningParser');
+const { pruningParserInstance } = require('../parsers/pruningParser');
+const { quantizationParserInstance } = require('../parsers/quantizationParser');
+const { machineUnlearningParserInstance } = require('../parsers/machineUnlearningParser');
 const ALGORITHM_TYPES = require('../constants/algorithmTypesConstants');
 
 /**
@@ -11,11 +11,11 @@ const ALGORITHM_TYPES = require('../constants/algorithmTypesConstants');
 function getParserForAlgorithmType(algorithmType) {
 	switch (algorithmType) {
 		case ALGORITHM_TYPES.PRUNING:
-			return PruningParser;
+			return pruningParserInstance;
 		case ALGORITHM_TYPES.QUANTIZATION:
-			return QuantizationParser;
+			return quantizationParserInstance;
 		case ALGORITHM_TYPES.MACHINE_UNLEARNING:
-			return MachineUnlearningParser;
+			return machineUnlearningParserInstance;
 		default:
 			return null;
 	}
