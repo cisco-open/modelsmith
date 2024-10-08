@@ -20,10 +20,11 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 const noCache = require('./middlewares/noCache');
-const websocketService = require('./services/websocketService');
+const websocketService = require('./websockets/websocketService');
 const allRoutes = require('./router/allRoutes');
 const logger = require('./utils/logger');
-const TerminalWebSocketService = require('./services/terminalWebsocketService');
+const SSHConnectionSingleton = require('./ssh/sshConnectionSingleton');
+const TerminalWebSocketService = require('./websockets/terminalWebsocketService');
 
 app.use(cors());
 app.use(express.json());
@@ -33,6 +34,7 @@ app.use('/rest', allRoutes);
 
 const server = app.listen(process.env.PORT, () => {
 	logger.info(`Backend server is running on port ${process.env.PORT}`);
+	initializeSSHConnection();
 });
 
 server.on('upgrade', async (request, socket, head) => {
@@ -47,3 +49,15 @@ server.on('upgrade', async (request, socket, head) => {
 		});
 	}
 });
+
+async function initializeSSHConnection() {
+	if (process.env.CONNECTION_TYPE !== 'LOCAL') {
+		try {
+			await SSHConnectionSingleton.init();
+			const sshConnection = await SSHConnectionSingleton.getInstance();
+			logger.info(`SSH Connection initialized with status: ${sshConnection.status}`);
+		} catch (error) {
+			logger.error(`Failed to initialize SSH Connection: ${error.message}`);
+		}
+	}
+}
