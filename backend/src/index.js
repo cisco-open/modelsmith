@@ -32,7 +32,7 @@ app.use(noCache);
 app.use('/rest', allRoutes);
 
 const server = app.listen(process.env.PORT, () => {
-	logger.info(`Server is running on port ${process.env.PORT}`);
+	logger.info(`Backend server is running on port ${process.env.PORT}`);
 });
 
 server.on('upgrade', async (request, socket, head) => {

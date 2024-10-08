@@ -15,6 +15,8 @@
 //  SPDX-License-Identifier: Apache-2.0
 
 const fs = require('fs');
+const path = require('path');
+const os = require('os');
 const { SSH_CONNECTION_NAMES } = require('../constants/sshConstants');
 
 class SSHConfigManager {
@@ -37,13 +39,17 @@ class SSHConfigManager {
 		};
 
 		const password = process.env[`${prefix}_SSH_PASSWORD`];
-		const privateKeyPath = process.env[`${prefix}_SSH_PRIVATE_KEY_PATH`];
+		let privateKeyPath = process.env[`${prefix}_SSH_PRIVATE_KEY_PATH`];
 
 		if (password) {
 			config.password = password;
 		}
 
 		if (privateKeyPath) {
+			if (privateKeyPath.startsWith('~')) {
+				privateKeyPath = path.join(os.homedir(), privateKeyPath.slice(1));
+			}
+
 			try {
 				config.privateKey = fs.readFileSync(privateKeyPath);
 			} catch (error) {
