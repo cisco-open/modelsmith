@@ -39,7 +39,7 @@
  */
 
 const async = require('async');
-const { broadcastChart, MessageTopics, ChartsEventsTopics } = require('../services/websocketService');
+const { broadcastChart, MessageTopics, ChartsEventsTopics } = require('../websockets/websocketService');
 
 class PruningParser {
 	static pruningStateRegex = /Pruning state (\d+)/;

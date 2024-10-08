@@ -17,7 +17,7 @@
 const fs = require('fs');
 const path = require('path');
 const os = require('os');
-const { SSH_CONNECTION_NAMES } = require('../constants/sshConstants');
+const { SSH_CONNECTION_NAMES } = require('./sshConstants');
 
 class SSHConfigManager {
 	static getConfig(connectionName) {

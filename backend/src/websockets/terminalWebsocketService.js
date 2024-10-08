@@ -17,9 +17,8 @@
 const WebSocket = require('ws');
 const os = require('os');
 const pty = require('node-pty');
-const SSHConnection = require('../utils/sshConnection');
 const CONNECTION_TYPE = require('../constants/connectionTypeConstants');
-const { SSH_CONNECTION_NAMES } = require('../constants/sshConstants');
+const SSHConnectionSingleton = require('../ssh/sshConnectionSingleton');
 
 class TerminalWebSocketService {
 	static instance = null;
@@ -77,22 +76,17 @@ class TerminalWebSocketService {
 
 	async handleVMConnection(ws) {
 		if (!this.shell) {
-			const sshConnection = await this.getSSHConnection();
-			this.shell = await this.createShellSession(sshConnection);
+			try {
+				const sshConnection = await SSHConnectionSingleton.getInstance();
+				this.shell = await this.createShellSession(sshConnection);
+			} catch (error) {
+				console.error(`Error creating shell session: ${error.message}`);
+				ws.close();
+				return;
+			}
 		}
 
 		this.attachClientToShell(ws);
-	}
-
-	async getSSHConnection() {
-		if (!this.sshConnection || !this.sshConnection.isConnected()) {
-			this.sshConnection = new SSHConnection(SSH_CONNECTION_NAMES.PRIMARY);
-			await new Promise((resolve, reject) => {
-				this.sshConnection.once('ready', resolve);
-				this.sshConnection.once('error', reject);
-			});
-		}
-		return this.sshConnection;
 	}
 
 	createShellSession(sshConnection) {
@@ -103,8 +97,20 @@ class TerminalWebSocketService {
 					return;
 				}
 
-				stream.on('data', this.handleShellData.bind(this));
-				stream.on('close', this.handleShellExit.bind(this));
+				stream.on('data', (data) => {
+					const output = data.toString();
+					this.handleShellData(output);
+				});
+
+				stream.on('close', () => {
+					console.log('SSH shell session closed.');
+					this.handleShellExit();
+				});
+
+				stream.on('error', (error) => {
+					console.error('Shell stream error:', error.message);
+				});
+
 				resolve(stream);
 			});
 		});

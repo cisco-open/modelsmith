@@ -16,10 +16,9 @@
 
 const ssh2 = require('ssh2');
 const EventEmitter = require('events');
-const logger = require('./logger');
-const net = require('net');
+const logger = require('../utils/logger');
 const SSHConfigManager = require('./sshConfigManager');
-const { SSH_CONNECTION_NAMES, SSH_STATUS } = require('../constants/sshConstants');
+const { SSH_CONNECTION_NAMES, SSH_STATUS } = require('./sshConstants');
 
 const DEFAULT_TIMEOUT_SEC = 30;
 

@@ -14,7 +14,7 @@
 
 //  SPDX-License-Identifier: Apache-2.0
 
-const { broadcastChart, MessageTopics } = require('../services/websocketService');
+const { broadcastChart, MessageTopics } = require('../websockets/websocketService');
 
 class StatisticsParser {
 	static statisticsRegex = /Statistics:\s+(\S+):\s+(\d+\.\d+|\d+)/;

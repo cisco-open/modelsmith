@@ -15,7 +15,7 @@
 //  SPDX-License-Identifier: Apache-2.0
 
 const async = require('async');
-const { broadcastChart, MessageTopics, ChartsEventsTopics } = require('../services/websocketService');
+const { broadcastChart, MessageTopics, ChartsEventsTopics } = require('../websockets/websocketService.js');
 const satisticsParserInstance = require('./statisticsParser.js');
 
 class MachineUnlearningParser {

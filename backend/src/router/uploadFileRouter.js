@@ -17,7 +17,7 @@
 const express = require('express');
 const router = express.Router();
 const multer = require('multer');
-const { conn } = require('../facades/commandExecutionFacade');
+const { conn } = require('../ssh/commandExecutionFacade');
 const { OK, INTERNAL_SERVER_ERROR } = require('../constants/httpStatusCodes');
 const logger = require('../utils/logger');
 

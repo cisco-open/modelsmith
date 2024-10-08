@@ -14,10 +14,11 @@
 
 //  SPDX-License-Identifier: Apache-2.0
 
-const { getConnectionStatus } = require('../facades/commandExecutionFacade');
+const SSHConnectionSingleton = require('./sshConnectionSingleton');
+const { SSH_STATUS } = require('./sshConstants');
 
-module.exports = (req, res, next) => {
-	if (getConnectionStatus() !== 'READY') {
+module.exports = async (req, res, next) => {
+	if ((await SSHConnectionSingleton.getConnectionStatus()) !== SSH_STATUS.READY) {
 		res.status(503).send({ error: 'Service Unavailable: Unable to execute commands at this time.' });
 	} else {
 		next();
