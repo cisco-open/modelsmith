@@ -58,6 +58,24 @@ class SSHConfigManager {
 			}
 		}
 
+		const proxyHost = process.env[`${prefix}_PROXY_SSH_HOST`];
+		const proxyPort = parseInt(process.env[`${prefix}_PROXY_SSH_PORT`], 10) || 22;
+		const proxyUser = process.env[`${prefix}_PROXY_SSH_USER`];
+		let proxyKeyPath = process.env[`${prefix}_PROXY_SSH_PRIVATE_KEY_PATH`];
+
+		if (proxyKeyPath && proxyKeyPath.startsWith('~')) {
+			proxyKeyPath = path.join(os.homedir(), proxyKeyPath.slice(1));
+		}
+
+		if (proxyHost && proxyUser && proxyKeyPath) {
+			config.proxy = {
+				host: proxyHost,
+				port: proxyPort,
+				username: proxyUser,
+				privateKey: fs.readFileSync(proxyKeyPath)
+			};
+		}
+
 		if (!config.password && !config.privateKey) {
 			throw new Error(
 				`${connectionName} connection requires either a password or a private key for SSH authentication.`

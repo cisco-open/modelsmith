@@ -17,6 +17,7 @@
 const ssh2 = require('ssh2');
 const EventEmitter = require('events');
 const logger = require('./logger');
+const net = require('net');
 const SSHConfigManager = require('./sshConfigManager');
 const { SSH_CONNECTION_NAMES, SSH_STATUS } = require('../constants/sshConstants');
 
@@ -24,7 +25,7 @@ const DEFAULT_TIMEOUT_SEC = 30;
 
 class SSHConnection extends EventEmitter {
 	constructor(name, timeoutSec = DEFAULT_TIMEOUT_SEC) {
-		super(); // Call the parent constructor
+		super();
 		this.currentConfig = SSHConfigManager.getConfig(name);
 
 		this.timeoutSec = timeoutSec;
@@ -45,9 +46,49 @@ class SSHConnection extends EventEmitter {
 		}
 
 		this.connection = new ssh2.Client();
-		this.setupEventHandlers(config);
 
-		this.connection.connect(config);
+		if (config.proxy) {
+			// Establish SSH connection to the proxy first
+			const proxyConnection = new ssh2.Client();
+			proxyConnection
+				.on('ready', () => {
+					logger.info(`Connected to proxy at ${config.proxy.host}:${config.proxy.port}`);
+
+					proxyConnection.forwardOut(
+						'127.0.0.1', // Source address, doesn't matter much
+						0, // Source port, doesn't matter much
+						config.host, // Target host
+						config.port, // Target port
+						(err, stream) => {
+							if (err) {
+								logger.error(`Error forwarding connection through proxy: ${err.message}`);
+								this.handleConnectionError();
+								return;
+							}
+
+							// Use the stream as the socket to connect to the target host
+							this.connection.connect({
+								...config,
+								sock: stream
+							});
+						}
+					);
+				})
+				.on('error', (err) => {
+					logger.error(`Proxy connection error: ${err.message}`);
+					this.handleConnectionError();
+				})
+				.connect({
+					host: config.proxy.host,
+					port: config.proxy.port,
+					username: config.proxy.username,
+					privateKey: config.proxy.privateKey
+				});
+		} else {
+			this.connection.connect(config);
+		}
+
+		this.setupEventHandlers(config);
 		this.startTimeout();
 	}
 
