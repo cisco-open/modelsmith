@@ -53,25 +53,18 @@ class SSHConnection extends EventEmitter {
 				.on('ready', () => {
 					logger.info(`Connected to proxy at ${config.proxy.host}:${config.proxy.port}`);
 
-					proxyConnection.forwardOut(
-						'127.0.0.1', // Source address, doesn't matter much
-						0, // Source port, doesn't matter much
-						config.host, // Target host
-						config.port, // Target port
-						(err, stream) => {
-							if (err) {
-								logger.error(`Error forwarding connection through proxy: ${err.message}`);
-								this.handleConnectionError();
-								return;
-							}
-
-							// Use the stream as the socket to connect to the target host
-							this.connection.connect({
-								...config,
-								sock: stream
-							});
+					proxyConnection.forwardOut('127.0.0.1', 0, config.host, config.port, (err, stream) => {
+						if (err) {
+							logger.error(`Error forwarding connection through proxy: ${err.message}`);
+							this.handleConnectionError();
+							return;
 						}
-					);
+
+						this.connection.connect({
+							...config,
+							sock: stream
+						});
+					});
 				})
 				.on('error', (err) => {
 					logger.error(`Proxy connection error: ${err.message}`);
