@@ -19,6 +19,7 @@ const os = require('os');
 const pty = require('node-pty');
 const CONNECTION_TYPE = require('../constants/connectionTypeConstants');
 const SSHConnectionSingleton = require('../ssh/sshConnectionInstance');
+const logger = require('../utils/logger');
 
 class TerminalWebSocketService {
 	static instance = null;
@@ -50,7 +51,7 @@ class TerminalWebSocketService {
 					: this.handleVMConnection.bind(this);
 
 			connectionHandler(ws).catch((error) => {
-				console.error(`Error handling ${process.env.CONNECTION_TYPE} connection:`, error);
+				logger.error(`Error handling ${process.env.CONNECTION_TYPE} connection:`, error);
 				ws.close();
 			});
 		});
@@ -80,7 +81,7 @@ class TerminalWebSocketService {
 				const sshConnection = await SSHConnectionSingleton.getInstance();
 				this.shell = await this.createShellSession(sshConnection);
 			} catch (error) {
-				console.error(`Error creating shell session: ${error.message}`);
+				logger.error(`Error creating shell session: ${error.message}`);
 				ws.close();
 				return;
 			}
@@ -103,12 +104,12 @@ class TerminalWebSocketService {
 				});
 
 				stream.on('close', () => {
-					console.log('SSH shell session closed.');
+					logger.info('SSH shell session closed.');
 					this.handleShellExit();
 				});
 
 				stream.on('error', (error) => {
-					console.error('Shell stream error:', error.message);
+					logger.error('Shell stream error:', error.message);
 				});
 
 				resolve(stream);
@@ -138,7 +139,7 @@ class TerminalWebSocketService {
 	}
 
 	handleShellExit() {
-		console.log(`${process.env.CONNECTION_TYPE} shell exited`);
+		logger.info(`${process.env.CONNECTION_TYPE} shell exited`);
 		this.shell = null;
 		this.outputBuffer = '';
 	}
