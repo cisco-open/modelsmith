@@ -2,9 +2,7 @@ import { Injectable, NgZone } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { environment } from '../../../../../../environments/environment';
 
-@Injectable({
-	providedIn: 'root'
-})
+@Injectable()
 export class TerminalWebSocketService {
 	private socket!: WebSocket;
 	private messageSubject = new Subject<string>();

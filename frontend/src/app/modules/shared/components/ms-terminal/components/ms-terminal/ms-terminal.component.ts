@@ -63,8 +63,6 @@ export class MsTerminalComponent implements OnInit, AfterViewInit, OnDestroy {
 		this.initializeTerminal();
 		this.subscribeToWebSocketMessages();
 
-		this.terminalWebSocketService.connect();
-
 		const history = this.terminalWebSocketService.getHistory();
 		history.forEach((msg) => this.terminal.write(msg));
 	}
