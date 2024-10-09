@@ -46,7 +46,9 @@ export function provideCoreServices(): Provider[] {
 				const pageSpinningIndicatorService = inject(PageRunningScriptSpiningIndicatorService);
 				const registry = inject(MatIconRegistry);
 				const scriptFacadeService = inject(ScriptFacadeService);
+				const websocketService = inject(WebsocketService);
 
+				websocketService.connect();
 				navigationService.trackNavigationHistory();
 				pageSpinningIndicatorService.trackCurrentRunningPage();
 				registry.registerFontClassAlias('icomoon', 'ms');

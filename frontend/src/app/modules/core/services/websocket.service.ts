@@ -19,7 +19,6 @@ import { Observable, Subject, timer } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import { ScriptActions } from '../../../state/core/script/script.actions';
 import { StatisticsActions } from '../../../state/core/statistics';
-import { TerminalMessage } from '../../shared/components/ms-terminal/models/terminal-message.interface';
 import { RECONNECT_DELAY } from '../models/constants/websocket.constants';
 import { WebsocketMessageTopics } from '../models/enums/websocket-message-types.enum';
 import { ChartsMessages } from '../models/interfaces/charts-messages.interface';
@@ -29,8 +28,6 @@ import { StatisticsFacadeService } from './statistics-facade.service';
 @Injectable()
 export class WebsocketService {
 	private socket!: WebSocket;
-
-	private terminalMessagesSubject = new Subject<TerminalMessage>();
 	private chartsMessagesSubject = new Subject<ChartsMessages>();
 
 	@HostListener('window:beforeunload', ['$event'])
@@ -41,13 +38,12 @@ export class WebsocketService {
 	constructor(
 		private scriptFacadeService: ScriptFacadeService,
 		private statisticsFacadeService: StatisticsFacadeService
-	) {
-		this.connect();
-	}
+	) {}
 
-	private connect(): void {
+	public connect(): void {
 		this.close();
 
+		console.log('Connecting to WebSocket URL:', environment.websocketUrl);
 		this.socket = new WebSocket(environment.websocketUrl);
 
 		this.socket.onopen = () => {
@@ -59,9 +55,6 @@ export class WebsocketService {
 			const { topic = '', data } = parsedMessage;
 
 			switch (topic) {
-				case WebsocketMessageTopics.TERMINAL:
-					this.terminalMessagesSubject.next(data);
-					break;
 				case WebsocketMessageTopics.SCRIPT_STATUS:
 					this.scriptFacadeService.dispatch(ScriptActions.updateScriptStatus({ status: data }));
 					break;
@@ -93,10 +86,6 @@ export class WebsocketService {
 			}
 			timer(RECONNECT_DELAY).subscribe(() => this.connect());
 		};
-	}
-
-	public get terminalMessages$(): Observable<TerminalMessage> {
-		return this.terminalMessagesSubject.asObservable();
 	}
 
 	public get chartsMessages$(): Observable<ChartsMessages> {

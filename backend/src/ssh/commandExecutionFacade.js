@@ -16,7 +16,7 @@
 
 const { exec } = require('child_process');
 const CONNECTION_TYPE = require('../constants/connectionTypeConstants');
-const SSHConnectionSingleton = require('./sshConnectionSingleton');
+const SSHConnectionSingleton = require('./sshConnectionInstance');
 
 /**
  * Executes a command either locally or on a VM, transparently handling the execution context.

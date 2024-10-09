@@ -23,8 +23,9 @@ const noCache = require('./middlewares/noCache');
 const websocketService = require('./websockets/websocketService');
 const allRoutes = require('./router/allRoutes');
 const logger = require('./utils/logger');
-const SSHConnectionSingleton = require('./ssh/sshConnectionSingleton');
+const SSHConnectionSingleton = require('./ssh/sshConnectionInstance');
 const TerminalWebSocketService = require('./websockets/terminalWebsocketService');
+const CONNECTION_TYPE = require('./constants/connectionTypeConstants');
 
 app.use(cors());
 app.use(express.json());
@@ -38,12 +39,14 @@ const server = app.listen(process.env.PORT, () => {
 });
 
 server.on('upgrade', async (request, socket, head) => {
-	if (request.url === '/terminal') {
+	const pathname = new URL(request.url, `http://${request.headers.host}`).pathname;
+
+	if (pathname === '/terminal') {
 		const terminalService = await TerminalWebSocketService.getInstance();
 		terminalService.wss.handleUpgrade(request, socket, head, (ws) => {
 			terminalService.wss.emit('connection', ws, request);
 		});
-	} else {
+	} else if (pathname === '/ws') {
 		websocketService.wss.handleUpgrade(request, socket, head, (ws) => {
 			websocketService.wss.emit('connection', ws, request);
 		});
@@ -51,7 +54,7 @@ server.on('upgrade', async (request, socket, head) => {
 });
 
 async function initializeSSHConnection() {
-	if (process.env.CONNECTION_TYPE !== 'LOCAL') {
+	if (process.env.CONNECTION_TYPE !== CONNECTION_TYPE.LOCAL) {
 		try {
 			await SSHConnectionSingleton.init();
 			const sshConnection = await SSHConnectionSingleton.getInstance();

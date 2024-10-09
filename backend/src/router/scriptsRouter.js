@@ -70,9 +70,14 @@ const buildCommand = (scriptDetails, args) => {
 	return `source ${process.env.CONDA_SH_PATH} && conda activate modelsmith && python3 ${scriptPath}${algorithm} ${args}`;
 };
 
+let previousScriptState = null;
+
 const changeAndBroadcastScriptState = (newState) => {
-	setScriptState(newState);
-	broadcastStatus();
+	if (previousScriptState !== newState) {
+		setScriptState(newState);
+		broadcastStatus();
+		previousScriptState = newState;
+	}
 };
 
 const getCurrentOrLastActiveScriptDetails = (_, res) => {
@@ -112,6 +117,8 @@ const runScript = async (req, res) => {
 
 	const command = wrapCommandWithMarkers(buildCommand(scriptDetails, args));
 
+	let scriptRunning = false;
+
 	try {
 		const terminalService = await TerminalWebSocketService.getInstance();
 		const shell = terminalService.getShell();
@@ -124,12 +131,10 @@ const runScript = async (req, res) => {
 			parser.reset();
 		}
 
-		let scriptRunning = false;
-
 		const handleData = (data) => {
 			const output = data.toString('utf8');
 
-			if (output.includes(SCRIPT_START_MARKER)) {
+			if (output.includes(SCRIPT_START_MARKER) && !scriptRunning) {
 				scriptRunning = true;
 				if (parser) {
 					parser.reset();
@@ -138,7 +143,7 @@ const runScript = async (req, res) => {
 				return;
 			}
 
-			if (output.includes(SCRIPT_END_MARKER)) {
+			if (output.includes(SCRIPT_END_MARKER) && scriptRunning) {
 				scriptRunning = false;
 				shell.removeListener('data', handleData);
 				setActiveScriptDetails(null);
@@ -162,8 +167,10 @@ const runScript = async (req, res) => {
 			error: 'The script has errors and failed to start automatically. Please check the terminal.'
 		});
 	} finally {
-		setActiveScriptDetails(null);
-		changeAndBroadcastScriptState(ScriptState.NOT_RUNNING);
+		if (scriptRunning) {
+			setActiveScriptDetails(null);
+			changeAndBroadcastScriptState(ScriptState.NOT_RUNNING);
+		}
 	}
 };
 
@@ -180,35 +187,16 @@ const stopScript = async (req, res) => {
 			throw new Error('Shell is not initialized.');
 		}
 
-		terminalService.sendCommand('\x03'); // Ctrl+C character
-		setScriptState(ScriptState.STOPPING);
+		terminalService.sendCommand('\x03'); // Send Ctrl+C to stop the script
+		changeAndBroadcastScriptState(ScriptState.STOPPING);
 
-		const handleData = (data) => {
-			const output = data.toString('utf8');
-			if (output.includes(SCRIPT_END_MARKER)) {
-				shell.removeListener('data', handleData);
-				setScriptState(ScriptState.NOT_RUNNING);
-				setActiveScriptDetails(null);
-				if (!res.headersSent) {
-					res.status(OK).send({ message: 'Script stopped successfully.' });
-				}
-			}
-		};
-
-		shell.on('data', handleData);
-
-		const stopTimeout = setTimeout(() => {
-			shell.removeListener('data', handleData);
-			setScriptState(ScriptState.NOT_RUNNING);
+		setTimeout(() => {
 			setActiveScriptDetails(null);
+			changeAndBroadcastScriptState(ScriptState.NOT_RUNNING);
 			if (!res.headersSent) {
-				res.status(INTERNAL_SERVER_ERROR).send({
-					error: 'Failed to stop the script within the expected time.'
-				});
+				res.status(OK).send({ message: 'Script interrupted by user (Ctrl+C).' });
 			}
-		}, 10000);
-
-		shell.once('data', () => clearTimeout(stopTimeout));
+		}, 1000);
 	} catch (error) {
 		logger.error(`Error stopping script: ${error}`);
 		if (!res.headersSent) {

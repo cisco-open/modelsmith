@@ -18,7 +18,7 @@ const WebSocket = require('ws');
 const os = require('os');
 const pty = require('node-pty');
 const CONNECTION_TYPE = require('../constants/connectionTypeConstants');
-const SSHConnectionSingleton = require('../ssh/sshConnectionSingleton');
+const SSHConnectionSingleton = require('../ssh/sshConnectionInstance');
 
 class TerminalWebSocketService {
 	static instance = null;

@@ -14,7 +14,7 @@
 
 //  SPDX-License-Identifier: Apache-2.0
 
-const SSHConnectionSingleton = require('./sshConnectionSingleton');
+const SSHConnectionSingleton = require('./sshConnectionInstance');
 const { SSH_STATUS } = require('./sshConstants');
 
 module.exports = async (req, res, next) => {

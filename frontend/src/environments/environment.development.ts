@@ -18,6 +18,6 @@ export const environment = {
 	production: false,
 	apiUrl: 'rest',
 	backendBaseUrl: '',
-	websocketUrl: 'ws://localhost:3000',
+	websocketUrl: 'ws://localhost:3000/ws',
 	terminalWebSocketUrl: 'ws://localhost:3000/terminal'
 };

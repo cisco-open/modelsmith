@@ -15,7 +15,6 @@
 //   SPDX-License-Identifier: Apache-2.0
 
 export enum WebsocketMessageTopics {
-	TERMINAL = 'terminal',
 	SCRIPT_STATUS = 'script_status',
 	STATISTICS = 'statistics',
 	CHARTS_PREFIX = 'chart_'
