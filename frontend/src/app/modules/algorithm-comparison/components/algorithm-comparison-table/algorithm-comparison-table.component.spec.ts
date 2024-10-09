@@ -1,4 +1,4 @@
-//    Copyright 2024 Cisco Systems, Inc. and its affiliates
+//   Copyright 2024 Cisco Systems, Inc.
 
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -24,8 +24,8 @@ describe('AlgorithmComparisonTableComponent', () => {
 
 	beforeEach(() => {
 		TestBed.configureTestingModule({
-    declarations: [AlgorithmComparisonTableComponent]
-});
+			declarations: [AlgorithmComparisonTableComponent]
+		});
 		fixture = TestBed.createComponent(AlgorithmComparisonTableComponent);
 		component = fixture.componentInstance;
 		fixture.detectChanges();

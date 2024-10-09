@@ -1,4 +1,4 @@
-//   Copyright 2024 Cisco Systems, Inc. and its affiliates
+//   Copyright 2024 Cisco Systems, Inc.
 
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -39,14 +39,17 @@ const ALGORITHM_TYPES = require('../constants/algorithmTypesConstants');
 const SCRIPT_START_MARKER = '===SCRIPT_START===';
 const SCRIPT_END_MARKER = '===SCRIPT_END===';
 
-const wrapCommandWithMarkers = (command) => {
-	return `echo "${SCRIPT_START_MARKER}" && (${command}) ; echo "${SCRIPT_END_MARKER}"`;
-};
+const wrapCommandWithMarkers = (command) =>
+	`echo "${SCRIPT_START_MARKER}" && (${command}) ; echo "${SCRIPT_END_MARKER}"`;
 
 const buildArgsString = (alg, providedParams) => {
-	const defaultParamsArray = ALGORITHM_PARAMETERS[alg] || [];
-	const defaultParameters = Object.fromEntries(defaultParamsArray.map((param) => [param.argName, param.defaultValue]));
-	const mergedParams = { ...defaultParameters, ...providedParams };
+	const defaultParams =
+		ALGORITHM_PARAMETERS[alg]?.reduce((acc, param) => {
+			acc[param.argName] = param.defaultValue;
+			return acc;
+		}, {}) || {};
+
+	const mergedParams = { ...defaultParams, ...providedParams };
 
 	if (alg === 'AWQ_Q' && process.env.HUGGING_FACE_ACCESS_TOKEN) {
 		mergedParams.token = process.env.HUGGING_FACE_ACCESS_TOKEN;
@@ -60,14 +63,15 @@ const buildArgsString = (alg, providedParams) => {
 };
 
 const buildCommand = (scriptDetails, args) => {
-	const scriptPath = `${process.env.MACHINE_LEARNING_CORE_PATH}/${scriptDetails.path}`;
-	const algorithm = scriptDetails.fileName;
+	const basePath = `${process.env.MACHINE_LEARNING_CORE_PATH}`;
+	const scriptPath = `${basePath}/${scriptDetails.path}${scriptDetails.fileName}`;
+	const condaActivate = `source ${process.env.CONDA_SH_PATH} && conda activate modelsmith`;
 
 	if (scriptDetails.type === ALGORITHM_TYPES.MULTIFLOW) {
-		return `source ${process.env.CONDA_SH_PATH} && cd ${process.env.MACHINE_LEARNING_CORE_PATH}/multiflow && conda activate modelsmith && python3 ${algorithm} ${args}`;
+		return `${condaActivate} && cd ${basePath}/multiflow && python3 ${scriptDetails.fileName} ${args}`;
 	}
 
-	return `source ${process.env.CONDA_SH_PATH} && conda activate modelsmith && python3 ${scriptPath}${algorithm} ${args}`;
+	return `${condaActivate} && python3 ${scriptPath} ${args}`;
 };
 
 let previousScriptState = null;
@@ -80,109 +84,91 @@ const changeAndBroadcastScriptState = (newState) => {
 	}
 };
 
-const getCurrentOrLastActiveScriptDetails = (_, res) => {
+const getCurrentOrLastActiveScriptDetails = (req, res) => {
 	const script = getActiveScriptDetails() || getPreviousScriptDetails();
 
 	if (!script) {
-		return res.status(OK).send(JSON.stringify('No script has run yet.'));
+		return res.status(OK).json('No script has run yet.');
 	}
 
-	const lastActiveScript = JSON.parse(JSON.stringify(script));
+	const { algorithm, ...rest } = script;
+	const scriptDetails = { ...rest, type: algorithm?.type };
 
-	if (lastActiveScript.algorithm) {
-		lastActiveScript.type = lastActiveScript.algorithm.type;
-		delete lastActiveScript.algorithm;
-	}
-
-	res.status(OK).send(lastActiveScript);
+	res.status(OK).json(scriptDetails);
 };
 
 const runScript = async (req, res) => {
-	const { alg = '', params = [] } = req.body;
-
+	const { alg = '', params = {} } = req.body;
 	const scriptDetails = ALGORITHMS[alg];
+
 	if (!scriptDetails) {
-		return res.status(BAD_REQUEST).send({ error: 'Invalid algorithm provided.' });
+		return res.status(BAD_REQUEST).json({ error: 'Invalid algorithm provided.' });
 	}
 
 	const { mergedParams, args } = buildArgsString(alg, params);
 
-	setActiveScriptDetails({
-		algKey: alg,
-		algorithm: scriptDetails,
-		params: mergedParams
-	});
-
+	setActiveScriptDetails({ algKey: alg, algorithm: scriptDetails, params: mergedParams });
 	changeAndBroadcastScriptState(ScriptState.RUNNING);
 
 	const command = wrapCommandWithMarkers(buildCommand(scriptDetails, args));
 
-	let scriptRunning = false;
-
 	try {
 		const terminalService = await TerminalWebSocketService.getInstance();
 		const shell = terminalService.getShell();
+
 		if (!shell) {
 			throw new Error('Shell is not initialized.');
 		}
 
 		const parser = getParserForAlgorithmType(scriptDetails.type);
-		if (parser) {
-			parser.reset();
-		}
+		parser?.reset();
+
+		let scriptRunning = false;
 
 		const handleData = (data) => {
 			const output = data.toString('utf8');
 
-			if (output.includes(SCRIPT_START_MARKER) && !scriptRunning) {
+			if (output.includes(SCRIPT_START_MARKER)) {
 				scriptRunning = true;
-				if (parser) {
-					parser.reset();
-				}
+				parser?.reset();
 				changeAndBroadcastScriptState(ScriptState.RUNNING);
 				return;
 			}
 
-			if (output.includes(SCRIPT_END_MARKER) && scriptRunning) {
+			if (output.includes(SCRIPT_END_MARKER)) {
 				scriptRunning = false;
-				shell.removeListener('data', handleData);
+				shell.off('data', handleData);
 				setActiveScriptDetails(null);
 				changeAndBroadcastScriptState(ScriptState.NOT_RUNNING);
 				return;
 			}
 
-			if (scriptRunning && parser) {
-				parser.parseLine(output);
+			if (scriptRunning) {
+				parser?.parseLine(output);
 			}
 		};
 
 		shell.on('data', handleData);
-
 		terminalService.sendCommand(command);
 
-		res.status(OK).send({ message: 'Script started successfully.' });
+		res.status(OK).json({ message: 'Script started successfully.' });
 	} catch (error) {
 		logger.error(`Error executing command: ${error}`);
-		res.status(INTERNAL_SERVER_ERROR).send({
+		res.status(INTERNAL_SERVER_ERROR).json({
 			error: 'The script has errors and failed to start automatically. Please check the terminal.'
 		});
-	} finally {
-		if (scriptRunning) {
-			setActiveScriptDetails(null);
-			changeAndBroadcastScriptState(ScriptState.NOT_RUNNING);
-		}
 	}
 };
 
 const getScriptStatus = (req, res) => {
-	const scriptStatus = getScriptState();
-	res.status(OK).send({ status: scriptStatus });
+	res.status(OK).json({ status: getScriptState() });
 };
 
 const stopScript = async (req, res) => {
 	try {
 		const terminalService = await TerminalWebSocketService.getInstance();
 		const shell = terminalService.getShell();
+
 		if (!shell) {
 			throw new Error('Shell is not initialized.');
 		}
@@ -194,13 +180,13 @@ const stopScript = async (req, res) => {
 			setActiveScriptDetails(null);
 			changeAndBroadcastScriptState(ScriptState.NOT_RUNNING);
 			if (!res.headersSent) {
-				res.status(OK).send({ message: 'Script interrupted by user (Ctrl+C).' });
+				res.status(OK).json({ message: 'Script interrupted by user (Ctrl+C).' });
 			}
 		}, 1000);
 	} catch (error) {
 		logger.error(`Error stopping script: ${error}`);
 		if (!res.headersSent) {
-			res.status(INTERNAL_SERVER_ERROR).send({
+			res.status(INTERNAL_SERVER_ERROR).json({
 				error: 'Failed to stop the script. Please check the terminal.'
 			});
 		}
