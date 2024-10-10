@@ -14,41 +14,25 @@
 
 //  SPDX-License-Identifier: Apache-2.0
 
-const MESSAGE_TYPES = require('../constants/messageTypes');
+let messageHistory = [];
+let fullMessageHistory = [];
 
-let messageHistory = [
-	{
-		data: 'Welcome to ModelSmith terminal!',
-		type: MESSAGE_TYPES.INFO
-	}
-];
-
-let fullMessageHistory = [
-	{
-		data: 'Welcome to ModelSmith terminal!',
-		type: MESSAGE_TYPES.INFO
-	}
-];
-
-const MAX_HISTORY_MESSAGES = 50;
+const MAX_HISTORY_MESSAGES = 300;
 
 module.exports = {
 	getMessagesHistory: () => messageHistory,
 	getFullMessageHistory: () => fullMessageHistory,
-	addToMessageHistory: (messageObject) => {
-		if (typeof messageObject === 'string') {
-			messageObject = { data: messageObject, type: MESSAGE_TYPES.INFO };
+	addToMessageHistory: (message) => {
+		if (message === 'clear') {
+			messageHistory = [];
+			return;
 		}
 
-		fullMessageHistory.push(messageObject);
+		fullMessageHistory.push(message);
 
-		// Add to limited message history (latest 50)
-		messageHistory.push(messageObject);
+		messageHistory.push(message);
 		if (messageHistory.length > MAX_HISTORY_MESSAGES) {
 			messageHistory.shift();
 		}
-	},
-	clearMessageHistory: () => {
-		messageHistory = [];
 	}
 };

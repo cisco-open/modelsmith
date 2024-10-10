@@ -1,16 +1,15 @@
 import { Injectable, NgZone } from '@angular/core';
-import { BehaviorSubject, Subject } from 'rxjs';
+import { BehaviorSubject, ReplaySubject } from 'rxjs';
 import { environment } from '../../../../../../environments/environment';
+
+const MAX_HISTORY_MESSAGES: number = 300;
 
 @Injectable()
 export class TerminalWebSocketService {
 	private socket!: WebSocket;
-	private messageSubject = new Subject<string>();
+	private messageSubject = new ReplaySubject<string>(MAX_HISTORY_MESSAGES);
 	private connectionStatus = new BehaviorSubject<boolean>(false);
 	private isConnecting = false;
-
-	private messagesHistory: string[] = []; // Buffer to store message history
-	private readonly maxHistory = 1000; // Maximum number of messages to store
 
 	// Observable streams
 	public messages$ = this.messageSubject.asObservable();
@@ -38,27 +37,25 @@ export class TerminalWebSocketService {
 		const socketUrl = environment.terminalWebSocketUrl;
 		this.socket = new WebSocket(socketUrl);
 
+		this.socket.onmessage = (event) => {
+			const data = event.data;
+			this.ngZone.run(() => {
+				this.messageSubject.next(data);
+			});
+		};
+
 		this.socket.onopen = () => {
 			console.log('Terminal WebSocket connected!');
 			this.ngZone.run(() => this.connectionStatus.next(true));
 			this.isConnecting = false;
+
+			this.sendMessage('CLIENT_READY');
 		};
 
 		this.socket.onerror = (error) => {
 			console.error('Terminal WebSocket Error:', error);
 			this.ngZone.run(() => this.connectionStatus.next(false));
 			this.isConnecting = false;
-		};
-
-		this.socket.onmessage = (event) => {
-			const data = event.data;
-			this.ngZone.run(() => {
-				this.messagesHistory.push(data);
-				if (this.messagesHistory.length > this.maxHistory) {
-					this.messagesHistory.shift();
-				}
-				this.messageSubject.next(data);
-			});
 		};
 
 		this.socket.onclose = () => {
@@ -101,13 +98,5 @@ export class TerminalWebSocketService {
 	public reconnect(): void {
 		this.closeConnection();
 		this.connect();
-	}
-
-	/**
-	 * Retrieve the buffered message history
-	 * @returns An array of past messages
-	 */
-	public getHistory(): string[] {
-		return [...this.messagesHistory];
 	}
 }

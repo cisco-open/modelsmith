@@ -62,9 +62,6 @@ export class MsTerminalComponent implements OnInit, AfterViewInit, OnDestroy {
 	ngOnInit(): void {
 		this.initializeTerminal();
 		this.subscribeToWebSocketMessages();
-
-		const history = this.terminalWebSocketService.getHistory();
-		history.forEach((msg) => this.terminal.write(msg));
 	}
 
 	ngAfterViewInit(): void {
@@ -136,7 +133,7 @@ export class MsTerminalComponent implements OnInit, AfterViewInit, OnDestroy {
 
 	clearTerminal() {
 		this.terminalFacadeService.dispatch(TerminalActions.postClearHistory());
-		this.terminalWebSocketService.sendMessage('clear');
+		this.terminalWebSocketService.clearScreen();
 	}
 
 	scrollToTopTerminal() {

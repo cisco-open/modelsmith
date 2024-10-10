@@ -17,7 +17,6 @@
 const WebSocket = require('ws');
 const { getScriptState } = require('../state/scriptState');
 
-// Constants
 const MessageTopics = {
 	SCRIPT_STATUS: 'script_status',
 	STATISTICS: 'statistics',
@@ -30,14 +29,7 @@ const ChartsEventsTopics = {
 	ENHANCE_SINGLE_PHASE_X_AXIS: 'enhanceSinglePhaseXAxis'
 };
 
-// WebSocket setup
 const wss = new WebSocket.Server({ noServer: true });
-
-wss.on('connection', (ws) => {
-	ws.on('message', (message) => {
-		console.log('received:', message);
-	});
-});
 
 function broadcast(data) {
 	wss.clients.forEach((client) => {
