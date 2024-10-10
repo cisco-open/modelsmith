@@ -136,7 +136,7 @@ export class MsTerminalComponent implements OnInit, AfterViewInit, OnDestroy {
 
 	clearTerminal() {
 		this.terminalFacadeService.dispatch(TerminalActions.postClearHistory());
-		this.terminal.clear();
+		this.terminalWebSocketService.sendMessage('clear');
 	}
 
 	scrollToTopTerminal() {
