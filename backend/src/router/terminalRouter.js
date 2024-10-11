@@ -18,15 +18,17 @@ const express = require('express');
 const router = express.Router();
 const { OK } = require('../constants/httpStatusCodes');
 const { clearMessageHistory, getMessagesHistory, getFullMessageHistory } = require('../state/terminalMessagesState');
+const Buffer = require('buffer').Buffer;
 
 router.get('/latest-messages', (req, res) => {
 	const latestMessages = getMessagesHistory();
 	res.status(OK).send(latestMessages);
 });
 
-router.get('/all-messages', (req, res) => {
-	const allMessages = getFullMessageHistory();
-	res.status(200).send(allMessages);
+router.get('/terminal-history', (req, res) => {
+	const terminalHistory = getFullMessageHistory();
+	const encodedHistory = Buffer.from(terminalHistory).toString('base64');
+	res.status(200).json({ history: encodedHistory });
 });
 
 router.post('/clear-history', (req, res) => {

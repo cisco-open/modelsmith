@@ -19,4 +19,4 @@ import { selectCoreState } from '../core.selector';
 
 export const selectLatestMessages = createSelector(selectCoreState, (state) => state.terminal.messages);
 
-export const selectAllMessages = createSelector(selectCoreState, (state) => state.terminal.allMessages);
+export const selectTerminalHistory = createSelector(selectCoreState, (state) => state.terminal.terminalHistory);

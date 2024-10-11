@@ -14,11 +14,10 @@
 
 //   SPDX-License-Identifier: Apache-2.0
 
-import { TerminalMessage } from '../../../../modules/shared/components/ms-terminal/models/terminal-message.interface';
 import { ServiceCallGET } from '../service-call';
 
-export class GetAllMessages extends ServiceCallGET<TerminalMessage[]> {
+export class GetTerminalHistory extends ServiceCallGET<string> {
 	constructor() {
-		super(`all-messages`, undefined, undefined, false);
+		super(`terminal-history`, undefined, undefined, false);
 	}
 }

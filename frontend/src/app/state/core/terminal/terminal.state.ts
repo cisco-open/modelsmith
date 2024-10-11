@@ -18,6 +18,6 @@ import { TerminalMessage } from '../../../modules/shared/components/ms-terminal/
 
 export interface TerminalState {
 	messages: TerminalMessage[];
-	allMessages: TerminalMessage[];
+	terminalHistory: string;
 	error: any | null;
 }

@@ -32,15 +32,13 @@ import { MatInputModule } from '@angular/material/input';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { SearchAddon } from '@xterm/addon-search';
-import { delay, filter, skip, take } from 'rxjs';
+import { delay, filter } from 'rxjs';
 import { Terminal } from 'xterm';
 import { FitAddon } from 'xterm-addon-fit';
 import { TerminalActions } from '../../../../../../state/core/terminal';
 import { TerminalFacadeService } from '../../../../../core/services';
 import { disableBackgroundScroll, enableBackgroundScroll, isNilOrEmptyString } from '../../../../shared.utils';
 import { DIALOG_DATA, DialogConfig, MsDialogComponent } from '../../../ms-dialog';
-import { TerminalMessage } from '../../models/terminal-message.interface';
-import { formatMessageByType } from '../../utils/terminal.utils';
 
 @UntilDestroy()
 @Component({
@@ -71,6 +69,8 @@ export class MsTerminalMessagesHistoryDialogComponent implements OnInit, OnDestr
 			foreground: '#000000',
 			cursor: '#000000'
 		},
+		cursorBlink: false,
+		disableStdin: true,
 		allowProposedApi: true
 	});
 
@@ -96,13 +96,12 @@ export class MsTerminalMessagesHistoryDialogComponent implements OnInit, OnDestr
 	}
 
 	private loadData() {
-		this.terminalFacadeService.dispatch(TerminalActions.getAllMessages());
+		this.terminalFacadeService.dispatch(TerminalActions.getTerminalHistory());
 
-		this.terminalFacadeService.allMessages$.pipe(skip(1), take(1)).subscribe((messages: TerminalMessage[]) => {
-			messages.forEach((messageObj: TerminalMessage) => {
-				const formattedMessage = formatMessageByType(messageObj);
-				this.writeToTerminal(formattedMessage);
-			});
+		this.terminalFacadeService.terminalHistory.pipe(untilDestroyed(this)).subscribe((terminalHistory: string) => {
+			if (terminalHistory) {
+				this.writeToTerminal(terminalHistory);
+			}
 		});
 	}
 
@@ -145,10 +144,13 @@ export class MsTerminalMessagesHistoryDialogComponent implements OnInit, OnDestr
 	}
 
 	private writeToTerminal(message: string): void {
-		const lines = message.split('\n');
-		lines.forEach((line) => {
-			this.terminal.writeln(line);
-		});
+		const cleanMessage = this.filterClearCommand(message);
+		this.terminal.write(cleanMessage);
+	}
+
+	private filterClearCommand(message: string): string {
+		const clearCommandRegex = /\x1B\[H\x1B\[J/g;
+		return message.replace(clearCommandRegex, '');
 	}
 
 	private setupResizeObserver(): void {

@@ -20,7 +20,7 @@ import { TerminalState } from './terminal.state';
 
 export const initialState: TerminalState = {
 	messages: [],
-	allMessages: [],
+	terminalHistory: '',
 	error: null
 };
 
@@ -37,14 +37,14 @@ export const terminalReducer = createReducer(
 		...state,
 		error
 	})),
-	on(TerminalActions.getAllMessagesSuccess, (state, { allMessages }) => {
+	on(TerminalActions.getTerminalHistorySuccess, (state, { terminalHistory }) => {
 		return {
 			...state,
-			allMessages,
+			terminalHistory,
 			error: null
 		};
 	}),
-	on(TerminalActions.getAllMessagesFailure, (state, { error }) => ({
+	on(TerminalActions.getTerminalHistoryFailure, (state, { error }) => ({
 		...state,
 		error
 	})),

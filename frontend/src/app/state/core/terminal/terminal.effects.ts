@@ -18,8 +18,8 @@ import { Inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, of, switchMap } from 'rxjs';
 import { Client } from '../../../services/client/client';
-import { GetAllMessages } from '../../../services/client/serviceCalls/terminal/get-all-messages';
 import { GetLatestMessages } from '../../../services/client/serviceCalls/terminal/get-latest-messages';
+import { GetTerminalHistory } from '../../../services/client/serviceCalls/terminal/get-terminal-history';
 import { PostClearHistory } from '../../../services/client/serviceCalls/terminal/post-clear-history';
 import { CLIENT } from '../../../services/services.tokens';
 import { TerminalActions } from './terminal.actions';
@@ -38,13 +38,16 @@ export class TerminalEffects {
 		)
 	);
 
-	getAllMessages$ = createEffect(() =>
+	getTerminalHistory = createEffect(() =>
 		this.actions$.pipe(
-			ofType(TerminalActions.getAllMessages),
+			ofType(TerminalActions.getTerminalHistory),
 			switchMap(() =>
-				this.apiClient.serviceCall(new GetAllMessages()).pipe(
-					map((allMessages: any) => TerminalActions.getAllMessagesSuccess({ allMessages })),
-					catchError((error) => of(TerminalActions.getAllMessagesFailure({ error })))
+				this.apiClient.serviceCall(new GetTerminalHistory()).pipe(
+					map((response: any) => {
+						const decodedHistory = atob(response.history);
+						return TerminalActions.getTerminalHistorySuccess({ terminalHistory: decodedHistory });
+					}),
+					catchError((error) => of(TerminalActions.getTerminalHistoryFailure({ error })))
 				)
 			)
 		)
