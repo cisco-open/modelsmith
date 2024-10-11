@@ -129,6 +129,7 @@ class TerminalWebSocketService {
 				ws.send(messageHistory);
 				return;
 			}
+			this.processInputCommand(input);
 
 			this.shell?.write(msg);
 		});
@@ -136,9 +137,25 @@ class TerminalWebSocketService {
 		ws.on('close', () => this.clients.delete(ws));
 	}
 
+	processInputCommand(input) {
+		if (!this.currentCommandInput) {
+			this.currentCommandInput = '';
+		}
+
+		this.currentCommandInput += input;
+
+		if (input.includes('\n') || input.includes('\r')) {
+			const command = this.currentCommandInput.trim();
+			this.currentCommandInput = '';
+
+			if (command === 'clear') {
+				terminalMessagesState.clearMessageHistory();
+			}
+		}
+	}
+
 	handleShellData(data) {
 		const output = data.toString('utf8');
-		this.outputBuffer += output;
 
 		terminalMessagesState.addToMessageHistory(output);
 

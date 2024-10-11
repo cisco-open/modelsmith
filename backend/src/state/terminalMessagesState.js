@@ -15,13 +15,17 @@
 //  SPDX-License-Identifier: Apache-2.0
 
 let messageHistory = '';
+let fullMessageHistory = '';
 
 const MAX_HISTORY_LENGTH = 1000000;
 
 module.exports = {
 	getMessagesHistory: () => messageHistory,
+	getFullMessageHistory: () => fullMessageHistory,
 	addToMessageHistory: (message) => {
+		fullMessageHistory += message;
 		messageHistory += message;
+
 		if (messageHistory.length > MAX_HISTORY_LENGTH) {
 			messageHistory = messageHistory.slice(-MAX_HISTORY_LENGTH);
 		}
