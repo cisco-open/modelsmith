@@ -19,24 +19,12 @@ import { TerminalActions } from './terminal.actions';
 import { TerminalState } from './terminal.state';
 
 export const initialState: TerminalState = {
-	messages: [],
 	terminalHistory: '',
 	error: null
 };
 
 export const terminalReducer = createReducer(
 	initialState,
-	on(TerminalActions.getLatestMessagesSuccess, (state, { messages }) => {
-		return {
-			...state,
-			messages,
-			error: null
-		};
-	}),
-	on(TerminalActions.getLatestMessagesFailure, (state, { error }) => ({
-		...state,
-		error
-	})),
 	on(TerminalActions.getTerminalHistorySuccess, (state, { terminalHistory }) => {
 		return {
 			...state,
@@ -45,10 +33,6 @@ export const terminalReducer = createReducer(
 		};
 	}),
 	on(TerminalActions.getTerminalHistoryFailure, (state, { error }) => ({
-		...state,
-		error
-	})),
-	on(TerminalActions.postClearHistoryFailure, (state, { error }) => ({
 		...state,
 		error
 	}))

@@ -17,23 +17,13 @@
 const express = require('express');
 const router = express.Router();
 const { OK } = require('../constants/httpStatusCodes');
-const { clearMessageHistory, getMessagesHistory, getFullMessageHistory } = require('../state/terminalMessagesState');
+const { getFullMessageHistory } = require('../state/terminalMessagesState');
 const Buffer = require('buffer').Buffer;
-
-router.get('/latest-messages', (req, res) => {
-	const latestMessages = getMessagesHistory();
-	res.status(OK).send(latestMessages);
-});
 
 router.get('/terminal-history', (req, res) => {
 	const terminalHistory = getFullMessageHistory();
 	const encodedHistory = Buffer.from(terminalHistory).toString('base64');
-	res.status(200).json({ history: encodedHistory });
-});
-
-router.post('/clear-history', (req, res) => {
-	clearMessageHistory();
-	res.status(OK).send({ message: 'Message history cleared.' });
+	res.status(OK).json({ history: encodedHistory });
 });
 
 module.exports = router;

@@ -19,7 +19,6 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { SearchAddon } from '@xterm/addon-search';
 import { Terminal } from 'xterm';
 import { FitAddon } from 'xterm-addon-fit';
-import { TerminalActions } from '../../../../../../state/core/terminal';
 import { ScriptFacadeService, TerminalFacadeService } from '../../../../../core/services';
 import { ModelsFacadeService } from '../../../../../core/services/models-facade.service';
 import { TerminalWebSocketService } from '../../services/terminal-websocket.service';
@@ -132,7 +131,6 @@ export class MsTerminalComponent implements OnInit, AfterViewInit, OnDestroy {
 	}
 
 	clearTerminal() {
-		this.terminalFacadeService.dispatch(TerminalActions.postClearHistory());
 		this.terminalWebSocketService.clearScreen();
 	}
 

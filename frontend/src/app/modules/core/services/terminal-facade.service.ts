@@ -17,17 +17,14 @@
 import { Injectable } from '@angular/core';
 import { Action, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { selectLatestMessages, selectTerminalHistory } from '../../../state/core/terminal/terminal.selector';
+import { selectTerminalHistory } from '../../../state/core/terminal/terminal.selector';
 import { TerminalState } from '../../../state/core/terminal/terminal.state';
-import { TerminalMessage } from '../../shared/components/ms-terminal/models/terminal-message.interface';
 
 @Injectable()
 export class TerminalFacadeService {
-	messages$: Observable<TerminalMessage[]>;
 	terminalHistory: Observable<string>;
 
 	constructor(private store: Store<TerminalState>) {
-		this.messages$ = this.store.select(selectLatestMessages);
 		this.terminalHistory = this.store.select(selectTerminalHistory);
 	}
 

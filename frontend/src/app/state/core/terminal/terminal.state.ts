@@ -14,10 +14,7 @@
 
 //   SPDX-License-Identifier: Apache-2.0
 
-import { TerminalMessage } from '../../../modules/shared/components/ms-terminal/models/terminal-message.interface';
-
 export interface TerminalState {
-	messages: TerminalMessage[];
 	terminalHistory: string;
 	error: any | null;
 }

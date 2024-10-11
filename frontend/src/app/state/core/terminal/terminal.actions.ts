@@ -15,19 +15,12 @@
 //   SPDX-License-Identifier: Apache-2.0
 
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
-import { TerminalMessage } from '../../../modules/shared/components/ms-terminal/models/terminal-message.interface';
 
 export const TerminalActions = createActionGroup({
 	source: '[Core -> Terminal]',
 	events: {
-		'Get Latest Messages': emptyProps(),
-		'Get Latest Messages Success': props<{ messages: TerminalMessage[] }>(),
-		'Get Latest Messages Failure': props<{ error: any }>(),
 		'Get Terminal History': emptyProps(),
 		'Get Terminal History Success': props<{ terminalHistory: string }>(),
-		'Get Terminal History Failure': props<{ error: any }>(),
-		'Post Clear History': emptyProps(),
-		'Post Clear History Success': emptyProps(),
-		'Post Clear History Failure': props<{ error: any }>()
+		'Get Terminal History Failure': props<{ error: any }>()
 	}
 });
