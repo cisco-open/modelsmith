@@ -30,9 +30,6 @@ class TerminalWebSocketService {
 		this.shell = null;
 		this.clients = new Set();
 		this.outputBuffer = '';
-		this.currentCommandInput = '';
-		this.outputAccumulationBuffer = '';
-		this.outputAccumulationTimeout = null;
 	}
 
 	static async getInstance() {
@@ -129,18 +126,8 @@ class TerminalWebSocketService {
 
 			if (input === 'CLIENT_READY') {
 				const messageHistory = terminalMessagesState.getMessagesHistory();
-				messageHistory.forEach((message) => {
-					ws.send(message);
-				});
+				ws.send(messageHistory);
 				return;
-			}
-
-			this.currentCommandInput += input;
-
-			if (input.includes('\n') || input.includes('\r')) {
-				const command = this.currentCommandInput.trim();
-				terminalMessagesState.addToMessageHistory(command);
-				this.currentCommandInput = '';
 			}
 
 			this.shell?.write(msg);
@@ -153,18 +140,7 @@ class TerminalWebSocketService {
 		const output = data.toString('utf8');
 		this.outputBuffer += output;
 
-		this.outputAccumulationBuffer += output;
-
-		if (this.outputAccumulationTimeout) {
-			clearTimeout(this.outputAccumulationTimeout);
-		}
-
-		this.outputAccumulationTimeout = setTimeout(() => {
-			if (this.outputAccumulationBuffer.trim()) {
-				terminalMessagesState.addToMessageHistory(this.outputAccumulationBuffer);
-				this.outputAccumulationBuffer = '';
-			}
-		}, 100);
+		terminalMessagesState.addToMessageHistory(output);
 
 		this.clients.forEach((client) => {
 			if (client.readyState === WebSocket.OPEN) {

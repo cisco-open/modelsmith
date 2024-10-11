@@ -23,12 +23,12 @@ export class TerminalWebSocketService {
 	 */
 	public connect(): void {
 		if (this.socket && (this.socket.readyState === WebSocket.OPEN || this.socket.readyState === WebSocket.CONNECTING)) {
-			console.log('WebSocket is already connected or connecting.');
+			console.log('Terminal WebSocket is already connected or connecting.');
 			return;
 		}
 
 		if (this.isConnecting) {
-			console.log('WebSocket connection is already in progress.');
+			console.log('Terminal WebSocket connection is already in progress.');
 			return;
 		}
 
@@ -73,7 +73,7 @@ export class TerminalWebSocketService {
 		if (this.socket && this.socket.readyState === WebSocket.OPEN) {
 			this.socket.send(message);
 		} else {
-			console.error('WebSocket is not open. Unable to send message:', message);
+			console.error('Terminal WebSocket is not open. Unable to send message:', message);
 		}
 	}
 
@@ -88,7 +88,7 @@ export class TerminalWebSocketService {
 	public closeConnection(): void {
 		if (this.socket) {
 			this.socket.close();
-			console.log('WebSocket connection closed by client.');
+			console.log('Terminal WebSocket connection closed by client.');
 		}
 	}
 
