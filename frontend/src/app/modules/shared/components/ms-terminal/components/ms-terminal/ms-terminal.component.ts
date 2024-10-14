@@ -16,10 +16,10 @@
 
 import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { FitAddon } from '@xterm/addon-fit';
 import { SearchAddon } from '@xterm/addon-search';
-import { Terminal } from 'xterm';
-import { FitAddon } from 'xterm-addon-fit';
-import { ScriptFacadeService, TerminalFacadeService } from '../../../../../core/services';
+import { Terminal } from '@xterm/xterm';
+import { ScriptFacadeService } from '../../../../../core/services';
 import { ModelsFacadeService } from '../../../../../core/services/models-facade.service';
 import { TerminalWebSocketService } from '../../services/terminal-websocket.service';
 import { MsTerminalToolbarComponent } from '../ms-terminal-toolbar/ms-terminal-toolbar.component';
@@ -53,10 +53,7 @@ export class MsTerminalComponent implements OnInit, AfterViewInit, OnDestroy {
 	private searchAddon = new SearchAddon();
 	private resizeObserver?: ResizeObserver;
 
-	constructor(
-		private terminalFacadeService: TerminalFacadeService,
-		private terminalWebSocketService: TerminalWebSocketService
-	) {}
+	constructor(private terminalWebSocketService: TerminalWebSocketService) {}
 
 	ngOnInit(): void {
 		this.initializeTerminal();
