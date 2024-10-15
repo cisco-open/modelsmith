@@ -150,6 +150,19 @@ class TerminalWebSocketService {
 
 			if (command === 'clear') {
 				terminalMessagesState.clearMessageHistory();
+
+				// ANSI control sequence
+				// \x1b[H — Move the Cursor to the Home Position
+				// \x1b[3J — Clear the Scrollback Buffer
+				const clearSequence = '\x1b[H\x1b[3J';
+
+				this.clients.forEach((client) => {
+					if (client.readyState === WebSocket.OPEN) {
+						client.send(clearSequence);
+					}
+				});
+
+				return;
 			}
 		}
 	}
