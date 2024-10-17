@@ -2,6 +2,7 @@
 
 set -e
 
+# Input parameters
 CONNECTION_TYPE=$1
 PRIMARY_SSH_HOST=$2
 PRIMARY_SSH_PORT=$3
@@ -11,6 +12,25 @@ MACHINE_LEARNING_CORE_PATH=$6
 CONDA_SH_PATH=$7
 HUGGING_FACE_ACCESS_TOKEN=$8
 PRIMARY_SSH_PRIVATE_KEY_PATH=$9
+
+# Proxy parameters for primary SSH
+PRIMARY_PROXY_SSH_HOST=${10}
+PRIMARY_PROXY_SSH_PORT=${11}
+PRIMARY_PROXY_SSH_USER=${12}
+PRIMARY_PROXY_SSH_PRIVATE_KEY_PATH=${13}
+
+# Backup SSH parameters
+BACKUP_SSH_HOST=${14}
+BACKUP_SSH_PORT=${15}
+BACKUP_SSH_USERNAME=${16}
+BACKUP_SSH_PASSWORD=${17}
+BACKUP_SSH_PRIVATE_KEY_PATH=${18}
+
+# Proxy parameters for backup SSH
+BACKUP_PROXY_SSH_HOST=${19}
+BACKUP_PROXY_SSH_PORT=${20}
+BACKUP_PROXY_SSH_USER=${21}
+BACKUP_PROXY_SSH_PRIVATE_KEY_PATH=${22}
 
 echo "PORT=3000" > /app/backend/.env
 echo "MACHINE_LEARNING_CORE_PATH=${MACHINE_LEARNING_CORE_PATH}" >> /app/backend/.env
@@ -22,6 +42,28 @@ echo "PRIMARY_SSH_PORT=${PRIMARY_SSH_PORT}" >> /app/backend/.env
 echo "PRIMARY_SSH_USERNAME=${PRIMARY_SSH_USERNAME}" >> /app/backend/.env
 echo "PRIMARY_SSH_PASSWORD=${PRIMARY_SSH_PASSWORD}" >> /app/backend/.env
 echo "PRIMARY_SSH_PRIVATE_KEY_PATH=${PRIMARY_SSH_PRIVATE_KEY_PATH}" >> /app/backend/.env
+
+if [ -n "$PRIMARY_PROXY_SSH_HOST" ]; then
+  echo "PRIMARY_PROXY_SSH_HOST=${PRIMARY_PROXY_SSH_HOST}" >> /app/backend/.env
+  echo "PRIMARY_PROXY_SSH_PORT=${PRIMARY_PROXY_SSH_PORT}" >> /app/backend/.env
+  echo "PRIMARY_PROXY_SSH_USER=${PRIMARY_PROXY_SSH_USER}" >> /app/backend/.env
+  echo "PRIMARY_PROXY_SSH_PRIVATE_KEY_PATH=${PRIMARY_PROXY_SSH_PRIVATE_KEY_PATH}" >> /app/backend/.env
+fi
+
+if [ -n "$BACKUP_SSH_HOST" ]; then
+  echo "BACKUP_SSH_HOST=${BACKUP_SSH_HOST}" >> /app/backend/.env
+  echo "BACKUP_SSH_PORT=${BACKUP_SSH_PORT}" >> /app/backend/.env
+  echo "BACKUP_SSH_USERNAME=${BACKUP_SSH_USERNAME}" >> /app/backend/.env
+  echo "BACKUP_SSH_PASSWORD=${BACKUP_SSH_PASSWORD}" >> /app/backend/.env
+  echo "BACKUP_SSH_PRIVATE_KEY_PATH=${BACKUP_SSH_PRIVATE_KEY_PATH}" >> /app/backend/.env
+fi
+
+if [ -n "$BACKUP_PROXY_SSH_HOST" ]; then
+  echo "BACKUP_PROXY_SSH_HOST=${BACKUP_PROXY_SSH_HOST}" >> /app/backend/.env
+  echo "BACKUP_PROXY_SSH_PORT=${BACKUP_PROXY_SSH_PORT}" >> /app/backend/.env
+  echo "BACKUP_PROXY_SSH_USER=${BACKUP_PROXY_SSH_USER}" >> /app/backend/.env
+  echo "BACKUP_PROXY_SSH_PRIVATE_KEY_PATH=${BACKUP_PROXY_SSH_PRIVATE_KEY_PATH}" >> /app/backend/.env
+fi
 
 install_miniconda3() {
     echo "Installing Miniconda..."
@@ -114,3 +156,4 @@ case $CONNECTION_TYPE in
 esac
 
 echo "Python environment setup complete."
+
