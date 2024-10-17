@@ -114,8 +114,8 @@ When asked about "Select the environment for model training:" -> choose 2. VM
 
 ```
 PORT=3000
-MACHINE_LEARNING_CORE_PATH=machine_learning_core
-CONDA_SH_PATH=miniconda3/etc/profile.d/conda.sh
+MACHINE_LEARNING_CORE_PATH=$HOME/machine_learning_core
+CONDA_SH_PATH=$HOME/miniconda3/etc/profile.d/conda.sh
 HUGGING_FACE_ACCESS_TOKEN=insert_token_here
 
 CONNECTION_TYPE=VM
@@ -149,8 +149,8 @@ BACKUP_PROXY_SSH_PRIVATE_KEY_PATH=/path/to/proxy/backup/private/key
 ### .env file Configuration for VM Explained
 
 - **PORT**: The port number where the backend server listens. (default = 3000)
-- **MACHINE_LEARNING_CORE_PATH**: The path to the modelsmith python project directory on the VM.
-- **CONDA_SH_PATH**: Path to the Conda environment script on the VM.
+- **MACHINE_LEARNING_CORE_PATH**: The path to the modelsmith python project directory on the VM. It needs to be an absolute path from the $HOME.
+- **CONDA_SH_PATH**: Path to the Conda environment script on the VM. It needs to be an absolute path from the $HOME.
 - **HUGGING_FACE_ACCESS_TOKEN**: This token is necessary for authenticating and accessing Hugging Face's model repositories. To obtain the token, please check: [AutoAWQ Configuration Guide](configure-autoawq.md)
 
 - **CONNECTION_TYPE**: Set to `VM` to indicate the project is configured to use virtual machines for model training.
@@ -184,6 +184,12 @@ If a proxy is required to access the backup VM, configure these fields:
 - **BACKUP_PROXY_SSH_PORT**: SSH port for the proxy server, typically `22`.
 - **BACKUP_PROXY_SSH_USER**: The username for SSH authentication on the proxy server.
 - **BACKUP_PROXY_SSH_PRIVATE_KEY_PATH**: Path to the private key for authenticating to the proxy (if applicable).
+
+### Notes:
+
+- Any fields that are not used can be left as empty strings (e.g., for proxy or backup settings).
+- Make sure to replace the placeholder values with your actual configuration details.
+- MACHINE_LEARNING_CORE_PATH and CONDA_SH_PATH needs to be set from $HOME directory.
 
 ## Phase 3: Start the Project
 

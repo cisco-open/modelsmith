@@ -61,12 +61,12 @@ create_update_env_file() {
 
     local machine_learning_core_path="../machine_learning_core"
     echo -e "${YELLOW}Enter CONDA_SH_PATH (press Enter for default):${NC}"
-    read -p "(default: ~/miniconda3/etc/profile.d/conda.sh): " conda_sh_path
-    conda_sh_path=${conda_sh_path:-~/miniconda3/etc/profile.d/conda.sh}
+    read -p "(default: $HOME/miniconda3/etc/profile.d/conda.sh): " conda_sh_path
+    conda_sh_path=${conda_sh_path:-$HOME/miniconda3/etc/profile.d/conda.sh}
 
     if [[ $env_choice == "2" ]]; then
-        echo -e "${YELLOW}Enter MACHINE_LEARNING_CORE_PATH for VM:${NC}"
-        read -p "(e.g., /path/to/machine_learning_core on VM): " machine_learning_core_vm_path
+        echo -e "${YELLOW}Enter the MACHINE_LEARNING_CORE_PATH for VM (absolute path):${NC}"
+        read -p "(e.g., $HOME/machine_learning_core on VM): " machine_learning_core_vm_path
         machine_learning_core_path="$machine_learning_core_vm_path"
     fi
 
