@@ -1,4 +1,4 @@
-//   Copyright 2024 Cisco Systems, Inc. and its affiliates
+//   Copyright 2024 Cisco Systems, Inc.
 
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@
 const express = require('express');
 const router = express.Router();
 const multer = require('multer');
-const { conn } = require('../facades/commandExecutionFacade');
+const { conn } = require('../ssh/commandExecutionFacade');
 const { OK, INTERNAL_SERVER_ERROR } = require('../constants/httpStatusCodes');
 const logger = require('../utils/logger');
 

@@ -44,22 +44,40 @@ This command runs the frontend container in detached mode (`-d`), names it `ms-f
 
 Before running the backend container, you need to set up the environment variables. These variables configure various aspects of the backend, including paths, access tokens, and connection details. Here's an explanation of each variable:
 
-- `MACHINE_LEARNING_CORE_PATH`: Path to the machine learning core within the container. The default value is "machine_learning_core".
-- `CONDA_SH_PATH`: Path to the Conda shell script for environment activation. The default value is "miniconda3/etc/profile.d/conda.sh".
-- `HUGGING_FACE_ACCESS_TOKEN`: Your Hugging Face access token for model downloads. Please refer to the [AutoAWQ Configuration Guide](configure-autoawq.md)
-- `CONNECTION_TYPE`: Type of connection "VM" for virtual machine.
+- `MACHINE_LEARNING_CORE_PATH`: Path to the machine learning core within the container. The default value is `"$HOME/machine_learning_core"`. It needs to be an absolute path from the $HOME.
+- `CONDA_SH_PATH`: Path to the Conda shell script for environment activation. The default value is `"$HOME/miniconda3/etc/profile.d/conda.sh"`. It needs to be an absolute path from the $HOME.
+- `HUGGING_FACE_ACCESS_TOKEN`: Your Hugging Face access token for model downloads. Please refer to the [AutoAWQ Configuration Guide](configure-autoawq.md).
+- `CONNECTION_TYPE`: Type of connection, e.g., `"VM"` for a virtual machine.
 - `PRIMARY_SSH_HOST`: Hostname or IP address of the primary SSH server.
 - `PRIMARY_SSH_PORT`: Port number for SSH connection.
 - `PRIMARY_SSH_USERNAME`: Username for SSH authentication.
 - `PRIMARY_SSH_PASSWORD`: Password for SSH authentication (use with caution, consider using SSH keys instead).
 - `PRIMARY_SSH_PRIVATE_KEY_PATH`: Path to the SSH private key file (if using key-based authentication).
+- **Proxy Configuration for Primary SSH (optional):**
+  - `PRIMARY_PROXY_SSH_HOST`: Hostname or IP address of the proxy server for the primary SSH connection (leave empty if not using a proxy).
+  - `PRIMARY_PROXY_SSH_PORT`: Port number for proxy SSH connection (default is usually `22`, leave empty if not using a proxy).
+  - `PRIMARY_PROXY_SSH_USER`: Username for the proxy server authentication (leave empty if not using a proxy).
+  - `PRIMARY_PROXY_SSH_PRIVATE_KEY_PATH`: Path to the SSH private key file for proxy authentication (leave empty if not using a proxy).
+- **Backup SSH Configuration (optional):**
+  - `BACKUP_SSH_HOST`: Hostname or IP address of the backup SSH server (leave empty if no backup is used).
+  - `BACKUP_SSH_PORT`: Port number for the backup SSH connection (leave empty if no backup is used).
+  - `BACKUP_SSH_USERNAME`: Username for backup SSH authentication (leave empty if no backup is used).
+  - `BACKUP_SSH_PASSWORD`: Password for backup SSH authentication (leave empty if no backup is used).
+  - `BACKUP_SSH_PRIVATE_KEY_PATH`: Path to the SSH private key for backup SSH (leave empty if no backup is used).
+- **Proxy Configuration for Backup SSH (optional):**
+  - `BACKUP_PROXY_SSH_HOST`: Hostname or IP address of the proxy server for the backup SSH connection (leave empty if not using a proxy).
+  - `BACKUP_PROXY_SSH_PORT`: Port number for proxy backup SSH connection (default is usually `22`, leave empty if not using a proxy).
+  - `BACKUP_PROXY_SSH_USER`: Username for proxy server authentication for the backup (leave empty if not using a proxy).
+  - `BACKUP_PROXY_SSH_PRIVATE_KEY_PATH`: Path to the SSH private key file for proxy backup authentication (leave empty if not using a proxy).
 
-Now, run the backend container with the following command, replacing the placeholder values with your actual configuration:
+### Running the Backend Container
+
+Now, you can run the backend container with the following command. Make sure to replace the placeholder values with your actual configuration. Any fields that are not used (such as proxy settings or backup settings) can be left as empty values.
 
 ```shell
 docker run -d --name ms-backend-container \
-  -e "MACHINE_LEARNING_CORE_PATH=machine_learning_core" \
-  -e "CONDA_SH_PATH=miniconda3/etc/profile.d/conda.sh" \
+  -e "MACHINE_LEARNING_CORE_PATH=$HOME/machine_learning_core" \
+  -e "CONDA_SH_PATH=$HOME/miniconda3/etc/profile.d/conda.sh" \
   -e "HUGGING_FACE_ACCESS_TOKEN=your_hugging_face_token_here" \
   -e "CONNECTION_TYPE=VM" \
   -e "PRIMARY_SSH_HOST=your_ssh_host_here" \
@@ -67,11 +85,28 @@ docker run -d --name ms-backend-container \
   -e "PRIMARY_SSH_USERNAME=your_ssh_username" \
   -e "PRIMARY_SSH_PASSWORD=your_ssh_password" \
   -e "PRIMARY_SSH_PRIVATE_KEY_PATH=/path/to/your/private/key/or_empty" \
+  -e "PRIMARY_PROXY_SSH_HOST=" \
+  -e "PRIMARY_PROXY_SSH_PORT=" \
+  -e "PRIMARY_PROXY_SSH_USER=" \
+  -e "PRIMARY_PROXY_SSH_PRIVATE_KEY_PATH=" \
+  -e "BACKUP_SSH_HOST=" \
+  -e "BACKUP_SSH_PORT=" \
+  -e "BACKUP_SSH_USERNAME=" \
+  -e "BACKUP_SSH_PASSWORD=" \
+  -e "BACKUP_SSH_PRIVATE_KEY_PATH=" \
+  -e "BACKUP_PROXY_SSH_HOST=" \
+  -e "BACKUP_PROXY_SSH_PORT=" \
+  -e "BACKUP_PROXY_SSH_USER=" \
+  -e "BACKUP_PROXY_SSH_PRIVATE_KEY_PATH=" \
   -p 3000:3000 \
   ms-backend
 ```
 
-Make sure to replace the placeholder values with your actual configuration details.
+### Notes:
+
+- Any fields that are not used can be left as empty strings (e.g., for proxy or backup settings).
+- Make sure to replace the placeholder values with your actual configuration details.
+- MACHINE_LEARNING_CORE_PATH and CONDA_SH_PATH needs to be set from $HOME directory.
 
 ### Step 4: Configure AutoAWQ for Model Quantization
 

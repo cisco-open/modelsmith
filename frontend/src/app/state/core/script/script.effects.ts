@@ -1,4 +1,4 @@
-//    Copyright 2024 Cisco Systems, Inc. and its affiliates
+//   Copyright 2024 Cisco Systems, Inc.
 
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -20,6 +20,7 @@ import { catchError, map, of, switchMap } from 'rxjs';
 import { Client } from '../../../services/client/client';
 import { GetCurrentOrLastActiveScriptDetails } from '../../../services/client/serviceCalls/script/get-current-or-last-active-script-details';
 import { GetScriptStatus } from '../../../services/client/serviceCalls/script/get-script-status';
+import { PostExecutecommand } from '../../../services/client/serviceCalls/script/post-execute-command';
 import { PostRunScript } from '../../../services/client/serviceCalls/script/post-run-script';
 import { PostStopScript } from '../../../services/client/serviceCalls/script/post-stop-script';
 import { CLIENT } from '../../../services/services.tokens';
@@ -75,6 +76,18 @@ export class ScriptEffects {
 				this.apiClient.serviceCall(new PostStopScript()).pipe(
 					map(() => ScriptActions.stopScriptSuccess()),
 					catchError((error) => of(ScriptActions.stopScriptFailure({ error })))
+				)
+			)
+		)
+	);
+
+	executeCommand$ = createEffect(() =>
+		this.actions$.pipe(
+			ofType(ScriptActions.executeCommand),
+			switchMap(({ command }) =>
+				this.apiClient.serviceCall(new PostExecutecommand(command)).pipe(
+					map(() => ScriptActions.executeCommandSuccess()),
+					catchError((error) => of(ScriptActions.executeCommandFailure({ error })))
 				)
 			)
 		)

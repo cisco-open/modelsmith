@@ -1,4 +1,4 @@
-//    Copyright 2024 Cisco Systems, Inc. and its affiliates
+//   Copyright 2024 Cisco Systems, Inc.
 
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -15,19 +15,12 @@
 //   SPDX-License-Identifier: Apache-2.0
 
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
-import { TerminalMessage } from '../../../modules/shared/components/ms-terminal/models/terminal-message.interface';
 
 export const TerminalActions = createActionGroup({
 	source: '[Core -> Terminal]',
 	events: {
-		'Get Latest Messages': emptyProps(),
-		'Get Latest Messages Success': props<{ messages: TerminalMessage[] }>(),
-		'Get Latest Messages Failure': props<{ error: any }>(),
-		'Get All Messages': emptyProps(),
-		'Get All Messages Success': props<{ allMessages: TerminalMessage[] }>(),
-		'Get All Messages Failure': props<{ error: any }>(),
-		'Post Clear History': emptyProps(),
-		'Post Clear History Success': emptyProps(),
-		'Post Clear History Failure': props<{ error: any }>()
+		'Get Terminal History': emptyProps(),
+		'Get Terminal History Success': props<{ terminalHistory: string }>(),
+		'Get Terminal History Failure': props<{ error: any }>()
 	}
 });

@@ -1,4 +1,4 @@
-//    Copyright 2024 Cisco Systems, Inc. and its affiliates
+//   Copyright 2024 Cisco Systems, Inc.
 
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -29,6 +29,7 @@ import { isScriptActive } from '../../../../../model-compression/models/enums/sc
 import { MsTooltipPanelDirective } from '../../../../directives/ms-tooltip-panel/ms-tooltip-panel.directive';
 import { isNilOrEmptyString } from '../../../../shared.utils';
 import { DialogConfig, DialogService } from '../../../ms-dialog';
+import { TerminalWebSocketService } from '../../services/terminal-websocket.service';
 import { MsTerminalMessagesHistoryDialogComponent } from '../ms-terminal-messages-history-dialog/ms-terminal-messages-history-dialog.component';
 
 @UntilDestroy({})
@@ -54,7 +55,6 @@ export class MsTerminalToolbarComponent implements OnInit {
 
 	searchFormControl = new FormControl<string>('');
 
-	@Output() clearTerminal = new EventEmitter();
 	@Output() scrollToTopTerminal = new EventEmitter();
 	@Output() scrollToBottomTerminal = new EventEmitter();
 	@Output() searchTerminal = new EventEmitter<string>();
@@ -62,12 +62,17 @@ export class MsTerminalToolbarComponent implements OnInit {
 
 	constructor(
 		private scriptFacadeService: ScriptFacadeService,
-		private dialogService: DialogService
+		private dialogService: DialogService,
+		private terminalWebSocketService: TerminalWebSocketService
 	) {}
 
 	ngOnInit(): void {
 		this.listenToScriptStateChanges();
 		this.listenToSearchFormControlChanges();
+	}
+
+	public clearTerminal() {
+		this.terminalWebSocketService.clearScreen();
 	}
 
 	private listenToSearchFormControlChanges(): void {

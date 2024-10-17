@@ -1,6 +1,7 @@
 import { ENVIRONMENT_INITIALIZER, inject, Provider } from '@angular/core';
 import { MatIconRegistry } from '@angular/material/icon';
 import { ScriptActions } from '../../state/core/script';
+import { TerminalWebSocketService } from '../shared/components/ms-terminal/services/terminal-websocket.service';
 import { AuthGuard } from './guards/auth.guard';
 import { ModeSelectGuard } from './guards/mode-select.guard';
 import { RedirectIfAuthenticatedGuard } from './guards/redirect-if-authenticated.guard';
@@ -23,6 +24,7 @@ import { PageRunningScriptSpiningIndicatorService } from './services/page-runnin
 export function provideCoreServices(): Provider[] {
 	return [
 		WebsocketService,
+		TerminalWebSocketService,
 		AuthGuard,
 		NavigationService,
 		RedirectIfAuthenticatedGuard,
@@ -46,6 +48,11 @@ export function provideCoreServices(): Provider[] {
 				const pageSpinningIndicatorService = inject(PageRunningScriptSpiningIndicatorService);
 				const registry = inject(MatIconRegistry);
 				const scriptFacadeService = inject(ScriptFacadeService);
+				const websocketService = inject(WebsocketService);
+				const terminalWebSocketService = inject(TerminalWebSocketService);
+
+				websocketService.connect();
+				terminalWebSocketService.connect();
 
 				navigationService.trackNavigationHistory();
 				pageSpinningIndicatorService.trackCurrentRunningPage();

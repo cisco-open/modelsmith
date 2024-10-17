@@ -1,4 +1,4 @@
-//    Copyright 2024 Cisco Systems, Inc. and its affiliates
+//   Copyright 2024 Cisco Systems, Inc.
 
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -14,10 +14,7 @@
 
 //   SPDX-License-Identifier: Apache-2.0
 
-import { TerminalMessage } from '../../../modules/shared/components/ms-terminal/models/terminal-message.interface';
-
 export interface TerminalState {
-	messages: TerminalMessage[];
-	allMessages: TerminalMessage[];
+	terminalHistory: string;
 	error: any | null;
 }

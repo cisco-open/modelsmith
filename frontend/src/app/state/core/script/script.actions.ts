@@ -1,4 +1,4 @@
-//    Copyright 2024 Cisco Systems, Inc. and its affiliates
+//   Copyright 2024 Cisco Systems, Inc.
 
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -33,6 +33,9 @@ export const ScriptActions = createActionGroup({
 		'Stop Script Failure': props<{ error: any }>(),
 		'Get Current or Last Active Script Details': emptyProps(),
 		'Get Current or Last Active Script Details Success': props<{ scriptDetails: ScriptDetails }>(),
-		'Get Current or Last Active Script Details Failure': props<{ error: any }>()
+		'Get Current or Last Active Script Details Failure': props<{ error: any }>(),
+		'Execute Command': props<{ command: string }>(),
+		'Execute Command Success': emptyProps(),
+		'Execute Command Failure': props<{ error: any }>()
 	}
 });

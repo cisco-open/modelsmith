@@ -1,4 +1,4 @@
-//   Copyright 2024 Cisco Systems, Inc. and its affiliates
+//   Copyright 2024 Cisco Systems, Inc.
 
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -13,14 +13,14 @@
 //  limitations under the License.
 
 //  SPDX-License-Identifier: Apache-2.0
+
 const express = require('express');
 const router = express.Router();
-const { broadcastTerminal, broadcastStatus } = require('../services/websocketService');
-const checkSshConnection = require('../middlewares/checkSshConnection');
+const { broadcastStatus } = require('../websockets/websocketService');
+const checkSshConnection = require('../ssh/checkSshConnectionMiddleware');
 const checkIfNoScriptRunning = require('../middlewares/checkIfNoScriptRunning');
 const checkIfScriptRunning = require('../middlewares/checkIfScriptRunning');
 const ALGORITHMS = require('../constants/algorithmsConstants');
-const MESSAGE_TYPES = require('../constants/messageTypes');
 const { BAD_REQUEST, OK, INTERNAL_SERVER_ERROR } = require('../constants/httpStatusCodes');
 const logger = require('../utils/logger');
 const {
@@ -32,137 +32,170 @@ const {
 	getPreviousScriptDetails
 } = require('../state/scriptState');
 const ALGORITHM_PARAMETERS = require('../constants/parametersConstants');
-const { executeCommand } = require('../facades/commandExecutionFacade');
-const { executorFactory } = require('../facades/algorithmExecutionFacade');
+const TerminalWebSocketService = require('../websockets/terminalWebsocketService');
+const { getParserForAlgorithmType } = require('../utils/parserUtils');
+const ALGORITHM_TYPES = require('../constants/algorithmTypesConstants');
 
-router.get('/current-or-last-active-script-details', (_, res) => {
-	let script = getActiveScriptDetails() || getPreviousScriptDetails();
+const SCRIPT_START_MARKER = '===SCRIPT_START===';
+const SCRIPT_END_MARKER = '===SCRIPT_END===';
+
+const wrapCommandWithMarkers = (command) =>
+	`echo "${SCRIPT_START_MARKER}" && (${command}) ; echo "${SCRIPT_END_MARKER}"`;
+
+const buildArgsString = (alg, providedParams) => {
+	const defaultParams =
+		ALGORITHM_PARAMETERS[alg]?.reduce((acc, param) => {
+			acc[param.argName] = param.defaultValue;
+			return acc;
+		}, {}) || {};
+
+	const mergedParams = { ...defaultParams, ...providedParams };
+
+	if (alg === 'AWQ_Q' && process.env.HUGGING_FACE_ACCESS_TOKEN) {
+		mergedParams.token = process.env.HUGGING_FACE_ACCESS_TOKEN;
+	}
+
+	const args = Object.entries(mergedParams)
+		.map(([key, value]) => `--${key}=${value}`)
+		.join(' ');
+
+	return { mergedParams, args };
+};
+
+const buildCommand = (scriptDetails, args) => {
+	const basePath = `${process.env.MACHINE_LEARNING_CORE_PATH}`;
+	const scriptPath = `${basePath}/${scriptDetails.path}${scriptDetails.fileName}`;
+	const condaActivate = `source ${process.env.CONDA_SH_PATH} && conda activate modelsmith`;
+
+	if (scriptDetails.type === ALGORITHM_TYPES.MULTIFLOW) {
+		return `${condaActivate} && cd ${basePath}/multiflow && python3 ${scriptDetails.fileName} ${args}`;
+	}
+
+	return `${condaActivate} && python3 ${scriptPath} ${args}`;
+};
+
+let previousScriptState = null;
+
+const changeAndBroadcastScriptState = (newState) => {
+	if (previousScriptState !== newState) {
+		setScriptState(newState);
+		broadcastStatus();
+		previousScriptState = newState;
+	}
+};
+
+const getCurrentOrLastActiveScriptDetails = (req, res) => {
+	const script = getActiveScriptDetails() || getPreviousScriptDetails();
 
 	if (!script) {
-		return res.status(OK).send(JSON.stringify('No script has run yet.'));
+		return res.status(OK).json('No script has run yet.');
 	}
 
-	let lastActiveScript = JSON.parse(JSON.stringify(script));
+	const { algorithm, ...rest } = script;
+	const scriptDetails = { ...rest, type: algorithm?.type };
 
-	if (lastActiveScript.algorithm) {
-		lastActiveScript['type'] = lastActiveScript.algorithm.type;
-		delete lastActiveScript['algorithm'];
-	}
+	res.status(OK).json(scriptDetails);
+};
 
-	res.status(OK).send(lastActiveScript);
-});
-
-router.post('/run-script', checkSshConnection, checkIfScriptRunning, async (req, res) => {
-	const { alg = '', params = [] } = req.body;
-
+const runScript = async (req, res) => {
+	const { alg = '', params = {} } = req.body;
 	const scriptDetails = ALGORITHMS[alg];
+
 	if (!scriptDetails) {
-		return res.status(BAD_REQUEST).send({ error: 'Invalid algorithm provided.' });
+		return res.status(BAD_REQUEST).json({ error: 'Invalid algorithm provided.' });
 	}
 
 	const { mergedParams, args } = buildArgsString(alg, params);
 
-	setActiveScriptDetails({
-		algKey: alg,
-		algorithm: scriptDetails,
-		params: mergedParams
-	});
-
+	setActiveScriptDetails({ algKey: alg, algorithm: scriptDetails, params: mergedParams });
 	changeAndBroadcastScriptState(ScriptState.RUNNING);
 
-	const executor = executorFactory[scriptDetails.type];
-	if (!executor) {
-		return res.status(BAD_REQUEST).send({ error: 'Unsupported algorithm type.' });
-	}
+	const command = wrapCommandWithMarkers(buildCommand(scriptDetails, args));
 
 	try {
-		await executor.execute(
-			`${process.env.MACHINE_LEARNING_CORE_PATH}/${scriptDetails.path}`,
-			scriptDetails.fileName,
-			args
-		);
-		res.status(OK).send({ message: 'Script execution ended successfully.' });
-		broadcastTerminal('Script execution ended successfully.', MESSAGE_TYPES.SUCCESS);
+		const terminalService = await TerminalWebSocketService.getInstance();
+		const shell = terminalService.getShell();
+
+		if (!shell) {
+			throw new Error('Shell is not initialized.');
+		}
+
+		const parser = getParserForAlgorithmType(scriptDetails.type);
+		parser?.reset();
+
+		let scriptRunning = false;
+
+		const handleData = (data) => {
+			const output = data.toString('utf8');
+
+			if (output.includes(SCRIPT_START_MARKER)) {
+				scriptRunning = true;
+				parser?.reset();
+				changeAndBroadcastScriptState(ScriptState.RUNNING);
+				return;
+			}
+
+			if (output.includes(SCRIPT_END_MARKER)) {
+				scriptRunning = false;
+				shell.off('data', handleData);
+				setActiveScriptDetails(null);
+				changeAndBroadcastScriptState(ScriptState.NOT_RUNNING);
+				return;
+			}
+
+			if (scriptRunning) {
+				parser?.parseLine(output);
+			}
+		};
+
+		shell.on('data', handleData);
+		terminalService.sendCommand(command);
+
+		res.status(OK).json({ message: 'Script started successfully.' });
 	} catch (error) {
 		logger.error(`Error executing command: ${error}`);
-		res.status(INTERNAL_SERVER_ERROR).send({
+		res.status(INTERNAL_SERVER_ERROR).json({
 			error: 'The script has errors and failed to start automatically. Please check the terminal.'
 		});
-		broadcastTerminal(error, MESSAGE_TYPES.ERROR);
-	} finally {
-		setActiveScriptDetails(null);
-		changeAndBroadcastScriptState(ScriptState.NOT_RUNNING);
 	}
-});
-
-router.get('/script-status', (req, res) => {
-	const scriptStatus = getScriptState();
-	const response = { status: scriptStatus };
-	res.status(OK).send(response);
-});
-
-router.post('/stop-script', checkSshConnection, checkIfNoScriptRunning, (req, res) => {
-	const activeDetails = getActiveScriptDetails();
-	const fileName = activeDetails ? activeDetails.algorithm.fileName : null;
-
-	if (!fileName) {
-		return res.status(BAD_REQUEST).send({ error: 'Unable to fetch script details.' });
-	}
-
-	const killCommand = `bash ${process.env.MACHINE_LEARNING_CORE_PATH}/bash/kill_script.sh ${fileName}`;
-	let responseSent = false;
-
-	broadcastTerminal('Stopping script started.');
-	setScriptState(ScriptState.STOPPING);
-
-	executeCommand(
-		killCommand,
-		(data) => {
-			if (responseSent) return;
-			logger.info(`kill_script.sh output: ${data.toString()}`);
-		},
-		() => {
-			if (responseSent) return;
-			setScriptState(ScriptState.NOT_RUNNING);
-			setActiveScriptDetails(null);
-			broadcastTerminal('Script stopped successfully.', MESSAGE_TYPES.SUCCESS);
-			res.status(OK).send({ message: 'Script stopped successfully.' });
-			responseSent = true;
-		},
-		() => {
-			if (responseSent) return;
-			setScriptState(ScriptState.NOT_RUNNING);
-			setActiveScriptDetails(null);
-			responseSent = true;
-		}
-	);
-});
-
-// Helper functions
-const buildArgsString = (alg, providedParams) => {
-	const defaultParamsArray = ALGORITHM_PARAMETERS[alg] || [];
-	const defaultParameters = defaultParamsArray.reduce((acc, param) => {
-		acc[param.argName] = param.defaultValue;
-		return acc;
-	}, {});
-	const mergedParams = { ...defaultParameters, ...providedParams };
-	if (alg === 'AWQ_Q') {
-		const token = process.env.HUGGING_FACE_ACCESS_TOKEN;
-		if (token) {
-			mergedParams.token = token;
-		}
-	}
-	return {
-		mergedParams,
-		args: Object.entries(mergedParams)
-			.map(([key, value]) => `--${key}=${value}`)
-			.join(' ')
-	};
 };
 
-const changeAndBroadcastScriptState = (newState) => {
-	setScriptState(newState);
-	broadcastStatus();
+const getScriptStatus = (req, res) => {
+	res.status(OK).json({ status: getScriptState() });
 };
+
+const stopScript = async (req, res) => {
+	try {
+		const terminalService = await TerminalWebSocketService.getInstance();
+		const shell = terminalService.getShell();
+
+		if (!shell) {
+			throw new Error('Shell is not initialized.');
+		}
+
+		terminalService.sendCommand('\x03'); // Send Ctrl+C to stop the script
+		changeAndBroadcastScriptState(ScriptState.STOPPING);
+
+		setTimeout(() => {
+			setActiveScriptDetails(null);
+			changeAndBroadcastScriptState(ScriptState.NOT_RUNNING);
+			if (!res.headersSent) {
+				res.status(OK).json({ message: 'Script interrupted by user (Ctrl+C).' });
+			}
+		}, 1000);
+	} catch (error) {
+		logger.error(`Error stopping script: ${error}`);
+		if (!res.headersSent) {
+			res.status(INTERNAL_SERVER_ERROR).json({
+				error: 'Failed to stop the script. Please check the terminal.'
+			});
+		}
+	}
+};
+
+router.get('/current-or-last-active-script-details', getCurrentOrLastActiveScriptDetails);
+router.post('/run-script', checkSshConnection, checkIfScriptRunning, runScript);
+router.get('/script-status', getScriptStatus);
+router.post('/stop-script', checkSshConnection, checkIfNoScriptRunning, stopScript);
 
 module.exports = router;

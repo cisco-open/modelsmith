@@ -22,7 +22,7 @@ app.get('*', (_, res) => {
 
 const port = 4200;
 const server = app.listen(port, () => {
-	console.log(`Server is running on port ${port}`);
+	console.log(`Frontend server is running on port ${port}`);
 });
 
 var signals = {

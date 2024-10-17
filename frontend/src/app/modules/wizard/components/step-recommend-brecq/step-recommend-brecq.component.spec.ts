@@ -1,4 +1,4 @@
-//    Copyright 2024 Cisco Systems, Inc. and its affiliates
+//   Copyright 2024 Cisco Systems, Inc.
 
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -24,8 +24,8 @@ describe('StepRecommendBrecqComponent', () => {
 
 	beforeEach(() => {
 		TestBed.configureTestingModule({
-    declarations: [StepRecommendBrecqComponent]
-});
+			declarations: [StepRecommendBrecqComponent]
+		});
 		fixture = TestBed.createComponent(StepRecommendBrecqComponent);
 		component = fixture.componentInstance;
 		fixture.detectChanges();

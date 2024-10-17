@@ -23,11 +23,16 @@
 		[closeOnBackdropClick]="false"
 		[showCloseButton]="true"
 		position="top"
-		(closed)="disposeSearch.emit(); searchFormControl.setValue('')">
+		(closed)="disposeSearch.emit(); searchFormControl.setValue('')"
+		#tooltipPanel="msTooltipPanel">
 		<mat-icon fontSet="ms" fontIcon="icon-MagnifyingGlass"></mat-icon>
 	</button>
 
-	<button mat-icon-button color="primary" matTooltip="Terminal history" (click)="openTerminalMessagesHistoryDialog()">
+	<button
+		mat-icon-button
+		color="primary"
+		matTooltip="Terminal history"
+		(click)="openTerminalMessagesHistoryDialog(); tooltipPanel.closePanel()">
 		<mat-icon>history</mat-icon>
 	</button>
 
@@ -39,7 +44,7 @@
 		<mat-icon fontSet="ms" fontIcon="icon-ArrowDown"></mat-icon>
 	</button>
 
-	<button mat-icon-button color="primary" matTooltip="Clear terminal" (click)="clearTerminal.emit()">
+	<button mat-icon-button color="primary" matTooltip="Clear terminal" (click)="clearTerminal()">
 		<mat-icon> clear_all</mat-icon>
 	</button>
 

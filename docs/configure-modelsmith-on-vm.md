@@ -114,8 +114,8 @@ When asked about "Select the environment for model training:" -> choose 2. VM
 
 ```
 PORT=3000
-MACHINE_LEARNING_CORE_PATH=machine_learning_core
-CONDA_SH_PATH=miniconda3/etc/profile.d/conda.sh
+MACHINE_LEARNING_CORE_PATH=$HOME/machine_learning_core
+CONDA_SH_PATH=$HOME/miniconda3/etc/profile.d/conda.sh
 HUGGING_FACE_ACCESS_TOKEN=insert_token_here
 
 CONNECTION_TYPE=VM
@@ -126,22 +126,36 @@ PRIMARY_SSH_USERNAME=myusername
 PRIMARY_SSH_PASSWORD=mypassword
 PRIMARY_SSH_PRIVATE_KEY_PATH=
 
-# Backend it's optional, can be skipped
+# Proxy for Primary
+PRIMARY_PROXY_SSH_HOST=proxy-host
+PRIMARY_PROXY_SSH_PORT=22
+PRIMARY_PROXY_SSH_USER=proxy-user
+PRIMARY_PROXY_SSH_PRIVATE_KEY_PATH=/path/to/proxy/private/key
+
+# Backup SSH
 BACKUP_SSH_HOST=vm-host-backup-if-primary-fails
 BACKUP_SSH_PORT=22
 BACKUP_SSH_USERNAME=myusername
 BACKUP_SSH_PASSWORD=
-BACKUP_SSH_PRIVATE_KEY_PATH=myprivatekeypaty
+BACKUP_SSH_PRIVATE_KEY_PATH=/path/to/backup/private/key
+
+# Proxy for Backup
+BACKUP_PROXY_SSH_HOST=proxy-backup-host
+BACKUP_PROXY_SSH_PORT=22
+BACKUP_PROXY_SSH_USER=proxy-backup-user
+BACKUP_PROXY_SSH_PRIVATE_KEY_PATH=/path/to/proxy/backup/private/key
 ```
 
-### .env File Configuration for VM Explained
+### .env file Configuration for VM Explained
 
 - **PORT**: The port number where the backend server listens. (default = 3000)
-- **MACHINE_LEARNING_CORE_PATH**: The path to the modelsmith python project directory on the VM.
-- **CONDA_SH_PATH**: Path to the Conda environment script on the VM.
+- **MACHINE_LEARNING_CORE_PATH**: The path to the modelsmith python project directory on the VM. It needs to be an absolute path from the $HOME.
+- **CONDA_SH_PATH**: Path to the Conda environment script on the VM. It needs to be an absolute path from the $HOME.
 - **HUGGING_FACE_ACCESS_TOKEN**: This token is necessary for authenticating and accessing Hugging Face's model repositories. To obtain the token, please check: [AutoAWQ Configuration Guide](configure-autoawq.md)
 
 - **CONNECTION_TYPE**: Set to `VM` to indicate the project is configured to use virtual machines for model training.
+
+#### Primary SSH Connection
 
 - **PRIMARY_SSH_HOST**: The hostname or IP address of the primary VM.
 - **PRIMARY_SSH_PORT**: SSH port for the primary VM, typically `22`.
@@ -149,7 +163,33 @@ BACKUP_SSH_PRIVATE_KEY_PATH=myprivatekeypaty
 - **PRIMARY_SSH_PASSWORD**: Password for SSH authentication (if applicable).
 - **PRIMARY_SSH_PRIVATE_KEY_PATH**: Path to the private SSH key for key-based authentication (if applicable).
 
-- **BACKUP_SSH_HOST, BACKUP_SSH_PORT, BACKUP_SSH_USERNAME, BACKUP_SSH_PASSWORD, BACKUP_SSH_PRIVATE_KEY_PATH**: Similar to the primary settings, these are for the backup VM (if configured).
+#### Primary SSH Proxy Configuration
+
+If a proxy is required to access the primary VM, the following fields should be configured:
+
+- **PRIMARY_PROXY_SSH_HOST**: The hostname or IP address of the proxy server used to connect to the primary VM.
+- **PRIMARY_PROXY_SSH_PORT**: SSH port for the proxy server, typically `22`.
+- **PRIMARY_PROXY_SSH_USER**: The username for SSH authentication on the proxy server.
+- **PRIMARY_PROXY_SSH_PRIVATE_KEY_PATH**: Path to the private key for authenticating to the proxy (if applicable).
+
+#### Backup SSH Connection
+
+- **BACKUP_SSH_HOST, BACKUP_SSH_PORT, BACKUP_SSH_USERNAME, BACKUP_SSH_PASSWORD, BACKUP_SSH_PRIVATE_KEY_PATH**: These settings mirror the primary configuration, except for the backup VM that will be used if the primary VM connection fails.
+
+#### Backup SSH Proxy Configuration
+
+If a proxy is required to access the backup VM, configure these fields:
+
+- **BACKUP_PROXY_SSH_HOST**: The hostname or IP address of the proxy server used to connect to the backup VM.
+- **BACKUP_PROXY_SSH_PORT**: SSH port for the proxy server, typically `22`.
+- **BACKUP_PROXY_SSH_USER**: The username for SSH authentication on the proxy server.
+- **BACKUP_PROXY_SSH_PRIVATE_KEY_PATH**: Path to the private key for authenticating to the proxy (if applicable).
+
+### Notes:
+
+- Any fields that are not used can be left as empty strings (e.g., for proxy or backup settings).
+- Make sure to replace the placeholder values with your actual configuration details.
+- MACHINE_LEARNING_CORE_PATH and CONDA_SH_PATH needs to be set from $HOME directory.
 
 ## Phase 3: Start the Project
 

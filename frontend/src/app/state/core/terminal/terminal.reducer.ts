@@ -1,4 +1,4 @@
-//    Copyright 2024 Cisco Systems, Inc. and its affiliates
+//   Copyright 2024 Cisco Systems, Inc.
 
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -19,36 +19,20 @@ import { TerminalActions } from './terminal.actions';
 import { TerminalState } from './terminal.state';
 
 export const initialState: TerminalState = {
-	messages: [],
-	allMessages: [],
+	terminalHistory: '',
 	error: null
 };
 
 export const terminalReducer = createReducer(
 	initialState,
-	on(TerminalActions.getLatestMessagesSuccess, (state, { messages }) => {
+	on(TerminalActions.getTerminalHistorySuccess, (state, { terminalHistory }) => {
 		return {
 			...state,
-			messages,
+			terminalHistory,
 			error: null
 		};
 	}),
-	on(TerminalActions.getLatestMessagesFailure, (state, { error }) => ({
-		...state,
-		error
-	})),
-	on(TerminalActions.getAllMessagesSuccess, (state, { allMessages }) => {
-		return {
-			...state,
-			allMessages,
-			error: null
-		};
-	}),
-	on(TerminalActions.getAllMessagesFailure, (state, { error }) => ({
-		...state,
-		error
-	})),
-	on(TerminalActions.postClearHistoryFailure, (state, { error }) => ({
+	on(TerminalActions.getTerminalHistoryFailure, (state, { error }) => ({
 		...state,
 		error
 	}))

@@ -1,4 +1,4 @@
-//   Copyright 2024 Cisco Systems, Inc. and its affiliates
+//   Copyright 2024 Cisco Systems, Inc.
 
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -14,30 +14,23 @@
 
 //  SPDX-License-Identifier: Apache-2.0
 
-const MESSAGE_TYPES = require('../constants/messageTypes');
+let messageHistory = '';
+let fullMessageHistory = '';
 
-let messageHistory = [];
-let fullMessageHistory = [];
-
-const MAX_HISTORY_MESSAGES = 50;
+const MAX_HISTORY_LENGTH = 1000000;
 
 module.exports = {
 	getMessagesHistory: () => messageHistory,
 	getFullMessageHistory: () => fullMessageHistory,
-	addToMessageHistory: (messageObject) => {
-		if (typeof messageObject === 'string') {
-			messageObject = { data: messageObject, type: MESSAGE_TYPES.INFO };
-		}
+	addToMessageHistory: (message) => {
+		fullMessageHistory += message;
+		messageHistory += message;
 
-		fullMessageHistory.push(messageObject);
-
-		// Add to limited message history (latest 50)
-		messageHistory.push(messageObject);
-		if (messageHistory.length > MAX_HISTORY_MESSAGES) {
-			messageHistory.shift();
+		if (messageHistory.length > MAX_HISTORY_LENGTH) {
+			messageHistory = messageHistory.slice(-MAX_HISTORY_LENGTH);
 		}
 	},
 	clearMessageHistory: () => {
-		messageHistory = [];
+		messageHistory = '';
 	}
 };

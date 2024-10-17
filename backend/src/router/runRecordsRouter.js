@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const ALGORITHM_TYPES = require('../constants/algorithmTypesConstants');
-const { executeCommand } = require('../facades/commandExecutionFacade');
-const checkSshConnection = require('../middlewares/checkSshConnection');
+const { executeCommand } = require('../ssh/commandExecutionFacade');
+const checkSshConnection = require('../ssh/checkSshConnectionMiddleware');
 const StatelessPruningParser = require('../parsers/statelessPruningParser');
 const StatelessQuantizationParser = require('../parsers/statelessQuantizationParser');
 const StatelessMachineUnlearningParser = require('../parsers/statelessMachineUnlearningParser');

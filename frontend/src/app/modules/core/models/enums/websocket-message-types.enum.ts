@@ -1,4 +1,4 @@
-//    Copyright 2024 Cisco Systems, Inc. and its affiliates
+//   Copyright 2024 Cisco Systems, Inc.
 
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -15,7 +15,6 @@
 //   SPDX-License-Identifier: Apache-2.0
 
 export enum WebsocketMessageTopics {
-	TERMINAL = 'terminal',
 	SCRIPT_STATUS = 'script_status',
 	STATISTICS = 'statistics',
 	CHARTS_PREFIX = 'chart_'

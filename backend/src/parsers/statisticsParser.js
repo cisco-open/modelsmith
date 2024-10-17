@@ -1,4 +1,4 @@
-//   Copyright 2024 Cisco Systems, Inc. and its affiliates
+//   Copyright 2024 Cisco Systems, Inc.
 
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
 
 //  SPDX-License-Identifier: Apache-2.0
 
-const { broadcastChart, MessageTopics } = require('../services/websocketService');
+const { broadcastChart, MessageTopics } = require('../websockets/websocketService');
 
 class StatisticsParser {
 	static statisticsRegex = /Statistics:\s+(\S+):\s+(\d+\.\d+|\d+)/;

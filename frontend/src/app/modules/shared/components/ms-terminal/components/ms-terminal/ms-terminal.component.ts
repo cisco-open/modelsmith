@@ -1,4 +1,4 @@
-//    Copyright 2024 Cisco Systems, Inc. and its affiliates
+//   Copyright 2024 Cisco Systems, Inc.
 
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -16,19 +16,12 @@
 
 import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { FitAddon } from '@xterm/addon-fit';
 import { SearchAddon } from '@xterm/addon-search';
-import { firstValueFrom, skip, take } from 'rxjs';
-import { Terminal } from 'xterm';
-import { FitAddon } from 'xterm-addon-fit';
-import { KeyValue } from '../../../../../../services/client/models/key-value/key-value.interface-dto';
-import { ScriptDetails } from '../../../../../../services/client/models/script/script-details.interface-dto';
-import { ModelsActions } from '../../../../../../state/core/models/models.actions';
-import { TerminalActions } from '../../../../../../state/core/terminal';
-import { ScriptFacadeService, TerminalFacadeService, WebsocketService } from '../../../../../core/services';
+import { Terminal } from '@xterm/xterm';
+import { ScriptFacadeService } from '../../../../../core/services';
 import { ModelsFacadeService } from '../../../../../core/services/models-facade.service';
-import { AlgorithmType, TrainAlgorithmsEnum } from '../../../../../model-compression/models/enums/algorithms.enum';
-import { TerminalMessage } from '../../models/terminal-message.interface';
-import { formatMessageByType } from '../../utils/terminal.utils';
+import { TerminalWebSocketService } from '../../services/terminal-websocket.service';
 import { MsTerminalToolbarComponent } from '../ms-terminal-toolbar/ms-terminal-toolbar.component';
 
 @UntilDestroy()
@@ -43,9 +36,6 @@ import { MsTerminalToolbarComponent } from '../ms-terminal-toolbar/ms-terminal-t
 })
 export class MsTerminalComponent implements OnInit, AfterViewInit, OnDestroy {
 	@ViewChild('terminal', { static: true }) terminalDiv!: ElementRef;
-
-	private messagesBuffer: TerminalMessage[] = [];
-	private displayWebSocketMessages = false;
 
 	private terminal: Terminal = new Terminal({
 		cursorBlink: true,
@@ -63,33 +53,11 @@ export class MsTerminalComponent implements OnInit, AfterViewInit, OnDestroy {
 	private searchAddon = new SearchAddon();
 	private resizeObserver?: ResizeObserver;
 
-	constructor(
-		private websocketService: WebsocketService,
-		private terminalFacadeService: TerminalFacadeService,
-		private scriptFacadeService: ScriptFacadeService,
-		private modelsFacadeService: ModelsFacadeService
-	) {
-		this.listenToIncommingMessages();
-	}
-
-	private listenToIncommingMessages() {
-		this.websocketService.terminalMessages$.pipe(untilDestroyed(this)).subscribe((message: TerminalMessage) => {
-			if (message?.data === 'Script execution ended successfully.') {
-				this.updateModelsListOnTrainAlgorithmCompletion();
-			}
-
-			const formattedMessage = formatMessageByType(message);
-			if (this.displayWebSocketMessages) {
-				this.writeToTerminal(formattedMessage);
-			} else {
-				this.messagesBuffer.push(message);
-			}
-		});
-	}
+	constructor(private terminalWebSocketService: TerminalWebSocketService) {}
 
 	ngOnInit(): void {
 		this.initializeTerminal();
-		this.loadLatestMessages();
+		this.subscribeToWebSocketMessages();
 	}
 
 	ngAfterViewInit(): void {
@@ -116,28 +84,10 @@ export class MsTerminalComponent implements OnInit, AfterViewInit, OnDestroy {
 		this.searchAddon.clearDecorations();
 	}
 
-	private writeToTerminal(message: string): void {
-		const lines = message.split('\n');
-		lines.forEach((line) => {
-			this.terminal.writeln(line);
+	private subscribeToWebSocketMessages(): void {
+		this.terminalWebSocketService.messages$.pipe(untilDestroyed(this)).subscribe((message: string) => {
+			this.terminal.write(message);
 		});
-	}
-
-	private loadLatestMessages() {
-		this.terminalFacadeService.messages$.pipe(skip(1), take(1)).subscribe((messages: TerminalMessage[]) => {
-			messages.forEach((messageObj: TerminalMessage) => {
-				const formattedMessage = formatMessageByType(messageObj);
-				this.writeToTerminal(formattedMessage);
-			});
-
-			this.messagesBuffer.forEach((bufferedMessageObj: TerminalMessage) => {
-				const formattedMessage = formatMessageByType(bufferedMessageObj);
-				this.writeToTerminal(formattedMessage);
-			});
-			this.messagesBuffer = [];
-			this.displayWebSocketMessages = true;
-		});
-		this.terminalFacadeService.dispatch(TerminalActions.getLatestMessages());
 	}
 
 	private initializeTerminal(): void {
@@ -145,9 +95,12 @@ export class MsTerminalComponent implements OnInit, AfterViewInit, OnDestroy {
 		this.terminal.loadAddon(this.searchAddon);
 
 		this.terminal.open(this.terminalDiv.nativeElement);
-		this.terminal.writeln('Welcome to ModelSmith terminal!\r\n');
 
 		this.setupResizeObserver();
+
+		this.terminal.onData((data) => {
+			this.terminalWebSocketService.sendMessage(data);
+		});
 	}
 
 	private setupResizeObserver(): void {
@@ -174,30 +127,8 @@ export class MsTerminalComponent implements OnInit, AfterViewInit, OnDestroy {
 		}
 	}
 
-	private async updateModelsListOnTrainAlgorithmCompletion() {
-		const scriptDetails: ScriptDetails = await firstValueFrom(this.scriptFacadeService.scriptDetails$);
-		const algorithmMapping: KeyValue<AlgorithmType> = {
-			[TrainAlgorithmsEnum.MACHINE_UNLEARNING_TRAIN]: AlgorithmType.MACHINE_UNLEARNING,
-			[TrainAlgorithmsEnum.PRUNING_TRAIN]: AlgorithmType.PRUNING,
-			[TrainAlgorithmsEnum.QUANTIZATION_TRAIN]: AlgorithmType.QUANTIZATION
-		};
-
-		if (scriptDetails.algKey in algorithmMapping) {
-			this.modelsFacadeService.dispatch(
-				ModelsActions.getModelsList({ algorithmType: algorithmMapping[scriptDetails.algKey] })
-			);
-			this.modelsFacadeService.dispatch(
-				ModelsActions.getModelMetadata({
-					algorithmType: algorithmMapping[scriptDetails.algKey],
-					modelName: scriptDetails.model
-				})
-			);
-		}
-	}
-
 	clearTerminal() {
-		this.terminalFacadeService.dispatch(TerminalActions.postClearHistory());
-		this.terminal.clear();
+		this.terminalWebSocketService.clearScreen();
 	}
 
 	scrollToTopTerminal() {
@@ -210,5 +141,6 @@ export class MsTerminalComponent implements OnInit, AfterViewInit, OnDestroy {
 
 	ngOnDestroy(): void {
 		this.resizeObserver?.disconnect();
+		this.terminal.dispose();
 	}
 }

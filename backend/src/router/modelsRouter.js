@@ -1,4 +1,4 @@
-//   Copyright 2024 Cisco Systems, Inc. and its affiliates
+//   Copyright 2024 Cisco Systems, Inc.
 
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -19,8 +19,8 @@ const router = express.Router();
 const getModelsByType = require('../constants/modelsConstants');
 const { getActiveScriptDetails, getPreviousScriptDetails } = require('../state/scriptState');
 const ALGORITHM_TYPES = require('../constants/algorithmTypesConstants');
-const { executeCommand } = require('../facades/commandExecutionFacade');
-const checkSshConnection = require('../middlewares/checkSshConnection');
+const { executeCommand } = require('../ssh/commandExecutionFacade');
+const checkSshConnection = require('../ssh/checkSshConnectionMiddleware');
 const { BAD_REQUEST, OK, INTERNAL_SERVER_ERROR, NOT_FOUND } = require('../constants/httpStatusCodes');
 
 const CHECKPOINT_PATHS = {

@@ -1,4 +1,4 @@
-//   Copyright 2024 Cisco Systems, Inc. and its affiliates
+//   Copyright 2024 Cisco Systems, Inc.
 
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -39,7 +39,7 @@
  */
 
 const async = require('async');
-const { broadcastChart, MessageTopics, ChartsEventsTopics } = require('../services/websocketService');
+const { broadcastChart, MessageTopics, ChartsEventsTopics } = require('../websockets/websocketService');
 
 class PruningParser {
 	static pruningStateRegex = /Pruning state (\d+)/;

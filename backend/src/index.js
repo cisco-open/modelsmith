@@ -1,4 +1,4 @@
-//   Copyright 2024 Cisco Systems, Inc. and its affiliates
+//   Copyright 2024 Cisco Systems, Inc.
 
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -20,9 +20,12 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 const noCache = require('./middlewares/noCache');
-const websocketService = require('./services/websocketService');
+const websocketService = require('./websockets/websocketService');
 const allRoutes = require('./router/allRoutes');
 const logger = require('./utils/logger');
+const SSHConnectionSingleton = require('./ssh/sshConnectionInstance');
+const TerminalWebSocketService = require('./websockets/terminalWebsocketService');
+const CONNECTION_TYPE = require('./constants/connectionTypeConstants');
 
 app.use(cors());
 app.use(express.json());
@@ -31,11 +34,33 @@ app.use(noCache);
 app.use('/rest', allRoutes);
 
 const server = app.listen(process.env.PORT, () => {
-	logger.info(`Server is running on port ${process.env.PORT}`);
+	logger.info(`Backend server is running on port ${process.env.PORT}`);
+	initializeSSHConnection();
 });
 
-server.on('upgrade', (request, socket, head) => {
-	websocketService.wss.handleUpgrade(request, socket, head, (ws) => {
-		websocketService.wss.emit('connection', ws, request);
-	});
+server.on('upgrade', async (request, socket, head) => {
+	const pathname = new URL(request.url, `http://${request.headers.host}`).pathname;
+
+	if (pathname === '/terminal') {
+		const terminalService = await TerminalWebSocketService.getInstance();
+		terminalService.wss.handleUpgrade(request, socket, head, (ws) => {
+			terminalService.wss.emit('connection', ws, request);
+		});
+	} else if (pathname === '/ws') {
+		websocketService.wss.handleUpgrade(request, socket, head, (ws) => {
+			websocketService.wss.emit('connection', ws, request);
+		});
+	}
 });
+
+async function initializeSSHConnection() {
+	if (process.env.CONNECTION_TYPE !== CONNECTION_TYPE.LOCAL) {
+		try {
+			await SSHConnectionSingleton.init();
+			const sshConnection = await SSHConnectionSingleton.getInstance();
+			logger.info(`SSH Connection initialized with status: ${sshConnection.status}`);
+		} catch (error) {
+			logger.error(`Failed to initialize SSH Connection: ${error.message}`);
+		}
+	}
+}

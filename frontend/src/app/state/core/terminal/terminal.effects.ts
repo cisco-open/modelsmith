@@ -1,4 +1,4 @@
-//    Copyright 2024 Cisco Systems, Inc. and its affiliates
+//   Copyright 2024 Cisco Systems, Inc.
 
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -18,45 +18,22 @@ import { Inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, of, switchMap } from 'rxjs';
 import { Client } from '../../../services/client/client';
-import { GetAllMessages } from '../../../services/client/serviceCalls/terminal/get-all-messages';
-import { GetLatestMessages } from '../../../services/client/serviceCalls/terminal/get-latest-messages';
-import { PostClearHistory } from '../../../services/client/serviceCalls/terminal/post-clear-history';
+import { GetTerminalHistory } from '../../../services/client/serviceCalls/terminal/get-terminal-history';
 import { CLIENT } from '../../../services/services.tokens';
 import { TerminalActions } from './terminal.actions';
 
 @Injectable()
 export class TerminalEffects {
-	getLatestMessages$ = createEffect(() =>
+	getTerminalHistory = createEffect(() =>
 		this.actions$.pipe(
-			ofType(TerminalActions.getLatestMessages),
+			ofType(TerminalActions.getTerminalHistory),
 			switchMap(() =>
-				this.apiClient.serviceCall(new GetLatestMessages()).pipe(
-					map((messages: any) => TerminalActions.getLatestMessagesSuccess({ messages })),
-					catchError((error) => of(TerminalActions.getLatestMessagesFailure({ error })))
-				)
-			)
-		)
-	);
-
-	getAllMessages$ = createEffect(() =>
-		this.actions$.pipe(
-			ofType(TerminalActions.getAllMessages),
-			switchMap(() =>
-				this.apiClient.serviceCall(new GetAllMessages()).pipe(
-					map((allMessages: any) => TerminalActions.getAllMessagesSuccess({ allMessages })),
-					catchError((error) => of(TerminalActions.getAllMessagesFailure({ error })))
-				)
-			)
-		)
-	);
-
-	postClearHistory$ = createEffect(() =>
-		this.actions$.pipe(
-			ofType(TerminalActions.postClearHistory),
-			switchMap(() =>
-				this.apiClient.serviceCall(new PostClearHistory()).pipe(
-					map(() => TerminalActions.postClearHistorySuccess()),
-					catchError((error) => of(TerminalActions.postClearHistoryFailure({ error })))
+				this.apiClient.serviceCall(new GetTerminalHistory()).pipe(
+					map((response: any) => {
+						const decodedHistory = atob(response.history);
+						return TerminalActions.getTerminalHistorySuccess({ terminalHistory: decodedHistory });
+					}),
+					catchError((error) => of(TerminalActions.getTerminalHistoryFailure({ error })))
 				)
 			)
 		)

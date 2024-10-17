@@ -1,4 +1,4 @@
-//    Copyright 2024 Cisco Systems, Inc. and its affiliates
+//   Copyright 2024 Cisco Systems, Inc.
 
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -31,19 +31,19 @@ describe('MsBannerComponent', () => {
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-    imports: MODULE_IMPORTS,
-    declarations: [MsBannerComponent],
-    providers: [
-        {
-            provide: MAT_SNACK_BAR_DATA,
-            useValue: {}
-        },
-        {
-            provide: MatSnackBarRef,
-            useValue: {}
-        }
-    ]
-}).compileComponents();
+			imports: MODULE_IMPORTS,
+			declarations: [MsBannerComponent],
+			providers: [
+				{
+					provide: MAT_SNACK_BAR_DATA,
+					useValue: {}
+				},
+				{
+					provide: MatSnackBarRef,
+					useValue: {}
+				}
+			]
+		}).compileComponents();
 	});
 
 	beforeEach(() => {
