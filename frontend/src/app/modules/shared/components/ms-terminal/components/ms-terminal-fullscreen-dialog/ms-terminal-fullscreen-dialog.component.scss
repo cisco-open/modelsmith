@@ -14,26 +14,20 @@
 
 //   SPDX-License-Identifier: Apache-2.0
 
-import { OverlayConfig } from '@angular/cdk/overlay';
-import { DialogActionTypeEnum } from '../enums/dialog-action-type.enum';
-import { DialogStatus } from '../enums/dialog-status.enum';
-import { DialogCSSSize } from '../types/dialog-css-size.type';
+.ms-terminal-wrapper {
+	overflow-x: auto;
+	.terminal-wrapper {
+		border: 10px solid var(--terminal-color);
+		background-color: var(--terminal-color);
+		border-radius: 10px;
+	}
 
-export interface DialogConfig extends OverlayConfig {
-	data?: any;
-	title?: string;
-	showSaveButton?: boolean;
-	showCloseButton?: boolean;
-	saveButtonLabel?: string;
-	closeButtonLabel?: string;
-	showHeader?: boolean;
-	showFooter?: boolean;
-	width?: DialogCSSSize;
-	height?: DialogCSSSize;
-	actionType?: DialogActionTypeEnum;
-}
+	.xterm-viewport {
+		overflow-y: auto !important;
+	}
 
-export interface DialogClose<T> {
-	result?: T;
-	status: DialogStatus;
+	.top-terminal-section {
+		display: flex;
+		justify-content: space-between;
+	}
 }

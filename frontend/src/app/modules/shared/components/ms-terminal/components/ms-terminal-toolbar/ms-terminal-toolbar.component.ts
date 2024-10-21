@@ -14,6 +14,7 @@
 
 //   SPDX-License-Identifier: Apache-2.0
 
+import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -22,7 +23,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { delay, filter } from 'rxjs';
+import { delay, filter, take } from 'rxjs';
 import { ScriptActions } from '../../../../../../state/core/script/script.actions';
 import { ScriptFacadeService } from '../../../../../core/services/script-facade.service';
 import { isScriptActive } from '../../../../../model-compression/models/enums/script-status.enum';
@@ -30,6 +31,7 @@ import { MsTooltipPanelDirective } from '../../../../directives/ms-tooltip-panel
 import { isNilOrEmptyString } from '../../../../shared.utils';
 import { DialogConfig, DialogService } from '../../../ms-dialog';
 import { TerminalWebSocketService } from '../../services/terminal-websocket.service';
+import { MsTerminalFullscreenDialogComponent } from '../ms-terminal-fullscreen-dialog/ms-terminal-fullscreen-dialog.component';
 import { MsTerminalMessagesHistoryDialogComponent } from '../ms-terminal-messages-history-dialog/ms-terminal-messages-history-dialog.component';
 
 @UntilDestroy({})
@@ -39,6 +41,7 @@ import { MsTerminalMessagesHistoryDialogComponent } from '../ms-terminal-message
 	styleUrls: ['./ms-terminal-toolbar.component.scss'],
 	standalone: true,
 	imports: [
+		CommonModule,
 		MatButtonModule,
 		MatIconModule,
 		MatTooltipModule,
@@ -51,6 +54,7 @@ import { MsTerminalMessagesHistoryDialogComponent } from '../ms-terminal-message
 	providers: [DialogService]
 })
 export class MsTerminalToolbarComponent implements OnInit {
+	isFullscreen: boolean = false;
 	isScriptActive: boolean = false;
 
 	searchFormControl = new FormControl<string>('');
@@ -104,5 +108,28 @@ export class MsTerminalToolbarComponent implements OnInit {
 			width: '60vw',
 			height: '75vh'
 		} as DialogConfig);
+	}
+
+	openFullScreenMode() {
+		if (this.isFullscreen === true) {
+			return;
+		}
+
+		this.isFullscreen = true;
+		const fullscreenDialog = this.dialogService.open(MsTerminalFullscreenDialogComponent, {
+			showHeader: false,
+			showFooter: false,
+			showSaveButton: false,
+			width: '100vw',
+			height: '100vh'
+		} as DialogConfig);
+
+		fullscreenDialog
+			.afterClosed()
+			.pipe(take(1))
+			.subscribe(() => {
+				this.isFullscreen = false;
+				document.body.classList.remove('no-scroll');
+			});
 	}
 }

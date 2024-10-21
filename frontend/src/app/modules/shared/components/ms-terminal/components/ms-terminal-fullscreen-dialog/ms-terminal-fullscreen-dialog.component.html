@@ -1,0 +1,84 @@
+<!-- Copyright 2024 Cisco Systems, Inc. and its affiliates
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+  SPDX-License-Identifier: Apache-2.0 -->
+
+<ms-dialog>
+	<div class="ms-terminal-wrapper">
+		<div class="top-terminal-section">
+			<div class="heading-section-title mb-1 flex items-center">Terminal</div>
+			<div class="buttons-wrapper">
+				<button
+					mat-icon-button
+					color="primary"
+					matTooltip="Search terminal"
+					[msTooltipPanel]="searchTooltipContent"
+					[closeOnBackdropClick]="false"
+					[showCloseButton]="true"
+					position="bottom"
+					[allowCloseOnEscPress]="false"
+					(closed)="disposeSearch(); searchFormControl.setValue('')"
+					#tooltipPanel="msTooltipPanel">
+					<mat-icon fontSet="ms" fontIcon="icon-MagnifyingGlass"></mat-icon>
+				</button>
+
+				<button
+					mat-icon-button
+					color="primary"
+					matTooltip="Terminal history"
+					(click)="openTerminalMessagesHistoryDialog(); tooltipPanel.closePanel()">
+					<mat-icon>history</mat-icon>
+				</button>
+
+				<button mat-icon-button color="primary" matTooltip="Scroll to top" (click)="scrollToTopTerminal()">
+					<mat-icon fontSet="ms" fontIcon="icon-ArrowUp"></mat-icon>
+				</button>
+
+				<button mat-icon-button color="primary" matTooltip="Scroll to bottom" (click)="scrollToBottomTerminal()">
+					<mat-icon fontSet="ms" fontIcon="icon-ArrowDown"></mat-icon>
+				</button>
+
+				<button mat-icon-button color="primary" matTooltip="Clear terminal" (click)="clearTerminal()">
+					<mat-icon> clear_all</mat-icon>
+				</button>
+
+				<button mat-icon-button color="primary" matTooltip="Exit fullscreen" (click)="closeDialog()">
+					<mat-icon>{{ 'fullscreen_exit' }}</mat-icon>
+				</button>
+
+				<button
+					mat-icon-button
+					color="warn"
+					matTooltip="Stop current process"
+					[disabled]="!isScriptActive"
+					(click)="ctaStopScript()">
+					<mat-icon fontSet="ms" fontIcon="icon-X" class="mat-error"></mat-icon>
+				</button>
+			</div>
+		</div>
+		<div class="terminal">
+			<div class="terminal-wrapper" #terminal></div>
+		</div>
+	</div>
+</ms-dialog>
+
+<ng-template #searchTooltipContent>
+	<div class="form-field-container dark">
+		<mat-label> Search... </mat-label>
+		<mat-form-field subscriptSizing="dynamic">
+			<input msErrorDisplay matInput [formControl]="searchFormControl" />
+			<mat-icon fontSet="ms" fontIcon="icon-MagnifyingGlass" matSuffix></mat-icon>
+		</mat-form-field>
+	</div>
+</ng-template>

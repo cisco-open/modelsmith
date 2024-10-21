@@ -52,6 +52,8 @@ export class DialogService {
 						closeButtonLabel: 'Close',
 						showSaveButton: true,
 						showCloseButton: true,
+						showHeader: true,
+						showFooter: true,
 						width: config?.width || DEFAULT_DIALOG_WIDTH,
 						height: config?.height || DEFAULT_DIALOG_HEIGHT,
 						...config

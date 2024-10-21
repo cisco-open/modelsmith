@@ -41,7 +41,7 @@ export class MsTooltipPanelDirective implements OnDestroy {
 	@Input() position: 'top' | 'bottom' | 'left' | 'right' = 'bottom';
 	@Input() showCloseButton = false;
 	@Input() closeOnBackdropClick = true;
-	@Input() allowCloseOnEspPress = true; // Close panel on 'Esc' keypress
+	@Input() allowCloseOnEscPress = true; // Close panel on 'Esc' keypress
 	@Input() freezePageScroll = true; // Freeze page scroll, default is true
 
 	@Output() closed = new EventEmitter<void>();
@@ -64,7 +64,7 @@ export class MsTooltipPanelDirective implements OnDestroy {
 	}
 
 	@HostListener('document:keydown.escape', ['$event']) handleEscKey(event: KeyboardEvent) {
-		if (this.allowCloseOnEspPress) {
+		if (this.allowCloseOnEscPress) {
 			this.closePanel();
 		}
 	}
