@@ -16,7 +16,8 @@ SPDX-License-Identifier: Apache-2.0
 -->
 
 <div class="dialog-wrapper" [ngStyle]="data.width | dialogSizeStyles: data.height">
-	<div class="dialog-header" *ngIf="data.showHeader">
+	@if (data.showHeader) {
+	<div class="dialog-header">
 		<ng-container *ngTemplateOutlet="headerTemplate || defaultDialogHeader"></ng-container>
 		<ng-template #defaultDialogHeader>
 			<div class="dialog-header-wrapper">
@@ -29,12 +30,14 @@ SPDX-License-Identifier: Apache-2.0
 			</div>
 		</ng-template>
 	</div>
+	}
 
 	<div class="dialog-content">
 		<ng-content></ng-content>
 	</div>
 
-	<div class="dialog-actions" *ngIf="data.showFooter">
+	@if (data.showFooter) {
+	<div class="dialog-actions">
 		<ng-container *ngTemplateOutlet="actionsTemplate || defaultDialogActions"></ng-container>
 		<ng-template #defaultDialogActions>
 			<div class="actions-wrapper">
@@ -50,4 +53,5 @@ SPDX-License-Identifier: Apache-2.0
 			</div>
 		</ng-template>
 	</div>
+	}
 </div>
