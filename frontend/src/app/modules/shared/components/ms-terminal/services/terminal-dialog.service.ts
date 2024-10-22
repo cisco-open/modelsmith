@@ -15,9 +15,7 @@ import { Injectable } from '@angular/core';
 import { take } from 'rxjs';
 import { DialogConfig, DialogService } from '../../../../core/components/ms-dialog';
 
-@Injectable({
-	providedIn: 'root'
-})
+@Injectable()
 export class TerminalDialogService {
 	constructor(private dialogService: DialogService) {}
 

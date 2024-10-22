@@ -48,7 +48,8 @@ import { TerminalWebSocketService } from '../../services/terminal-websocket.serv
 		ReactiveFormsModule,
 		MatFormFieldModule,
 		MatInputModule
-	]
+	],
+	providers: [TerminalDialogService]
 })
 export class MsTerminalToolbarComponent implements OnInit {
 	@Input() isFullscreen = false;
