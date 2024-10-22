@@ -49,7 +49,7 @@
 	</button>
 
 	<button mat-icon-button color="primary" matTooltip="Toggle fullscreen" (click)="openFullScreenMode()">
-		<mat-icon>fullscreen</mat-icon>
+		<mat-icon>{{ isFullscreen ? 'fullscreen_exit' : 'fullscreen' }}</mat-icon>
 	</button>
 
 	<button
