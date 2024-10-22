@@ -14,18 +14,25 @@
 
 //   SPDX-License-Identifier: Apache-2.0
 
-import { Component, ViewEncapsulation } from '@angular/core';
-import { UntilDestroy } from '@ngneat/until-destroy';
-import { MsTerminalToolbarComponent } from '../ms-terminal-toolbar/ms-terminal-toolbar.component';
-import { MsTerminalXtermComponent } from '../ms-terminal-xterm/ms-terminal-xterm.component';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-@UntilDestroy()
-@Component({
-	selector: 'ms-terminal',
-	templateUrl: './ms-terminal.component.html',
-	styleUrls: ['./ms-terminal.component.scss'],
-	encapsulation: ViewEncapsulation.None,
-	standalone: true,
-	imports: [MsTerminalToolbarComponent, MsTerminalXtermComponent]
-})
-export class MsTerminalComponent {}
+import { MsTerminalXtermComponent } from './ms-terminal-xterm.component';
+
+describe('MsTerminalXtermComponent', () => {
+	let component: MsTerminalXtermComponent;
+	let fixture: ComponentFixture<MsTerminalXtermComponent>;
+
+	beforeEach(async () => {
+		await TestBed.configureTestingModule({
+			imports: [MsTerminalXtermComponent]
+		}).compileComponents();
+
+		fixture = TestBed.createComponent(MsTerminalXtermComponent);
+		component = fixture.componentInstance;
+		fixture.detectChanges();
+	});
+
+	it('should create', () => {
+		expect(component).toBeTruthy();
+	});
+});

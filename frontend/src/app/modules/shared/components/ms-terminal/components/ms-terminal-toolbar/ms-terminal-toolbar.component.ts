@@ -15,7 +15,7 @@
 //   SPDX-License-Identifier: Apache-2.0
 
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -54,15 +54,16 @@ import { MsTerminalMessagesHistoryDialogComponent } from '../ms-terminal-message
 	providers: [DialogService]
 })
 export class MsTerminalToolbarComponent implements OnInit {
-	isFullscreen: boolean = false;
-	isScriptActive: boolean = false;
+	@Input() isFullscreen = false;
+	@Input() isScriptActive = false;
+	@Output() clearTerminal = new EventEmitter<void>();
+	@Output() scrollToTopTerminal = new EventEmitter<void>();
+	@Output() scrollToBottomTerminal = new EventEmitter<void>();
+	@Output() searchTerminal = new EventEmitter<string>();
+	@Output() disposeSearch = new EventEmitter<void>();
+	@Output() exitFullscreen = new EventEmitter<void>();
 
 	searchFormControl = new FormControl<string>('');
-
-	@Output() scrollToTopTerminal = new EventEmitter();
-	@Output() scrollToBottomTerminal = new EventEmitter();
-	@Output() searchTerminal = new EventEmitter<string>();
-	@Output() disposeSearch = new EventEmitter();
 
 	constructor(
 		private scriptFacadeService: ScriptFacadeService,
@@ -75,7 +76,7 @@ export class MsTerminalToolbarComponent implements OnInit {
 		this.listenToSearchFormControlChanges();
 	}
 
-	public clearTerminal() {
+	public clearTerminalScreen() {
 		this.terminalWebSocketService.clearScreen();
 	}
 
