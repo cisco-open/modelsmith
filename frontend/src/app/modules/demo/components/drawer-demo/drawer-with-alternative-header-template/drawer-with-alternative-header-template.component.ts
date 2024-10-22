@@ -15,7 +15,7 @@
 //   SPDX-License-Identifier: Apache-2.0
 
 import { ChangeDetectionStrategy, Component, Inject, OnInit } from '@angular/core';
-import { DRAWER_DATA, DrawerRef } from '../../../../shared/components/ms-drawer';
+import { DRAWER_DATA, DrawerRef } from '../../../../core/components/ms-drawer';
 
 @Component({
 	selector: 'ms-drawer-with-alternative-header-template',

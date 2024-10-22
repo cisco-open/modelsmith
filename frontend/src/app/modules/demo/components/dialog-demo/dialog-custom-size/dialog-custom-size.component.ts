@@ -15,7 +15,7 @@
 //   SPDX-License-Identifier: Apache-2.0
 
 import { Component, Inject } from '@angular/core';
-import { DIALOG_DATA, DialogConfig, DialogRef } from '../../../../shared/components/ms-dialog';
+import { DIALOG_DATA, DialogConfig, DialogRef } from '../../../../core/components/ms-dialog';
 
 @Component({
 	selector: 'ms-dialog-custom-size',

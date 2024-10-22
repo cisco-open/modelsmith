@@ -17,7 +17,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { NgxColorsModule } from 'ngx-colors';
-import { DrawerService, MsDrawerComponent } from '../shared/components/ms-drawer';
+import { DrawerService, MsDrawerComponent } from '../core/components/ms-drawer';
 import { MsEmptyStateComponent } from '../shared/components/ms-empty-state/ms-empty-state.component';
 import { MsLineChartComponent } from '../shared/components/ms-line-chart/ms-line-chart.component';
 import { ChartToolsGlobalSignalsService } from '../shared/components/ms-line-chart/services/chart-tools-global-signals.service';

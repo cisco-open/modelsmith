@@ -2,6 +2,7 @@ import { ENVIRONMENT_INITIALIZER, inject, Provider } from '@angular/core';
 import { MatIconRegistry } from '@angular/material/icon';
 import { ScriptActions } from '../../state/core/script';
 import { TerminalWebSocketService } from '../shared/components/ms-terminal/services/terminal-websocket.service';
+import { DialogService } from './components/ms-dialog';
 import { AuthGuard } from './guards/auth.guard';
 import { ModeSelectGuard } from './guards/mode-select.guard';
 import { RedirectIfAuthenticatedGuard } from './guards/redirect-if-authenticated.guard';
@@ -40,6 +41,7 @@ export function provideCoreServices(): Provider[] {
 		StatisticsFacadeService,
 		PageRunningScriptSpiningIndicatorService,
 		ModelsFacadeService,
+		DialogService,
 		{
 			provide: ENVIRONMENT_INITIALIZER,
 			multi: true,

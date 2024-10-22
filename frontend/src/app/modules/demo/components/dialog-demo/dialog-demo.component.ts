@@ -16,7 +16,7 @@
 
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { take } from 'rxjs';
-import { DialogConfig, DialogService } from '../../../shared/components/ms-dialog';
+import { DialogConfig, DialogService } from '../../../core/components/ms-dialog';
 import { DialogBasicDemoComponent } from './dialog-basic-demo/dialog-basic-demo.component';
 import { DialogCustomSizeComponent } from './dialog-custom-size/dialog-custom-size.component';
 

@@ -36,9 +36,9 @@ import { SearchAddon } from '@xterm/addon-search';
 import { Terminal } from '@xterm/xterm';
 import { delay, filter } from 'rxjs';
 import { TerminalActions } from '../../../../../../state/core/terminal';
+import { DIALOG_DATA, DialogConfig, MsDialogComponent } from '../../../../../core/components/ms-dialog';
 import { TerminalFacadeService } from '../../../../../core/services';
 import { disableBackgroundScroll, enableBackgroundScroll, isNilOrEmptyString } from '../../../../shared.utils';
-import { DIALOG_DATA, DialogConfig, MsDialogComponent } from '../../../ms-dialog';
 
 @UntilDestroy()
 @Component({

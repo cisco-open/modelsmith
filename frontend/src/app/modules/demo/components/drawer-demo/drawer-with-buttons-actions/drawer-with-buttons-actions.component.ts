@@ -16,7 +16,7 @@
 
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { DRAWER_DATA, DrawerRef, DrawerStatus } from '../../../../shared/components/ms-drawer';
+import { DRAWER_DATA, DrawerRef, DrawerStatus } from '../../../../core/components/ms-drawer';
 
 @Component({
 	selector: 'ms-drawer-with-buttons-actions',

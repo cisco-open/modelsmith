@@ -25,11 +25,11 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { delay, filter, take } from 'rxjs';
 import { ScriptActions } from '../../../../../../state/core/script/script.actions';
+import { DialogConfig, DialogService } from '../../../../../core/components/ms-dialog';
 import { ScriptFacadeService } from '../../../../../core/services/script-facade.service';
 import { isScriptActive } from '../../../../../model-compression/models/enums/script-status.enum';
 import { MsTooltipPanelDirective } from '../../../../directives/ms-tooltip-panel/ms-tooltip-panel.directive';
 import { isNilOrEmptyString } from '../../../../shared.utils';
-import { DialogConfig, DialogService } from '../../../ms-dialog';
 import { TerminalWebSocketService } from '../../services/terminal-websocket.service';
 import { MsTerminalFullscreenDialogComponent } from '../ms-terminal-fullscreen-dialog/ms-terminal-fullscreen-dialog.component';
 import { MsTerminalMessagesHistoryDialogComponent } from '../ms-terminal-messages-history-dialog/ms-terminal-messages-history-dialog.component';
@@ -50,8 +50,7 @@ import { MsTerminalMessagesHistoryDialogComponent } from '../ms-terminal-message
 		ReactiveFormsModule,
 		MatFormFieldModule,
 		MatInputModule
-	],
-	providers: [DialogService]
+	]
 })
 export class MsTerminalToolbarComponent implements OnInit {
 	@Input() isFullscreen = false;

@@ -17,7 +17,7 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { UntilDestroy } from '@ngneat/until-destroy';
-import { DialogRef, MsDialogComponent } from '../../../ms-dialog';
+import { DialogRef, MsDialogComponent } from '../../../../../core/components/ms-dialog';
 import { MsTerminalToolbarComponent } from '../ms-terminal-toolbar/ms-terminal-toolbar.component';
 import { MsTerminalXtermComponent } from '../ms-terminal-xterm/ms-terminal-xterm.component';
 

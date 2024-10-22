@@ -21,7 +21,8 @@
 		"docker:run-container": "docker run -d --name ${npm_package_config_docker_container_name} -p ${npm_package_config_docker_container_port}:${npm_package_config_docker_container_port} ${npm_package_config_docker_image_name}",
 		"docker:remove-dangling": "docker image prune -f",
 		"docker:restart": "docker stop ${npm_package_config_docker_container_name} && docker start ${npm_package_config_docker_container_name}",
-		"docker:copy-index": "docker cp server/index.js ${npm_package_config_docker_container_name}:/app/frontend/server/index.js"
+		"docker:copy-index": "docker cp server/index.js ${npm_package_config_docker_container_name}:/app/frontend/server/index.js",
+		"check:circular-dependencies": "npx madge --circular --extensions ts ./"
 	},
 	"private": true,
 	"dependencies": {

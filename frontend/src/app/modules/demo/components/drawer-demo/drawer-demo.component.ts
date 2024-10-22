@@ -16,7 +16,7 @@
 
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { take } from 'rxjs';
-import { DrawerConfig, DrawerService } from '../../../shared/components/ms-drawer';
+import { DrawerConfig, DrawerService } from '../../../core/components/ms-drawer';
 import { DrawerBasicDemoComponent } from './drawer-basic-demo/drawer-basic-demo.component';
 import { DrawerWithAlternativeActionsTemplateComponent } from './drawer-with-alternative-actions-template/drawer-with-alternative-actions-template.component';
 import { DrawerWithAlternativeHeaderTemplateComponent } from './drawer-with-alternative-header-template/drawer-with-alternative-header-template.component';
