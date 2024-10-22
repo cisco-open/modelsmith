@@ -44,7 +44,12 @@
 		<mat-icon fontSet="ms" fontIcon="icon-ArrowDown"></mat-icon>
 	</button>
 
-	<button mat-icon-button color="primary" matTooltip="Clear terminal" (click)="clearTerminalScreen()">
+	<button
+		mat-icon-button
+		color="primary"
+		matTooltip="Clear terminal"
+		[disabled]="isScriptActive"
+		(click)="clearTerminalScreen()">
 		<mat-icon> clear_all</mat-icon>
 	</button>
 
