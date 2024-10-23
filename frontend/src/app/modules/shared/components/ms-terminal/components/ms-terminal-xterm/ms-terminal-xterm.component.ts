@@ -87,7 +87,10 @@ export class MsTerminalXtermComponent implements OnInit, AfterViewInit, OnDestro
 		if (this.resizeObserver) {
 			this.resizeObserver.disconnect();
 		}
-		this.resizeObserver = new ResizeObserver(() => this.fitTerminalToContainer());
+		this.resizeObserver = new ResizeObserver(() => {
+			this.fitTerminalToContainer();
+			this.adjustHeightToParent();
+		});
 		this.resizeObserver.observe(this.terminalDiv.nativeElement);
 	}
 
@@ -96,12 +99,15 @@ export class MsTerminalXtermComponent implements OnInit, AfterViewInit, OnDestro
 	}
 
 	private adjustHeightToParent(): void {
-		const rightSideElement =
-			this.terminalDiv.nativeElement.parentElement.parentElement.parentElement.parentElement.parentElement;
+		const rightSideElement = this.terminalDiv.nativeElement.parentElement.parentElement.parentElement.parentElement;
+
 		if (rightSideElement) {
-			let finalHeight: number;
-			const heightCorrection = 90;
-			finalHeight = rightSideElement.offsetHeight - heightCorrection;
+			this.terminalDiv.nativeElement.style.height = 'auto';
+
+			const availableHeight = rightSideElement.offsetHeight;
+			const heightCorrection = 100;
+			const finalHeight = availableHeight - heightCorrection;
+
 			this.terminalDiv.nativeElement.style.height = `${finalHeight}px`;
 		}
 	}
