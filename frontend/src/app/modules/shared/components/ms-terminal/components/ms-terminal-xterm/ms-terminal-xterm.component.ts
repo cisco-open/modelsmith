@@ -96,13 +96,14 @@ export class MsTerminalXtermComponent implements OnInit, AfterViewInit, OnDestro
 	}
 
 	private adjustHeightToParent(): void {
-		// const rightSideElement = this.terminalDiv.nativeElement.parentElement.parentElement.parentElement.parentElement;
-		// if (rightSideElement) {
-		// 	let finalHeight: number;
-		// 	const heightCorrection = 100;
-		// 	finalHeight = rightSideElement.offsetHeight - heightCorrection;
-		// 	this.terminalDiv.nativeElement.style.height = `${finalHeight}px`;
-		// }
+		const rightSideElement =
+			this.terminalDiv.nativeElement.parentElement.parentElement.parentElement.parentElement.parentElement;
+		if (rightSideElement) {
+			let finalHeight: number;
+			const heightCorrection = 90;
+			finalHeight = rightSideElement.offsetHeight - heightCorrection;
+			this.terminalDiv.nativeElement.style.height = `${finalHeight}px`;
+		}
 	}
 
 	ngOnDestroy(): void {
