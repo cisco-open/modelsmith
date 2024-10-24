@@ -84,6 +84,10 @@ export class MsTerminalToolbarComponent implements OnInit, OnDestroy {
 	}
 
 	public openPanel(origin: MatIconButton) {
+		if (!isNil(this.searchPanelRef)) {
+			return;
+		}
+
 		this.searchPanelRef = this.popoverService.open(MsTerminalToolbarSearchPopoverComponent, origin._elementRef, {
 			position: !this.isFullscreen ? 'top' : 'bottom',
 			width: '200px',
@@ -127,6 +131,7 @@ export class MsTerminalToolbarComponent implements OnInit, OnDestroy {
 			return;
 		}
 
+		this.searchPanelRef?.close();
 		this.terminalDialogService.openFullScreenDialog(this.isFullscreen);
 	}
 
