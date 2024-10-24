@@ -14,11 +14,12 @@
 
   SPDX-License-Identifier: Apache-2.0 -->
 
-<div class="ms-terminal-wrapper">
+<div class="ms-terminal-wrapper" #terminalWrapper>
 	<div class="top-terminal-section">
 		<div class="heading-section-title mb-1 flex items-center">Terminal</div>
 		<div>
 			<ms-terminal-toolbar
+				popoverId="terminal-popover"
 				(clearTerminal)="terminal.clearTerminal()"
 				(scrollToTopTerminal)="terminal.scrollToTop()"
 				(scrollToBottomTerminal)="terminal.scrollToBottom()"

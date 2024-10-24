@@ -14,8 +14,9 @@
 //
 //   SPDX-License-Identifier: Apache-2.0
 
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component, ElementRef, OnDestroy, Renderer2, ViewChild, ViewEncapsulation } from '@angular/core';
 import { UntilDestroy } from '@ngneat/until-destroy';
+import { PopoverManagerService } from '../../../../../core/components/ms-popover/service/popover-manager.service';
 import { MsTerminalToolbarComponent } from '../ms-terminal-toolbar/ms-terminal-toolbar.component';
 import { MsTerminalXtermComponent } from '../ms-terminal-xterm/ms-terminal-xterm.component';
 
@@ -28,4 +29,33 @@ import { MsTerminalXtermComponent } from '../ms-terminal-xterm/ms-terminal-xterm
 	standalone: true,
 	imports: [MsTerminalToolbarComponent, MsTerminalXtermComponent]
 })
-export class MsTerminalXtermWithToolbarComponent {}
+export class MsTerminalXtermWithToolbarComponent implements OnDestroy {
+	@ViewChild('terminalWrapper') terminalWrapper!: ElementRef;
+
+	private clickListener!: () => void;
+
+	constructor(
+		private renderer: Renderer2,
+		private popoverManager: PopoverManagerService
+	) {}
+
+	ngOnInit() {
+		this.clickListener = this.renderer.listen('document', 'click', (event: Event) => {
+			this.handleClickOutside(event);
+		});
+	}
+
+	handleClickOutside(event: Event): void {
+		if (this.terminalWrapper && !this.terminalWrapper.nativeElement.contains(event.target)) {
+			if (this.popoverManager.hasActivePopover('terminal-popover')) {
+				this.popoverManager.closePopoverById('terminal-popover');
+			}
+		}
+	}
+
+	ngOnDestroy() {
+		if (this.clickListener) {
+			this.clickListener();
+		}
+	}
+}
