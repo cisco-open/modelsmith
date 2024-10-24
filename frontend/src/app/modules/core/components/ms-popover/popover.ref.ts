@@ -21,8 +21,16 @@ import { PopoverClose } from './models/interfaces/popover-config.interface';
 export class PopoverRef {
 	private afterClosedSubject = new Subject<any>();
 
+	/**
+	 * Subject used to emit data from the popover to the outside while the popover is still open.
+	 * This allows for real-time communication between the popover's internal components and external listeners.
+	 */
 	private dataSubject = new Subject<any>();
-	
+
+	/**
+	 * Observable that external components can subscribe to in order to receive data emitted by the popover.
+	 * It exposes the `dataSubject` as a read-only stream.
+	 */
 	public data$: Observable<any> = this.dataSubject.asObservable();
 
 	constructor(private overlayRef: OverlayRef) {}
