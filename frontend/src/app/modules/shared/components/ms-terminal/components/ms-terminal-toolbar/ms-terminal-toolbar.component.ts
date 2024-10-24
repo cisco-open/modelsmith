@@ -23,7 +23,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { delay, filter } from 'rxjs';
+import { delay, filter, take } from 'rxjs';
 import { ScriptActions } from '../../../../../../state/core/script/script.actions';
 import { PopoverRef } from '../../../../../core/components/ms-popover';
 import { PopoverService } from '../../../../../core/components/ms-popover/service/popover.service';
@@ -97,6 +97,13 @@ export class MsTerminalToolbarComponent implements OnInit, OnDestroy {
 		this.searchPanelRef.data$.pipe(untilDestroyed(this)).subscribe((data: any) => {
 			this.searchTerminal.emit(data);
 		});
+
+		this.searchPanelRef
+			.afterClosed()
+			.pipe(take(1))
+			.subscribe(() => {
+				this.searchPanelRef = undefined;
+			});
 	}
 
 	private listenToSearchFormControlChanges(): void {
