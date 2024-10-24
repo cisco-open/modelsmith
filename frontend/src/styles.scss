@@ -17,6 +17,8 @@
 @use './app/styles/theme/ms-theme-material-config';
 @use './app/styles/base/base';
 
+@import '@xterm/xterm/css/xterm.css';
+
 // Need only the utilities from tailwindcss
 @import 'tailwindcss/utilities';
 

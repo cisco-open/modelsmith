@@ -28,6 +28,9 @@
 	}
 
 	.right {
+		display: flex;
+		flex-direction: column;
 		width: 55%;
+		height: 100%;
 	}
 }
