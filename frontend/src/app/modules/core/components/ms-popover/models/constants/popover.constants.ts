@@ -22,3 +22,38 @@ export const DEFAUlT_POPOVER_HEIGHT: PopoverCSSSize = '80px';
 export const DEFAULT_POPOVER_POSITION_VALUE: 'top' | 'bottom' | 'left' | 'right' = 'top';
 
 export const DEFAULT_POPOVER_FADE_IN_OUT_ANIMATION_DURATION: number = 150;
+
+export const POPOVER_POSITIONS: Record<string, any> = {
+	top: {
+		originX: 'center',
+		originY: 'top',
+		overlayX: 'center',
+		overlayY: 'bottom',
+		offsetY: -24,
+		offsetX: -9
+	},
+	bottom: {
+		originX: 'center',
+		originY: 'bottom',
+		overlayX: 'center',
+		overlayY: 'top',
+		offsetY: 4,
+		offsetX: -7
+	},
+	left: {
+		originX: 'start',
+		originY: 'center',
+		overlayX: 'end',
+		overlayY: 'center',
+		offsetX: -22,
+		offsetY: -12
+	},
+	right: {
+		originX: 'end',
+		originY: 'center',
+		overlayX: 'start',
+		overlayY: 'center',
+		offsetX: 8,
+		offsetY: -10
+	}
+};

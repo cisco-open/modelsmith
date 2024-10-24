@@ -14,7 +14,7 @@
 //
 //   SPDX-License-Identifier: Apache-2.0
 
-import { Overlay } from '@angular/cdk/overlay';
+import { Overlay, ScrollDispatcher } from '@angular/cdk/overlay';
 import { ComponentPortal, ComponentType } from '@angular/cdk/portal';
 import { ElementRef, Injectable, Injector } from '@angular/core';
 import { PopoverRef } from '../popover.ref';
@@ -23,7 +23,8 @@ import { POPOVER_DATA } from '../popover.tokens';
 import {
 	DEFAUlT_POPOVER_HEIGHT,
 	DEFAULT_POPOVER_POSITION_VALUE,
-	DEFAUlT_POPOVER_WIDTH
+	DEFAUlT_POPOVER_WIDTH,
+	POPOVER_POSITIONS
 } from '../models/constants/popover.constants';
 import { PopoverConfig } from '../models/interfaces/popover-config.interface';
 
@@ -31,7 +32,8 @@ import { PopoverConfig } from '../models/interfaces/popover-config.interface';
 export class PopoverService {
 	constructor(
 		private overlay: Overlay,
-		private injector: Injector
+		private injector: Injector,
+		private scrollDispatcher: ScrollDispatcher
 	) {}
 
 	open<T>(component: ComponentType<T>, origin: HTMLElement | ElementRef, config?: PopoverConfig): PopoverRef {
@@ -65,54 +67,25 @@ export class PopoverService {
 		const portal = new ComponentPortal(component, null, injector);
 		overlayRef.attach(portal);
 
+		// Handle scroll events by re-positioning the popover
+		this.scrollDispatcher.scrolled().subscribe(() => {
+			popoverRef.updatePosition();
+		});
+
 		return popoverRef;
 	}
 
 	private getPositionStrategy(origin: HTMLElement | ElementRef, position: 'top' | 'bottom' | 'left' | 'right') {
 		const element = origin instanceof ElementRef ? origin.nativeElement : origin;
 
-		const positions: Record<string, any> = {
-			top: {
-				originX: 'center',
-				originY: 'top',
-				overlayX: 'center',
-				overlayY: 'bottom',
-				offsetY: -24,
-				offsetX: -9
-			},
-			bottom: {
-				originX: 'center',
-				originY: 'bottom',
-				overlayX: 'center',
-				overlayY: 'top',
-				offsetY: 4,
-				offsetX: -7
-			},
-			left: {
-				originX: 'start',
-				originY: 'center',
-				overlayX: 'end',
-				overlayY: 'center',
-				offsetX: -22,
-				offsetY: -12
-			},
-			right: {
-				originX: 'end',
-				originY: 'center',
-				overlayX: 'start',
-				overlayY: 'center',
-				offsetX: 8,
-				offsetY: -10
-			}
-		};
-
-		const selectedPosition = positions[position];
+		const selectedPosition = POPOVER_POSITIONS[position];
 
 		return this.overlay
 			.position()
 			.flexibleConnectedTo(element)
 			.withFlexibleDimensions(false)
 			.withPush(false)
-			.withPositions([selectedPosition]);
+			.withPositions([selectedPosition])
+			.withViewportMargin(0);
 	}
 }

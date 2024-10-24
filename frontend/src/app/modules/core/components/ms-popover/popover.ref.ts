@@ -58,4 +58,8 @@ export class PopoverRef {
 	public afterClosed(): Observable<any> {
 		return this.afterClosedSubject.asObservable();
 	}
+
+	public updatePosition(): void {
+		this.overlayRef.updatePosition();
+	}
 }
