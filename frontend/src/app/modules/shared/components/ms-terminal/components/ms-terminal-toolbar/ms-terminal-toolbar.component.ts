@@ -27,6 +27,7 @@ import { delay, filter } from 'rxjs';
 import { ScriptActions } from '../../../../../../state/core/script/script.actions';
 import { ScriptFacadeService } from '../../../../../core/services/script-facade.service';
 import { isScriptActive } from '../../../../../model-compression/models/enums/script-status.enum';
+import { AutofocusDirective } from '../../../../directives/autofocus.directive';
 import { MsTooltipPanelDirective } from '../../../../directives/ms-tooltip-panel/ms-tooltip-panel.directive';
 import { isNilOrEmptyString } from '../../../../shared.utils';
 import { TerminalDialogService } from '../../services/terminal-dialog.service';
@@ -47,7 +48,8 @@ import { TerminalWebSocketService } from '../../services/terminal-websocket.serv
 		FormsModule,
 		ReactiveFormsModule,
 		MatFormFieldModule,
-		MatInputModule
+		MatInputModule,
+		AutofocusDirective
 	],
 	providers: [TerminalDialogService]
 })

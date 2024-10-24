@@ -22,7 +22,7 @@
 		[msTooltipPanel]="searchTooltipContent"
 		[closeOnBackdropClick]="false"
 		[showCloseButton]="true"
-		position="top"
+		[position]="'auto'"
 		(closed)="disposeSearch.emit(); searchFormControl.setValue('')"
 		#tooltipPanel="msTooltipPanel">
 		<mat-icon fontSet="ms" fontIcon="icon-MagnifyingGlass"></mat-icon>
@@ -71,7 +71,7 @@
 	<div class="form-field-container dark">
 		<mat-label> Search... </mat-label>
 		<mat-form-field subscriptSizing="dynamic">
-			<input msErrorDisplay matInput [formControl]="searchFormControl" />
+			<input msErrorDisplay matInput msAutofocus [formControl]="searchFormControl" />
 			<mat-icon fontSet="ms" fontIcon="icon-MagnifyingGlass" matSuffix></mat-icon>
 		</mat-form-field>
 	</div>
