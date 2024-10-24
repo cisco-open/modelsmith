@@ -14,7 +14,11 @@
 
   SPDX-License-Identifier: Apache-2.0 -->
 
-<div class="tooltip-container" [ngClass]="data.position" [ngStyle]="data.width | iconPanelSizeStyles: data.height">
+<div
+	class="tooltip-container"
+	[ngClass]="data.position"
+	[ngStyle]="data.width | iconPanelSizeStyles: data.height"
+	[@fadeInOut]="isClosing">
 	<div class="tooltip-arrow"></div>
 
 	<div class="popover-content">

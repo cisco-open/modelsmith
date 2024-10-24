@@ -14,11 +14,13 @@
 //
 //   SPDX-License-Identifier: Apache-2.0
 
+import { animate, state, style, transition, trigger } from '@angular/animations';
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, HostListener, Inject, Input, Output, TemplateRef } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { DEFAULT_POPOVER_FADE_IN_OUT_ANIMATION_DURATION } from '../../models/constants/popover.constants';
 import { PopoverStatus } from '../../models/enums/popover-status.enum';
 import { PopoverConfig } from '../../models/interfaces/popover-config.interface';
 import { PopoverSizeStylesPipe } from '../../pipes/popover-size-style.pipe';
@@ -31,11 +33,24 @@ import { POPOVER_DATA } from '../../popover.tokens';
 	standalone: true,
 	imports: [CommonModule, MatIconModule, MatButtonModule, PopoverSizeStylesPipe],
 	templateUrl: './ms-popover.component.html',
-	styleUrl: './ms-popover.component.scss'
+	styleUrl: './ms-popover.component.scss',
+	animations: [
+		trigger('fadeInOut', [
+			state('void', style({ opacity: 0 })),
+			state('true', style({ opacity: 0 })),
+			state('false', style({ opacity: 1 })),
+			transition(':enter', [
+				animate(`${DEFAULT_POPOVER_FADE_IN_OUT_ANIMATION_DURATION}ms ease-in`, style({ opacity: 1 }))
+			]),
+			transition('false => true', [animate(`${DEFAULT_POPOVER_FADE_IN_OUT_ANIMATION_DURATION}ms ease-out`)])
+		])
+	]
 })
 export class MsPopoverComponent {
 	@Input() contentTemplate?: TemplateRef<any>;
 	@Output() actionEvent: EventEmitter<PopoverStatus> = new EventEmitter<PopoverStatus>();
+
+	isClosing = false;
 
 	constructor(
 		private popoverRef: PopoverRef,
@@ -47,16 +62,19 @@ export class MsPopoverComponent {
 	onClose(): void {
 		this.actionEvent.emit(PopoverStatus.CLOSE);
 		this.popoverRef.close({ status: PopoverStatus.CLOSE });
+		this.isClosing = true;
 	}
 
 	onSave(): void {
 		this.actionEvent.emit(PopoverStatus.SAVE);
 		this.popoverRef.close({ status: PopoverStatus.SAVE });
+		this.isClosing = false;
 	}
 
 	onDismiss(): void {
 		this.actionEvent.emit(PopoverStatus.DISMISS);
 		this.popoverRef.close({ status: PopoverStatus.DISMISS });
+		this.isClosing = false;
 	}
 
 	private closeDrawerOnBackdropClick(): void {

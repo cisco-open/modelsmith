@@ -16,6 +16,7 @@
 
 import { OverlayRef } from '@angular/cdk/overlay';
 import { Observable, Subject } from 'rxjs';
+import { DEFAULT_POPOVER_FADE_IN_OUT_ANIMATION_DURATION } from './models/constants/popover.constants';
 import { PopoverClose } from './models/interfaces/popover-config.interface';
 
 export class PopoverRef {
@@ -44,10 +45,14 @@ export class PopoverRef {
 	}
 
 	public close(result?: PopoverClose<any>) {
-		this.overlayRef.dispose();
 		this.afterClosedSubject.next(result);
 		this.afterClosedSubject.complete();
 		this.dataSubject.complete();
+
+		// Delay the disposal to allow fade-out animation to complete
+		setTimeout(() => {
+			this.overlayRef.dispose();
+		}, DEFAULT_POPOVER_FADE_IN_OUT_ANIMATION_DURATION);
 	}
 
 	public afterClosed(): Observable<any> {
