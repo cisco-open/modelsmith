@@ -15,10 +15,10 @@
   SPDX-License-Identifier: Apache-2.0 -->
 
 <div
-	class="tooltip-container"
+	class="tooltip-container popover-element"
 	[ngClass]="data.position"
 	[ngStyle]="data.width | iconPanelSizeStyles: data.height"
-	[@fadeInOut]="isClosing">
+	[@fadeInOut]="popoverRef.isClosing">
 	<div class="tooltip-arrow"></div>
 
 	<div class="popover-content">

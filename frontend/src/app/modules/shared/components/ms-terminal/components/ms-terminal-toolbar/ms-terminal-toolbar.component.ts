@@ -109,6 +109,7 @@ export class MsTerminalToolbarComponent implements OnInit, OnDestroy {
 			.pipe(take(1))
 			.subscribe(() => {
 				this.searchPanelRef = undefined;
+				this.disposeSearch.emit();
 			});
 	}
 
@@ -135,6 +136,10 @@ export class MsTerminalToolbarComponent implements OnInit, OnDestroy {
 	}
 
 	openTerminalMessagesHistoryDialog() {
+		if (!isNil(this.searchPanelRef)) {
+			this.searchPanelRef?.close();
+		}
+
 		this.terminalDialogService.openMessagesHistoryDialog();
 	}
 

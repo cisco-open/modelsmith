@@ -31,6 +31,7 @@ import { MsTerminalXtermComponent } from '../ms-terminal-xterm/ms-terminal-xterm
 })
 export class MsTerminalXtermWithToolbarComponent implements OnDestroy {
 	@ViewChild('terminalWrapper') terminalWrapper!: ElementRef;
+	@ViewChild('popoverElement') popoverElement!: ElementRef;
 
 	private clickListener!: () => void;
 
@@ -46,7 +47,9 @@ export class MsTerminalXtermWithToolbarComponent implements OnDestroy {
 	}
 
 	handleClickOutside(event: Event): void {
-		if (this.terminalWrapper && !this.terminalWrapper.nativeElement.contains(event.target)) {
+		const clickedInsidePopover = (event.target as HTMLElement).closest('.popover-element');
+
+		if (this.terminalWrapper && !this.terminalWrapper.nativeElement.contains(event.target) && !clickedInsidePopover) {
 			if (this.popoverManager.hasActivePopover('terminal-popover')) {
 				this.popoverManager.closePopoverById('terminal-popover');
 			}

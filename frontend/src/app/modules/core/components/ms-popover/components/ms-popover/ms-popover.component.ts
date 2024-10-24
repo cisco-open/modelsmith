@@ -50,10 +50,8 @@ export class MsPopoverComponent {
 	@Input() contentTemplate?: TemplateRef<any>;
 	@Output() actionEvent: EventEmitter<PopoverStatus> = new EventEmitter<PopoverStatus>();
 
-	isClosing = false;
-
 	constructor(
-		private popoverRef: PopoverRef,
+		public popoverRef: PopoverRef,
 		@Inject(POPOVER_DATA) public data: PopoverConfig
 	) {
 		this.closeDrawerOnBackdropClick();
@@ -62,19 +60,16 @@ export class MsPopoverComponent {
 	onClose(): void {
 		this.actionEvent.emit(PopoverStatus.CLOSE);
 		this.popoverRef.close({ status: PopoverStatus.CLOSE });
-		this.isClosing = true;
 	}
 
 	onSave(): void {
 		this.actionEvent.emit(PopoverStatus.SAVE);
 		this.popoverRef.close({ status: PopoverStatus.SAVE });
-		this.isClosing = false;
 	}
 
 	onDismiss(): void {
 		this.actionEvent.emit(PopoverStatus.DISMISS);
 		this.popoverRef.close({ status: PopoverStatus.DISMISS });
-		this.isClosing = false;
 	}
 
 	private closeDrawerOnBackdropClick(): void {

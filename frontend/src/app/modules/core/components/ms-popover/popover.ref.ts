@@ -29,6 +29,11 @@ import { PopoverClose } from './models/interfaces/popover-config.interface';
 // - Handle Backdrop Clicks: Allows listening to backdrop clicks, providing a way to close the popover or take action when the user clicks outside of the popover.
 
 export class PopoverRef {
+	/**
+	 * Based on this value we trigger the fade-in and fade-out animations.
+	 */
+	public isClosing: boolean = false;
+
 	private afterClosedSubject = new Subject<any>();
 
 	/**
@@ -54,6 +59,8 @@ export class PopoverRef {
 	}
 
 	public close(result?: PopoverClose<any>) {
+		this.isClosing = true;
+
 		this.afterClosedSubject.next(result);
 		this.afterClosedSubject.complete();
 		this.dataSubject.complete();
