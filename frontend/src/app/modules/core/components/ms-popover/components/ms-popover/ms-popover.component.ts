@@ -19,56 +19,51 @@ import { Component, EventEmitter, HostListener, Inject, Input, Output, TemplateR
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { DrawerRef } from '../drawer.ref';
-import { DRAWER_DATA } from '../drawer.tokens';
-import { DrawerStatus } from '../models/enums/drawer-status.enum';
-import { DrawerConfig } from '../models/interfaces/drawer-config.interface';
-import { DrawerSizeStylesPipe } from '../pipes/drawer-size-style.pipe';
+import { PopoverStatus } from '../../models/enums/popover-status.enum';
+import { PopoverConfig } from '../../models/interfaces/popover-config.interface';
+import { PopoverSizeStylesPipe } from '../../pipes/popover-size-style.pipe';
+import { PopoverRef } from '../../popover.ref';
+import { POPOVER_DATA } from '../../popover.tokens';
 
 @UntilDestroy()
 @Component({
-	selector: 'ms-drawer',
-	templateUrl: './ms-drawer.component.html',
-	styleUrls: ['./ms-drawer.component.scss'],
+	selector: 'ms-popover',
 	standalone: true,
-	imports: [CommonModule, MatButtonModule, MatIconModule, DrawerSizeStylesPipe]
+	imports: [CommonModule, MatIconModule, MatButtonModule, PopoverSizeStylesPipe],
+	templateUrl: './ms-popover.component.html',
+	styleUrl: './ms-popover.component.scss'
 })
-export class MsDrawerComponent {
-	@Input() headerTemplate!: TemplateRef<any>;
-	@Input() actionsTemplate!: TemplateRef<any>;
-
-	@Input() isSaveDisabled: boolean = false;
-	@Input() isDismissDisabled: boolean = false;
-
-	@Output() actionEvent: EventEmitter<DrawerStatus> = new EventEmitter<DrawerStatus>();
+export class MsPopoverComponent {
+	@Input() contentTemplate?: TemplateRef<any>;
+	@Output() actionEvent: EventEmitter<PopoverStatus> = new EventEmitter<PopoverStatus>();
 
 	constructor(
-		private drawerRef: DrawerRef,
-		@Inject(DRAWER_DATA) public data: DrawerConfig
+		private popoverRef: PopoverRef,
+		@Inject(POPOVER_DATA) public data: PopoverConfig
 	) {
 		this.closeDrawerOnBackdropClick();
 	}
 
 	onClose(): void {
-		this.actionEvent.emit(DrawerStatus.CLOSE);
-		this.drawerRef.close({ status: DrawerStatus.CLOSE });
+		this.actionEvent.emit(PopoverStatus.CLOSE);
+		this.popoverRef.close({ status: PopoverStatus.CLOSE });
 	}
 
 	onSave(): void {
-		this.actionEvent.emit(DrawerStatus.SAVE);
+		this.actionEvent.emit(PopoverStatus.SAVE);
 	}
 
 	onDismiss(): void {
-		this.actionEvent.emit(DrawerStatus.DISMISS);
-		this.drawerRef.close({ status: DrawerStatus.DISMISS });
+		this.actionEvent.emit(PopoverStatus.DISMISS);
+		this.popoverRef.close({ status: PopoverStatus.DISMISS });
 	}
 
 	private closeDrawerOnBackdropClick(): void {
-		if (!this.data.closeDialogOnBackdropClick) {
+		if (!this.data.closePopoverOnBackdropClick) {
 			return;
 		}
 
-		this.drawerRef
+		this.popoverRef
 			.backdropClick()
 			.pipe(untilDestroyed(this))
 			.subscribe(() => {
@@ -77,7 +72,7 @@ export class MsDrawerComponent {
 	}
 
 	@HostListener('window:keyup.esc') onEscKeyDown(): void {
-		if (!this.data.closeDialogOnEscKeyUp) {
+		if (!this.data.closePopoverOnEscKeyUp) {
 			return;
 		}
 		this.onDismiss();

@@ -20,11 +20,8 @@
 	color: var(--terminal-color);
 	border-radius: 6px;
 	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
 
-.tooltip-wrapper {
-	display: flex;
-	padding: 2px 6px;
+	padding: 10px 8px;
 }
 
 .tooltip-arrow {
@@ -71,7 +68,7 @@
 }
 
 .close-button {
-	right: 0;
-	top: -2;
 	position: absolute;
+	right: 0;
+	top: 0;
 }

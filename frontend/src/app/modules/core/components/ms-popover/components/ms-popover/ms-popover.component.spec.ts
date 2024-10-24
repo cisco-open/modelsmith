@@ -14,25 +14,24 @@
 
 //   SPDX-License-Identifier: Apache-2.0
 
-import { OverlayConfig } from '@angular/cdk/overlay';
-import { DrawerActionTypeEnum } from '../enums/drawer-action-type.enum';
-import { DrawerStatus } from '../enums/drawer-status.enum';
-import { DrawerCSSSize } from '../types/drawer-css-size.type';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MsPopoverComponent } from './ms-popover.component';
 
-export interface DrawerConfig extends OverlayConfig {
-	data?: any;
-	title?: string;
-	showSaveButton?: boolean;
-	showCloseButton?: boolean;
-	saveButtonLabel?: string;
-	closeButtonLabel?: string;
-	closeDialogOnBackdropClick?: boolean;
-	closeDialogOnEscKeyUp?: boolean;
-	width?: DrawerCSSSize;
-	actionType?: DrawerActionTypeEnum;
-}
+describe('MsPopoverComponent', () => {
+	let component: MsPopoverComponent;
+	let fixture: ComponentFixture<MsPopoverComponent>;
 
-export interface DrawerClose<T> {
-	result?: T;
-	status: DrawerStatus;
-}
+	beforeEach(async () => {
+		await TestBed.configureTestingModule({
+			imports: [MsPopoverComponent]
+		}).compileComponents();
+
+		fixture = TestBed.createComponent(MsPopoverComponent);
+		component = fixture.componentInstance;
+		fixture.detectChanges();
+	});
+
+	it('should create', () => {
+		expect(component).toBeTruthy();
+	});
+});

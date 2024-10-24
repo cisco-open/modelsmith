@@ -19,20 +19,12 @@
 		mat-icon-button
 		color="primary"
 		matTooltip="Search terminal"
-		[msTooltipPanel]="searchTooltipContent"
-		[closeOnBackdropClick]="false"
-		[showCloseButton]="true"
-		[position]="'auto'"
-		(closed)="disposeSearch.emit(); searchFormControl.setValue('')"
-		#tooltipPanel="msTooltipPanel">
+		#searchTooltip
+		(click)="openPanel(searchTooltip)">
 		<mat-icon fontSet="ms" fontIcon="icon-MagnifyingGlass"></mat-icon>
 	</button>
 
-	<button
-		mat-icon-button
-		color="primary"
-		matTooltip="Terminal history"
-		(click)="openTerminalMessagesHistoryDialog(); tooltipPanel.closePanel()">
+	<button mat-icon-button color="primary" matTooltip="Terminal history" (click)="openTerminalMessagesHistoryDialog()">
 		<mat-icon>history</mat-icon>
 	</button>
 
@@ -53,7 +45,11 @@
 		<mat-icon> clear_all</mat-icon>
 	</button>
 
-	<button mat-icon-button color="primary" matTooltip="Toggle fullscreen" (click)="openFullScreenMode()">
+	<button
+		mat-icon-button
+		color="primary"
+		[matTooltip]="isFullscreen ? 'Exit fullscreen' : 'Enter fullscreen'"
+		(click)="openFullScreenMode()">
 		<mat-icon>{{ isFullscreen ? 'fullscreen_exit' : 'fullscreen' }}</mat-icon>
 	</button>
 
@@ -66,13 +62,3 @@
 		<mat-icon fontSet="ms" fontIcon="icon-X" class="mat-error"></mat-icon>
 	</button>
 </div>
-
-<ng-template #searchTooltipContent>
-	<div class="form-field-container dark">
-		<mat-label> Search... </mat-label>
-		<mat-form-field subscriptSizing="dynamic">
-			<input msErrorDisplay matInput msAutofocus [formControl]="searchFormControl" />
-			<mat-icon fontSet="ms" fontIcon="icon-MagnifyingGlass" matSuffix></mat-icon>
-		</mat-form-field>
-	</div>
-</ng-template>

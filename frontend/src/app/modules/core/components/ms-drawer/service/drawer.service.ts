@@ -19,7 +19,7 @@ import { ComponentPortal, ComponentType } from '@angular/cdk/portal';
 import { Injectable, Injector } from '@angular/core';
 import { DrawerRef } from '../drawer.ref';
 import { DRAWER_DATA } from '../drawer.tokens';
-import { DEFAUlT_DRAWER_WIDTH } from '../models/drawer.constants';
+import { DEFAUlT_DRAWER_WIDTH } from '../models/constants/drawer.constants';
 import { DrawerConfig } from '../models/interfaces/drawer-config.interface';
 
 @Injectable()
@@ -53,6 +53,8 @@ export class DrawerService {
 						closeButtonLabel: 'Close',
 						showSaveButton: true,
 						showCloseButton: true,
+						closeDialogOnBackdropClick: true,
+						closeDialogOnEscKeyUp: true,
 						width: config?.width || DEFAUlT_DRAWER_WIDTH,
 						...config
 					}

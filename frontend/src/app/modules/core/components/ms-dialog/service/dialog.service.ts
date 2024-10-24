@@ -54,6 +54,8 @@ export class DialogService {
 						showCloseButton: true,
 						showHeader: true,
 						showFooter: true,
+						closeDialogOnBackdropClick: true,
+						closeDialogOnEscKeyUp: true,
 						width: config?.width || DEFAULT_DIALOG_WIDTH,
 						height: config?.height || DEFAULT_DIALOG_HEIGHT,
 						...config

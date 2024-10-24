@@ -14,25 +14,9 @@
 
 //   SPDX-License-Identifier: Apache-2.0
 
-import { OverlayConfig } from '@angular/cdk/overlay';
-import { DrawerActionTypeEnum } from '../enums/drawer-action-type.enum';
-import { DrawerStatus } from '../enums/drawer-status.enum';
-import { DrawerCSSSize } from '../types/drawer-css-size.type';
+import { PopoverCSSSize } from '../types/popover-css-size.type';
 
-export interface DrawerConfig extends OverlayConfig {
-	data?: any;
-	title?: string;
-	showSaveButton?: boolean;
-	showCloseButton?: boolean;
-	saveButtonLabel?: string;
-	closeButtonLabel?: string;
-	closeDialogOnBackdropClick?: boolean;
-	closeDialogOnEscKeyUp?: boolean;
-	width?: DrawerCSSSize;
-	actionType?: DrawerActionTypeEnum;
-}
+export const DEFAUlT_POPOVER_WIDTH: PopoverCSSSize = '200px';
+export const DEFAUlT_POPOVER_HEIGHT: PopoverCSSSize = '80px';
 
-export interface DrawerClose<T> {
-	result?: T;
-	status: DrawerStatus;
-}
+export const DEFAULT_POPOVER_POSITION_VALUE = 'top';

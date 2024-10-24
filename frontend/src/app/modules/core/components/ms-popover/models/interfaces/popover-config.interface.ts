@@ -15,27 +15,21 @@
 //   SPDX-License-Identifier: Apache-2.0
 
 import { OverlayConfig } from '@angular/cdk/overlay';
-import { DialogActionTypeEnum } from '../enums/dialog-action-type.enum';
-import { DialogStatus } from '../enums/dialog-status.enum';
-import { DialogCSSSize } from '../types/dialog-css-size.type';
+import { PopoverActionTypeEnum } from '../enums/popover-action-type.enum';
+import { PopoverStatus } from '../enums/popover-status.enum';
+import { PopoverCSSSize } from '../types/popover-css-size.type';
 
-export interface DialogConfig extends OverlayConfig {
+export interface PopoverConfig extends OverlayConfig {
 	data?: any;
-	title?: string;
-	showSaveButton?: boolean;
-	showCloseButton?: boolean;
-	saveButtonLabel?: string;
-	closeButtonLabel?: string;
-	showHeader?: boolean;
-	showFooter?: boolean;
-	closeDialogOnBackdropClick?: boolean;
-	closeDialogOnEscKeyUp?: boolean;
-	width?: DialogCSSSize;
-	height?: DialogCSSSize;
-	actionType?: DialogActionTypeEnum;
+	position?: 'top' | 'bottom' | 'left' | 'right';
+	closePopoverOnBackdropClick?: boolean;
+	closePopoverOnEscKeyUp?: boolean;
+	width?: PopoverCSSSize;
+	height?: PopoverCSSSize;
+	actionType?: PopoverActionTypeEnum;
 }
 
-export interface DialogClose<T> {
+export interface PopoverClose<T> {
 	result?: T;
-	status: DialogStatus;
+	status: PopoverStatus;
 }

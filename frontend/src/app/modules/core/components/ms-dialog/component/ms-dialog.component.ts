@@ -25,9 +25,6 @@ export class MsDialogComponent {
 	@Input() isSaveDisabled: boolean = false;
 	@Input() isDismissDisabled: boolean = false;
 
-	@Input() closeDialogOnBackdropClick: boolean = true;
-	@Input() closeDialogOnEscKeyUp: boolean = true;
-
 	@Output() actionEvent: EventEmitter<DialogStatus> = new EventEmitter<DialogStatus>();
 
 	constructor(
@@ -56,7 +53,7 @@ export class MsDialogComponent {
 	}
 
 	private closeDrawerOnBackdropClick(): void {
-		if (!this.closeDialogOnBackdropClick) {
+		if (!this.data.closeDialogOnBackdropClick) {
 			return;
 		}
 
@@ -69,7 +66,7 @@ export class MsDialogComponent {
 	}
 
 	@HostListener('window:keyup.esc') onEscKeyDown(): void {
-		if (!this.closeDialogOnEscKeyUp) {
+		if (!this.data.closeDialogOnEscKeyUp) {
 			return;
 		}
 		this.onDismiss();

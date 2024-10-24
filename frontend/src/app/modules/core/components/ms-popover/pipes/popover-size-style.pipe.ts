@@ -14,25 +14,17 @@
 
 //   SPDX-License-Identifier: Apache-2.0
 
-import { OverlayConfig } from '@angular/cdk/overlay';
-import { DrawerActionTypeEnum } from '../enums/drawer-action-type.enum';
-import { DrawerStatus } from '../enums/drawer-status.enum';
-import { DrawerCSSSize } from '../types/drawer-css-size.type';
+import { Pipe, PipeTransform } from '@angular/core';
+import { PopoverCSSSize } from '../models/types/popover-css-size.type';
+import { getPopoverSizeStyles } from '../popover.utils';
 
-export interface DrawerConfig extends OverlayConfig {
-	data?: any;
-	title?: string;
-	showSaveButton?: boolean;
-	showCloseButton?: boolean;
-	saveButtonLabel?: string;
-	closeButtonLabel?: string;
-	closeDialogOnBackdropClick?: boolean;
-	closeDialogOnEscKeyUp?: boolean;
-	width?: DrawerCSSSize;
-	actionType?: DrawerActionTypeEnum;
-}
-
-export interface DrawerClose<T> {
-	result?: T;
-	status: DrawerStatus;
+@Pipe({
+	name: 'iconPanelSizeStyles',
+	standalone: true,
+	pure: true
+})
+export class PopoverSizeStylesPipe implements PipeTransform {
+	transform(width?: PopoverCSSSize, height?: PopoverCSSSize): { [klass: string]: any } {
+		return getPopoverSizeStyles(width, height);
+	}
 }

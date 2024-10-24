@@ -17,7 +17,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatButtonModule } from '@angular/material/button';
+import { MatButtonModule, MatIconButton } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
@@ -25,13 +25,14 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { delay, filter } from 'rxjs';
 import { ScriptActions } from '../../../../../../state/core/script/script.actions';
+import { PopoverService } from '../../../../../core/components/ms-popover/service/popover.service';
 import { ScriptFacadeService } from '../../../../../core/services/script-facade.service';
 import { isScriptActive } from '../../../../../model-compression/models/enums/script-status.enum';
 import { AutofocusDirective } from '../../../../directives/autofocus.directive';
-import { MsTooltipPanelDirective } from '../../../../directives/ms-tooltip-panel/ms-tooltip-panel.directive';
 import { isNilOrEmptyString } from '../../../../shared.utils';
 import { TerminalDialogService } from '../../services/terminal-dialog.service';
 import { TerminalWebSocketService } from '../../services/terminal-websocket.service';
+import { MsTerminalToolbarSearchPopoverComponent } from '../ms-terminal-toolbar-search-popover/ms-terminal-toolbar-search-popover.component';
 
 @UntilDestroy({})
 @Component({
@@ -44,14 +45,13 @@ import { TerminalWebSocketService } from '../../services/terminal-websocket.serv
 		MatButtonModule,
 		MatIconModule,
 		MatTooltipModule,
-		MsTooltipPanelDirective,
 		FormsModule,
 		ReactiveFormsModule,
 		MatFormFieldModule,
 		MatInputModule,
 		AutofocusDirective
 	],
-	providers: [TerminalDialogService]
+	providers: [TerminalDialogService, PopoverService]
 })
 export class MsTerminalToolbarComponent implements OnInit {
 	@Input() isFullscreen = false;
@@ -68,7 +68,8 @@ export class MsTerminalToolbarComponent implements OnInit {
 	constructor(
 		private scriptFacadeService: ScriptFacadeService,
 		private terminalWebSocketService: TerminalWebSocketService,
-		private terminalDialogService: TerminalDialogService
+		private terminalDialogService: TerminalDialogService,
+		private popoverService: PopoverService
 	) {}
 
 	ngOnInit(): void {
@@ -78,6 +79,18 @@ export class MsTerminalToolbarComponent implements OnInit {
 
 	public clearTerminalScreen() {
 		this.terminalWebSocketService.clearScreen();
+	}
+
+	public openPanel(origin: MatIconButton) {
+		const searchPanelRef = this.popoverService.open(MsTerminalToolbarSearchPopoverComponent, origin._elementRef, {
+			position: !this.isFullscreen ? 'top' : 'bottom',
+			width: '200px',
+			height: '60px'
+		});
+
+		searchPanelRef.data$.pipe(untilDestroyed(this)).subscribe((data: any) => {
+			this.searchTerminal.emit(data);
+		});
 	}
 
 	private listenToSearchFormControlChanges(): void {
