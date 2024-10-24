@@ -19,6 +19,15 @@ import { Observable, Subject } from 'rxjs';
 import { DEFAULT_POPOVER_FADE_IN_OUT_ANIMATION_DURATION } from './models/constants/popover.constants';
 import { PopoverClose } from './models/interfaces/popover-config.interface';
 
+// The PopoverRef class represents a reference to an open popover in an Angular application. It provides a programmatic way to control the popover's lifecycle, such as closing the popover, emitting data to external listeners, and handling events like backdrop clicks. This class interacts directly with Angular CDK’s OverlayRef to manage the rendering and positioning of the popover.
+//
+// Key Responsibilities:
+//
+// - Control the Popover's Lifecycle: Provides methods to close the popover and handle related animations and cleanup.
+// - Emit Data from the Popover: Enables the popover to communicate with its parent component or other external components in real time by emitting data through an observable.
+// - Manage Positioning: Exposes functionality to update the popover's position dynamically, allowing it to stay aligned with its origin element even when the user scrolls or resizes the window.
+// - Handle Backdrop Clicks: Allows listening to backdrop clicks, providing a way to close the popover or take action when the user clicks outside of the popover.
+
 export class PopoverRef {
 	private afterClosedSubject = new Subject<any>();
 

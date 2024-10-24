@@ -25,7 +25,7 @@ import { PopoverCSSUnit } from './models/types/popover-css-unit.type';
  * @param height - The height as a CSSSize string (e.g., '400px', '80vh')
  * @returns An object containing the styles for width and height
  */
-export function getPopoverSizeStyles(width?: PopoverCSSSize, height?: PopoverCSSSize): { [klass: string]: any } {
+export const getPopoverSizeStyles = (width?: PopoverCSSSize, height?: PopoverCSSSize): { [klass: string]: any } => {
 	const styles: { [klass: string]: any } = {};
 
 	if (width) {
@@ -37,7 +37,7 @@ export function getPopoverSizeStyles(width?: PopoverCSSSize, height?: PopoverCSS
 	}
 
 	return styles;
-}
+};
 
 /**
  * Helper function to apply the size style (width/height) based on the value provided.
@@ -46,7 +46,11 @@ export function getPopoverSizeStyles(width?: PopoverCSSSize, height?: PopoverCSS
  * @param value - The CSSSize value (e.g., '100px', '20rem', '80vh')
  * @param dimension - Either 'width' or 'height'
  */
-function applySizeStyle(styles: { [klass: string]: any }, value: PopoverCSSSize, dimension: 'width' | 'height'): void {
+const applySizeStyle = (
+	styles: { [klass: string]: any },
+	value: PopoverCSSSize,
+	dimension: 'width' | 'height'
+): void => {
 	const unit = extractUnit(value);
 
 	if (unit === 'px' || unit === 'rem' || unit === 'em') {
@@ -54,7 +58,7 @@ function applySizeStyle(styles: { [klass: string]: any }, value: PopoverCSSSize,
 	} else {
 		styles[dimension] = value;
 	}
-}
+};
 
 /**
  * Extracts the CSS unit from the given CSSSize value.
@@ -62,8 +66,15 @@ function applySizeStyle(styles: { [klass: string]: any }, value: PopoverCSSSize,
  * @param value - The CSSSize value (e.g., '100px', '20rem', '80vh')
  * @returns The unit (e.g., 'px', 'rem', 'vh') or 'px' as default
  */
-function extractUnit(value: PopoverCSSSize): PopoverCSSUnit {
+const extractUnit = (value: PopoverCSSSize): PopoverCSSUnit => {
 	const valueAsString = typeof value === 'string' ? value : '';
 	const match = valueAsString.match(/(px|rem|em|vw|vh|%)$/);
 	return match ? (match[0] as PopoverCSSUnit) : 'px';
-}
+};
+
+/**
+ * Utility function to generate a random unique id
+ */
+export const generateRandomId = (): string => {
+	return 'popover-' + Math.random().toString(36).slice(2, 11);
+};

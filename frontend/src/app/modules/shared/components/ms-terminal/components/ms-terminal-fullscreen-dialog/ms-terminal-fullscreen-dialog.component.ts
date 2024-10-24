@@ -18,6 +18,8 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { UntilDestroy } from '@ngneat/until-destroy';
 import { DialogRef, MsDialogComponent } from '../../../../../core/components/ms-dialog';
+import { DEFAULT_POPOVER_FADE_IN_OUT_ANIMATION_DURATION } from '../../../../../core/components/ms-popover/models/constants/popover.constants';
+import { PopoverManagerService } from '../../../../../core/components/ms-popover/service/popover-manager.service';
 import { MsTerminalToolbarComponent } from '../ms-terminal-toolbar/ms-terminal-toolbar.component';
 import { MsTerminalXtermComponent } from '../ms-terminal-xterm/ms-terminal-xterm.component';
 
@@ -30,9 +32,21 @@ import { MsTerminalXtermComponent } from '../ms-terminal-xterm/ms-terminal-xterm
 	styleUrl: './ms-terminal-fullscreen-dialog.component.scss'
 })
 export class MsTerminalFullscreenDialogComponent {
-	constructor(private dialogRef: DialogRef) {}
+	fullscreenPopoverId: string = 'popover-fullscreen';
+
+	constructor(
+		private dialogRef: DialogRef,
+		private popoverManager: PopoverManagerService
+	) {}
 
 	closeDialog(): void {
-		this.dialogRef.close();
+		if (this.popoverManager.hasActivePopover(this.fullscreenPopoverId)) {
+			this.popoverManager.closePopoverById(this.fullscreenPopoverId);
+			setTimeout(() => {
+				this.dialogRef.close();
+			}, DEFAULT_POPOVER_FADE_IN_OUT_ANIMATION_DURATION);
+		} else {
+			this.dialogRef.close();
+		}
 	}
 }

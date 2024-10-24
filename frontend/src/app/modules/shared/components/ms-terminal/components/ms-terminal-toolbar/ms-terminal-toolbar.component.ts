@@ -57,6 +57,7 @@ import { MsTerminalToolbarSearchPopoverComponent } from '../ms-terminal-toolbar-
 export class MsTerminalToolbarComponent implements OnInit, OnDestroy {
 	@Input() isFullscreen = false;
 	@Input() isScriptActive = false;
+	@Input() popoverId: string = '';
 	@Output() clearTerminal = new EventEmitter<void>();
 	@Output() scrollToTopTerminal = new EventEmitter<void>();
 	@Output() scrollToBottomTerminal = new EventEmitter<void>();
@@ -88,11 +89,16 @@ export class MsTerminalToolbarComponent implements OnInit, OnDestroy {
 			return;
 		}
 
-		this.searchPanelRef = this.popoverService.open(MsTerminalToolbarSearchPopoverComponent, origin._elementRef, {
-			position: !this.isFullscreen ? 'top' : 'bottom',
-			width: '200px',
-			height: '60px'
-		});
+		this.searchPanelRef = this.popoverService.open(
+			MsTerminalToolbarSearchPopoverComponent,
+			origin._elementRef,
+			{
+				position: !this.isFullscreen ? 'top' : 'bottom',
+				width: '200px',
+				height: '60px'
+			},
+			this.popoverId ?? ''
+		);
 
 		this.searchPanelRef.data$.pipe(untilDestroyed(this)).subscribe((data: any) => {
 			this.searchTerminal.emit(data);

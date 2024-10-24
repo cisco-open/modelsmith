@@ -22,10 +22,9 @@ import { DrawerCSSUnit } from './models/types/drawer-css-unit.type';
  * Supports px, %, vw, vh, rem, and em.
  *
  * @param width - The width as a CSSSize string (e.g., '100px', '50%')
- * @param height - The height as a CSSSize string (e.g., '400px', '80vh')
  * @returns An object containing the styles for width and height
  */
-export function getDrawerSizeStyles(width?: DrawerCSSSize): { [klass: string]: any } {
+export const getDrawerSizeStyles = (width?: DrawerCSSSize): { [klass: string]: any } => {
 	const styles: { [klass: string]: any } = {};
 
 	if (width) {
@@ -33,7 +32,7 @@ export function getDrawerSizeStyles(width?: DrawerCSSSize): { [klass: string]: a
 	}
 
 	return styles;
-}
+};
 
 /**
  * Helper function to apply the size style (width/height) based on the value provided.
@@ -42,7 +41,7 @@ export function getDrawerSizeStyles(width?: DrawerCSSSize): { [klass: string]: a
  * @param value - The CSSSize value (e.g., '100px', '20rem', '80vh')
  * @param dimension - Either 'width' or 'height'
  */
-function applySizeStyle(styles: { [klass: string]: any }, value: DrawerCSSSize, dimension: 'width'): void {
+const applySizeStyle = (styles: { [klass: string]: any }, value: DrawerCSSSize, dimension: 'width'): void => {
 	const unit = extractUnit(value);
 
 	if (unit === 'px' || unit === 'rem' || unit === 'em') {
@@ -50,7 +49,7 @@ function applySizeStyle(styles: { [klass: string]: any }, value: DrawerCSSSize, 
 	} else {
 		styles[dimension] = value;
 	}
-}
+};
 
 /**
  * Extracts the CSS unit from the given CSSSize value.
@@ -58,8 +57,8 @@ function applySizeStyle(styles: { [klass: string]: any }, value: DrawerCSSSize, 
  * @param value - The CSSSize value (e.g., '100px', '20rem', '80vh')
  * @returns The unit (e.g., 'px', 'rem', 'vh') or 'px' as default
  */
-function extractUnit(value: DrawerCSSSize): DrawerCSSUnit {
+const extractUnit = (value: DrawerCSSSize): DrawerCSSUnit => {
 	const valueAsString = typeof value === 'string' ? value : '';
 	const match = valueAsString.match(/(px|rem|em|vw|vh|%)$/);
 	return match ? (match[0] as DrawerCSSUnit) : 'px';
-}
+};

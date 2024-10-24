@@ -25,7 +25,7 @@ import { DialogCSSUnit } from './models/types/dialog-css-unit.type';
  * @param height - The height as a CSSSize string (e.g., '400px', '80vh')
  * @returns An object containing the styles for width and height
  */
-export function getDialogSizeStyles(width?: DialogCSSSize, height?: DialogCSSSize): { [klass: string]: any } {
+export const getDialogSizeStyles = (width?: DialogCSSSize, height?: DialogCSSSize): { [klass: string]: any } => {
 	const styles: { [klass: string]: any } = {};
 
 	if (width) {
@@ -37,7 +37,7 @@ export function getDialogSizeStyles(width?: DialogCSSSize, height?: DialogCSSSiz
 	}
 
 	return styles;
-}
+};
 
 /**
  * Helper function to apply the size style (width/height) based on the value provided.
@@ -46,7 +46,11 @@ export function getDialogSizeStyles(width?: DialogCSSSize, height?: DialogCSSSiz
  * @param value - The CSSSize value (e.g., '100px', '20rem', '80vh')
  * @param dimension - Either 'width' or 'height'
  */
-function applySizeStyle(styles: { [klass: string]: any }, value: DialogCSSSize, dimension: 'width' | 'height'): void {
+const applySizeStyle = (
+	styles: { [klass: string]: any },
+	value: DialogCSSSize,
+	dimension: 'width' | 'height'
+): void => {
 	const unit = extractUnit(value);
 
 	if (unit === 'px' || unit === 'rem' || unit === 'em') {
@@ -54,7 +58,7 @@ function applySizeStyle(styles: { [klass: string]: any }, value: DialogCSSSize, 
 	} else {
 		styles[dimension] = value;
 	}
-}
+};
 
 /**
  * Extracts the CSS unit from the given CSSSize value.
@@ -62,8 +66,8 @@ function applySizeStyle(styles: { [klass: string]: any }, value: DialogCSSSize, 
  * @param value - The CSSSize value (e.g., '100px', '20rem', '80vh')
  * @returns The unit (e.g., 'px', 'rem', 'vh') or 'px' as default
  */
-function extractUnit(value: DialogCSSSize): DialogCSSUnit {
+const extractUnit = (value: DialogCSSSize): DialogCSSUnit => {
 	const valueAsString = typeof value === 'string' ? value : '';
 	const match = valueAsString.match(/(px|rem|em|vw|vh|%)$/);
 	return match ? (match[0] as DialogCSSUnit) : 'px';
-}
+};

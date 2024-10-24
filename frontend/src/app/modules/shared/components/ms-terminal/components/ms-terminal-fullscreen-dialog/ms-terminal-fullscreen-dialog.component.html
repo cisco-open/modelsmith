@@ -3,12 +3,13 @@
 		<div class="top-terminal-section">
 			<div class="heading-section-title mb-1 flex items-center">Terminal</div>
 			<ms-terminal-toolbar
+				[isFullscreen]="true"
+				[popoverId]="fullscreenPopoverId"
 				(clearTerminal)="terminal.clearTerminal()"
 				(scrollToTopTerminal)="terminal.scrollToTop()"
 				(scrollToBottomTerminal)="terminal.scrollToBottom()"
 				(searchTerminal)="terminal.search($event)"
 				(disposeSearch)="terminal.clearSearch()"
-				[isFullscreen]="true"
 				(exitFullscreen)="closeDialog()"></ms-terminal-toolbar>
 		</div>
 		<ms-terminal-xterm #terminal></ms-terminal-xterm>
