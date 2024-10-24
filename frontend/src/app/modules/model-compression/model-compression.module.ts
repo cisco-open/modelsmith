@@ -23,7 +23,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MsPanelModelComponent } from '../shared/components/ms-panel-model/ms-panel-model.component';
 import { MsPanelParametersComponent } from '../shared/components/ms-panel-parameters/ms-panel-parameters.component';
-import { MsTerminalComponent } from '../shared/components/ms-terminal/components/ms-terminal/ms-terminal.component';
+import { MsTerminalXtermWithToolbarComponent } from '../shared/components/ms-terminal/components/ms-terminal-xterm-with-toolbar/ms-terminal-xterm-with-toolbar.component';
 import { PanelAlgorithmComponent } from './components/panel-algorithm/panel-algorithm.component';
 import { ProjectSettingsComponent } from './components/project-settings/project-settings.component';
 import { ModelCompressionRoutingModule } from './model-compression-routing.module';
@@ -33,7 +33,7 @@ import { ModelCompressionRoutingModule } from './model-compression-routing.modul
 	imports: [
 		CommonModule,
 		ModelCompressionRoutingModule,
-		MsTerminalComponent,
+		MsTerminalXtermWithToolbarComponent,
 		MsPanelModelComponent,
 		MsPanelParametersComponent,
 		MatCardModule,

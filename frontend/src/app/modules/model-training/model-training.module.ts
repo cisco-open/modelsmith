@@ -26,7 +26,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MsEmptyStateComponent } from '../shared/components/ms-empty-state/ms-empty-state.component';
 import { MsPanelModelTrainingComponent } from '../shared/components/ms-panel-model-training/ms-panel-model-training.component';
 import { MsPanelParametersComponent } from '../shared/components/ms-panel-parameters/ms-panel-parameters.component';
-import { MsTerminalComponent } from '../shared/components/ms-terminal/components/ms-terminal/ms-terminal.component';
+import { MsTerminalXtermWithToolbarComponent } from '../shared/components/ms-terminal/components/ms-terminal-xterm-with-toolbar/ms-terminal-xterm-with-toolbar.component';
 import { AdaptiveFileSizePipe } from '../shared/pipes/adaptive-file-size.pipe';
 import { ParametersLabelPipe } from '../shared/pipes/parameters-label.pipe';
 import { ReadableDurationPipe } from '../shared/pipes/readable-duration.pipe';
@@ -40,7 +40,7 @@ import { ModelTrainingRoutingModule } from './model-training-routing.module';
 	imports: [
 		CommonModule,
 		ModelTrainingRoutingModule,
-		MsTerminalComponent,
+		MsTerminalXtermWithToolbarComponent,
 		MsPanelModelTrainingComponent,
 		MsPanelParametersComponent,
 		AdaptiveFileSizePipe,

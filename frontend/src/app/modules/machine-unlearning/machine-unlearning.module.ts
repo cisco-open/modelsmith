@@ -20,7 +20,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MsPanelModelComponent } from '../shared/components/ms-panel-model/ms-panel-model.component';
 import { MsPanelParametersComponent } from '../shared/components/ms-panel-parameters/ms-panel-parameters.component';
-import { MsTerminalComponent } from '../shared/components/ms-terminal/components/ms-terminal/ms-terminal.component';
+import { MsTerminalXtermWithToolbarComponent } from '../shared/components/ms-terminal/components/ms-terminal-xterm-with-toolbar/ms-terminal-xterm-with-toolbar.component';
 import { MachineUnlearningComponent } from './components/machine-unlearning/machine-unlearning.component';
 import { MachineUnlearningRoutingModule } from './machine-unlearning-routing.module';
 
@@ -29,7 +29,7 @@ import { MachineUnlearningRoutingModule } from './machine-unlearning-routing.mod
 	imports: [
 		CommonModule,
 		MachineUnlearningRoutingModule,
-		MsTerminalComponent,
+		MsTerminalXtermWithToolbarComponent,
 		MsPanelParametersComponent,
 		MsPanelModelComponent,
 		MatButtonModule,

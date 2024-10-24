@@ -21,11 +21,11 @@ import { MsTerminalXtermComponent } from '../ms-terminal-xterm/ms-terminal-xterm
 
 @UntilDestroy()
 @Component({
-	selector: 'ms-terminal',
-	templateUrl: './ms-terminal.component.html',
-	styleUrls: ['./ms-terminal.component.scss'],
+	selector: 'ms-terminal-xterm-with-toolbar',
+	templateUrl: './ms-terminal-xterm-with-toolbar.component.html',
+	styleUrls: ['./ms-terminal-xterm-with-toolbar.component.scss'],
 	encapsulation: ViewEncapsulation.None,
 	standalone: true,
 	imports: [MsTerminalToolbarComponent, MsTerminalXtermComponent]
 })
-export class MsTerminalComponent {}
+export class MsTerminalXtermWithToolbarComponent {}

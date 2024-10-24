@@ -19,7 +19,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MsPanelParametersComponent } from '../shared/components/ms-panel-parameters/ms-panel-parameters.component';
-import { MsTerminalComponent } from '../shared/components/ms-terminal/components/ms-terminal/ms-terminal.component';
+import { MsTerminalXtermWithToolbarComponent } from '../shared/components/ms-terminal/components/ms-terminal-xterm-with-toolbar/ms-terminal-xterm-with-toolbar.component';
 import { MultiModalComponent } from './components/multi-modal/multi-modal.component';
 import { MultiModalRoutingModule } from './multi-modal-routing.module';
 
@@ -28,7 +28,7 @@ import { MultiModalRoutingModule } from './multi-modal-routing.module';
 	imports: [
 		CommonModule,
 		MsPanelParametersComponent,
-		MsTerminalComponent,
+		MsTerminalXtermWithToolbarComponent,
 		MultiModalRoutingModule,
 		FormsModule,
 		ReactiveFormsModule,

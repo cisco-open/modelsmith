@@ -16,17 +16,17 @@
 
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { MsTerminalComponent } from './ms-terminal.component';
+import { MsTerminalXtermWithToolbarComponent } from './ms-terminal-xterm-with-toolbar.component';
 
-describe('MsTerminalComponent', () => {
-	let component: MsTerminalComponent;
-	let fixture: ComponentFixture<MsTerminalComponent>;
+describe('MsTerminalXtermWithToolbarComponent', () => {
+	let component: MsTerminalXtermWithToolbarComponent;
+	let fixture: ComponentFixture<MsTerminalXtermWithToolbarComponent>;
 
 	beforeEach(() => {
 		TestBed.configureTestingModule({
-			imports: [MsTerminalComponent]
+			imports: [MsTerminalXtermWithToolbarComponent]
 		});
-		fixture = TestBed.createComponent(MsTerminalComponent);
+		fixture = TestBed.createComponent(MsTerminalXtermWithToolbarComponent);
 		component = fixture.componentInstance;
 		fixture.detectChanges();
 	});
