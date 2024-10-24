@@ -134,6 +134,7 @@ export class MsTerminalXtermComponent implements OnInit, AfterViewInit, OnDestro
 
 	public clearSearch(): void {
 		this.searchAddon.clearDecorations();
+		this.searchAddon.findNext('');
 	}
 
 	public clearTerminal(): void {
