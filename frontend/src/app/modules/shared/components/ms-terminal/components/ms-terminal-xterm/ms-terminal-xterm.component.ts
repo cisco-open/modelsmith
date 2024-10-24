@@ -49,8 +49,9 @@ export class MsTerminalXtermComponent implements OnInit, AfterViewInit, OnDestro
 	}
 
 	ngAfterViewInit(): void {
-		this.adjustHeightToParent();
-		this.fitTerminalToContainer();
+		requestAnimationFrame(() => {
+			this.adjustTerminalContainer();
+		});
 	}
 
 	private initializeTerminal(): void {
@@ -88,13 +89,13 @@ export class MsTerminalXtermComponent implements OnInit, AfterViewInit, OnDestro
 			this.resizeObserver.disconnect();
 		}
 		this.resizeObserver = new ResizeObserver(() => {
-			this.fitTerminalToContainer();
-			this.adjustHeightToParent();
+			this.adjustTerminalContainer();
 		});
 		this.resizeObserver.observe(this.terminalDiv.nativeElement);
 	}
 
-	private fitTerminalToContainer(): void {
+	private adjustTerminalContainer(): void {
+		this.adjustHeightToParent();
 		this.fitAddon.fit();
 	}
 
