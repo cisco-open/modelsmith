@@ -3,3 +3,7 @@
 .xterm-viewport {
 	overflow-y: auto !important;
 }
+
+.xterm-selection {
+	overflow: hidden;
+}

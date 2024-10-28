@@ -65,6 +65,7 @@ export class MsTerminalXtermComponent implements OnInit, AfterViewInit, OnDestro
 				selectionForeground: '#000000'
 			},
 			allowProposedApi: true,
+			scrollback: 1000,
 			...this.options
 		});
 
