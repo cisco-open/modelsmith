@@ -26,6 +26,7 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { delay, filter, take } from 'rxjs';
 import { ScriptActions } from '../../../../../../state/core/script/script.actions';
 import { PopoverRef } from '../../../../../core/components/ms-popover';
+import { PopoverPosition } from '../../../../../core/components/ms-popover/models/enums/popover-position.enum';
 import { PopoverService } from '../../../../../core/components/ms-popover/service/popover.service';
 import { ScriptFacadeService } from '../../../../../core/services/script-facade.service';
 import { isScriptActive } from '../../../../../model-compression/models/enums/script-status.enum';
@@ -93,7 +94,7 @@ export class MsTerminalToolbarComponent implements OnInit, OnDestroy {
 			MsTerminalToolbarSearchPopoverComponent,
 			origin._elementRef,
 			{
-				position: !this.isFullscreen ? 'top' : 'bottom',
+				position: !this.isFullscreen ? PopoverPosition.TOP : PopoverPosition.BOTTOM,
 				width: '200px',
 				height: '60px'
 			},

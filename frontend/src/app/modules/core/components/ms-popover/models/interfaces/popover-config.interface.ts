@@ -16,12 +16,13 @@
 
 import { OverlayConfig } from '@angular/cdk/overlay';
 import { PopoverActionTypeEnum } from '../enums/popover-action-type.enum';
+import { PopoverPosition } from '../enums/popover-position.enum';
 import { PopoverStatus } from '../enums/popover-status.enum';
 import { PopoverCSSSize } from '../types/popover-css-size.type';
 
 export interface PopoverConfig extends OverlayConfig {
 	data?: any;
-	position?: 'top' | 'bottom' | 'left' | 'right';
+	position?: PopoverPosition;
 	closePopoverOnBackdropClick?: boolean;
 	closePopoverOnEscKeyUp?: boolean;
 	width?: PopoverCSSSize;

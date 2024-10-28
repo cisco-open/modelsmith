@@ -14,12 +14,13 @@
 //
 //   SPDX-License-Identifier: Apache-2.0
 
+import { PopoverPosition } from '../enums/popover-position.enum';
 import { PopoverCSSSize } from '../types/popover-css-size.type';
 
 export const DEFAUlT_POPOVER_WIDTH: PopoverCSSSize = '200px';
 export const DEFAUlT_POPOVER_HEIGHT: PopoverCSSSize = '80px';
 
-export const DEFAULT_POPOVER_POSITION_VALUE: 'top' | 'bottom' | 'left' | 'right' = 'top';
+export const DEFAULT_POPOVER_POSITION_VALUE: PopoverPosition = PopoverPosition.TOP;
 
 export const DEFAULT_POPOVER_FADE_IN_OUT_ANIMATION_DURATION: number = 150;
 
