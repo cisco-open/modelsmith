@@ -42,6 +42,10 @@ export class MsTerminalXtermWithToolbarComponent implements OnDestroy {
 	) {}
 
 	ngOnInit() {
+		this.listenToOutsideClickEvents();
+	}
+
+	private listenToOutsideClickEvents() {
 		this.clickListener = this.renderer.listen('document', 'click', (event: Event) => {
 			this.handleClickOutside(event);
 		});
