@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { PopoverClose } from '../models/interfaces/popover-config.interface';
 import { PopoverRef } from '../popover.ref';
 
 // The PopoverManagerService is responsible for managing all active popovers within the application. It allows popovers to be registered and tracked by a unique id so that they can be closed or managed globally. This service provides the ability to open, close, and check the status of popovers using these unique identifiers.
@@ -24,10 +25,10 @@ export class PopoverManagerService {
 		this.activePopovers.delete(id);
 	}
 
-	closePopoverById(id: string): void {
+	closePopoverById(id: string, result: PopoverClose<any>, showAnimation = true): void {
 		const popoverRef = this.activePopovers.get(id);
 		if (popoverRef) {
-			popoverRef.close();
+			popoverRef.close(result, showAnimation);
 			this.activePopovers.delete(id);
 		}
 	}

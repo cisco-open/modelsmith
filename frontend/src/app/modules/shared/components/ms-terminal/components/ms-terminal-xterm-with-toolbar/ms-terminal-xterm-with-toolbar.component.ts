@@ -16,6 +16,7 @@
 
 import { Component, ElementRef, OnDestroy, Renderer2, ViewChild, ViewEncapsulation } from '@angular/core';
 import { UntilDestroy } from '@ngneat/until-destroy';
+import { PopoverClose, PopoverStatus } from '../../../../../core/components/ms-popover';
 import { PopoverManagerService } from '../../../../../core/components/ms-popover/service/popover-manager.service';
 import { MsTerminalToolbarComponent } from '../ms-terminal-toolbar/ms-terminal-toolbar.component';
 import { MsTerminalXtermComponent } from '../ms-terminal-xterm/ms-terminal-xterm.component';
@@ -51,7 +52,10 @@ export class MsTerminalXtermWithToolbarComponent implements OnDestroy {
 
 		if (this.terminalWrapper && !this.terminalWrapper.nativeElement.contains(event.target) && !clickedInsidePopover) {
 			if (this.popoverManager.hasActivePopover('terminal-popover')) {
-				this.popoverManager.closePopoverById('terminal-popover');
+				this.popoverManager.closePopoverById('terminal-popover', {
+					result: {},
+					status: PopoverStatus.CLOSE
+				} as PopoverClose<any>);
 			}
 		}
 	}

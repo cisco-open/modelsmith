@@ -58,17 +58,19 @@ export class PopoverRef {
 		return this.overlayRef.backdropClick();
 	}
 
-	public close(result?: PopoverClose<any>) {
+	public close(result?: PopoverClose<any>, showAnimation: boolean = true): void {
 		this.isClosing = true;
 
 		this.afterClosedSubject.next(result);
 		this.afterClosedSubject.complete();
 		this.dataSubject.complete();
 
-		// Delay the disposal to allow fade-out animation to complete
+		// If showAnimation is false, close immediately; otherwise, delay to allow fade-out animation
+		const closeDelay = showAnimation ? DEFAULT_POPOVER_FADE_IN_OUT_ANIMATION_DURATION : 0;
+
 		setTimeout(() => {
 			this.overlayRef.dispose();
-		}, DEFAULT_POPOVER_FADE_IN_OUT_ANIMATION_DURATION);
+		}, closeDelay);
 	}
 
 	public afterClosed(): Observable<any> {
