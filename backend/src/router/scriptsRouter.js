@@ -68,10 +68,10 @@ const buildCommand = (scriptDetails, args) => {
 	const condaActivate = `source ${process.env.CONDA_SH_PATH} && conda activate modelsmith`;
 
 	if (scriptDetails.type === ALGORITHM_TYPES.MULTIFLOW) {
-		return `${condaActivate} && cd ${basePath}/multiflow && python3 ${scriptDetails.fileName} ${args}`;
+		return `${condaActivate} && cd ${basePath}/multiflow && nohup python3 ${scriptDetails.fileName} ${args} > /dev/null 2>&1 &`;
 	}
 
-	return `${condaActivate} && python3 ${scriptPath} ${args}`;
+	return `${condaActivate} && nohup python3 ${scriptPath} ${args} > /dev/null 2>&1 &`;
 };
 
 let previousScriptState = null;
@@ -150,6 +150,10 @@ const runScript = async (req, res) => {
 
 		shell.on('data', handleData);
 		terminalService.sendCommand(command);
+
+		setTimeout(() => {
+			terminalService.checkAndAttachToRunningProcess();
+		}, 500);
 
 		res.status(OK).json({ message: 'Script started successfully.' });
 	} catch (error) {

@@ -42,6 +42,7 @@ from utils.model_utils import prepare_model
 from utils.utils import train, test
 from utils.pruner import check_sparsity, pruning_model, prune_model_custom, extract_mask, remove_prune
 from utils.logger import RunLogger
+from utils.script_status import update_status_file, remove_status_file
 
 logger = RunLogger(log_directory=run_records_dir)
 
@@ -62,6 +63,8 @@ def main():
     args = parser.parse_args()
     logger.set_parameters(vars(args)) 
     best_acc = args.best_acc
+
+    update_status_file("running", args=args, pid=os.getpid())
 
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
 
@@ -137,6 +140,8 @@ def main():
     saved_file_path = logger.save_run_record(filename) 
 
     logger.log(f"History of the run saved to: {saved_file_path}")
+
+    remove_status_file()
 
 if __name__ == "__main__":
     main()

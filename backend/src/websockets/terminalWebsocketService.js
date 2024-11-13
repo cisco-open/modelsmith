@@ -16,6 +16,7 @@
 
 const WebSocket = require('ws');
 const os = require('os');
+const { checkScriptState } = require('../state/scriptState');
 const pty = require('node-pty');
 const CONNECTION_TYPE = require('../constants/connectionTypeConstants');
 const SSHConnectionSingleton = require('../ssh/sshConnectionInstance');
@@ -71,9 +72,33 @@ class TerminalWebSocketService {
 
 			this.shell.on('data', this.handleShellData.bind(this));
 			this.shell.on('exit', this.handleShellExit.bind(this));
+
+			this.checkAndAttachToRunningProcess();
 		}
 
 		this.attachClientToShell(ws);
+	}
+
+	attachToRunningProcess(logFilePath) {
+		if (this.shell) {
+			this.shell.write(`tail -f ${logFilePath}\n`);
+		} else {
+			logger.error('Shell session is not initialized.');
+		}
+	}
+
+	checkAndAttachToRunningProcess() {
+		checkScriptState((error, result) => {
+			if (error) {
+				logger.error(`Error checking script state: ${error.message}`);
+			} else if (result.isRunning) {
+				const logFile = result.statusData.log_file;
+				this.attachToRunningProcess(logFile);
+				logger.info(`Attached to the running script process with log file at ${logFile} for WebSocket streaming.`);
+			} else {
+				logger.info('No active script to attach to.');
+			}
+		});
 	}
 
 	async handleVMConnection(ws) {
@@ -81,6 +106,8 @@ class TerminalWebSocketService {
 			try {
 				const sshConnection = await SSHConnectionSingleton.getInstance();
 				this.shell = await this.createShellSession(sshConnection);
+
+				this.checkAndAttachToRunningProcess();
 			} catch (error) {
 				logger.error(`Error creating shell session: ${error.message}`);
 				ws.close();

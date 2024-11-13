@@ -14,6 +14,11 @@
 
 //  SPDX-License-Identifier: Apache-2.0
 
+const { executeCommand } = require('../ssh/commandExecutionFacade');
+const path = require('path');
+
+const STATUS_FILE_PATH = path.join(process.env.MACHINE_LEARNING_CORE_PATH, 'script_status.json');
+
 const ScriptState = {
 	NOT_RUNNING: 'not_running',
 	RUNNING: 'running',
@@ -24,6 +29,53 @@ const ScriptState = {
 let scriptState = ScriptState.NOT_RUNNING;
 let activeScriptDetails = null;
 let scriptsHistory = [];
+
+/**
+ * Checks if there is a currently running script by executing a command to read script_status.json.
+ * If the file exists and contains a valid status and PID, assume the script is running.
+ */
+const checkScriptState = (callback) => {
+	// Command to read the script_status.json file
+	const checkFileCommand = `cat ${STATUS_FILE_PATH}`;
+
+	executeCommand(
+		checkFileCommand,
+		(output) => {
+			try {
+				const statusData = JSON.parse(output);
+				const { pid, status } = statusData;
+
+				// Assume the script is running if the status is "running" and we have a valid PID
+				if (status === 'running' && pid) {
+					scriptState = ScriptState.RUNNING;
+					activeScriptDetails = statusData;
+					return callback(null, { isRunning: true, statusData });
+				} else {
+					// If the status is not "running", consider it as not active
+					scriptState = ScriptState.NOT_RUNNING;
+					activeScriptDetails = null;
+					return callback(null, { isRunning: false, statusData });
+				}
+			} catch (parseError) {
+				// Error parsing JSON from script_status.json
+				scriptState = ScriptState.ERROR;
+				callback(parseError);
+			}
+		},
+		() => {},
+		(fileError) => {
+			// Handle case where file does not exist or other errors
+			if (fileError && fileError.includes('No such file or directory')) {
+				scriptState = ScriptState.NOT_RUNNING;
+				activeScriptDetails = null;
+				return callback(null, { isRunning: false, statusData: null });
+			} else {
+				scriptState = ScriptState.ERROR;
+				callback(fileError);
+			}
+		}
+	);
+};
 
 module.exports = {
 	ScriptState,
@@ -44,5 +96,6 @@ module.exports = {
 			return scriptsHistory[scriptsHistory.length - 1];
 		}
 		return null;
-	}
+	},
+	checkScriptState
 };
