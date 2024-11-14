@@ -153,7 +153,7 @@ const runScript = async (req, res) => {
 
 		setTimeout(() => {
 			terminalService.checkAndAttachToRunningProcess();
-		}, 500);
+		}, 2000);
 
 		res.status(OK).json({ message: 'Script started successfully.' });
 	} catch (error) {
