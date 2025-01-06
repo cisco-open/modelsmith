@@ -49,6 +49,9 @@ export const RoutesList = {
 	ADMIN: {
 		ROOT: 'admin'
 	},
+	DIFFUSION_MODEL: {
+		ROOT: 'diffusion-model'
+	},
 	DEMO: {
 		ROOT: 'demo',
 		BUTTONS: 'buttons',

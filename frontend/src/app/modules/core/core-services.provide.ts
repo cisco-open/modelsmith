@@ -19,6 +19,7 @@ import {
 	TerminalFacadeService,
 	WebsocketService
 } from './services';
+import { IconsService } from './services/icons.service';
 import { ModelsFacadeService } from './services/models-facade.service';
 import { PageRunningScriptSpiningIndicatorService } from './services/page-running-script-spinning-indicator.service';
 
@@ -42,6 +43,7 @@ export function provideCoreServices(): Provider[] {
 		PageRunningScriptSpiningIndicatorService,
 		ModelsFacadeService,
 		DialogService,
+		IconsService,
 		{
 			provide: ENVIRONMENT_INITIALIZER,
 			multi: true,
@@ -52,13 +54,17 @@ export function provideCoreServices(): Provider[] {
 				const scriptFacadeService = inject(ScriptFacadeService);
 				const websocketService = inject(WebsocketService);
 				const terminalWebSocketService = inject(TerminalWebSocketService);
+				const iconService = inject(IconsService);
 
 				websocketService.connect();
 				terminalWebSocketService.connect();
 
 				navigationService.trackNavigationHistory();
 				pageSpinningIndicatorService.trackCurrentRunningPage();
+
 				registry.registerFontClassAlias('icomoon', 'ms');
+				iconService.registerAllCustomIcons();
+
 				scriptFacadeService.dispatch(ScriptActions.fetchScriptStatus());
 			}
 		}

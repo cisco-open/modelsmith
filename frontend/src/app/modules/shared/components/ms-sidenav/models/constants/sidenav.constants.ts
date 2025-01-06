@@ -22,7 +22,8 @@ const common: SidenavItem[] = [
 	{
 		route: RoutesList.ADMIN.ROOT,
 		label: 'Admin',
-		icon: 'icon-Admin'
+		icon: 'icon-Admin',
+		fontSet: 'ms'
 	}
 ];
 
@@ -30,39 +31,51 @@ const guided: SidenavItem[] = [
 	{
 		route: RoutesList.WIZARD.ROOT,
 		label: 'Wizard',
-		icon: 'icon-Question'
+		icon: 'icon-Question',
+		fontSet: 'ms'
 	}
 ];
 
 const expert: SidenavItem[] = [
 	{
 		route: RoutesList.MODEL_COMPRESSION.ROOT,
-		label: 'Clasic Model Compression',
+		label: 'Model Compression',
 		icon: 'icon-GearSix',
+		fontSet: 'ms',
 		key: PageKey.MODEL_COMPRESSION
 	},
 	{
 		route: RoutesList.MACHINE_UNLEARNING.ROOT,
 		label: 'Machine Unlearning',
 		icon: 'icon-Systems-Manager',
+		fontSet: 'ms',
 		key: PageKey.MACHINE_UNLEARNING
 	},
 	{
 		route: RoutesList.AWQ.ROOT,
 		label: 'LLM Quantization',
 		icon: 'icon-Lightning',
+		fontSet: 'ms',
 		key: PageKey.AWQ
 	},
 	{
 		route: RoutesList.MULTI_MODAL.ROOT,
 		label: 'Multi-modal',
 		icon: 'icon-Environmental',
+		fontSet: 'ms',
 		key: PageKey.MODEL_SPECIALIZATION
+	},
+	{
+		route: RoutesList.DIFFUSION_MODEL.ROOT,
+		label: 'Diffusion Model',
+		icon: 'machine-learning',
+		fontSet: 'svg'
 	},
 	{
 		route: RoutesList.ALGORITHM_COMPARISON.ROOT,
 		label: 'Algorithm Comparison',
-		icon: 'icon-Rocket'
+		icon: 'icon-Rocket',
+		fontSet: 'ms'
 	}
 ];
 

@@ -93,6 +93,11 @@ export const routes: Routes = [
 				loadChildren: () => import('./modules/multi-modal/multi-modal.module').then((m) => m.MultiModalModule)
 			},
 			{
+				path: RoutesList.DIFFUSION_MODEL.ROOT,
+				loadChildren: () =>
+					import('./modules/diffusion-model/diffusion-model.module').then((m) => m.DiffusionModelModule)
+			},
+			{
 				path: RoutesList.ADMIN.ROOT,
 				loadChildren: () => import('./modules/admin/admin.module').then((m) => m.AdminModule)
 			}

@@ -17,7 +17,15 @@ SPDX-License-Identifier: Apache-2.0 -->
 <div class="sidenav-item" [routerLink]="item.route" routerLinkActive="active-route">
 	<div class="left-side">
 		<div class="item-icon">
-			<mat-icon fontSet="ms" [fontIcon]="item.icon"></mat-icon>
+			<div class="item-icon">
+				@switch (item.fontSet) { @case ('ms') {
+				<mat-icon [fontSet]="item.fontSet" [fontIcon]="item.icon"></mat-icon>
+				} @case ('svg') {
+				<mat-icon [svgIcon]="item.icon"></mat-icon>
+				} @default {
+				<mat-icon>{{ item.icon }}</mat-icon>
+				} }
+			</div>
 		</div>
 		@if (isExpanded) {
 		<div>

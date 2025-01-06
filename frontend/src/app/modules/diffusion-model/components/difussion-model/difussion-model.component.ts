@@ -14,16 +14,11 @@
 //
 //   SPDX-License-Identifier: Apache-2.0
 
-export interface SidenavItem {
-	route: string;
-	label: string;
-	icon: string;
-	fontSet?: 'ms' | 'svg' | 'none';
-	key?: string;
-}
+import { Component } from '@angular/core';
 
-export interface Sidenav {
-	guided?: SidenavItem[];
-	expert?: SidenavItem[];
-	common?: SidenavItem[];
-}
+@Component({
+	selector: 'ms-difussion-model',
+	templateUrl: './difussion-model.component.html',
+	styleUrl: './difussion-model.component.scss'
+})
+export class DifussionModelComponent {}

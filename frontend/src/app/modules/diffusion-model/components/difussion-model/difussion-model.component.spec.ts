@@ -14,16 +14,24 @@
 //
 //   SPDX-License-Identifier: Apache-2.0
 
-export interface SidenavItem {
-	route: string;
-	label: string;
-	icon: string;
-	fontSet?: 'ms' | 'svg' | 'none';
-	key?: string;
-}
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { DifussionModelComponent } from './difussion-model.component';
 
-export interface Sidenav {
-	guided?: SidenavItem[];
-	expert?: SidenavItem[];
-	common?: SidenavItem[];
-}
+describe('DifussionModelComponent', () => {
+	let component: DifussionModelComponent;
+	let fixture: ComponentFixture<DifussionModelComponent>;
+
+	beforeEach(async () => {
+		await TestBed.configureTestingModule({
+			imports: [DifussionModelComponent]
+		}).compileComponents();
+
+		fixture = TestBed.createComponent(DifussionModelComponent);
+		component = fixture.componentInstance;
+		fixture.detectChanges();
+	});
+
+	it('should create', () => {
+		expect(component).toBeTruthy();
+	});
+});

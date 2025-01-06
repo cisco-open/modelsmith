@@ -14,16 +14,19 @@
 //
 //   SPDX-License-Identifier: Apache-2.0
 
-export interface SidenavItem {
-	route: string;
-	label: string;
-	icon: string;
-	fontSet?: 'ms' | 'svg' | 'none';
-	key?: string;
-}
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { DifussionModelComponent } from './components/difussion-model/difussion-model.component';
 
-export interface Sidenav {
-	guided?: SidenavItem[];
-	expert?: SidenavItem[];
-	common?: SidenavItem[];
-}
+const DIFUSSION_MODEL_ROUTES: Routes = [
+	{
+		path: '',
+		component: DifussionModelComponent
+	}
+];
+
+@NgModule({
+	imports: [RouterModule.forChild(DIFUSSION_MODEL_ROUTES)],
+	exports: [RouterModule]
+})
+export class DiffusionModelRoutingModule {}
