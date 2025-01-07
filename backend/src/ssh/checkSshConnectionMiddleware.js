@@ -16,9 +16,13 @@
 
 const SSHConnectionSingleton = require('./sshConnectionInstance');
 const { SSH_STATUS } = require('./sshConstants');
+const CONNECTION_TYPE = require('../constants/connectionTypeConstants');
 
 module.exports = async (req, res, next) => {
-	if ((await SSHConnectionSingleton.getConnectionStatus()) !== SSH_STATUS.READY) {
+	if (
+		process.env.CONNECTION_TYPE !== CONNECTION_TYPE.LOCAL &&
+		(await SSHConnectionSingleton.getConnectionStatus()) !== SSH_STATUS.READY
+	) {
 		res.status(503).send({ error: 'Service Unavailable: Unable to execute commands at this time.' });
 	} else {
 		next();

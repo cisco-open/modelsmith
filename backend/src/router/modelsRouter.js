@@ -15,6 +15,7 @@
 //  SPDX-License-Identifier: Apache-2.0
 
 const express = require('express');
+const os = require('os');
 const router = express.Router();
 const getModelsByType = require('../constants/modelsConstants');
 const { getActiveScriptDetails, getPreviousScriptDetails } = require('../state/scriptState');
@@ -130,7 +131,7 @@ router.get('/models-list/:type', checkSshConnection, (req, res) => {
 		},
 		() => {},
 		(error) => {
-			if (!error || error.includes('No such file or directory')) {
+			if (!error || error.includes('No such file or directory') || error.includes('File not found')) {
 				const modelsWithTrainingInfo = models.map((modelName) => ({
 					name: modelName,
 					isTrained: false
@@ -153,7 +154,18 @@ router.get('/model-metadata/:type/:arch', checkSshConnection, (req, res) => {
 
 	const metadataFilePath = `${directoryPath}/${arch}_training_info.json`;
 
-	const readJsonFileCommand = `cat ${metadataFilePath}`;
+	let readJsonFileCommand;
+	switch (os.platform()) {
+		case 'win32':
+			readJsonFileCommand = `type "${metadataFilePath}"`;
+			break;
+		case 'darwin':
+		case 'linux':
+			readJsonFileCommand = `cat "${metadataFilePath}"`;
+			break;
+		default:
+			throw new Error(`Unsupported platform: ${os.platform()}`);
+	}
 
 	executeCommand(
 		readJsonFileCommand,
@@ -167,7 +179,7 @@ router.get('/model-metadata/:type/:arch', checkSshConnection, (req, res) => {
 		},
 		() => {},
 		(error) => {
-			if (error.includes('No such file or directory')) {
+			if (error.includes('No such file or directory') || error.includes('The system cannot find the path specified.')) {
 				res.status(OK).send({});
 			} else {
 				res.status(INTERNAL_SERVER_ERROR).send({ error: `Error reading model metadata file: ${error}` });
