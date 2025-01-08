@@ -73,6 +73,10 @@ export class PageRunningScriptSpiningIndicatorService {
 						this._currentRunningPage.next(PageKey.MODEL_SPECIALIZATION);
 						break;
 					}
+					case AlgorithmType.DIFFUSION_MODEL: {
+						this._currentRunningPage.next(PageKey.DIFFUSION_MODEL);
+						break;
+					}
 					default: {
 						this._currentRunningPage.next(PageKey.NONE);
 						break;

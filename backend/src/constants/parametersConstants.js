@@ -1527,13 +1527,301 @@ const MULTIFLOW_PARAMETERS = {
 	]
 };
 
+const DIFFUSION_MODEL_PARAMETERS = {
+	PTQ4DIT_GET_CALIBRATION_SET: [
+		{
+			argName: 'model',
+			defaultValue: 'DiT-XL/2',
+			inputType: 'select',
+			label: 'Model Type',
+			placeholder: 'Select model type',
+			help: 'Choose the type of model to use for calibration.',
+			options: [{ value: 'DiT-XL/2', viewValue: 'DiT-XL/2' }]
+		},
+		{
+			argName: 'vae',
+			defaultValue: 'mse',
+			inputType: 'select',
+			label: 'VAE Type',
+			placeholder: 'Select VAE type',
+			help: 'Type of VAE to use for sampling.',
+			options: [
+				{ value: 'ema', viewValue: 'ema' },
+				{ value: 'mse', viewValue: 'mse' }
+			]
+		},
+		{
+			argName: 'image-size',
+			defaultValue: 256,
+			inputType: 'select',
+			label: 'Image Size',
+			placeholder: 'Select image size',
+			help: 'Resolution of the generated images.',
+			options: [
+				{ value: 256, viewValue: '256' },
+				{ value: 512, viewValue: '512' }
+			]
+		},
+		{
+			argName: 'num-classes',
+			defaultValue: 1000,
+			inputType: 'number',
+			label: 'Number of Classes',
+			placeholder: 'Enter number of classes',
+			help: 'Number of classes for classification. Default: 1000',
+			validators: {
+				min: 1
+			}
+		},
+		{
+			argName: 'cfg-scale',
+			defaultValue: 1.5,
+			inputType: 'number',
+			label: 'CFG Scale',
+			placeholder: 'Enter CFG scale value',
+			help: 'Classifier-free guidance scale. Default: 1.5',
+			validators: {
+				min: 0
+			}
+		},
+		{
+			argName: 'num-sampling-steps',
+			defaultValue: 250,
+			inputType: 'number',
+			label: 'Number of Sampling Steps',
+			placeholder: 'Enter number of sampling steps',
+			help: 'Number of sampling steps for diffusion. Default: 250',
+			validators: {
+				min: 1
+			}
+		},
+		{
+			argName: 'seed',
+			defaultValue: 1,
+			inputType: 'number',
+			label: 'Random Seed',
+			placeholder: 'Enter random seed value',
+			help: 'Seed for random number generator. Default: 1',
+			validators: {
+				min: 0
+			}
+		},
+		{
+			argName: 'ckpt',
+			defaultValue: null,
+			inputType: 'text',
+			label: 'Checkpoint Path',
+			placeholder: 'Enter checkpoint path',
+			help: 'Path to a custom DiT checkpoint (leave blank for auto-download).'
+		},
+		{
+			argName: 'outdir',
+			defaultValue: 'output/',
+			inputType: 'text',
+			label: 'Output Directory',
+			placeholder: 'Enter output directory path',
+			help: 'Directory where generated images and logs will be saved.'
+		},
+		{
+			argName: 'filename',
+			defaultValue: 'imagenet_DiT-512_sample4000_250steps_allst.pt',
+			inputType: 'text',
+			label: 'Output Filename',
+			placeholder: 'Enter output filename',
+			help: 'Name of the file where generated logs will be saved.'
+		}
+	],
+	PTQ4DIT_QUANT_SAMPLE: [
+		{
+			argName: 'model',
+			defaultValue: 'DiT-XL/2',
+			inputType: 'select',
+			label: 'Model Type',
+			placeholder: 'Select model type',
+			help: 'Choose the type of model to quantize.',
+			options: [{ value: 'DiT-XL/2', viewValue: 'DiT-XL/2' }]
+		},
+		{
+			argName: 'vae',
+			defaultValue: 'mse',
+			inputType: 'select',
+			label: 'VAE Type',
+			placeholder: 'Select VAE type',
+			help: 'Type of VAE to use for sampling.',
+			options: [
+				{ value: 'ema', viewValue: 'ema' },
+				{ value: 'mse', viewValue: 'mse' }
+			]
+		},
+		{
+			argName: 'image-size',
+			defaultValue: 256,
+			inputType: 'select',
+			label: 'Image Size',
+			placeholder: 'Select image size',
+			help: 'Resolution of the generated images.',
+			options: [
+				{ value: 256, viewValue: '256' },
+				{ value: 512, viewValue: '512' }
+			]
+		},
+		{
+			argName: 'num-classes',
+			defaultValue: 1000,
+			inputType: 'number',
+			label: 'Number of Classes',
+			placeholder: 'Enter number of classes',
+			help: 'Number of classes for classification. Default: 1000',
+			validators: {
+				min: 1
+			}
+		},
+		{
+			argName: 'cfg-scale',
+			defaultValue: 1.5,
+			inputType: 'number',
+			label: 'CFG Scale',
+			placeholder: 'Enter CFG scale value',
+			help: 'Classifier-free guidance scale. Default: 1.5',
+			validators: {
+				min: 0
+			}
+		},
+		{
+			argName: 'num-sampling-steps',
+			defaultValue: 250,
+			inputType: 'number',
+			label: 'Number of Sampling Steps',
+			placeholder: 'Enter number of sampling steps',
+			help: 'Number of sampling steps for diffusion. Default: 250',
+			validators: {
+				min: 1
+			}
+		},
+		{
+			argName: 'seed',
+			defaultValue: 1,
+			inputType: 'number',
+			label: 'Random Seed',
+			placeholder: 'Enter random seed value',
+			help: 'Seed for random number generator. Default: 1',
+			validators: {
+				min: 0
+			}
+		},
+		{
+			argName: 'ckpt',
+			defaultValue: null,
+			inputType: 'text',
+			label: 'Checkpoint Path',
+			placeholder: 'Enter checkpoint path',
+			help: 'Path to a custom DiT checkpoint (leave blank for auto-download).'
+		},
+		{
+			argName: 'outdir',
+			defaultValue: 'output/',
+			inputType: 'text',
+			label: 'Output Directory',
+			placeholder: 'Enter output directory path',
+			help: 'Directory where generated images and logs will be saved.'
+		},
+		{
+			argName: 'ptq',
+			defaultValue: false,
+			inputType: 'checkbox',
+			label: 'Post-Training Quantization',
+			help: 'Enable post-training quantization.'
+		},
+		{
+			argName: 'weight_bit',
+			defaultValue: 8,
+			inputType: 'number',
+			label: 'Weight Bits',
+			placeholder: 'Enter weight quantization bit-width',
+			help: 'Bit-width for weight quantization. Default: 8',
+			validators: {
+				min: 1,
+				max: 32
+			}
+		},
+		{
+			argName: 'act_bit',
+			defaultValue: 8,
+			inputType: 'number',
+			label: 'Activation Bits',
+			placeholder: 'Enter activation quantization bit-width',
+			help: 'Bit-width for activation quantization. Default: 8',
+			validators: {
+				min: 1,
+				max: 32
+			}
+		},
+		{
+			argName: 'cali_data_path',
+			defaultValue: 'sd_coco_sample1024_allst.pt',
+			inputType: 'text',
+			label: 'Calibration Data Path',
+			placeholder: 'Enter calibration dataset path',
+			help: 'Path to the calibration dataset.'
+		},
+		{
+			argName: 'resume',
+			defaultValue: false,
+			inputType: 'checkbox',
+			label: 'Resume Quantization',
+			help: 'Resume calibration with existing checkpoint.'
+		},
+		{
+			argName: 'cali_st',
+			defaultValue: 1,
+			inputType: 'number',
+			label: 'Calibration Steps',
+			placeholder: 'Enter number of calibration timesteps',
+			help: 'Number of timesteps used for calibration. Default: 1',
+			validators: {
+				min: 1
+			}
+		},
+		{
+			argName: 'cali_batch_size',
+			defaultValue: 32,
+			inputType: 'number',
+			label: 'Calibration Batch Size',
+			placeholder: 'Enter batch size for calibration',
+			help: 'Batch size used for model calibration. Default: 32',
+			validators: {
+				min: 1
+			}
+		},
+		{
+			argName: 'inference',
+			defaultValue: false,
+			inputType: 'checkbox',
+			label: 'Perform Inference',
+			help: 'Enable inference on all classes.'
+		},
+		{
+			argName: 'n_c',
+			defaultValue: 10,
+			inputType: 'number',
+			label: 'Number of Samples per Class',
+			placeholder: 'Enter number of samples per class for inference',
+			help: 'Number of samples generated per class for inference. Default: 10',
+			validators: {
+				min: 1
+			}
+		}
+	]
+};
+
 const ALGORITHM_PARAMETERS = {
 	...QUANTIZATION_PARAMETERS,
 	...PRUNING_PARAMETERS,
 	...MACHINE_UNLEARNING_PARAMETERS,
 	...AWQ_PARAMETERS,
 	...TRAIN_PARAMETERS,
-	...MULTIFLOW_PARAMETERS
+	...MULTIFLOW_PARAMETERS,
+	...DIFFUSION_MODEL_PARAMETERS
 };
 
 module.exports = ALGORITHM_PARAMETERS;

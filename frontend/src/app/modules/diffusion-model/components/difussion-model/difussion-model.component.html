@@ -16,3 +16,35 @@
    -->
 
 <p class="heading-primary-title title">Diffusion Model</p>
+
+<div class="page-wrapper" [formGroup]="form">
+	<div class="left">
+		<ng-container [formGroup]="form">
+			<mat-card class="ms-card algorithm-card">
+				<p class="heading-sub-section-title">Algorithm</p>
+				<div class="form-field-container" formGroupName="algorithm">
+					<mat-form-field appearance="outline" subscriptSizing="dynamic">
+						<mat-select formControlName="alg">
+							@for (algorithm of DIFFUSION_MODEL_ALGORITHMS_LIST; track algorithm.key) {
+							<mat-option [value]="algorithm.key">
+								{{ algorithm.value }}
+							</mat-option>
+							}
+						</mat-select>
+					</mat-form-field>
+				</div>
+			</mat-card>
+
+			<ms-panel-parameters #panelParameters controlKey="params" [algorithm]="selectedAlgorithm"></ms-panel-parameters>
+		</ng-container>
+
+		<div>
+			<button mat-raised-button color="primary" (click)="submit()" [disabled]="isScriptActive || form.invalid">
+				Run
+			</button>
+		</div>
+	</div>
+	<div class="right">
+		<ms-terminal-xterm-with-toolbar></ms-terminal-xterm-with-toolbar>
+	</div>
+</div>

@@ -31,7 +31,6 @@ export class IconsService {
 	 * @param iconPath The relative path to the SVG file.
 	 */
 	registerIcon(iconName: string, iconPath: string): void {
-		console.log(iconName, iconPath);
 		this.matIconRegistry.addSvgIcon(iconName, this.domSanitizer.bypassSecurityTrustResourceUrl(iconPath));
 	}
 

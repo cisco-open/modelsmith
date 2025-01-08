@@ -21,6 +21,7 @@ const QUANTIZATION_PATH = 'examples_quant/';
 const MACHINE_UNLEARNING_PATH = 'examples_unlearning/';
 const AUTOAWQ_PATH = 'autoawq/examples/';
 const MULTIFLOW_PATH = 'multiflow/';
+const DIFFUSION_MODEL_PATH = 'diffusion_model/';
 
 const PRUNING_ALGORITHMS = {
 	IPG: {
@@ -118,10 +119,23 @@ const TRAIN_ALGORITHMS = {
 };
 
 const MULTIFLOW_ALGORITHMS = {
-	MULTIFLOW_PRUNE: {
+	PTQ4DIT_QUANT_SAMPLE: {
 		path: MULTIFLOW_PATH,
 		type: ALGORITHM_TYPES.MULTIFLOW,
 		fileName: 'prune.py'
+	}
+};
+
+const DIFFUSION_MODEL_ALGORITHMS = {
+	PTQ4DIT_GET_CALIBRATION_SET: {
+		path: DIFFUSION_MODEL_PATH / 'ptq4dit/',
+		type: ALGORITHM_TYPES.DIFFUSION_MODEL,
+		fileName: 'get_calibration_set.py'
+	},
+	PTQ4DIT_QUANT_SAMPLE: {
+		path: DIFFUSION_MODEL_PATH / 'ptq4dit/',
+		type: ALGORITHM_TYPES.DIFFUSION_MODEL,
+		fileName: 'quant_sample.py'
 	}
 };
 
@@ -131,7 +145,8 @@ const ALGORITHMS = {
 	...MACHINE_UNLEARNING_ALGORITHMS,
 	...AWQ_ALGORITHMS,
 	...TRAIN_ALGORITHMS,
-	...MULTIFLOW_ALGORITHMS
+	...MULTIFLOW_ALGORITHMS,
+	...DIFFUSION_MODEL_ALGORITHMS
 };
 
 module.exports = ALGORITHMS;

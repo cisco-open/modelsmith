@@ -69,7 +69,8 @@ const expert: SidenavItem[] = [
 		route: RoutesList.DIFFUSION_MODEL.ROOT,
 		label: 'Diffusion Model',
 		icon: 'machine-learning',
-		fontSet: 'svg'
+		fontSet: 'svg',
+		key: PageKey.DIFFUSION_MODEL
 	},
 	{
 		route: RoutesList.ALGORITHM_COMPARISON.ROOT,

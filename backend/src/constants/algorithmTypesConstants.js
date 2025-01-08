@@ -20,6 +20,7 @@ const ALGORITHM_TYPES = {
 	MACHINE_UNLEARNING: 'machine_unlearning',
 	AWQ: 'awq',
 	MULTIFLOW: 'multiflow',
+	DIFFUSION_MODEL: 'diffusion_model',
 	TRAIN: 'train'
 };
 

@@ -22,7 +22,8 @@ export type AlgorithmKey =
 	| MachineUnlearningAlgorithmsEnum
 	| AWQAlgorithmsEnum
 	| MultiflowAlgorithmsEnum
-	| TrainAlgorithmsEnum;
+	| TrainAlgorithmsEnum
+	| DiffusionModelAlgorithmsEnum;
 
 export enum AlgorithmType {
 	QUANTIZATION = 'quantization',
@@ -30,7 +31,8 @@ export enum AlgorithmType {
 	MACHINE_UNLEARNING = 'machine_unlearning',
 	AWQ = 'awq',
 	MULTIFLOW = 'multiflow',
-	TRAIN = 'train'
+	TRAIN = 'train',
+	DIFFUSION_MODEL = 'diffusion_model'
 }
 
 export const AlgorithmTypeKeyValue: KeyValueObject<string>[] = Object.entries(AlgorithmType).map(([key, value]) => ({
@@ -46,6 +48,11 @@ export enum QuantizationAlgorithmsEnum {
 
 export enum MultiflowAlgorithmsEnum {
 	MULTIFLOW_PRUNE = 'MULTIFLOW_PRUNE'
+}
+
+export enum DiffusionModelAlgorithmsEnum {
+	PTQ4DIT_GET_CALIBRATION_SET = 'PTQ4DIT_GET_CALIBRATION_SET',
+	PTQ4DIT_QUANT_SAMPLE = 'PTQ4DIT_QUANT_SAMPLE'
 }
 
 export enum PruningAlgorithmsEnum {
@@ -92,6 +99,8 @@ export function determineAlgorithmType(algValue: AlgorithmKey): AlgorithmType | 
 		return AlgorithmType.TRAIN;
 	} else if (Object.values(MultiflowAlgorithmsEnum).includes(algValue as MultiflowAlgorithmsEnum)) {
 		return AlgorithmType.MULTIFLOW;
+	} else if (Object.values(DiffusionModelAlgorithmsEnum).includes(algValue as DiffusionModelAlgorithmsEnum)) {
+		return AlgorithmType.DIFFUSION_MODEL;
 	}
 	return null;
 }

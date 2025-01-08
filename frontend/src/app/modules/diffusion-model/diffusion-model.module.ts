@@ -16,11 +16,29 @@
 
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatSelectModule } from '@angular/material/select';
+import { MsPanelParametersComponent } from '../shared/components/ms-panel-parameters/ms-panel-parameters.component';
+import { MsTerminalXtermWithToolbarComponent } from '../shared/components/ms-terminal/components/ms-terminal-xterm-with-toolbar/ms-terminal-xterm-with-toolbar.component';
 import { DifussionModelComponent } from './components/difussion-model/difussion-model.component';
 import { DiffusionModelRoutingModule } from './diffusion-model-routing.module';
 
 @NgModule({
 	declarations: [DifussionModelComponent],
-	imports: [DiffusionModelRoutingModule, CommonModule]
+	imports: [
+		DiffusionModelRoutingModule,
+		CommonModule,
+		MsPanelParametersComponent,
+		MsTerminalXtermWithToolbarComponent,
+		FormsModule,
+		ReactiveFormsModule,
+		MatButtonModule,
+		FormsModule,
+		ReactiveFormsModule,
+		MatSelectModule,
+		MatCardModule
+	]
 })
 export class DiffusionModelModule {}
