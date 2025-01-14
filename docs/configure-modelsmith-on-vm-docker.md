@@ -118,6 +118,12 @@ To enable multiflow functionalities, please refer to the [Multiflow Configuratio
 
 These configurations are necessary to enable 100% of the application's functionalities. If skipped, only machine learning, quantization, and pruning features will work.
 
+### Step 6: Configure Diffusion Model (PTQ4DiT) Python Project
+
+Still inside the backend container, configure Diffusion Model by following the instructions in the [Diffusion Model Configuration Guide](configure-diffusion-model.md):
+
+These configurations are necessary to enable 100% of the application's functionalities. If skipped, only machine learning, quantization, and pruning features will work.
+
 ### Backend Container Initialization
 
 The backend container will perform the following initialization steps:

@@ -69,6 +69,8 @@ const buildCommand = (scriptDetails, args) => {
 
 	if (scriptDetails.type === ALGORITHM_TYPES.MULTIFLOW) {
 		return `${condaActivate} && cd ${basePath}/multiflow && python3 ${scriptDetails.fileName} ${args}`;
+	} else if (scriptDetails.type === ALGORITHM_TYPES.DIFFUSION_MODEL) {
+		return `${condaActivate} && cd ${basePath}/diffusion_model/PTQ4DiT && python3 ${scriptDetails.fileName} ${args}`;
 	}
 
 	return `${condaActivate} && python3 ${scriptPath} ${args}`;
@@ -99,6 +101,7 @@ const getCurrentOrLastActiveScriptDetails = (req, res) => {
 
 const runScript = async (req, res) => {
 	const { alg = '', params = {} } = req.body;
+
 	const scriptDetails = ALGORITHMS[alg];
 
 	if (!scriptDetails) {

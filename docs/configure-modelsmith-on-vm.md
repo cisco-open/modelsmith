@@ -98,6 +98,10 @@ conda --version
 
    Please refer to the [Multiflow Configuration Guide](configure-multiflow.md) for detailed instructions.
 
+8. **Configure Diffusion Model Python Project**:
+
+   Please refer to the [Diffusion Model Configuration Guide](configure-diffusion-model.md) for detailed instructions.
+
 ## Phase 2: Configure the Environment
 
 After configuring the Python environment, the next step involves setting up the project environment. This is done by executing the `setup_environment.sh` script located in the `backend` directory. The script performs several tasks, including setting up the `.env` file for the backend server.

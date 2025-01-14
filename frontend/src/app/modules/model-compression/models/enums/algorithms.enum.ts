@@ -51,8 +51,8 @@ export enum MultiflowAlgorithmsEnum {
 }
 
 export enum DiffusionModelAlgorithmsEnum {
-	PTQ4DIT_GET_CALIBRATION_SET = 'PTQ4DIT_GET_CALIBRATION_SET',
-	PTQ4DIT_QUANT_SAMPLE = 'PTQ4DIT_QUANT_SAMPLE'
+	PTQ4DIT_GET_CALIBRATION_SET = 'PTQ4DiT_GET_CALIBRATION_SET',
+	PTQ4DIT_QUANT_SAMPLE = 'PTQ4DiT_QUANT_SAMPLE'
 }
 
 export enum PruningAlgorithmsEnum {

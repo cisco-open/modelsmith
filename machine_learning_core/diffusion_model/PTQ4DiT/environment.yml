@@ -1,0 +1,17 @@
+name: modelsmith
+channels:
+  - pytorch
+  - nvidia
+dependencies:
+  - python >= 3.8
+  - pytorch=2.1.0
+  - torchvision=0.16.0
+  - pytorch-cuda=11.7
+  - pip
+  - pip:
+      - timm
+      - scipy
+      - numpy==1.26.4
+      - accelerate
+      - einops
+      - diffusers

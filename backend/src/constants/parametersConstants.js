@@ -1528,7 +1528,7 @@ const MULTIFLOW_PARAMETERS = {
 };
 
 const DIFFUSION_MODEL_PARAMETERS = {
-	PTQ4DIT_GET_CALIBRATION_SET: [
+	PTQ4DiT_GET_CALIBRATION_SET: [
 		{
 			argName: 'model',
 			defaultValue: 'DiT-XL/2',
@@ -1608,7 +1608,7 @@ const DIFFUSION_MODEL_PARAMETERS = {
 		},
 		{
 			argName: 'ckpt',
-			defaultValue: null,
+			defaultValue: '',
 			inputType: 'text',
 			label: 'Checkpoint Path',
 			placeholder: 'Enter checkpoint path',
@@ -1631,7 +1631,7 @@ const DIFFUSION_MODEL_PARAMETERS = {
 			help: 'Name of the file where generated logs will be saved.'
 		}
 	],
-	PTQ4DIT_QUANT_SAMPLE: [
+	PTQ4DiT_QUANT_SAMPLE: [
 		{
 			argName: 'model',
 			defaultValue: 'DiT-XL/2',
@@ -1711,7 +1711,7 @@ const DIFFUSION_MODEL_PARAMETERS = {
 		},
 		{
 			argName: 'ckpt',
-			defaultValue: null,
+			defaultValue: '',
 			inputType: 'text',
 			label: 'Checkpoint Path',
 			placeholder: 'Enter checkpoint path',
