@@ -1726,13 +1726,6 @@ const DIFFUSION_MODEL_PARAMETERS = {
 			help: 'Directory where generated images and logs will be saved.'
 		},
 		{
-			argName: 'ptq',
-			defaultValue: false,
-			inputType: 'checkbox',
-			label: 'Post-Training Quantization',
-			help: 'Enable post-training quantization.'
-		},
-		{
 			argName: 'weight_bit',
 			defaultValue: 8,
 			inputType: 'number',
@@ -1765,13 +1758,6 @@ const DIFFUSION_MODEL_PARAMETERS = {
 			help: 'Path to the calibration dataset.'
 		},
 		{
-			argName: 'resume',
-			defaultValue: false,
-			inputType: 'checkbox',
-			label: 'Resume Quantization',
-			help: 'Resume calibration with existing checkpoint.'
-		},
-		{
 			argName: 'cali_st',
 			defaultValue: 1,
 			inputType: 'number',
@@ -1792,13 +1778,6 @@ const DIFFUSION_MODEL_PARAMETERS = {
 			validators: {
 				min: 1
 			}
-		},
-		{
-			argName: 'inference',
-			defaultValue: false,
-			inputType: 'checkbox',
-			label: 'Perform Inference',
-			help: 'Enable inference on all classes.'
 		},
 		{
 			argName: 'n_c',
