@@ -37,11 +37,11 @@ SPDX-License-Identifier: Apache-2.0 -->
 	</div>
 
 	<div class="right-side">
-		@if (pageRunningScriptSpiningIndicatorService.currentRunningPage$ | async; as currentRunningPageKey) { @if
-		(isExpanded && currentRunningPageKey === item.key) {
+		@let currentInfo = pageRunningScriptSpiningIndicatorService.currentRunningPageInfo$ | async; @if (isExpanded &&
+		currentInfo?.page === item.key) {
 		<div>
 			<ms-spining-indicator></ms-spining-indicator>
 		</div>
-		} }
+		}
 	</div>
 </div>

@@ -15,34 +15,83 @@
   SPDX-License-Identifier: Apache-2.0
    -->
 
-<p class="heading-primary-title title">Diffusion Model</p>
+<p class="heading-primary-title title">Diffusion Model (PTQ4DiT)</p>
 
 <div class="page-wrapper" [formGroup]="form">
 	<div class="left">
-		<ng-container [formGroup]="form">
-			<mat-card class="ms-card algorithm-card">
-				<p class="heading-sub-section-title">Algorithm</p>
-				<div class="form-field-container" formGroupName="algorithm">
-					<mat-form-field appearance="outline" subscriptSizing="dynamic">
-						<mat-select formControlName="alg">
-							@for (algorithm of DIFFUSION_MODEL_ALGORITHMS_LIST; track algorithm.key) {
-							<mat-option [value]="algorithm.key">
-								{{ algorithm.value }}
-							</mat-option>
-							}
-						</mat-select>
-					</mat-form-field>
-				</div>
-			</mat-card>
+		<mat-stepper orientation="horizontal" class="ms-stepper">
+			<mat-step>
+				<ng-template matStepLabel>
+					<div class="step-custom-label">
+						<div class="step-name">Step 1: Calibration Data</div>
+						@let currentInfo = pageRunningScriptSpiningIndicatorService.currentRunningPageInfo$ | async; @if
+						(currentInfo?.algKey === DiffusionModelAlgorithmsEnum.PTQ4DIT_GET_CALIBRATION_SET) {
+						<div class="step-loader"><ms-spining-indicator></ms-spining-indicator></div>
+						}
+					</div>
+				</ng-template>
 
-			<ms-panel-parameters #panelParameters controlKey="params" [algorithm]="selectedAlgorithm"></ms-panel-parameters>
-		</ng-container>
+				<ng-template matStepContent>
+					<div class="panel-parameters">
+						<ms-panel-parameters
+							#panelParametersCalibrationSet
+							controlKey="params_calibration_set"
+							[algorithm]="DiffusionModelAlgorithmsEnum.PTQ4DIT_GET_CALIBRATION_SET"></ms-panel-parameters>
+					</div>
 
-		<div>
-			<button mat-raised-button color="primary" (click)="submit()" [disabled]="isScriptActive || form.invalid">
-				Run
-			</button>
-		</div>
+					<div class="mt-6 flex">
+						<div class="mr-2">
+							<button mat-stroked-button matStepperNext>Next</button>
+						</div>
+						<div>
+							<button
+								mat-raised-button
+								color="primary"
+								(click)="submit(DiffusionModelAlgorithmsEnum.PTQ4DIT_GET_CALIBRATION_SET, 'params_calibration_set')"
+								[disabled]="isScriptActive || form.invalid">
+								Run
+							</button>
+						</div>
+					</div>
+				</ng-template>
+			</mat-step>
+
+			<mat-step>
+				<ng-template matStepLabel>
+					<div class="step-custom-label">
+						<div class="step-name">Step 2: Quantization</div>
+						@let currentInfo = pageRunningScriptSpiningIndicatorService.currentRunningPageInfo$ | async; @if
+						(currentInfo?.algKey === DiffusionModelAlgorithmsEnum.PTQ4DIT_QUANT_SAMPLE) {
+						<div class="step-loader"><ms-spining-indicator></ms-spining-indicator></div>
+						}
+					</div>
+				</ng-template>
+
+				<ng-template matStepContent>
+					<div class="panel-parameters">
+						<ms-panel-parameters
+							#panelParametersQuantSample
+							controlKey="params_quant_sample"
+							[algorithm]="DiffusionModelAlgorithmsEnum.PTQ4DIT_QUANT_SAMPLE"></ms-panel-parameters>
+					</div>
+
+					<div class="mt-6 flex">
+						<div class="mr-2">
+							<button mat-stroked-button matStepperPrevious>Previous</button>
+						</div>
+						<div>
+							<button
+								mat-raised-button
+								color="primary"
+								(click)="submit(DiffusionModelAlgorithmsEnum.PTQ4DIT_QUANT_SAMPLE, 'params_quant_sample')"
+								[disabled]="isScriptActive || form.invalid">
+								Run
+							</button>
+						</div>
+					</div>
+				</ng-template>
+			</mat-step>
+		</mat-stepper>
 	</div>
 	<div class="right">
 		<ms-terminal-xterm-with-toolbar></ms-terminal-xterm-with-toolbar>

@@ -20,7 +20,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatSelectModule } from '@angular/material/select';
+import { MatStepperModule } from '@angular/material/stepper';
 import { MsPanelParametersComponent } from '../shared/components/ms-panel-parameters/ms-panel-parameters.component';
+import { MsSpiningIndicatorComponent } from '../shared/components/ms-spining-indicator/ms-spining-indicator.component';
 import { MsTerminalXtermWithToolbarComponent } from '../shared/components/ms-terminal/components/ms-terminal-xterm-with-toolbar/ms-terminal-xterm-with-toolbar.component';
 import { DifussionModelComponent } from './components/difussion-model/difussion-model.component';
 import { DiffusionModelRoutingModule } from './diffusion-model-routing.module';
@@ -38,7 +40,9 @@ import { DiffusionModelRoutingModule } from './diffusion-model-routing.module';
 		FormsModule,
 		ReactiveFormsModule,
 		MatSelectModule,
-		MatCardModule
+		MatCardModule,
+		MatStepperModule,
+		MsSpiningIndicatorComponent
 	]
 })
 export class DiffusionModelModule {}

@@ -14,27 +14,17 @@
 //
 //   SPDX-License-Identifier: Apache-2.0
 
-.title {
-	margin-bottom: 13px;
-}
+@use '../../base/typography';
+@use '@angular/material' as mat;
 
-.mat-stepper-horizontal {
-	background: none;
-
-	.mat-horizontal-content-container {
-		padding-bottom: 2px;
+:root {
+	.ms-stepper {
+		@include mat.stepper-overrides(
+			(
+				header-selected-state-label-text-size: 0.875rem,
+				header-selected-state-label-text-weight: 500,
+				header-height: 60px
+			)
+		);
 	}
-}
-
-.step-custom-label {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	.step-loader {
-		margin-left: 10px;
-	}
-}
-
-.panel-parameters {
-	margin-top: 20px;
 }

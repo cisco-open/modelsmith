@@ -14,27 +14,11 @@
 //
 //   SPDX-License-Identifier: Apache-2.0
 
-.title {
-	margin-bottom: 13px;
-}
+import { AlgorithmType } from '../../../model-compression/models/enums/algorithms.enum';
+import { PageKey } from '../enums/page-key.enum';
 
-.mat-stepper-horizontal {
-	background: none;
-
-	.mat-horizontal-content-container {
-		padding-bottom: 2px;
-	}
-}
-
-.step-custom-label {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	.step-loader {
-		margin-left: 10px;
-	}
-}
-
-.panel-parameters {
-	margin-top: 20px;
+export interface CurrentRunningPageInfo {
+	page: PageKey;
+	algKey: string;
+	type: AlgorithmType | null;
 }

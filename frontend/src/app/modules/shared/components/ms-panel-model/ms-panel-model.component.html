@@ -20,10 +20,10 @@ SPDX-License-Identifier: Apache-2.0 -->
 		@if (isTrainModelsPageRouteVisible) {
 		<div class="train-models">
 			<a [routerLink]="['/' + RoutesList.MODEL_TRAINING.ROOT]">Train models</a>
-			@if (pageRunningScriptSpiningIndicatorService.currentRunningPage$ | async; as currentRunningPageKey) { @if
-			(currentRunningPageKey === PageKey.MODEL_TRAINING) {
+			@let currentInfo = pageRunningScriptSpiningIndicatorService.currentRunningPageInfo$ | async; @if
+			(currentInfo?.page === PageKey.MODEL_TRAINING) {
 			<ms-spining-indicator class="ml-2"></ms-spining-indicator>
-			} }
+			}
 		</div>
 		}
 	</div>

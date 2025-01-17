@@ -21,8 +21,10 @@ import { ScriptFacadeService } from 'src/app/modules/core/services';
 import { DiffusionModelAlgorithmsEnum } from 'src/app/modules/model-compression/models/enums/algorithms.enum';
 import { isScriptActive } from 'src/app/modules/model-compression/models/enums/script-status.enum';
 import { MsPanelParametersComponent } from 'src/app/modules/shared/components/ms-panel-parameters/ms-panel-parameters.component';
-import { ScriptConfigsDto } from 'src/app/services/client/models/script/script-configs.interface-dto';
-import { ScriptActions } from 'src/app/state/core/script';
+import { ScriptArguments } from '../../../../services/client/models/script/script-arguments.interface-dto';
+import { ScriptConfigsDto } from '../../../../services/client/models/script/script-configs.interface-dto';
+import { ScriptActions } from '../../../../state/core/script';
+import { PageRunningScriptSpiningIndicatorService } from '../../../core/services/page-running-script-spinning-indicator.service';
 
 @UntilDestroy()
 @Component({
@@ -33,11 +35,12 @@ import { ScriptActions } from 'src/app/state/core/script';
 export class DifussionModelComponent {
 	readonly DiffusionModelAlgorithmsEnum: typeof DiffusionModelAlgorithmsEnum = DiffusionModelAlgorithmsEnum;
 
-	@ViewChild('panelParameters', { static: false }) panelParametersComponent!: MsPanelParametersComponent;
+	@ViewChild('panelParametersCalibrationSet', { static: false })
+	panelParametersCalibrationSet!: MsPanelParametersComponent;
+	@ViewChild('panelParametersQuantSample', { static: false }) panelParametersQuantSample!: MsPanelParametersComponent;
 
 	form!: FormGroup;
 	isScriptActive: boolean = false;
-	selectedAlgorithm = DiffusionModelAlgorithmsEnum.PTQ4DIT_GET_CALIBRATION_SET;
 
 	DIFFUSION_MODEL_ALGORITHMS_LIST: { key: DiffusionModelAlgorithmsEnum; value: string }[] = [
 		{ key: DiffusionModelAlgorithmsEnum.PTQ4DIT_GET_CALIBRATION_SET, value: 'Get calibration set' },
@@ -46,7 +49,8 @@ export class DifussionModelComponent {
 
 	constructor(
 		private fb: FormBuilder,
-		private scriptFacadeService: ScriptFacadeService
+		private scriptFacadeService: ScriptFacadeService,
+		public pageRunningScriptSpiningIndicatorService: PageRunningScriptSpiningIndicatorService
 	) {}
 
 	ngOnInit() {
@@ -55,25 +59,14 @@ export class DifussionModelComponent {
 	}
 
 	private initForm() {
-		this.form = this.fb.group({
-			algorithm: this.fb.group({
-				alg: [this.selectedAlgorithm]
-			})
-		});
-
-		this.form
-			.get('algorithm.alg')
-			?.valueChanges.pipe(untilDestroyed(this))
-			.subscribe((value) => {
-				this.selectedAlgorithm = value;
-			});
+		this.form = this.fb.group({});
 	}
 
 	private listenToScriptStateChanges(): void {
 		this.scriptFacadeService.scriptStatus$.pipe(untilDestroyed(this)).subscribe((state) => {
 			this.isScriptActive = isScriptActive(state);
 
-			if (isScriptActive(state)) {
+			if (this.isScriptActive) {
 				this.form.disable();
 			} else {
 				this.form.enable();
@@ -81,18 +74,19 @@ export class DifussionModelComponent {
 		});
 	}
 
-	submit() {
+	submit(algorithm: DiffusionModelAlgorithmsEnum, type: string) {
 		if (this.isScriptActive) {
 			return;
 		}
 
-		const { algorithm } = this.form.getRawValue();
+		const parameters: ScriptArguments =
+			type === 'params_calibration_set'
+				? this.panelParametersCalibrationSet.parametersFormatted
+				: this.panelParametersQuantSample.parametersFormatted;
 
 		const configs: ScriptConfigsDto = {
-			...algorithm,
-			params: {
-				...this.panelParametersComponent.parametersFormatted
-			}
+			alg: algorithm,
+			params: parameters
 		};
 
 		this.scriptFacadeService.dispatch(ScriptActions.callScript({ configs }));

@@ -36,7 +36,7 @@ import { SidenavConstants } from './models/constants/sidenav.constants';
 	imports: [MsSidenavItemComponent, MatIconModule, MatDividerModule],
 	animations: [
 		trigger('expandCollapse', [
-			state('expanded', style({ width: '270px' })),
+			state('expanded', style({ width: '240px' })),
 			state('collapsed', style({ width: '40px' })),
 			transition('expanded <=> collapsed', animate('300ms ease-in-out'))
 		])
