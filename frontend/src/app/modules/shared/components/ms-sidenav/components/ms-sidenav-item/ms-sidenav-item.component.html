@@ -14,10 +14,10 @@ limitations under the License.
 
 SPDX-License-Identifier: Apache-2.0 -->
 
-<div class="sidenav-item" [routerLink]="item.route" routerLinkActive="active-route">
+<a class="sidenav-item" [routerLink]="item.route" routerLinkActive="active-route">
 	<div class="left-side">
 		<div class="item-icon">
-			<div class="item-icon">
+			<div>
 				@switch (item.fontSet) { @case ('ms') {
 				<mat-icon [fontSet]="item.fontSet" [fontIcon]="item.icon"></mat-icon>
 				} @case ('svg') {
@@ -44,4 +44,4 @@ SPDX-License-Identifier: Apache-2.0 -->
 		</div>
 		}
 	</div>
-</div>
+</a>
