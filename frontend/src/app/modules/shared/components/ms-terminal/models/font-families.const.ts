@@ -1,0 +1,22 @@
+export const fontFamilies: string[] = [
+	'Arial',
+	'Helvetica',
+	'Times New Roman',
+	'Courier New',
+	'Verdana',
+	'Georgia',
+	'Palatino',
+	'Garamond',
+	'Bookman',
+	'Comic Sans MS',
+	'Trebuchet MS',
+	'Arial Black',
+	'Impact',
+	'Lucida Sans Unicode',
+	'Tahoma',
+	'Geneva',
+	'Consolas',
+	'Monaco',
+	'Lucida Console',
+	'Segoe UI'
+];

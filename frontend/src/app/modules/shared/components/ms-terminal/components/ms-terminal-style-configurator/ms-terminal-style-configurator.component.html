@@ -1,0 +1,27 @@
+<div class="xterm-dynamic-style-wrapper">
+	<div class="settings-form">
+		<form [formGroup]="form">
+			<div class="form-field-container">
+				<mat-label> Font Size </mat-label>
+				<mat-form-field>
+					<input msErrorDisplay matInput formControlName="fontSize" type="number" />
+				</mat-form-field>
+			</div>
+
+			<div class="form-field-container">
+				<mat-label> Font Family </mat-label>
+				<mat-form-field>
+					<mat-select msErrorDisplay formControlName="fontFamily" placeholder="Select font family">
+						@for (font of fontFamilies; track font) {
+						<mat-option [value]="font">
+							{{ font }}
+						</mat-option>
+						}
+					</mat-select>
+				</mat-form-field>
+			</div>
+		</form>
+	</div>
+
+	<div #terminalContainer class="terminal-wrapper"></div>
+</div>
