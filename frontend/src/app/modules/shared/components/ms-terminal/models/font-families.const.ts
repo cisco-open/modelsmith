@@ -1,8 +1,8 @@
-export const fontFamilies: string[] = [
+export const FONT_FAMILIES: string[] = [
 	'Arial',
 	'Helvetica',
 	'Times New Roman',
-	'Courier New',
+	'courier-new, courier, monospace',
 	'Verdana',
 	'Georgia',
 	'Palatino',

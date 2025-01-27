@@ -17,10 +17,10 @@
 @use '../../../../../../styles/base/typography';
 
 .sidenav-item {
-	padding: 8px;
-	display: flex;
+	display: block;
 	cursor: pointer;
 
+	padding: 8px;
 	display: flex;
 	align-items: center;
 	justify-content: space-between;

@@ -1,27 +1,109 @@
-<div class="xterm-dynamic-style-wrapper">
-	<div class="settings-form">
-		<form [formGroup]="form">
-			<div class="form-field-container">
-				<mat-label> Font Size </mat-label>
-				<mat-form-field>
-					<input msErrorDisplay matInput formControlName="fontSize" type="number" />
-				</mat-form-field>
-			</div>
+<mat-card class="ms-card ms-terminal-style-configurator">
+	<div class="heading-sub-section-title">Terminal styles configurator</div>
 
-			<div class="form-field-container">
-				<mat-label> Font Family </mat-label>
-				<mat-form-field>
-					<mat-select msErrorDisplay formControlName="fontFamily" placeholder="Select font family">
-						@for (font of fontFamilies; track font) {
-						<mat-option [value]="font">
-							{{ font }}
-						</mat-option>
-						}
-					</mat-select>
-				</mat-form-field>
+	<div class="xterm-dynamic-style-wrapper">
+		<div class="settings-form">
+			<form [formGroup]="form">
+				<div class="form-field-container">
+					<mat-label> Font Size </mat-label>
+					<mat-form-field>
+						<input msErrorDisplay matInput formControlName="fontSize" type="number" />
+					</mat-form-field>
+				</div>
+
+				<div class="form-field-container">
+					<mat-label> Font Family </mat-label>
+					<mat-form-field>
+						<mat-select msErrorDisplay formControlName="fontFamily" placeholder="Select font family">
+							@for (font of fontFamilies; track font) {
+							<mat-option [value]="font">
+								{{ font }}
+							</mat-option>
+							}
+						</mat-select>
+					</mat-form-field>
+				</div>
+
+				<div class="form-field-container">
+					<mat-label> Font Weight </mat-label>
+					<mat-form-field>
+						<mat-select msErrorDisplay formControlName="fontWeight" placeholder="Select font family">
+							@for (weight of fontWeight; track weight) {
+							<mat-option [value]="weight">
+								{{ weight }}
+							</mat-option>
+							}
+						</mat-select>
+					</mat-form-field>
+				</div>
+
+				<div class="colors-container">
+					<div class="form-field-container">
+						<mat-label> Cursor </mat-label>
+						<div class="flex items-center">
+							<div class="mr-2">
+								<ngx-colors ngx-colors-trigger formControlName="cursor"></ngx-colors>
+							</div>
+							{{ form.get('cursor')?.value }}
+						</div>
+					</div>
+
+					<div class="form-field-container">
+						<mat-label>Background</mat-label>
+						<div class="flex items-center">
+							<div class="mr-2">
+								<ngx-colors ngx-colors-trigger formControlName="background"></ngx-colors>
+							</div>
+							{{ form.get('background')?.value }}
+						</div>
+					</div>
+
+					<div class="form-field-container">
+						<mat-label>Text color</mat-label>
+						<div class="flex items-center">
+							<div class="mr-2">
+								<ngx-colors ngx-colors-trigger formControlName="foreground"></ngx-colors>
+							</div>
+							{{ form.get('foreground')?.value }}
+						</div>
+					</div>
+
+					<div class="form-field-container">
+						<mat-label>Selection Background Color</mat-label>
+						<div class="flex items-center">
+							<div class="mr-2">
+								<ngx-colors ngx-colors-trigger formControlName="selectionBackground"></ngx-colors>
+							</div>
+							{{ form.get('selectionBackground')?.value }}
+						</div>
+					</div>
+
+					<div class="form-field-container">
+						<mat-label>Selection Text Color</mat-label>
+						<div class="flex items-center">
+							<div class="mr-2">
+								<ngx-colors ngx-colors-trigger formControlName="selectionForeground"></ngx-colors>
+							</div>
+							{{ form.get('selectionForeground')?.value }}
+						</div>
+					</div>
+				</div>
+			</form>
+
+			<div class="buttons-container flex mt-4">
+				<div>
+					<button mat-raised-button color="primary" (click)="applyChanges()">Apply</button>
+				</div>
+				<div class="ml-2">
+					<button mat-stroked-button color="primary" (click)="restoreDefaults()">Restore defaults</button>
+				</div>
 			</div>
-		</form>
+		</div>
+
+		<div
+			#terminalContainer
+			class="terminal-wrapper"
+			[style.background-color]="form.get('background')?.value"
+			[style.border-color]="form.get('background')?.value"></div>
 	</div>
-
-	<div #terminalContainer class="terminal-wrapper"></div>
-</div>
+</mat-card>
