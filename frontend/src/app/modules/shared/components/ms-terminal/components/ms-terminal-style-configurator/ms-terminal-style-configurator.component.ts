@@ -22,6 +22,7 @@ import { Terminal } from '@xterm/xterm';
 import { NgxColorsModule } from 'ngx-colors';
 import { FONT_FAMILIES } from '../../models/font-families.const';
 import { FONT_WEIGHT } from '../../models/font-weight.const';
+import { TerminalStylesService } from '../../services/terminal-styles.service';
 
 @Component({
 	selector: 'ms-terminal-style-configurator',
@@ -47,6 +48,7 @@ export class MsTerminalStyleConfiguratorComponent implements OnInit, OnDestroy {
 
 	private destroyRef = inject(DestroyRef);
 	private fb = inject(FormBuilder);
+	private terminalStylesService = inject(TerminalStylesService);
 
 	public fontFamilies = FONT_FAMILIES;
 	public fontWeight = FONT_WEIGHT;
@@ -55,39 +57,32 @@ export class MsTerminalStyleConfiguratorComponent implements OnInit, OnDestroy {
 	private fitAddon = new FitAddon();
 	private resizeObserver?: ResizeObserver;
 
-	public form: FormGroup = this.fb.group({
-		fontSize: [15],
-		fontFamily: ['courier-new, courier, monospace'],
-		fontWeight: ['normal'],
-		cursor: ['#000000'],
-		background: ['#D0D4D9'],
-		foreground: ['#000000'],
-		selectionBackground: ['#FFDD00'],
-		selectionForeground: ['#000000']
-	});
+	public form: FormGroup = new FormGroup({});
 
 	ngOnInit(): void {
+		this.initializeForm();
 		this.initializeTerminal();
-
 		this.writeTerminalDemoText();
 		this.listenToStyleChanges();
 	}
 
-	private initializeTerminal(): void {
-		this.terminal = new Terminal({
-			cursorBlink: true,
-			theme: {
-				background: '#D0D4D9',
-				foreground: '#000000',
-				cursor: '#000000',
-				selectionBackground: '#FFDD00',
-				selectionForeground: '#000000'
-			},
-			fontFamily: 'courier-new, courier, monospace',
-			allowProposedApi: true,
-			scrollback: 1000
-		});
+	private initializeForm() {
+		const savedStyles = this.terminalStylesService.getTerminalStyles();
 
+		this.form = this.fb.group({
+			fontSize: [savedStyles.fontSize],
+			fontFamily: [savedStyles.fontFamily],
+			fontWeight: [savedStyles.fontWeight],
+			background: [savedStyles.background],
+			foreground: [savedStyles.foreground],
+			cursor: [savedStyles.cursor],
+			selectionBackground: [savedStyles.selectionBackground],
+			selectionForeground: [savedStyles.selectionForeground]
+		});
+	}
+
+	private initializeTerminal(): void {
+		this.terminal = this.terminalStylesService.createTerminalInstance();
 		this.terminal.loadAddon(this.fitAddon);
 		this.terminal.open(this.terminalDiv.nativeElement);
 		this.setupResizeObserver();
@@ -129,9 +124,16 @@ export class MsTerminalStyleConfiguratorComponent implements OnInit, OnDestroy {
 		);
 	}
 
-	applyChanges(): void {}
+	applyChanges(): void {
+		this.terminalStylesService.saveTerminalStyles(this.form.value);
+		this.form.markAsPristine();
+	}
 
-	restoreDefaults(): void {}
+	restoreDefaults(): void {
+		this.terminalStylesService.restoreDefaultStyles();
+		const defaultStyles = this.terminalStylesService.getTerminalStyles();
+		this.form.setValue(defaultStyles);
+	}
 
 	ngOnDestroy(): void {
 		this.resizeObserver?.disconnect();
