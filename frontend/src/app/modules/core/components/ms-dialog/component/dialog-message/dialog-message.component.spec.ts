@@ -14,21 +14,25 @@
 //
 //   SPDX-License-Identifier: Apache-2.0
 
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import { CanComponentDeactivateGuard } from '../core/guards/can-component-deactivate.guard';
-import { AdminComponent } from './components/admin/admin.component';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-const ADMIN_ROUTES: Routes = [
-	{
-		path: '',
-		component: AdminComponent,
-		canDeactivate: [CanComponentDeactivateGuard]
-	}
-];
+import { DialogMessageComponent } from './dialog-message.component';
 
-@NgModule({
-	imports: [RouterModule.forChild(ADMIN_ROUTES)],
-	exports: [RouterModule]
-})
-export class AdminRoutingModule {}
+describe('DialogMessageComponent', () => {
+	let component: DialogMessageComponent;
+	let fixture: ComponentFixture<DialogMessageComponent>;
+
+	beforeEach(async () => {
+		await TestBed.configureTestingModule({
+			imports: [DialogMessageComponent]
+		}).compileComponents();
+
+		fixture = TestBed.createComponent(DialogMessageComponent);
+		component = fixture.componentInstance;
+		fixture.detectChanges();
+	});
+
+	it('should create', () => {
+		expect(component).toBeTruthy();
+	});
+});

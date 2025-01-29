@@ -14,21 +14,17 @@
 //
 //   SPDX-License-Identifier: Apache-2.0
 
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import { CanComponentDeactivateGuard } from '../core/guards/can-component-deactivate.guard';
-import { AdminComponent } from './components/admin/admin.component';
+import { Injectable } from '@angular/core';
+import { CanDeactivate } from '@angular/router';
+import { Observable } from 'rxjs';
 
-const ADMIN_ROUTES: Routes = [
-	{
-		path: '',
-		component: AdminComponent,
-		canDeactivate: [CanComponentDeactivateGuard]
+export interface CanComponentDeactivate {
+	canDeactivate: () => Observable<boolean> | Promise<boolean> | boolean;
+}
+
+@Injectable({ providedIn: 'root' })
+export class CanComponentDeactivateGuard implements CanDeactivate<CanComponentDeactivate> {
+	canDeactivate(component: CanComponentDeactivate) {
+		return component.canDeactivate ? component.canDeactivate() : true;
 	}
-];
-
-@NgModule({
-	imports: [RouterModule.forChild(ADMIN_ROUTES)],
-	exports: [RouterModule]
-})
-export class AdminRoutingModule {}
+}

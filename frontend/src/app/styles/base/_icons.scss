@@ -51,6 +51,14 @@ $icons-white: var(--backgrounds-50);
 	&.size-48 {
 		@include icon-size(3rem); // 48 px
 	}
+
+	&.size-96 {
+		@include icon-size(6rem); // 96 px
+	}
+
+	&.size-128 {
+		@include icon-size(8rem); // 128 px
+	}
 }
 
 mat-icon {

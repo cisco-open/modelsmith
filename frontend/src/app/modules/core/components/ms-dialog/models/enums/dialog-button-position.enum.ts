@@ -14,21 +14,9 @@
 //
 //   SPDX-License-Identifier: Apache-2.0
 
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import { CanComponentDeactivateGuard } from '../core/guards/can-component-deactivate.guard';
-import { AdminComponent } from './components/admin/admin.component';
-
-const ADMIN_ROUTES: Routes = [
-	{
-		path: '',
-		component: AdminComponent,
-		canDeactivate: [CanComponentDeactivateGuard]
-	}
-];
-
-@NgModule({
-	imports: [RouterModule.forChild(ADMIN_ROUTES)],
-	exports: [RouterModule]
-})
-export class AdminRoutingModule {}
+export enum DialogButtonPositionEnum {
+	LEFT = 'left',
+	RIGHT = 'right',
+	CENTER = 'center',
+	SPREAD = 'spread'
+}

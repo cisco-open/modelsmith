@@ -40,7 +40,14 @@ SPDX-License-Identifier: Apache-2.0
 	<div class="dialog-actions">
 		<ng-container *ngTemplateOutlet="actionsTemplate || defaultDialogActions"></ng-container>
 		<ng-template #defaultDialogActions>
-			<div class="actions-wrapper">
+			<div
+				class="actions-wrapper"
+				[ngClass]="{
+					'align-left': data.buttonPosition === 'left',
+					'align-right': data.buttonPosition === 'right' || isSingleButton,
+					'align-center': data.buttonPosition === 'center',
+					'align-spread': data.buttonPosition === 'spread' && !isSingleButton
+				}">
 				@if (data.showCloseButton) {
 				<button mat-stroked-button [disabled]="isDismissDisabled" (click)="onClose()">
 					{{ data.closeButtonLabel }}

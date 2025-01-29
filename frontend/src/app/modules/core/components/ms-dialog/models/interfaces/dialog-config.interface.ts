@@ -16,16 +16,18 @@
 
 import { OverlayConfig } from '@angular/cdk/overlay';
 import { DialogActionTypeEnum } from '../enums/dialog-action-type.enum';
+import { DialogButtonPositionEnum } from '../enums/dialog-button-position.enum';
 import { DialogStatus } from '../enums/dialog-status.enum';
 import { DialogCSSSize } from '../types/dialog-css-size.type';
 
-export interface DialogConfig extends OverlayConfig {
-	data?: any;
+export interface DialogConfig<T = unknown> extends OverlayConfig {
+	data?: T;
 	title?: string;
 	showSaveButton?: boolean;
 	showCloseButton?: boolean;
 	saveButtonLabel?: string;
 	closeButtonLabel?: string;
+	buttonPosition?: DialogButtonPositionEnum;
 	showHeader?: boolean;
 	showFooter?: boolean;
 	closeDialogOnBackdropClick?: boolean;
@@ -35,7 +37,7 @@ export interface DialogConfig extends OverlayConfig {
 	actionType?: DialogActionTypeEnum;
 }
 
-export interface DialogClose<T> {
+export interface DialogClose<T = unknown> {
 	result?: T;
 	status: DialogStatus;
 }

@@ -1,3 +1,19 @@
+//   Copyright 2024 Cisco Systems, Inc.
+//
+//   Licensed under the Apache License, Version 2.0 (the "License");
+//   you may not use this file except in compliance with the License.
+//   You may obtain a copy of the License at
+//
+//        http://www.apache.org/licenses/LICENSE-2.0
+//
+//   Unless required by applicable law or agreed to in writing, software
+//   distributed under the License is distributed on an "AS IS" BASIS,
+//   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//   See the License for the specific language governing permissions and
+//   limitations under the License.
+//
+//   SPDX-License-Identifier: Apache-2.0
+
 import { CommonModule } from '@angular/common';
 import {
 	Component,
@@ -20,6 +36,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { FitAddon } from '@xterm/addon-fit';
 import { Terminal } from '@xterm/xterm';
 import { NgxColorsModule } from 'ngx-colors';
+import { BannerService } from '../../../ms-banner/services/banner.service';
 import { FONT_FAMILIES } from '../../models/font-families.const';
 import { FONT_WEIGHT } from '../../models/font-weight.const';
 import { TerminalStylesService } from '../../services/terminal-styles.service';
@@ -49,6 +66,7 @@ export class MsTerminalStyleConfiguratorComponent implements OnInit, OnDestroy {
 	private destroyRef = inject(DestroyRef);
 	private fb = inject(FormBuilder);
 	private terminalStylesService = inject(TerminalStylesService);
+	private bannerService = inject(BannerService);
 
 	public fontFamilies = FONT_FAMILIES;
 	public fontWeight = FONT_WEIGHT;
@@ -127,12 +145,18 @@ export class MsTerminalStyleConfiguratorComponent implements OnInit, OnDestroy {
 	applyChanges(): void {
 		this.terminalStylesService.saveTerminalStyles(this.form.value);
 		this.form.markAsPristine();
+		this.bannerService.showSuccess('Terminal styles have been successfully applied.');
 	}
 
 	restoreDefaults(): void {
 		this.terminalStylesService.restoreDefaultStyles();
 		const defaultStyles = this.terminalStylesService.getTerminalStyles();
 		this.form.setValue(defaultStyles);
+		this.bannerService.showInfo(`Terminal styles have been restored to default settings.`);
+	}
+
+	public hasUnsavedChanges(): boolean {
+		return this.form.dirty;
 	}
 
 	ngOnDestroy(): void {

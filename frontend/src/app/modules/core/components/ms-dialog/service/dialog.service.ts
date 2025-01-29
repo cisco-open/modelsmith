@@ -13,23 +13,21 @@
 //   limitations under the License.
 //
 //   SPDX-License-Identifier: Apache-2.0
-
 import { Overlay } from '@angular/cdk/overlay';
 import { ComponentPortal, ComponentType } from '@angular/cdk/portal';
-import { Injectable, Injector } from '@angular/core';
+import { inject, Injectable, Injector } from '@angular/core';
 import { DialogRef } from '../dialog.ref';
 import { DIALOG_DATA } from '../dialog.tokens';
 import { DEFAULT_DIALOG_HEIGHT, DEFAULT_DIALOG_WIDTH } from '../models/constants/dialog.constants';
+import { DialogButtonPositionEnum } from '../models/enums/dialog-button-position.enum';
 import { DialogConfig } from '../models/interfaces/dialog-config.interface';
 
 @Injectable()
 export class DialogService {
-	constructor(
-		private overlay: Overlay,
-		private injector: Injector
-	) {}
+	readonly overlay = inject(Overlay);
+	readonly injector = inject(Injector);
 
-	open<T>(component: ComponentType<T>, config?: DialogConfig): DialogRef {
+	open<T>(component: ComponentType<T>, config?: DialogConfig<unknown>): DialogRef {
 		const positionStrategy = this.overlay.position().global().centerHorizontally().centerVertically();
 
 		const overlayRef = this.overlay.create({
@@ -54,12 +52,13 @@ export class DialogService {
 						showCloseButton: true,
 						showHeader: true,
 						showFooter: true,
+						buttonPosition: DialogButtonPositionEnum.SPREAD,
 						closeDialogOnBackdropClick: true,
 						closeDialogOnEscKeyUp: true,
 						width: config?.width || DEFAULT_DIALOG_WIDTH,
 						height: config?.height || DEFAULT_DIALOG_HEIGHT,
 						...config
-					}
+					} as DialogConfig
 				}
 			]
 		});

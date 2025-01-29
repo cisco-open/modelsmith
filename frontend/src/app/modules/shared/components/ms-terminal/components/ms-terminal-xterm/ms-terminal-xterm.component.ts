@@ -21,6 +21,7 @@ import { SearchAddon } from '@xterm/addon-search';
 import { Terminal } from '@xterm/xterm';
 import { ScriptFacadeService } from '../../../../../core/services';
 import { ModelsFacadeService } from '../../../../../core/services/models-facade.service';
+import { TerminalStylesService } from '../../services/terminal-styles.service';
 import { TerminalWebSocketService } from '../../services/terminal-websocket.service';
 
 @UntilDestroy({})
@@ -41,7 +42,10 @@ export class MsTerminalXtermComponent implements OnInit, AfterViewInit, OnDestro
 	private searchAddon = new SearchAddon();
 	private resizeObserver?: ResizeObserver;
 
-	constructor(private terminalWebSocketService: TerminalWebSocketService) {}
+	constructor(
+		private terminalWebSocketService: TerminalWebSocketService,
+		private terminalStylesService: TerminalStylesService
+	) {}
 
 	ngOnInit(): void {
 		this.initializeTerminal();
@@ -55,20 +59,7 @@ export class MsTerminalXtermComponent implements OnInit, AfterViewInit, OnDestro
 	}
 
 	private initializeTerminal(): void {
-		this.terminal = new Terminal({
-			cursorBlink: true,
-			theme: {
-				background: '#D0D4D9',
-				foreground: '#000000',
-				cursor: '#000000',
-				selectionBackground: '#FFDD00',
-				selectionForeground: '#000000'
-			},
-			allowProposedApi: true,
-			scrollback: 1000,
-			...this.options
-		});
-
+		this.terminal = this.terminalStylesService.createTerminalInstance();
 		this.terminal.loadAddon(this.fitAddon);
 		this.terminal.loadAddon(this.searchAddon);
 		this.terminal.open(this.terminalDiv.nativeElement);

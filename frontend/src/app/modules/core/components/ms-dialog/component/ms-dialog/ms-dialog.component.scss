@@ -52,18 +52,40 @@
 	}
 
 	.dialog-actions {
-		background-color: var(--backgrounds-200);
 		padding: 16px 32px;
 		box-sizing: border-box;
+		background-color: var(--backgrounds-200);
 		border-top: 1px solid var(--backgrounds-500);
 
 		.actions-wrapper {
 			display: flex;
-			align-items: center;
-			justify-content: flex-end;
 
-			button {
-				margin-left: 20px;
+			&.align-left {
+				justify-content: flex-start;
+
+				button {
+					margin-right: 20px;
+				}
+			}
+
+			&.align-right {
+				justify-content: flex-end;
+
+				button {
+					margin-left: 20px;
+				}
+			}
+
+			&.align-center {
+				justify-content: center;
+
+				button {
+					margin-right: 20px;
+				}
+			}
+
+			&.align-spread {
+				justify-content: space-between;
 			}
 		}
 	}

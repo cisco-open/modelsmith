@@ -14,13 +14,17 @@
 //
 //   SPDX-License-Identifier: Apache-2.0
 
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { take } from 'rxjs';
+import { map, Observable, take } from 'rxjs';
 import { ConfigActions } from '../../../../state/core/configs';
+import { DialogClose, DialogStatus } from '../../../core/components/ms-dialog';
+import { DialogMessageService } from '../../../core/components/ms-dialog/service/dialog-message.service';
+import { CanComponentDeactivate } from '../../../core/guards/can-component-deactivate.guard';
 import { AppModes } from '../../../core/models/enums/app-modes.enum';
 import { ConfigsFacadeService } from '../../../core/services';
+import { MsTerminalStyleConfiguratorComponent } from '../../../shared/components/ms-terminal/components/ms-terminal-style-configurator/ms-terminal-style-configurator.component';
 import { isNilOrEmptyString } from '../../../shared/shared.utils';
 
 @UntilDestroy()
@@ -29,11 +33,16 @@ import { isNilOrEmptyString } from '../../../shared/shared.utils';
 	templateUrl: './admin.component.html',
 	styleUrl: './admin.component.scss'
 })
-export class AdminComponent implements OnInit {
-	selectedModeControl = new FormControl('');
+export class AdminComponent implements OnInit, CanComponentDeactivate {
+	@ViewChild(MsTerminalStyleConfiguratorComponent, { static: true })
+	configurator!: MsTerminalStyleConfiguratorComponent;
+
+	readonly dialogMessageService = inject(DialogMessageService);
+	readonly configsFacadeService = inject(ConfigsFacadeService);
+
 	readonly AppModes: typeof AppModes = AppModes;
 
-	constructor(private configsFacadeService: ConfigsFacadeService) {}
+	selectedModeControl = new FormControl('');
 
 	ngOnInit() {
 		this.loadDefaultValue();
@@ -48,6 +57,29 @@ export class AdminComponent implements OnInit {
 
 			this.configsFacadeService.dispatch(ConfigActions.setDefaultMode({ mode: mode as AppModes }));
 		});
+	}
+
+	canDeactivate(): Observable<boolean> | boolean {
+		if (!this.configurator?.hasUnsavedChanges()) {
+			return true;
+		}
+
+		const dialogMessageConfirmation = this.dialogMessageService.openWarningDialog(
+			{
+				message: 'You have unsaved changes. Leave without saving?'
+			},
+			{
+				closeButtonLabel: 'No',
+				width: '800px'
+			}
+		);
+
+		return dialogMessageConfirmation.afterClosed().pipe(
+			take(1),
+			map((dialogCloseEvent: DialogClose<unknown>) => {
+				return dialogCloseEvent.status === DialogStatus.SAVE;
+			})
+		);
 	}
 
 	private loadDefaultValue(): void {

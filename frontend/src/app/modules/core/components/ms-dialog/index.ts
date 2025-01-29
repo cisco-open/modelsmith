@@ -14,7 +14,7 @@
 //
 //   SPDX-License-Identifier: Apache-2.0
 
-export * from './component/ms-dialog.component';
+export * from './component/ms-dialog/ms-dialog.component';
 export * from './dialog.ref';
 export * from './dialog.tokens';
 export * from './models/enums/dialog-status.enum';

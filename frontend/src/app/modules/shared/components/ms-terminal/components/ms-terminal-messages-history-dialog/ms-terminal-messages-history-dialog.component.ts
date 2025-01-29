@@ -39,6 +39,7 @@ import { TerminalActions } from '../../../../../../state/core/terminal';
 import { DIALOG_DATA, DialogConfig, MsDialogComponent } from '../../../../../core/components/ms-dialog';
 import { TerminalFacadeService } from '../../../../../core/services';
 import { disableBackgroundScroll, enableBackgroundScroll, isNilOrEmptyString } from '../../../../shared.utils';
+import { TerminalStylesService } from '../../services/terminal-styles.service';
 
 @UntilDestroy()
 @Component({
@@ -63,24 +64,15 @@ export class MsTerminalMessagesHistoryDialogComponent implements OnInit, OnDestr
 
 	searchFormControl = new FormControl<string>('');
 
-	private terminal: Terminal = new Terminal({
-		theme: {
-			background: '#D0D4D9',
-			foreground: '#000000',
-			cursor: '#000000'
-		},
-		cursorBlink: false,
-		disableStdin: true,
-		allowProposedApi: true
-	});
-
+	private terminal!: Terminal;
 	private fitAddon: FitAddon = new FitAddon();
 	private searchAddon = new SearchAddon();
 	private resizeObserver?: ResizeObserver;
 
 	constructor(
 		@Inject(DIALOG_DATA) public dialogConfig: DialogConfig,
-		private terminalFacadeService: TerminalFacadeService
+		private terminalFacadeService: TerminalFacadeService,
+		private terminalStylesService: TerminalStylesService
 	) {}
 
 	ngOnInit(): void {
@@ -106,6 +98,11 @@ export class MsTerminalMessagesHistoryDialogComponent implements OnInit, OnDestr
 	}
 
 	private initializeTerminal(): void {
+		this.terminal = this.terminalStylesService.createTerminalInstance({
+			cursorBlink: false,
+			disableStdin: true
+		});
+
 		this.terminal.loadAddon(this.fitAddon);
 		this.terminal.loadAddon(this.searchAddon);
 		this.terminal.open(this.terminalHistoryDiv.nativeElement);
