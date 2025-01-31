@@ -129,7 +129,6 @@ $ms-typography: mat.m2-define-rem-typography-config(
 	@include mat.progress-spinner-theme($theme);
 	@include mat.slide-toggle-theme($theme);
 	@include mat.expansion-theme($theme);
-	@include mat.stepper-theme($theme);
 
 	@include mat.form-field-density(-4);
 	@include mat.icon-button-density(-4);
