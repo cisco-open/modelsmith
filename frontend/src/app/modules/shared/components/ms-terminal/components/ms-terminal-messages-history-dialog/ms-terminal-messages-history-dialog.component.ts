@@ -18,6 +18,7 @@ import { CommonModule } from '@angular/common';
 import {
 	AfterViewInit,
 	Component,
+	DestroyRef,
 	ElementRef,
 	Inject,
 	OnDestroy,
@@ -25,12 +26,12 @@ import {
 	ViewChild,
 	ViewEncapsulation
 } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { FitAddon } from '@xterm/addon-fit';
 import { SearchAddon } from '@xterm/addon-search';
 import { Terminal } from '@xterm/xterm';
@@ -41,7 +42,6 @@ import { TerminalFacadeService } from '../../../../../core/services';
 import { disableBackgroundScroll, enableBackgroundScroll, isNilOrEmptyString } from '../../../../shared.utils';
 import { TerminalStylesService } from '../../services/terminal-styles.service';
 
-@UntilDestroy()
 @Component({
 	selector: 'ms-terminal-messages-history-dialog',
 	standalone: true,
@@ -70,6 +70,7 @@ export class MsTerminalMessagesHistoryDialogComponent implements OnInit, OnDestr
 	private resizeObserver?: ResizeObserver;
 
 	constructor(
+		private destroyRef: DestroyRef,
 		@Inject(DIALOG_DATA) public dialogConfig: DialogConfig,
 		private terminalFacadeService: TerminalFacadeService,
 		private terminalStylesService: TerminalStylesService
@@ -90,11 +91,13 @@ export class MsTerminalMessagesHistoryDialogComponent implements OnInit, OnDestr
 	private loadData() {
 		this.terminalFacadeService.dispatch(TerminalActions.getTerminalHistory());
 
-		this.terminalFacadeService.terminalHistory.pipe(untilDestroyed(this)).subscribe((terminalHistory: string) => {
-			if (terminalHistory) {
-				this.writeToTerminal(terminalHistory);
-			}
-		});
+		this.terminalFacadeService.terminalHistory
+			.pipe(takeUntilDestroyed(this.destroyRef))
+			.subscribe((terminalHistory: string) => {
+				if (terminalHistory) {
+					this.writeToTerminal(terminalHistory);
+				}
+			});
 	}
 
 	private initializeTerminal(): void {
@@ -113,7 +116,7 @@ export class MsTerminalMessagesHistoryDialogComponent implements OnInit, OnDestr
 	private listenToSearchFormControlChanges(): void {
 		this.searchFormControl.valueChanges
 			.pipe(
-				untilDestroyed(this),
+				takeUntilDestroyed(this.destroyRef),
 				delay(300),
 				filter((value: string | null): value is string => !isNilOrEmptyString(value))
 			)
