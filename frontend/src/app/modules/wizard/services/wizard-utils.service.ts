@@ -14,24 +14,26 @@
 //
 //   SPDX-License-Identifier: Apache-2.0
 
-import { Injectable } from '@angular/core';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { DestroyRef, Injectable } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ScriptActions } from '../../../state/core/script/script.actions';
 import { ScriptFacadeService } from '../../core/services/script-facade.service';
 import { findAlgorithmKeyBasedOnValue } from '../../model-compression/models/constants/algorithm.constants';
 import { isScriptActive } from '../../model-compression/models/enums/script-status.enum';
 
-@UntilDestroy()
 @Injectable()
 export class WizardUtilsService {
 	isScriptActive: boolean = false;
 
-	constructor(private scriptFacadeService: ScriptFacadeService) {
+	constructor(
+		private destroyRef: DestroyRef,
+		private scriptFacadeService: ScriptFacadeService
+	) {
 		this.listenToScriptStateChanges();
 	}
 
 	listenToScriptStateChanges(): void {
-		this.scriptFacadeService.scriptStatus$.pipe(untilDestroyed(this)).subscribe((state) => {
+		this.scriptFacadeService.scriptStatus$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((state) => {
 			this.isScriptActive = isScriptActive(state);
 		});
 	}

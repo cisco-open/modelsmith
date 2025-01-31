@@ -15,15 +15,13 @@
 //   SPDX-License-Identifier: Apache-2.0
 
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
-import { UntilDestroy } from '@ngneat/until-destroy';
+import { Component, DestroyRef } from '@angular/core';
 import { DialogRef, MsDialogComponent } from '../../../../../core/components/ms-dialog';
 import { PopoverClose, PopoverStatus } from '../../../../../core/components/ms-popover';
 import { PopoverManagerService } from '../../../../../core/components/ms-popover/service/popover-manager.service';
 import { MsTerminalToolbarComponent } from '../ms-terminal-toolbar/ms-terminal-toolbar.component';
 import { MsTerminalXtermComponent } from '../ms-terminal-xterm/ms-terminal-xterm.component';
 
-@UntilDestroy({})
 @Component({
 	selector: 'ms-terminal-fullscreen-dialog',
 	standalone: true,
@@ -35,6 +33,7 @@ export class MsTerminalFullscreenDialogComponent {
 	fullscreenPopoverId: string = 'popover-fullscreen';
 
 	constructor(
+		private destroyRef: DestroyRef,
 		private dialogRef: DialogRef,
 		private popoverManager: PopoverManagerService
 	) {}

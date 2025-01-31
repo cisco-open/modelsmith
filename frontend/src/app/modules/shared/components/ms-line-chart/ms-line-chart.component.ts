@@ -17,6 +17,7 @@
 import {
 	ChangeDetectionStrategy,
 	Component,
+	DestroyRef,
 	ElementRef,
 	Input,
 	OnChanges,
@@ -26,7 +27,6 @@ import {
 	SimpleChanges,
 	ViewChild
 } from '@angular/core';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Chart, ChartConfiguration, ChartType } from 'chart.js';
 import { BaseChartDirective, NgChartsModule } from 'ng2-charts';
 import { delay } from 'rxjs';
@@ -35,6 +35,7 @@ import { ScriptFacadeService } from '../../../core/services/script-facade.servic
 import { isScriptActive } from '../../../model-compression/models/enums/script-status.enum';
 import { isEmptyObject } from '../../shared.utils';
 
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {
 	DEFAULT_UPDATE_INTERVAL_VALUE,
 	DEFAULT_Y_AXIS_GROWTH_OFFSET,
@@ -51,7 +52,6 @@ import { ChartSettingsUtils } from './utils/charts-settings.utils';
 // - Zoom Functionality with Panning: Users can zoom in for detailed views and pan across the chart.
 // - Interactive Tooltips: Tooltips provide additional information on hover, enhancing user interaction.
 
-@UntilDestroy()
 @Component({
 	selector: 'ms-line-chart',
 	templateUrl: './ms-line-chart.component.html',
@@ -79,6 +79,7 @@ export class MsLineChartComponent implements OnInit, OnChanges, OnDestroy {
 	private maxY: number = 0;
 
 	constructor(
+		private destroyRef: DestroyRef,
 		private scriptFacadeService: ScriptFacadeService,
 		@Optional() private chartToolsGlobalSignalsService: ChartToolsGlobalSignalsService,
 		private chartWebsocketService: ChartWebsocketService
@@ -93,15 +94,17 @@ export class MsLineChartComponent implements OnInit, OnChanges, OnDestroy {
 	}
 
 	private listenToChartWebsocketEvents() {
-		this.chartWebsocketService.latestValuesToUpdate.pipe(untilDestroyed(this)).subscribe((update) => {
+		this.chartWebsocketService.latestValuesToUpdate.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((update) => {
 			this.addLatestValueToChart(update.datasetIndex, update.value);
 		});
 
-		this.chartWebsocketService.enhanceXAxis.pipe(untilDestroyed(this)).subscribe((reconstructionIndex) => {
-			if (this.settings.enhanceSinglePhaseXAxisWebsocketEvent) {
-				this.enhanceSinglePhaseXAxis(reconstructionIndex);
-			}
-		});
+		this.chartWebsocketService.enhanceXAxis
+			.pipe(takeUntilDestroyed(this.destroyRef))
+			.subscribe((reconstructionIndex) => {
+				if (this.settings.enhanceSinglePhaseXAxisWebsocketEvent) {
+					this.enhanceSinglePhaseXAxis(reconstructionIndex);
+				}
+			});
 	}
 
 	private registerPlugins(): void {
@@ -128,7 +131,7 @@ export class MsLineChartComponent implements OnInit, OnChanges, OnDestroy {
 
 		// Tooltips
 		this.chartToolsGlobalSignalsService.toggleTooltips$
-			.pipe(delay(100), untilDestroyed(this))
+			.pipe(delay(100), takeUntilDestroyed(this.destroyRef))
 			.subscribe((enableTooltips: boolean) => {
 				if (isEmptyObject(this.lineChartOptions)) {
 					return;
@@ -143,7 +146,7 @@ export class MsLineChartComponent implements OnInit, OnChanges, OnDestroy {
 
 		// Zoom
 		this.chartToolsGlobalSignalsService.toggleZoom$
-			.pipe(delay(100), untilDestroyed(this))
+			.pipe(delay(100), takeUntilDestroyed(this.destroyRef))
 			.subscribe((enableZoom: boolean) => {
 				if (isEmptyObject(this.lineChartOptions)) {
 					return;
@@ -170,7 +173,7 @@ export class MsLineChartComponent implements OnInit, OnChanges, OnDestroy {
 	}
 
 	private listenToScriptStateChanges(): void {
-		this.scriptFacadeService.scriptStatus$.pipe(untilDestroyed(this)).subscribe((state) => {
+		this.scriptFacadeService.scriptStatus$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((state) => {
 			this.isScriptActive = isScriptActive(state);
 
 			if (!this.isScriptActive) {

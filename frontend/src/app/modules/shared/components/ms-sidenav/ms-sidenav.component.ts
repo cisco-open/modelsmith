@@ -15,11 +15,11 @@
 //   SPDX-License-Identifier: Apache-2.0
 
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { Component, OnInit } from '@angular/core';
+import { Component, DestroyRef, OnInit } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 import { Router } from '@angular/router';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { ConfigActions } from '../../../../state/core/configs/configs.actions';
 import { AppModes } from '../../../core/models/enums/app-modes.enum';
 import { RoutesList } from '../../../core/models/enums/routes-list.enum';
@@ -27,7 +27,6 @@ import { ConfigsFacadeService } from '../../../core/services/configs-facade.serv
 import { MsSidenavItemComponent } from './components/ms-sidenav-item/ms-sidenav-item.component';
 import { SidenavConstants } from './models/constants/sidenav.constants';
 
-@UntilDestroy()
 @Component({
 	selector: 'ms-sidenav',
 	templateUrl: './ms-sidenav.component.html',
@@ -49,6 +48,7 @@ export class MsSidenavComponent implements OnInit {
 	isExpanded = true;
 
 	constructor(
+		private destroyRef: DestroyRef,
 		private router: Router,
 		private configFacadeService: ConfigsFacadeService
 	) {}
@@ -58,7 +58,7 @@ export class MsSidenavComponent implements OnInit {
 	}
 
 	private listenToCurrentModeChanges() {
-		this.configFacadeService.currentMode$.pipe(untilDestroyed(this)).subscribe((currentMode) => {
+		this.configFacadeService.currentMode$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((currentMode) => {
 			this.currentMode = currentMode;
 		});
 	}

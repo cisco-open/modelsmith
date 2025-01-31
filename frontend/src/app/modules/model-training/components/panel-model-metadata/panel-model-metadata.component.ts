@@ -14,13 +14,12 @@
 
 //   SPDX-License-Identifier: Apache-2.0
 
-import { Component, OnInit } from '@angular/core';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { Component, DestroyRef, OnInit } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { skip } from 'rxjs';
 import { ModelMetadataDto } from '../../../../services/client/models/models/model-metadata.interface-dto';
 import { ModelsFacadeService } from '../../../core/services/models-facade.service';
 
-@UntilDestroy()
 @Component({
 	selector: 'ms-panel-model-metadata',
 	templateUrl: './panel-model-metadata.component.html',
@@ -29,11 +28,14 @@ import { ModelsFacadeService } from '../../../core/services/models-facade.servic
 export class PanelModelMetadataComponent implements OnInit {
 	metadata: ModelMetadataDto = {};
 
-	constructor(private modelsFacadeService: ModelsFacadeService) {}
+	constructor(
+		private destroyRef: DestroyRef,
+		private modelsFacadeService: ModelsFacadeService
+	) {}
 
 	ngOnInit(): void {
 		this.modelsFacadeService.modelMetadata$
-			.pipe(skip(1), untilDestroyed(this))
+			.pipe(skip(1), takeUntilDestroyed(this.destroyRef))
 			.subscribe((metadata: ModelMetadataDto) => {
 				this.metadata = metadata;
 			});

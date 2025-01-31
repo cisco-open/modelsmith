@@ -15,10 +15,10 @@
 //   SPDX-License-Identifier: Apache-2.0
 
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, HostListener, Inject, Input, Output, TemplateRef } from '@angular/core';
+import { Component, DestroyRef, EventEmitter, HostListener, Inject, Input, Output, TemplateRef } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { DialogRef } from '../../dialog.ref';
 import { DIALOG_DATA } from '../../dialog.tokens';
 import { getDialogSizeStyles } from '../../dialog.utils';
@@ -26,7 +26,6 @@ import { DialogStatus } from '../../models/enums/dialog-status.enum';
 import { DialogConfig } from '../../models/interfaces/dialog-config.interface';
 import { DialogSizeStylesPipe } from '../../pipes/dialog-size-style.pipe';
 
-@UntilDestroy()
 @Component({
 	selector: 'ms-dialog',
 	templateUrl: './ms-dialog.component.html',
@@ -51,6 +50,7 @@ export class MsDialogComponent {
 	}
 
 	constructor(
+		private destroyRef: DestroyRef,
 		private dialogRef: DialogRef,
 		@Inject(DIALOG_DATA) public data: DialogConfig
 	) {
@@ -89,7 +89,7 @@ export class MsDialogComponent {
 
 		this.dialogRef
 			.backdropClick()
-			.pipe(untilDestroyed(this))
+			.pipe(takeUntilDestroyed(this.destroyRef))
 			.subscribe(() => {
 				this.onDismiss();
 			});

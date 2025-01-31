@@ -14,9 +14,9 @@
 //
 //   SPDX-License-Identifier: Apache-2.0
 
-import { Component, Input, OnInit, inject } from '@angular/core';
+import { Component, DestroyRef, Input, OnInit, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ControlContainer, FormControl, FormGroup, Validators } from '@angular/forms';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { filter, map, skip, take } from 'rxjs';
 import { ScriptDetails } from '../../../../services/client/models/script/script-details.interface-dto';
 import { ScriptActions } from '../../../../state/core/script';
@@ -29,7 +29,6 @@ import {
 import { isScriptActive } from '../../../model-compression/models/enums/script-status.enum';
 import { isNilOrEmptyString } from '../../../shared/shared.utils';
 
-@UntilDestroy()
 @Component({
 	selector: 'ms-panel-algorithm-type-for-training',
 	templateUrl: './panel-algorithm-type-for-training.component.html',
@@ -73,6 +72,7 @@ export class PanelAlgorithmTypeForTrainingComponent implements OnInit {
 	}
 
 	constructor(
+		private destroyRef: DestroyRef,
 		private controlContainer: ControlContainer,
 		private scriptFacadeService: ScriptFacadeService
 	) {}
@@ -125,7 +125,7 @@ export class PanelAlgorithmTypeForTrainingComponent implements OnInit {
 	}
 
 	private listenToScriptStateChanges(): void {
-		this.scriptFacadeService.scriptStatus$.pipe(untilDestroyed(this)).subscribe((state) => {
+		this.scriptFacadeService.scriptStatus$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((state) => {
 			isScriptActive(state) ? this.algorithmTypeFormGroup.disable() : this.algorithmTypeFormGroup.enable();
 		});
 	}

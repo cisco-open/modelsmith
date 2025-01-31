@@ -14,7 +14,8 @@
 //
 //   SPDX-License-Identifier: Apache-2.0
 
-import { Component, Input, OnInit, SimpleChanges, inject } from '@angular/core';
+import { Component, DestroyRef, Input, OnInit, SimpleChanges, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ControlContainer, FormArray, FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -23,7 +24,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { map, skip } from 'rxjs';
 import { ParametersDto } from '../../../../services/client/models/parameters/parameter.interface-dto';
 import { ScriptArguments } from '../../../../services/client/models/script/script-arguments.interface-dto';
@@ -38,7 +38,6 @@ import { isScriptActive } from '../../../model-compression/models/enums/script-s
 import { ErrorDisplayDirective } from '../../directives/error-display/error-display.directive';
 import { getValidators } from './parameters.utils';
 
-@UntilDestroy()
 @Component({
 	selector: 'ms-panel-parameters',
 	standalone: true,
@@ -92,6 +91,7 @@ export class MsPanelParametersComponent implements OnInit {
 	}
 
 	constructor(
+		private destroyRef: DestroyRef,
 		private fb: FormBuilder,
 		private controlContainer: ControlContainer,
 		private parametersFacadeService: ParametersFacadeService,
@@ -119,7 +119,7 @@ export class MsPanelParametersComponent implements OnInit {
 			.pipe(
 				map((state: ParametersState) => state[algorithm]?.data || []),
 				skip(1),
-				untilDestroyed(this)
+				takeUntilDestroyed(this.destroyRef)
 			)
 			.subscribe((newParameters) => {
 				this.buildFormArray(newParameters);
@@ -127,7 +127,7 @@ export class MsPanelParametersComponent implements OnInit {
 	}
 
 	private listenToScriptStateChanges(): void {
-		this.scriptFacadeService.scriptStatus$.pipe(untilDestroyed(this)).subscribe((state) => {
+		this.scriptFacadeService.scriptStatus$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((state) => {
 			this.isScriptActive = isScriptActive(state);
 		});
 	}

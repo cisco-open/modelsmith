@@ -14,9 +14,18 @@
 //
 //   SPDX-License-Identifier: Apache-2.0
 
-import { ChangeDetectionStrategy, Component, ElementRef, Input, OnInit, Renderer2, ViewChild } from '@angular/core';
+import {
+	ChangeDetectionStrategy,
+	Component,
+	DestroyRef,
+	ElementRef,
+	Input,
+	OnInit,
+	Renderer2,
+	ViewChild
+} from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { DotLottie } from '@lottiefiles/dotlottie-web';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { ScriptFacadeService } from '../../../core/services/script-facade.service';
 import { isScriptActive } from '../../../model-compression/models/enums/script-status.enum';
 import { Required } from '../../../shared/decorators/required.decorator';
@@ -24,7 +33,6 @@ import { ANIMATION_CONFIGS } from '../../models/constants/animation-config.const
 import { AnimationType } from '../../models/enums/animation-type.enum';
 import { AnimationConfig } from '../../models/interfaces/animation-config.interface';
 
-@UntilDestroy()
 @Component({
 	selector: 'ms-running-animation',
 	templateUrl: './running-animation.component.html',
@@ -37,6 +45,7 @@ export class RunningAnimationComponent implements OnInit {
 	private dotLottie?: DotLottie;
 
 	constructor(
+		private destroyRef: DestroyRef,
 		private scriptFacadeService: ScriptFacadeService,
 		private el: ElementRef,
 		private renderer: Renderer2
@@ -68,7 +77,7 @@ export class RunningAnimationComponent implements OnInit {
 	}
 
 	private listenToScriptStateChanges(): void {
-		this.scriptFacadeService.scriptStatus$.pipe(untilDestroyed(this)).subscribe((state) => {
+		this.scriptFacadeService.scriptStatus$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((state) => {
 			if (isScriptActive(state)) {
 				this.playAnimation();
 			} else {

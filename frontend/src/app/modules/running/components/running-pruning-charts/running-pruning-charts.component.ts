@@ -15,7 +15,6 @@
 //   SPDX-License-Identifier: Apache-2.0
 
 import { Component, OnInit } from '@angular/core';
-import { UntilDestroy } from '@ngneat/until-destroy';
 import { filter, skip, take } from 'rxjs';
 import { ChartDatasets, PruningProgress } from '../../../../services/client/models/charts/chart-data.interface-dto';
 import {
@@ -39,7 +38,6 @@ import {
 } from '../../../shared/components/ms-line-chart/models/interfaces/ms-chart-display-settings.interface';
 import { MetricType, mapPruningChartData, mapSparsityChartData } from '../../utils/process-charts-data.utils';
 
-@UntilDestroy()
 @Component({
 	selector: 'ms-running-pruning-charts',
 	templateUrl: './running-pruning-charts.component.html',

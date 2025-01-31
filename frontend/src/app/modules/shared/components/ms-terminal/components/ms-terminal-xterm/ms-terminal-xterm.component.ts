@@ -14,8 +14,8 @@
 //
 //   SPDX-License-Identifier: Apache-2.0
 
-import { AfterViewInit, Component, ElementRef, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { AfterViewInit, Component, DestroyRef, ElementRef, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FitAddon } from '@xterm/addon-fit';
 import { SearchAddon } from '@xterm/addon-search';
 import { Terminal } from '@xterm/xterm';
@@ -24,7 +24,6 @@ import { ModelsFacadeService } from '../../../../../core/services/models-facade.
 import { TerminalStylesService } from '../../services/terminal-styles.service';
 import { TerminalWebSocketService } from '../../services/terminal-websocket.service';
 
-@UntilDestroy({})
 @Component({
 	selector: 'ms-terminal-xterm',
 	standalone: true,
@@ -43,6 +42,7 @@ export class MsTerminalXtermComponent implements OnInit, AfterViewInit, OnDestro
 	private resizeObserver?: ResizeObserver;
 
 	constructor(
+		private destroyRef: DestroyRef,
 		private terminalWebSocketService: TerminalWebSocketService,
 		private terminalStylesService: TerminalStylesService
 	) {}
@@ -72,7 +72,7 @@ export class MsTerminalXtermComponent implements OnInit, AfterViewInit, OnDestro
 	}
 
 	private subscribeToWebSocketMessages(): void {
-		this.terminalWebSocketService.messages$.pipe(untilDestroyed(this)).subscribe((message: string) => {
+		this.terminalWebSocketService.messages$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((message: string) => {
 			this.terminal.write(message);
 		});
 	}

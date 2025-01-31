@@ -16,9 +16,7 @@
 
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { UntilDestroy } from '@ngneat/until-destroy';
 
-@UntilDestroy()
 @Component({
 	selector: 'ms-form-fields-demo',
 	templateUrl: './form-fields-demo.component.html',

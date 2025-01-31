@@ -15,11 +15,11 @@
 //   SPDX-License-Identifier: Apache-2.0
 
 import { CommonModule } from '@angular/common';
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, DestroyRef, Inject, OnInit } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { delay } from 'rxjs';
 import { POPOVER_DATA, PopoverRef } from '../../../../../core/components/ms-popover';
 import { MsPopoverComponent } from '../../../../../core/components/ms-popover/components/ms-popover/ms-popover.component';
@@ -27,7 +27,6 @@ import { PopoverConfig } from '../../../../../core/components/ms-popover/models/
 import { AutofocusDirective } from '../../../../directives/autofocus.directive';
 import { ErrorDisplayDirective } from '../../../../directives/error-display/error-display.directive';
 
-@UntilDestroy({})
 @Component({
 	selector: 'ms-terminal-toolbar-search-popover',
 	standalone: true,
@@ -51,6 +50,7 @@ export class MsTerminalToolbarSearchPopoverComponent implements OnInit {
 	}
 
 	constructor(
+		private destroyRef: DestroyRef,
 		private popoverRef: PopoverRef,
 		@Inject(POPOVER_DATA) public iconPanelConfig: PopoverConfig,
 		private fb: FormBuilder
@@ -68,7 +68,7 @@ export class MsTerminalToolbarSearchPopoverComponent implements OnInit {
 	}
 
 	private listenToSearchFormControlValueChanges() {
-		this.searchFormControl.valueChanges.pipe(untilDestroyed(this), delay(200)).subscribe((value) => {
+		this.searchFormControl.valueChanges.pipe(takeUntilDestroyed(this.destroyRef), delay(200)).subscribe((value) => {
 			this.popoverRef.emitData(value);
 		});
 	}

@@ -14,9 +14,9 @@
 //
 //   SPDX-License-Identifier: Apache-2.0
 
-import { Component, ViewChild } from '@angular/core';
+import { Component, DestroyRef, ViewChild } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { ScriptConfigsDto } from '../../../../services/client/models/script/script-configs.interface-dto';
 import { ScriptActions } from '../../../../state/core/script';
 import { ScriptFacadeService } from '../../../core/services';
@@ -24,7 +24,6 @@ import { AWQAlgorithmsEnum, AlgorithmType } from '../../../model-compression/mod
 import { isScriptActive } from '../../../model-compression/models/enums/script-status.enum';
 import { MsPanelParametersComponent } from '../../../shared/components/ms-panel-parameters/ms-panel-parameters.component';
 
-@UntilDestroy()
 @Component({
 	selector: 'ms-llm-quantization',
 	templateUrl: './llm-quantization.component.html',
@@ -41,6 +40,7 @@ export class LlmQuantizationComponent {
 	form!: FormGroup;
 
 	constructor(
+		private destroyRef: DestroyRef,
 		private fb: FormBuilder,
 		private scriptFacadeService: ScriptFacadeService
 	) {}
@@ -51,7 +51,7 @@ export class LlmQuantizationComponent {
 	}
 
 	private listenToScriptStateChanges(): void {
-		this.scriptFacadeService.scriptStatus$.pipe(untilDestroyed(this)).subscribe((state) => {
+		this.scriptFacadeService.scriptStatus$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((state) => {
 			this.isScriptActive = isScriptActive(state);
 
 			if (isScriptActive(state)) {

@@ -14,9 +14,9 @@
 //
 //   SPDX-License-Identifier: Apache-2.0
 
-import { Component, ViewChild } from '@angular/core';
+import { Component, DestroyRef, ViewChild } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { ScriptFacadeService } from 'src/app/modules/core/services';
 import { DiffusionModelAlgorithmsEnum } from 'src/app/modules/model-compression/models/enums/algorithms.enum';
 import { isScriptActive } from 'src/app/modules/model-compression/models/enums/script-status.enum';
@@ -26,7 +26,6 @@ import { ScriptConfigsDto } from '../../../../services/client/models/script/scri
 import { ScriptActions } from '../../../../state/core/script';
 import { PageRunningScriptSpiningIndicatorService } from '../../../core/services/page-running-script-spinning-indicator.service';
 
-@UntilDestroy()
 @Component({
 	selector: 'ms-difussion-model',
 	templateUrl: './difussion-model.component.html',
@@ -48,6 +47,7 @@ export class DifussionModelComponent {
 	];
 
 	constructor(
+		private destroyRef: DestroyRef,
 		private fb: FormBuilder,
 		private scriptFacadeService: ScriptFacadeService,
 		public pageRunningScriptSpiningIndicatorService: PageRunningScriptSpiningIndicatorService
@@ -63,7 +63,7 @@ export class DifussionModelComponent {
 	}
 
 	private listenToScriptStateChanges(): void {
-		this.scriptFacadeService.scriptStatus$.pipe(untilDestroyed(this)).subscribe((state) => {
+		this.scriptFacadeService.scriptStatus$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((state) => {
 			this.isScriptActive = isScriptActive(state);
 
 			if (this.isScriptActive) {

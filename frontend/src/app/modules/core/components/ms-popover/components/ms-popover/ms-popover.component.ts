@@ -16,10 +16,10 @@
 
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, HostListener, Inject, Input, Output, TemplateRef } from '@angular/core';
+import { Component, DestroyRef, EventEmitter, HostListener, Inject, Input, Output, TemplateRef } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { DEFAULT_POPOVER_FADE_IN_OUT_ANIMATION_DURATION } from '../../models/constants/popover.constants';
 import { PopoverStatus } from '../../models/enums/popover-status.enum';
 import { PopoverConfig } from '../../models/interfaces/popover-config.interface';
@@ -27,7 +27,6 @@ import { PopoverSizeStylesPipe } from '../../pipes/popover-size-style.pipe';
 import { PopoverRef } from '../../popover.ref';
 import { POPOVER_DATA } from '../../popover.tokens';
 
-@UntilDestroy()
 @Component({
 	selector: 'ms-popover',
 	standalone: true,
@@ -51,6 +50,7 @@ export class MsPopoverComponent {
 	@Output() actionEvent: EventEmitter<PopoverStatus> = new EventEmitter<PopoverStatus>();
 
 	constructor(
+		private destroyRef: DestroyRef,
 		public popoverRef: PopoverRef,
 		@Inject(POPOVER_DATA) public data: PopoverConfig
 	) {
@@ -79,7 +79,7 @@ export class MsPopoverComponent {
 
 		this.popoverRef
 			.backdropClick()
-			.pipe(untilDestroyed(this))
+			.pipe(takeUntilDestroyed(this.destroyRef))
 			.subscribe(() => {
 				this.onDismiss();
 			});

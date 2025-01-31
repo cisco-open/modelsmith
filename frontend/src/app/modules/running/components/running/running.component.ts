@@ -15,7 +15,6 @@
 //   SPDX-License-Identifier: Apache-2.0
 
 import { Component, OnInit } from '@angular/core';
-import { UntilDestroy } from '@ngneat/until-destroy';
 import { filter, skip, take } from 'rxjs';
 import { ScriptDetails } from '../../../../services/client/models/script/script-details.interface-dto';
 import { ScriptActions } from '../../../../state/core/script/script.actions';
@@ -25,7 +24,6 @@ import { AlgorithmType } from '../../../model-compression/models/enums/algorithm
 import { isEmptyObject, isNilOrEmptyString } from '../../../shared/shared.utils';
 import { AnimationType } from '../../models/enums/animation-type.enum';
 
-@UntilDestroy()
 @Component({
 	selector: 'ms-running',
 	templateUrl: './running.component.html',

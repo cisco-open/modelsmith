@@ -14,10 +14,10 @@
 //
 //   SPDX-License-Identifier: Apache-2.0
 
-import { AfterViewInit, Component, Inject, OnInit, QueryList, ViewChildren } from '@angular/core';
+import { AfterViewInit, Component, DestroyRef, Inject, OnInit, QueryList, ViewChildren } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatExpansionPanel } from '@angular/material/expansion';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Observable, debounceTime, filter, skip, take } from 'rxjs';
 import { ChartDatasets } from '../../../../services/client/models/charts/chart-data.interface-dto';
 import { SummarizedRunRecord } from '../../../../services/client/models/run-records/run-records.interface';
@@ -40,7 +40,6 @@ import { RecordComparisonChartColors, RecordComparisonItem } from '../../models/
 import { RecordsDataService } from '../../services/records-data.service';
 import { RecordsFacadeService } from '../../services/records-facade.service';
 
-@UntilDestroy()
 @Component({
 	selector: 'ms-run-drawer-actions',
 	templateUrl: './run-drawer-actions.component.html',
@@ -88,7 +87,8 @@ export class RunDrawerActionsComponent implements OnInit, AfterViewInit {
 		private fb: FormBuilder,
 		private recordsFacadeService: RecordsFacadeService,
 		private recordsDataService: RecordsDataService,
-		private customAPILoadingService: CustomAPILoadingService
+		private customAPILoadingService: CustomAPILoadingService,
+		private destroyRef: DestroyRef
 	) {}
 
 	ngAfterViewInit(): void {
@@ -168,22 +168,24 @@ export class RunDrawerActionsComponent implements OnInit, AfterViewInit {
 	}
 
 	private listenToChartColorChanges() {
-		this.chartFormGroup.valueChanges.pipe(debounceTime(300), untilDestroyed(this)).subscribe((chartData) => {
-			if (isEmptyObject(chartData)) {
-				return;
-			}
-
-			const { backgroundColor, borderColor } = chartData;
-
-			this.testingAccuracyChartDisplaySettings = {
-				...this.testingAccuracyChartDisplaySettings,
-				customChartColors: {
-					datasetColors: [{ backgroundColor: backgroundColor, borderColor: borderColor }]
+		this.chartFormGroup.valueChanges
+			.pipe(debounceTime(300), takeUntilDestroyed(this.destroyRef))
+			.subscribe((chartData) => {
+				if (isEmptyObject(chartData)) {
+					return;
 				}
-			};
 
-			this.lastRunAccuracyTestingChartData = [...this.lastRunAccuracyTestingChartData];
-		});
+				const { backgroundColor, borderColor } = chartData;
+
+				this.testingAccuracyChartDisplaySettings = {
+					...this.testingAccuracyChartDisplaySettings,
+					customChartColors: {
+						datasetColors: [{ backgroundColor: backgroundColor, borderColor: borderColor }]
+					}
+				};
+
+				this.lastRunAccuracyTestingChartData = [...this.lastRunAccuracyTestingChartData];
+			});
 	}
 
 	private configureEditOrViewTypeActions(): void {
@@ -230,7 +232,7 @@ export class RunDrawerActionsComponent implements OnInit, AfterViewInit {
 	private listenToSelectRunFormValueChanges() {
 		this.selectRunFormControl.valueChanges
 			.pipe(
-				untilDestroyed(this),
+				takeUntilDestroyed(this.destroyRef),
 				filter((filename) => !isNilOrEmptyString(filename))
 			)
 			.subscribe((filename) => {
@@ -246,7 +248,7 @@ export class RunDrawerActionsComponent implements OnInit, AfterViewInit {
 
 	private listenToSummarizedRecordChanges() {
 		this.recordsFacadeService.summarizedRecord$
-			.pipe(untilDestroyed(this), skip(1))
+			.pipe(takeUntilDestroyed(this.destroyRef), skip(1))
 			.subscribe((record: SummarizedRunRecord) => {
 				this.summarizedRecord = record;
 				this.lastRunAccuracyTestingChartData = this.configureChartDataset(record);

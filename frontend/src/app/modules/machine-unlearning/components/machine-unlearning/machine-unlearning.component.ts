@@ -14,10 +14,10 @@
 //
 //   SPDX-License-Identifier: Apache-2.0
 
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, DestroyRef, OnInit, ViewChild } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { ScriptConfigsDto } from '../../../../services/client/models/script/script-configs.interface-dto';
 import { ScriptActions } from '../../../../state/core/script/script.actions';
 import { RoutesList } from '../../../core/models/enums/routes-list.enum';
@@ -29,7 +29,6 @@ import {
 import { isScriptActive } from '../../../model-compression/models/enums/script-status.enum';
 import { MsPanelParametersComponent } from '../../../shared/components/ms-panel-parameters/ms-panel-parameters.component';
 
-@UntilDestroy()
 @Component({
 	selector: 'ms-machine-unlearning',
 	templateUrl: './machine-unlearning.component.html',
@@ -46,6 +45,7 @@ export class MachineUnlearningComponent implements OnInit {
 	form!: FormGroup;
 
 	constructor(
+		private destroyRef: DestroyRef,
 		private fb: FormBuilder,
 		private scriptFacadeService: ScriptFacadeService,
 		private router: Router
@@ -57,7 +57,7 @@ export class MachineUnlearningComponent implements OnInit {
 	}
 
 	private listenToScriptStateChanges(): void {
-		this.scriptFacadeService.scriptStatus$.pipe(untilDestroyed(this)).subscribe((state) => {
+		this.scriptFacadeService.scriptStatus$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((state) => {
 			this.isScriptActive = isScriptActive(state);
 
 			if (isScriptActive(state)) {

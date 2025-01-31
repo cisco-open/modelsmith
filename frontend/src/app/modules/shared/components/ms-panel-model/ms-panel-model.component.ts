@@ -15,7 +15,8 @@
 //   SPDX-License-Identifier: Apache-2.0
 
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, inject } from '@angular/core';
+import { Component, DestroyRef, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ControlContainer, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -23,7 +24,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { RouterLink } from '@angular/router';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { Observable, Subscription } from 'rxjs';
 import { filter, map, startWith } from 'rxjs/operators';
@@ -39,7 +39,6 @@ import { isScriptActive } from '../../../model-compression/models/enums/script-s
 import { isEmptyArray, isNilOrEmptyString } from '../../shared.utils';
 import { MsSpiningIndicatorComponent } from '../ms-spining-indicator/ms-spining-indicator.component';
 
-@UntilDestroy()
 @Component({
 	selector: 'ms-panel-model',
 	standalone: true,
@@ -101,6 +100,7 @@ export class MsPanelModelComponent implements OnInit, OnChanges, OnDestroy {
 	}
 
 	constructor(
+		private destroyRef: DestroyRef,
 		private controlContainer: ControlContainer,
 		private modelsFacadeService: ModelsFacadeService,
 		private scriptFacadeService: ScriptFacadeService,
@@ -130,16 +130,18 @@ export class MsPanelModelComponent implements OnInit, OnChanges, OnDestroy {
 	}
 
 	private listenToCurrentModelChanges() {
-		this.modelsFacadeService.currentModel$.pipe(untilDestroyed(this)).subscribe((model: string | undefined) => {
-			if (isNilOrEmptyString(model)) {
-				return;
-			}
+		this.modelsFacadeService.currentModel$
+			.pipe(takeUntilDestroyed(this.destroyRef))
+			.subscribe((model: string | undefined) => {
+				if (isNilOrEmptyString(model)) {
+					return;
+				}
 
-			const matchingModel = this.models.find((m) => m.name === model);
-			if (matchingModel && matchingModel.isTrained) {
-				this.modelControl?.patchValue(model);
-			}
-		});
+				const matchingModel = this.models.find((m) => m.name === model);
+				if (matchingModel && matchingModel.isTrained) {
+					this.modelControl?.patchValue(model);
+				}
+			});
 	}
 
 	private subscribeToModelsListChanges(algorithmType: AlgorithmType): Subscription {
@@ -171,14 +173,14 @@ export class MsPanelModelComponent implements OnInit, OnChanges, OnDestroy {
 	}
 
 	private listenToScriptStateChanges(): void {
-		this.scriptFacadeService.scriptStatus$.pipe(untilDestroyed(this)).subscribe((state) => {
+		this.scriptFacadeService.scriptStatus$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((state) => {
 			isScriptActive(state) ? this.modelFormGroup.disable() : this.modelFormGroup.enable();
 		});
 	}
 
 	private listenToSearchModelValueChanges() {
 		this.filteredModels = this.searchModel.valueChanges.pipe(
-			untilDestroyed(this),
+			takeUntilDestroyed(this.destroyRef),
 			startWith(''),
 			map((value) => this.filterModels(value))
 		);

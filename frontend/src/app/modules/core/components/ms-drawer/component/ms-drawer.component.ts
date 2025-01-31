@@ -15,17 +15,16 @@
 //   SPDX-License-Identifier: Apache-2.0
 
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, HostListener, Inject, Input, Output, TemplateRef } from '@angular/core';
+import { Component, DestroyRef, EventEmitter, HostListener, Inject, Input, Output, TemplateRef } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { DrawerRef } from '../drawer.ref';
 import { DRAWER_DATA } from '../drawer.tokens';
 import { DrawerStatus } from '../models/enums/drawer-status.enum';
 import { DrawerConfig } from '../models/interfaces/drawer-config.interface';
 import { DrawerSizeStylesPipe } from '../pipes/drawer-size-style.pipe';
 
-@UntilDestroy()
 @Component({
 	selector: 'ms-drawer',
 	templateUrl: './ms-drawer.component.html',
@@ -43,6 +42,7 @@ export class MsDrawerComponent {
 	@Output() actionEvent: EventEmitter<DrawerStatus> = new EventEmitter<DrawerStatus>();
 
 	constructor(
+		private destroyRef: DestroyRef,
 		private drawerRef: DrawerRef,
 		@Inject(DRAWER_DATA) public data: DrawerConfig
 	) {
@@ -70,7 +70,7 @@ export class MsDrawerComponent {
 
 		this.drawerRef
 			.backdropClick()
-			.pipe(untilDestroyed(this))
+			.pipe(takeUntilDestroyed(this.destroyRef))
 			.subscribe(() => {
 				this.onDismiss();
 			});

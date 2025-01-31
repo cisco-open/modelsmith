@@ -14,31 +14,31 @@
 //
 //   SPDX-License-Identifier: Apache-2.0
 
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, DestroyRef, inject, OnInit, ViewChild } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { isEmptyObject } from '../../../shared/shared.utils';
 import { AlgorithmComparisonTableItem } from '../../models/algorithm-comparison-table-item.interface';
 import { RecordComparisonItem } from '../../models/record-comparisson.interface';
 import { RecordsDataService } from '../../services/records-data.service';
 
-@UntilDestroy()
 @Component({
 	selector: 'ms-algorithm-comparison-table',
 	templateUrl: './algorithm-comparison-table.component.html',
 	styleUrls: ['./algorithm-comparison-table.component.scss']
 })
 export class AlgorithmComparisonTableComponent implements OnInit, AfterViewInit {
+	private destroyRef = inject(DestroyRef);
+	private recordsDataService = inject(RecordsDataService);
+
 	dataSource = new MatTableDataSource<AlgorithmComparisonTableItem>();
 	displayedColumns: string[] = [];
 
 	@ViewChild(MatSort) sort?: MatSort;
 
-	constructor(private recordsDataService: RecordsDataService) {}
-
 	ngOnInit(): void {
-		this.recordsDataService.records$.pipe(untilDestroyed(this)).subscribe((records) => {
+		this.recordsDataService.records$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((records) => {
 			this.updateDisplayedColumns(records);
 			this.updateDataSource(records);
 		});

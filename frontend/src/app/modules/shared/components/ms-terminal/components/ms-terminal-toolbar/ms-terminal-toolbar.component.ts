@@ -15,14 +15,14 @@
 //   SPDX-License-Identifier: Apache-2.0
 
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, DestroyRef, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule, MatIconButton } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { delay, filter, take } from 'rxjs';
 import { ScriptActions } from '../../../../../../state/core/script/script.actions';
 import { PopoverRef } from '../../../../../core/components/ms-popover';
@@ -30,13 +30,11 @@ import { PopoverPosition } from '../../../../../core/components/ms-popover/model
 import { PopoverService } from '../../../../../core/components/ms-popover/service/popover.service';
 import { ScriptFacadeService } from '../../../../../core/services/script-facade.service';
 import { isScriptActive } from '../../../../../model-compression/models/enums/script-status.enum';
-import { AutofocusDirective } from '../../../../directives/autofocus.directive';
 import { isNil, isNilOrEmptyString } from '../../../../shared.utils';
 import { TerminalDialogService } from '../../services/terminal-dialog.service';
 import { TerminalWebSocketService } from '../../services/terminal-websocket.service';
 import { MsTerminalToolbarSearchPopoverComponent } from '../ms-terminal-toolbar-search-popover/ms-terminal-toolbar-search-popover.component';
 
-@UntilDestroy({})
 @Component({
 	selector: 'ms-terminal-toolbar',
 	templateUrl: './ms-terminal-toolbar.component.html',
@@ -50,8 +48,7 @@ import { MsTerminalToolbarSearchPopoverComponent } from '../ms-terminal-toolbar-
 		FormsModule,
 		ReactiveFormsModule,
 		MatFormFieldModule,
-		MatInputModule,
-		AutofocusDirective
+		MatInputModule
 	],
 	providers: [TerminalDialogService, PopoverService]
 })
@@ -70,6 +67,7 @@ export class MsTerminalToolbarComponent implements OnInit, OnDestroy {
 	searchPanelRef?: PopoverRef;
 
 	constructor(
+		private destroyRef: DestroyRef,
 		private scriptFacadeService: ScriptFacadeService,
 		private terminalWebSocketService: TerminalWebSocketService,
 		private terminalDialogService: TerminalDialogService,
@@ -101,7 +99,7 @@ export class MsTerminalToolbarComponent implements OnInit, OnDestroy {
 			this.popoverId ?? ''
 		);
 
-		this.searchPanelRef.data$.pipe(untilDestroyed(this)).subscribe((data: any) => {
+		this.searchPanelRef.data$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((data: any) => {
 			this.searchTerminal.emit(data);
 		});
 
@@ -117,7 +115,7 @@ export class MsTerminalToolbarComponent implements OnInit, OnDestroy {
 	private listenToSearchFormControlChanges(): void {
 		this.searchFormControl.valueChanges
 			.pipe(
-				untilDestroyed(this),
+				takeUntilDestroyed(this.destroyRef),
 				delay(300),
 				filter((value: string | null): value is string => !isNilOrEmptyString(value))
 			)
@@ -127,7 +125,7 @@ export class MsTerminalToolbarComponent implements OnInit, OnDestroy {
 	}
 
 	private listenToScriptStateChanges(): void {
-		this.scriptFacadeService.scriptStatus$.pipe(untilDestroyed(this)).subscribe((state) => {
+		this.scriptFacadeService.scriptStatus$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((state) => {
 			this.isScriptActive = isScriptActive(state);
 		});
 	}

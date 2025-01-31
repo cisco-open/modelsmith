@@ -14,9 +14,9 @@
 //
 //   SPDX-License-Identifier: Apache-2.0
 
-import { Component } from '@angular/core';
+import { Component, DestroyRef } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { filter, skip, take } from 'rxjs';
 import { ScriptDetails } from '../../../../services/client/models/script/script-details.interface-dto';
 import { ScriptActions } from '../../../../state/core/script';
@@ -26,7 +26,6 @@ import { isScriptActive } from '../../../model-compression/models/enums/script-s
 import { ChartToolsGlobalSignalsService } from '../../../shared/components/ms-line-chart/services/chart-tools-global-signals.service';
 import { isNilOrEmptyString } from '../../../shared/shared.utils';
 
-@UntilDestroy()
 @Component({
 	selector: 'ms-running-status-bar',
 	templateUrl: './running-status-bar.component.html',
@@ -40,6 +39,7 @@ export class RunningStatusBarComponent {
 	enableZoom = false;
 
 	constructor(
+		private destroyRef: DestroyRef,
 		private scriptFacadeService: ScriptFacadeService,
 		private chartToolsGlobalSignalsService: ChartToolsGlobalSignalsService
 	) {}
@@ -62,7 +62,7 @@ export class RunningStatusBarComponent {
 				this.scriptDetails = scriptDetails;
 			});
 
-		this.scriptFacadeService.scriptStatus$.pipe(untilDestroyed(this)).subscribe((state) => {
+		this.scriptFacadeService.scriptStatus$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((state) => {
 			this.isScriptActive = isScriptActive(state);
 		});
 	}
@@ -80,13 +80,17 @@ export class RunningStatusBarComponent {
 	}
 
 	subscribeToChartToolsSignals(): void {
-		this.chartToolsGlobalSignalsService.toggleTooltips$.pipe(untilDestroyed(this)).subscribe((value: boolean) => {
-			this.enableTooltips = value;
-		});
+		this.chartToolsGlobalSignalsService.toggleTooltips$
+			.pipe(takeUntilDestroyed(this.destroyRef))
+			.subscribe((value: boolean) => {
+				this.enableTooltips = value;
+			});
 
-		this.chartToolsGlobalSignalsService.toggleZoom$.pipe(untilDestroyed(this)).subscribe((value: boolean) => {
-			this.enableZoom = value;
-		});
+		this.chartToolsGlobalSignalsService.toggleZoom$
+			.pipe(takeUntilDestroyed(this.destroyRef))
+			.subscribe((value: boolean) => {
+				this.enableZoom = value;
+			});
 	}
 
 	runStopScript(): void {

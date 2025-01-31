@@ -16,11 +16,9 @@
 
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { UntilDestroy } from '@ngneat/until-destroy';
 import { AuthActions } from '../../../../state/core/auth';
 import { AuthFacadeService } from '../../../core/services/auth-facade.service';
 
-@UntilDestroy()
 @Component({
 	selector: 'ms-login',
 	templateUrl: './login.component.html',

@@ -14,9 +14,9 @@
 
 //   SPDX-License-Identifier: Apache-2.0
 
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, DestroyRef, OnInit, ViewChild } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormGroup } from '@angular/forms';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { debounceTime, distinctUntilChanged, filter, map } from 'rxjs';
 import { ScriptConfigsDto } from '../../../../services/client/models/script/script-configs.interface-dto';
 import { ModelsActions } from '../../../../state/core/models/models.actions';
@@ -32,7 +32,6 @@ import { isScriptActive } from '../../../model-compression/models/enums/script-s
 import { MsPanelParametersComponent } from '../../../shared/components/ms-panel-parameters/ms-panel-parameters.component';
 import { isNil, isNilOrEmptyString } from '../../../shared/shared.utils';
 
-@UntilDestroy()
 @Component({
 	selector: 'ms-model-training',
 	templateUrl: './model-training.component.html',
@@ -49,6 +48,7 @@ export class ModelTrainingComponent implements OnInit {
 	selectedAlgorithmKey: TrainAlgorithmsEnum = TrainAlgorithmsEnum.PRUNING_TRAIN;
 
 	constructor(
+		private destroyRef: DestroyRef,
 		public navigationService: NavigationService,
 		private scriptFacadeService: ScriptFacadeService,
 		private snackbarService: BannerService,
@@ -71,7 +71,7 @@ export class ModelTrainingComponent implements OnInit {
 				}),
 				distinctUntilChanged(),
 				filter((algorithmType) => !!algorithmType),
-				untilDestroyed(this)
+				takeUntilDestroyed(this.destroyRef)
 			)
 			.subscribe((algorithmType: AlgorithmType) => {
 				this.selectedAlgorithmType = algorithmType;
@@ -80,7 +80,7 @@ export class ModelTrainingComponent implements OnInit {
 	}
 
 	private listenToScriptStateChanges(): void {
-		this.scriptFacadeService.scriptStatus$.pipe(untilDestroyed(this)).subscribe((state) => {
+		this.scriptFacadeService.scriptStatus$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((state) => {
 			this.isScriptActive = isScriptActive(state);
 
 			if (isScriptActive(state)) {
@@ -102,7 +102,7 @@ export class ModelTrainingComponent implements OnInit {
 				}),
 				distinctUntilChanged((prev, curr) => JSON.stringify(prev) === JSON.stringify(curr)),
 				filter(({ algorithmType, model }) => !isNilOrEmptyString(algorithmType) && !isNilOrEmptyString(model)),
-				untilDestroyed(this)
+				takeUntilDestroyed(this.destroyRef)
 			)
 			.subscribe(({ algorithmType, model }) => {
 				this.modelsFacadeService.dispatch(

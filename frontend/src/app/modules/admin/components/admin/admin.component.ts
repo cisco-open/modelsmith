@@ -14,9 +14,9 @@
 //
 //   SPDX-License-Identifier: Apache-2.0
 
-import { Component, inject, OnInit, ViewChild } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit, ViewChild } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl } from '@angular/forms';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { map, Observable, take } from 'rxjs';
 import { ConfigActions } from '../../../../state/core/configs';
 import { DialogClose, DialogStatus } from '../../../core/components/ms-dialog';
@@ -27,7 +27,6 @@ import { ConfigsFacadeService } from '../../../core/services';
 import { MsTerminalStyleConfiguratorComponent } from '../../../shared/components/ms-terminal/components/ms-terminal-style-configurator/ms-terminal-style-configurator.component';
 import { isNilOrEmptyString } from '../../../shared/shared.utils';
 
-@UntilDestroy()
 @Component({
 	selector: 'ms-admin',
 	templateUrl: './admin.component.html',
@@ -37,6 +36,7 @@ export class AdminComponent implements OnInit, CanComponentDeactivate {
 	@ViewChild(MsTerminalStyleConfiguratorComponent, { static: true })
 	configurator!: MsTerminalStyleConfiguratorComponent;
 
+	readonly destroyRef = inject(DestroyRef);
 	readonly dialogMessageService = inject(DialogMessageService);
 	readonly configsFacadeService = inject(ConfigsFacadeService);
 
@@ -50,7 +50,7 @@ export class AdminComponent implements OnInit, CanComponentDeactivate {
 	}
 
 	private listenToModeChanges(): void {
-		this.selectedModeControl.valueChanges.pipe(untilDestroyed(this)).subscribe((mode) => {
+		this.selectedModeControl.valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((mode) => {
 			if (isNilOrEmptyString(mode)) {
 				return;
 			}

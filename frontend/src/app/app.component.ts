@@ -16,9 +16,7 @@
 
 import { Component, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { UntilDestroy } from '@ngneat/until-destroy';
 
-@UntilDestroy()
 @Component({
 	selector: 'app-root',
 	templateUrl: './app.component.html',

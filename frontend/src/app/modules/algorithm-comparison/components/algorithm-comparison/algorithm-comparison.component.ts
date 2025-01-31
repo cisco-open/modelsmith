@@ -14,9 +14,9 @@
 //
 //   SPDX-License-Identifier: Apache-2.0
 
-import { Component, OnInit } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { take } from 'rxjs';
 import { DrawerClose, DrawerService, DrawerStatus } from '../../../core/components/ms-drawer';
 import { DrawerActionTypeEnum } from '../../../core/components/ms-drawer/models/enums/drawer-action-type.enum';
@@ -25,7 +25,6 @@ import { RecordComparisonItem } from '../../models/record-comparisson.interface'
 import { RecordsDataService } from '../../services/records-data.service';
 import { RunDrawerActionsComponent } from '../run-drawer-actions/run-drawer-actions.component';
 
-@UntilDestroy()
 @Component({
 	selector: 'ms-algorithm-comparison',
 	templateUrl: './algorithm-comparison.component.html',
@@ -33,6 +32,7 @@ import { RunDrawerActionsComponent } from '../run-drawer-actions/run-drawer-acti
 })
 export class AlgorithmComparisonComponent implements OnInit {
 	form: FormGroup = new FormGroup({});
+	private destroyRef = inject(DestroyRef);
 
 	readonly algorithmTypesOptions = [
 		{
@@ -97,8 +97,10 @@ export class AlgorithmComparisonComponent implements OnInit {
 	}
 
 	private listenToAlgorithmTypeChanges() {
-		this.algorithmTypeFormControl.valueChanges.pipe(untilDestroyed(this)).subscribe((algorithmType: AlgorithmType) => {
-			this.recordsDataService.algorithmType = algorithmType;
-		});
+		this.algorithmTypeFormControl.valueChanges
+			.pipe(takeUntilDestroyed(this.destroyRef))
+			.subscribe((algorithmType: AlgorithmType) => {
+				this.recordsDataService.algorithmType = algorithmType;
+			});
 	}
 }

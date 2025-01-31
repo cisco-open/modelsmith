@@ -14,9 +14,9 @@
 //
 //   SPDX-License-Identifier: Apache-2.0
 
-import { Component } from '@angular/core';
+import { Component, DestroyRef, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { ChartDatasets } from '../../../../services/client/models/charts/chart-data.interface-dto';
 import { ChartColorEnum } from '../../../shared/components/ms-line-chart/models/enums/chart-color.enum';
 import {
@@ -28,13 +28,14 @@ import { isEmptyArray } from '../../../shared/shared.utils';
 import { RecordComparisonItem } from '../../models/record-comparisson.interface';
 import { RecordsDataService } from '../../services/records-data.service';
 
-@UntilDestroy()
 @Component({
 	selector: 'ms-algorithm-comparison-chart',
 	templateUrl: './algorithm-comparison-chart.component.html',
 	styleUrls: ['./algorithm-comparison-chart.component.scss']
 })
 export class AlgorithmComparisonChartComponent {
+	private destroyRef = inject(DestroyRef);
+
 	testingAccuracyChartDisplaySettings: ChartDisplaySettings = {
 		yAxisMinimumValue: 0,
 		yAxisMaximumValue: 100,
@@ -67,33 +68,39 @@ export class AlgorithmComparisonChartComponent {
 	}
 
 	listenToRecordsChanges(): void {
-		this.recordsDataService.records$.pipe(untilDestroyed(this)).subscribe((records: RecordComparisonItem[]) => {
-			if (isEmptyArray(records)) {
-				return;
-			}
-
-			this.lastRunsAccuracyTestingChartData = this.configureChartDatasets(records);
-
-			this.testingAccuracyChartDisplaySettings = {
-				...this.testingAccuracyChartDisplaySettings,
-				customDatasetsLabels: records.map((record) => record.recordName),
-				xAxisDataPointsCount: records[0].record.lastRunTestingAccuracyData.length,
-				isChartWithCustomColorSettings: true,
-				customChartColors: {
-					datasetColors: records.map((record) => record.chartColors)
+		this.recordsDataService.records$
+			.pipe(takeUntilDestroyed(this.destroyRef))
+			.subscribe((records: RecordComparisonItem[]) => {
+				if (isEmptyArray(records)) {
+					return;
 				}
-			};
-		});
+
+				this.lastRunsAccuracyTestingChartData = this.configureChartDatasets(records);
+
+				this.testingAccuracyChartDisplaySettings = {
+					...this.testingAccuracyChartDisplaySettings,
+					customDatasetsLabels: records.map((record) => record.recordName),
+					xAxisDataPointsCount: records[0].record.lastRunTestingAccuracyData.length,
+					isChartWithCustomColorSettings: true,
+					customChartColors: {
+						datasetColors: records.map((record) => record.chartColors)
+					}
+				};
+			});
 	}
 
 	subscribeToChartToolsSignals(): void {
-		this.chartToolsGlobalSignalsService.toggleTooltips$.pipe(untilDestroyed(this)).subscribe((value: boolean) => {
-			this.enableTooltips = value;
-		});
+		this.chartToolsGlobalSignalsService.toggleTooltips$
+			.pipe(takeUntilDestroyed(this.destroyRef))
+			.subscribe((value: boolean) => {
+				this.enableTooltips = value;
+			});
 
-		this.chartToolsGlobalSignalsService.toggleZoom$.pipe(untilDestroyed(this)).subscribe((value: boolean) => {
-			this.enableZoom = value;
-		});
+		this.chartToolsGlobalSignalsService.toggleZoom$
+			.pipe(takeUntilDestroyed(this.destroyRef))
+			.subscribe((value: boolean) => {
+				this.enableZoom = value;
+			});
 	}
 
 	private configureChartDatasets(records: RecordComparisonItem[]): ChartDatasets[] {

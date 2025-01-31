@@ -15,13 +15,11 @@
 //   SPDX-License-Identifier: Apache-2.0
 
 import { Component, ElementRef, OnDestroy, Renderer2, ViewChild, ViewEncapsulation } from '@angular/core';
-import { UntilDestroy } from '@ngneat/until-destroy';
 import { PopoverClose, PopoverStatus } from '../../../../../core/components/ms-popover';
 import { PopoverManagerService } from '../../../../../core/components/ms-popover/service/popover-manager.service';
 import { MsTerminalToolbarComponent } from '../ms-terminal-toolbar/ms-terminal-toolbar.component';
 import { MsTerminalXtermComponent } from '../ms-terminal-xterm/ms-terminal-xterm.component';
 
-@UntilDestroy()
 @Component({
 	selector: 'ms-terminal-xterm-with-toolbar',
 	templateUrl: './ms-terminal-xterm-with-toolbar.component.html',
