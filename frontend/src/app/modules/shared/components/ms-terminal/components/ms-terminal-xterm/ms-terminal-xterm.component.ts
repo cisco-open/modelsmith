@@ -65,6 +65,7 @@ export class MsTerminalXtermComponent implements OnInit, AfterViewInit, OnDestro
 		this.terminal.open(this.terminalDiv.nativeElement);
 		this.setupResizeObserver();
 
+		// Forward typed data to the WebSocket
 		this.terminal.onData((data) => {
 			this.terminalWebSocketService.sendMessage(data);
 		});
@@ -110,17 +111,9 @@ export class MsTerminalXtermComponent implements OnInit, AfterViewInit, OnDestro
 		this.terminal.dispose();
 	}
 
-	// Expose methods for search, clear, scroll, etc.
 	public search(value: string): void {
 		this.searchAddon.findNext(value, {
-			decorations: {
-				matchBackground: '#FFFF00',
-				matchBorder: '#FFFF00',
-				matchOverviewRuler: '#FFFF00',
-				activeMatchBackground: '#FFFF00',
-				activeMatchBorder: '#FFFF00',
-				activeMatchColorOverviewRuler: '#FFFF00'
-			}
+			decorations: this.terminalStylesService.getSearchDecorationOptions()
 		});
 	}
 

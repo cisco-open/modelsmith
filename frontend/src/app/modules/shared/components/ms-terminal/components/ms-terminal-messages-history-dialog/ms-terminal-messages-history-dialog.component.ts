@@ -122,16 +122,9 @@ export class MsTerminalMessagesHistoryDialogComponent implements OnInit, OnDestr
 			});
 	}
 
-	private search(value: string) {
+	private search(value: string): void {
 		this.searchAddon.findNext(value, {
-			decorations: {
-				matchBackground: '#FFFF00',
-				matchBorder: '#FFFF00',
-				matchOverviewRuler: '#FFFF00',
-				activeMatchBackground: '#FFFF00',
-				activeMatchBorder: '#FFFF00',
-				activeMatchColorOverviewRuler: '#FFFF00'
-			}
+			decorations: this.terminalStylesService.getSearchDecorationOptions()
 		});
 	}
 
