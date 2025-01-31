@@ -14,8 +14,10 @@
 //
 //   SPDX-License-Identifier: Apache-2.0
 
-export enum DialogActionTypeEnum {
-	ADD = 'add',
-	EDIT = 'edit',
-	VIEW = 'view'
-}
+export const DialogActionTypeEnum = {
+	ADD: 'add',
+	EDIT: 'edit',
+	VIEW: 'view'
+} as const;
+
+export type DialogActionTypeEnum = (typeof DialogActionTypeEnum)[keyof typeof DialogActionTypeEnum];

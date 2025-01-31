@@ -124,8 +124,10 @@ export interface ChartZoomLimits {
 	max?: number;
 }
 
-export enum ChartDataStructure {
-	SINGLE_PHASE_X_AXIS = 'singlePhase',
-	SINGLE_PHASE_X_AXIS_SKIP_ONE = 'singlePhaseXAxisSkipOne',
-	MUlTI_PHASE_X_AXIS = 'multiplePhase'
-}
+export const ChartDataStructure = {
+	SINGLE_PHASE_X_AXIS: 'singlePhase',
+	SINGLE_PHASE_X_AXIS_SKIP_ONE: 'singlePhaseXAxisSkipOne',
+	MULTI_PHASE_X_AXIS: 'multiplePhase'
+} as const;
+
+export type ChartDataStructure = (typeof ChartDataStructure)[keyof typeof ChartDataStructure];

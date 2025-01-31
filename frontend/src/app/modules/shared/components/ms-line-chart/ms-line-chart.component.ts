@@ -223,7 +223,7 @@ export class MsLineChartComponent implements OnInit, OnChanges, OnDestroy {
 				);
 				break;
 			}
-			case ChartDataStructure.MUlTI_PHASE_X_AXIS: {
+			case ChartDataStructure.MULTI_PHASE_X_AXIS: {
 				this.lineChartData = ChartSettingsUtils.prepareChartDataStructure(this.settings);
 				break;
 			}

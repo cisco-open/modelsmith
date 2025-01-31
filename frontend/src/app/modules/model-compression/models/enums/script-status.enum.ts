@@ -14,12 +14,14 @@
 //
 //   SPDX-License-Identifier: Apache-2.0
 
-export enum ScriptStatusEnum {
-	RUNNING = 'running',
-	NOT_RUNNING = 'not_running',
-	STOPPING = 'stopping',
-	ERROR = 'error'
-}
+export const ScriptStatusEnum = {
+	RUNNING: 'running',
+	NOT_RUNNING: 'not_running',
+	STOPPING: 'stopping',
+	ERROR: 'error'
+} as const;
+
+export type ScriptStatusEnum = (typeof ScriptStatusEnum)[keyof typeof ScriptStatusEnum];
 
 export function isScriptActive(state: ScriptStatusEnum | null): boolean {
 	if (!state) {

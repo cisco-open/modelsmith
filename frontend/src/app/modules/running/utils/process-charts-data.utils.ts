@@ -22,10 +22,12 @@ import {
 	QuantizationTestProgress
 } from '../../../services/client/models/charts/chart-data.interface-dto';
 
-export enum MetricType {
-	ACCURACY = 'accuracy',
-	LOSS = 'loss'
-}
+export const MetricType = {
+	ACCURACY: 'accuracy',
+	LOSS: 'loss'
+} as const;
+
+export type MetricType = (typeof MetricType)[keyof typeof MetricType];
 
 export const DEFAUlT_FIRST_SPARSITY_VALUE = 100;
 

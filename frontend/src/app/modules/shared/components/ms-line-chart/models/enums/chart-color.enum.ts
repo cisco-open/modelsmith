@@ -14,9 +14,11 @@
 //
 //   SPDX-License-Identifier: Apache-2.0
 
-export enum ChartColorEnum {
-	GREEN = 'green',
-	RED = 'red',
-	YELLOW = 'yellow',
-	BLUE = 'blue'
-}
+export const ChartColorEnum = {
+	GREEN: 'green',
+	RED: 'red',
+	YELLOW: 'yellow',
+	BLUE: 'blue'
+} as const;
+
+export type ChartColorEnum = (typeof ChartColorEnum)[keyof typeof ChartColorEnum];

@@ -53,7 +53,7 @@ export class RunningPruningChartsComponent implements OnInit {
 		...DEFAULT_PRUNING_CHART_DISPLAY_SETTINGS,
 		yAxisMinimumValue: 0,
 		yAxisTickInterval: 2,
-		chartDataStructure: ChartDataStructure.MUlTI_PHASE_X_AXIS,
+		chartDataStructure: ChartDataStructure.MULTI_PHASE_X_AXIS,
 		xAxisDataPointsCount: DEFAULT_NR_OF_STEPS_PER_EPOCH,
 		isYAxisDynamic: true,
 
@@ -67,7 +67,7 @@ export class RunningPruningChartsComponent implements OnInit {
 		...DEFAULT_PRUNING_CHART_DISPLAY_SETTINGS,
 		yAxisMinimumValue: 0,
 		yAxisTickInterval: 2,
-		chartDataStructure: ChartDataStructure.MUlTI_PHASE_X_AXIS,
+		chartDataStructure: ChartDataStructure.MULTI_PHASE_X_AXIS,
 		xAxisDataPointsCount: DEFAULT_NR_OF_STEPS_PER_TRAINING_EPOCH,
 		isYAxisDynamic: true,
 		dynamicYAxisGrowthOffset: 2,
@@ -80,7 +80,7 @@ export class RunningPruningChartsComponent implements OnInit {
 	accuracyPruningChartSettings: ChartConfigurationSettings = {};
 	accuracyChartDisplaySettings: ChartDisplaySettings = {
 		...DEFAULT_PRUNING_CHART_DISPLAY_SETTINGS,
-		chartDataStructure: ChartDataStructure.MUlTI_PHASE_X_AXIS,
+		chartDataStructure: ChartDataStructure.MULTI_PHASE_X_AXIS,
 		xAxisDataPointsCount: DEFAULT_NR_OF_STEPS_PER_EPOCH,
 		yAxisMaximumValue: 100,
 		zoomRangeLimits: {
@@ -94,7 +94,7 @@ export class RunningPruningChartsComponent implements OnInit {
 	testingAccuracyChartDisplaySettings: ChartDisplaySettings = {
 		...DEFAULT_PRUNING_CHART_DISPLAY_SETTINGS,
 		yAxisTickInterval: 20,
-		chartDataStructure: ChartDataStructure.MUlTI_PHASE_X_AXIS,
+		chartDataStructure: ChartDataStructure.MULTI_PHASE_X_AXIS,
 		xAxisDataPointsCount: DEFAULT_NR_OF_STEPS_PER_TRAINING_EPOCH,
 		yAxisMaximumValue: 100,
 		zoomRangeLimits: {

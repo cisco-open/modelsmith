@@ -14,8 +14,10 @@
 //
 //   SPDX-License-Identifier: Apache-2.0
 
-export enum DrawerActionTypeEnum {
-	ADD = 'add',
-	EDIT = 'edit',
-	VIEW = 'view'
-}
+export const DrawerActionTypeEnum = {
+	ADD: 'add',
+	EDIT: 'edit',
+	VIEW: 'view'
+} as const;
+
+export type DrawerActionTypeEnum = (typeof DrawerActionTypeEnum)[keyof typeof DrawerActionTypeEnum];

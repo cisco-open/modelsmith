@@ -14,9 +14,11 @@
 //
 //   SPDX-License-Identifier: Apache-2.0
 
-export enum DrawerStatus {
-	OPEN = 'open',
-	DISMISS = 'dismiss',
-	SAVE = 'save',
-	CLOSE = 'close'
-}
+export const DrawerStatus = {
+	OPEN: 'open',
+	DISMISS: 'dismiss',
+	SAVE: 'save',
+	CLOSE: 'close'
+} as const;
+
+export type DrawerStatus = (typeof DrawerStatus)[keyof typeof DrawerStatus];

@@ -14,14 +14,18 @@
 //
 //   SPDX-License-Identifier: Apache-2.0
 
-export enum WebsocketMessageTopics {
-	SCRIPT_STATUS = 'script_status',
-	STATISTICS = 'statistics',
-	CHARTS_PREFIX = 'chart_'
-}
+export const WebsocketMessageTopics = {
+	SCRIPT_STATUS: 'script_status',
+	STATISTICS: 'statistics',
+	CHARTS_PREFIX: 'chart_'
+} as const;
 
-export enum ChartWebsocketMessageTypes {
-	UPDATE_TESTING = 'chart_updateTesting',
-	UPDATE_LATEST_VALUE = 'chart_updateLatestValue',
-	ENHANCE_SINGLE_PHASE_X_AXIS = 'chart_enhanceSinglePhaseXAxis'
-}
+export type WebsocketMessageTopics = (typeof WebsocketMessageTopics)[keyof typeof WebsocketMessageTopics];
+
+export const ChartWebsocketMessageTypes = {
+	UPDATE_TESTING: 'chart_updateTesting',
+	UPDATE_LATEST_VALUE: 'chart_updateLatestValue',
+	ENHANCE_SINGLE_PHASE_X_AXIS: 'chart_enhanceSinglePhaseXAxis'
+} as const;
+
+export type ChartWebsocketMessageTypes = (typeof ChartWebsocketMessageTypes)[keyof typeof ChartWebsocketMessageTypes];

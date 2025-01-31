@@ -14,9 +14,11 @@
 //
 //   SPDX-License-Identifier: Apache-2.0
 
-export enum PopoverStatus {
-	OPEN = 'open',
-	DISMISS = 'dismiss',
-	SAVE = 'save',
-	CLOSE = 'close'
-}
+export const PopoverStatus = {
+	OPEN: 'open',
+	DISMISS: 'dismiss',
+	SAVE: 'save',
+	CLOSE: 'close'
+} as const;
+
+export type PopoverStatus = (typeof PopoverStatus)[keyof typeof PopoverStatus];

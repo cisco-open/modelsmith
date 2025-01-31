@@ -14,7 +14,9 @@
 //
 //   SPDX-License-Identifier: Apache-2.0
 
-export enum FormModes {
-	EDIT = 'edit',
-	ADD = 'add'
-}
+export const FormModes = {
+	EDIT: 'edit',
+	ADD: 'add'
+} as const;
+
+export type FormModes = (typeof FormModes)[keyof typeof FormModes];

@@ -128,7 +128,7 @@ export class ChartSettingsUtils {
 							const prefix = settings.tooltipLabelPrefix || settings.xAxisLabelPrefix || '';
 							const maxStepsPerEpoch = settings.xAxisDataPointsCount || 1;
 
-							if (settings.chartDataStructure === ChartDataStructure.MUlTI_PHASE_X_AXIS) {
+							if (settings.chartDataStructure === ChartDataStructure.MULTI_PHASE_X_AXIS) {
 								const epoch = Math.floor(labelIndex / maxStepsPerEpoch);
 								let step = labelIndex % maxStepsPerEpoch;
 								if (step === 0 && labelIndex !== 0) {

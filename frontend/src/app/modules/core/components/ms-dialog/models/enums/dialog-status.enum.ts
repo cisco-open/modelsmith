@@ -14,9 +14,11 @@
 //
 //   SPDX-License-Identifier: Apache-2.0
 
-export enum DialogStatus {
-	OPEN = 'open',
-	DISMISS = 'dismiss',
-	SAVE = 'save',
-	CLOSE = 'close'
-}
+export const DialogStatus = {
+	OPEN: 'open',
+	DISMISS: 'dismiss',
+	SAVE: 'save',
+	CLOSE: 'close'
+} as const;
+
+export type DialogStatus = (typeof DialogStatus)[keyof typeof DialogStatus];

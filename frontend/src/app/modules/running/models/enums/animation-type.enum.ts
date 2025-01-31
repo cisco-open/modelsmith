@@ -14,7 +14,9 @@
 //
 //   SPDX-License-Identifier: Apache-2.0
 
-export enum AnimationType {
-	QUANTIZATION = 'quant',
-	PRUNING = 'pruning'
-}
+export const AnimationType = {
+	QUANTIZATION: 'quant',
+	PRUNING: 'pruning'
+} as const;
+
+export type AnimationType = (typeof AnimationType)[keyof typeof AnimationType];

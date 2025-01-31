@@ -14,9 +14,11 @@
 //
 //   SPDX-License-Identifier: Apache-2.0
 
-export enum DialogButtonPositionEnum {
-	LEFT = 'left',
-	RIGHT = 'right',
-	CENTER = 'center',
-	SPREAD = 'spread'
-}
+export const DialogButtonPositionEnum = {
+	LEFT: 'left',
+	RIGHT: 'right',
+	CENTER: 'center',
+	SPREAD: 'spread'
+} as const;
+
+export type DialogButtonPositionEnum = (typeof DialogButtonPositionEnum)[keyof typeof DialogButtonPositionEnum];

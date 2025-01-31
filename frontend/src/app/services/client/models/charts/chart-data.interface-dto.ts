@@ -66,7 +66,9 @@ export interface ChartDatasets {
 	values: number[];
 }
 
-export enum ReconstructionType {
-	BLOCK = 'block',
-	LAYER = 'layer'
-}
+export const ReconstructionType = {
+	BLOCK: 'block',
+	LAYER: 'layer'
+} as const;
+
+export type ReconstructionType = (typeof ReconstructionType)[keyof typeof ReconstructionType];

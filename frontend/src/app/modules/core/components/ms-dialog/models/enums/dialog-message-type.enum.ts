@@ -14,9 +14,11 @@
 //
 //   SPDX-License-Identifier: Apache-2.0
 
-export enum DialogMessageTypeEnum {
-	WARNING = 'warning',
-	INFO = 'info',
-	SUCCESS = 'success',
-	ERROR = 'error'
-}
+export const DialogMessageTypeEnum = {
+	WARNING: 'warning',
+	INFO: 'info',
+	SUCCESS: 'success',
+	ERROR: 'error'
+} as const;
+
+export type DialogMessageTypeEnum = (typeof DialogMessageTypeEnum)[keyof typeof DialogMessageTypeEnum];

@@ -14,8 +14,10 @@
 //
 //   SPDX-License-Identifier: Apache-2.0
 
-export enum PopoverActionTypeEnum {
-	ADD = 'add',
-	EDIT = 'edit',
-	VIEW = 'view'
-}
+export const PopoverActionTypeEnum = {
+	ADD: 'add',
+	EDIT: 'edit',
+	VIEW: 'view'
+} as const;
+
+export type PopoverActionTypeEnum = (typeof PopoverActionTypeEnum)[keyof typeof PopoverActionTypeEnum];

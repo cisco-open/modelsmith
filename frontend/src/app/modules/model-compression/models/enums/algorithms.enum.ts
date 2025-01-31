@@ -25,60 +25,78 @@ export type AlgorithmKey =
 	| TrainAlgorithmsEnum
 	| DiffusionModelAlgorithmsEnum;
 
-export enum AlgorithmType {
-	QUANTIZATION = 'quantization',
-	PRUNING = 'pruning',
-	MACHINE_UNLEARNING = 'machine_unlearning',
-	AWQ = 'awq',
-	MULTIFLOW = 'multiflow',
-	TRAIN = 'train',
-	DIFFUSION_MODEL = 'diffusion_model'
-}
+export const AlgorithmType = {
+	QUANTIZATION: 'quantization',
+	PRUNING: 'pruning',
+	MACHINE_UNLEARNING: 'machine_unlearning',
+	AWQ: 'awq',
+	MULTIFLOW: 'multiflow',
+	TRAIN: 'train',
+	DIFFUSION_MODEL: 'diffusion_model'
+} as const;
+
+export type AlgorithmType = (typeof AlgorithmType)[keyof typeof AlgorithmType];
 
 export const AlgorithmTypeKeyValue: KeyValueObject<string>[] = Object.entries(AlgorithmType).map(([key, value]) => ({
 	key: value,
 	value: toTitleCase(key)
 }));
 
-export enum QuantizationAlgorithmsEnum {
-	BPTQ = 'BPTQ',
-	BRECQ = 'BRECQ',
-	MINMAXPTQ = 'MINMAXPTQ'
-}
+export const QuantizationAlgorithmsEnum = {
+	BPTQ: 'BPTQ',
+	BRECQ: 'BRECQ',
+	MINMAXPTQ: 'MINMAXPTQ'
+} as const;
 
-export enum MultiflowAlgorithmsEnum {
-	MULTIFLOW_PRUNE = 'MULTIFLOW_PRUNE'
-}
+export type QuantizationAlgorithmsEnum = (typeof QuantizationAlgorithmsEnum)[keyof typeof QuantizationAlgorithmsEnum];
 
-export enum DiffusionModelAlgorithmsEnum {
-	PTQ4DIT_GET_CALIBRATION_SET = 'PTQ4DiT_GET_CALIBRATION_SET',
-	PTQ4DIT_QUANT_SAMPLE = 'PTQ4DiT_QUANT_SAMPLE'
-}
+export const MultiflowAlgorithmsEnum = {
+	MULTIFLOW_PRUNE: 'MULTIFLOW_PRUNE'
+} as const;
 
-export enum PruningAlgorithmsEnum {
-	IPG = 'IPG',
-	IPM = 'IPM',
-	IPR = 'IPR',
-	IMP = 'IMP',
-	OMP = 'OMP',
-	IPS = 'IPS',
-	IPSY = 'IPSY',
-	IPMB = 'IPMB'
-}
+export type MultiflowAlgorithmsEnum = (typeof MultiflowAlgorithmsEnum)[keyof typeof MultiflowAlgorithmsEnum];
 
-export enum MachineUnlearningAlgorithmsEnum {
-	MU = 'MU'
-}
+export const DiffusionModelAlgorithmsEnum = {
+	PTQ4DIT_GET_CALIBRATION_SET: 'PTQ4DiT_GET_CALIBRATION_SET',
+	PTQ4DIT_QUANT_SAMPLE: 'PTQ4DiT_QUANT_SAMPLE'
+} as const;
 
-export enum AWQAlgorithmsEnum {
-	AWQ_QUANTIZATION = 'AWQ_Q'
-}
+export type DiffusionModelAlgorithmsEnum =
+	(typeof DiffusionModelAlgorithmsEnum)[keyof typeof DiffusionModelAlgorithmsEnum];
 
-export enum TrainAlgorithmsEnum {
-	QUANTIZATION_TRAIN = 'Q_TRAIN',
-	PRUNING_TRAIN = 'P_TRAIN',
-	MACHINE_UNLEARNING_TRAIN = 'MU_TRAIN'
-}
+export const PruningAlgorithmsEnum = {
+	IPG: 'IPG',
+	IPM: 'IPM',
+	IPR: 'IPR',
+	IMP: 'IMP',
+	OMP: 'OMP',
+	IPS: 'IPS',
+	IPSY: 'IPSY',
+	IPMB: 'IPMB'
+} as const;
+
+export type PruningAlgorithmsEnum = (typeof PruningAlgorithmsEnum)[keyof typeof PruningAlgorithmsEnum];
+
+export const MachineUnlearningAlgorithmsEnum = {
+	MU: 'MU'
+} as const;
+
+export type MachineUnlearningAlgorithmsEnum =
+	(typeof MachineUnlearningAlgorithmsEnum)[keyof typeof MachineUnlearningAlgorithmsEnum];
+
+export const AWQAlgorithmsEnum = {
+	AWQ_QUANTIZATION: 'AWQ_Q'
+} as const;
+
+export type AWQAlgorithmsEnum = (typeof AWQAlgorithmsEnum)[keyof typeof AWQAlgorithmsEnum];
+
+export const TrainAlgorithmsEnum = {
+	QUANTIZATION_TRAIN: 'Q_TRAIN',
+	PRUNING_TRAIN: 'P_TRAIN',
+	MACHINE_UNLEARNING_TRAIN: 'MU_TRAIN'
+} as const;
+
+export type TrainAlgorithmsEnum = (typeof TrainAlgorithmsEnum)[keyof typeof TrainAlgorithmsEnum];
 
 export const AlgorithmTypeTrainAlgoritmMap: any = {
 	[AlgorithmType.MACHINE_UNLEARNING]: TrainAlgorithmsEnum.MACHINE_UNLEARNING_TRAIN,

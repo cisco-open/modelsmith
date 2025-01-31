@@ -14,9 +14,11 @@
 //
 //   SPDX-License-Identifier: Apache-2.0
 
-export enum NotificationTypes {
-	SUCCESS = 'success',
-	ERROR = 'error',
-	INFO = 'info',
-	WARNING = 'warning'
-}
+export const NotificationTypes = {
+	SUCCESS: 'success',
+	ERROR: 'error',
+	INFO: 'info',
+	WARNING: 'warning'
+} as const;
+
+export type NotificationTypes = (typeof NotificationTypes)[keyof typeof NotificationTypes];

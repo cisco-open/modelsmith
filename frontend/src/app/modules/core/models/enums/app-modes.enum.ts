@@ -14,7 +14,9 @@
 //
 //   SPDX-License-Identifier: Apache-2.0
 
-export enum AppModes {
-	GUIDED = 'guided',
-	EXPERT = 'expert'
-}
+export const AppModes = {
+	GUIDED: 'guided',
+	EXPERT: 'expert'
+} as const;
+
+export type AppModes = (typeof AppModes)[keyof typeof AppModes];

@@ -14,10 +14,12 @@
 //
 //   SPDX-License-Identifier: Apache-2.0
 
-export enum RealtimeUpdateMetricEnum {
-	ACCURACY = 'accuracy',
-	TESTING_ACCURACY = 'testingAccuracy',
-	LOSS = 'loss',
-	TESTING_LOSS = 'testingLoss',
-	SPARSITY = 'sparsity'
-}
+export const RealtimeUpdateMetricEnum = {
+	ACCURACY: 'accuracy',
+	TESTING_ACCURACY: 'testingAccuracy',
+	LOSS: 'loss',
+	TESTING_LOSS: 'testingLoss',
+	SPARSITY: 'sparsity'
+} as const;
+
+export type RealtimeUpdateMetricEnum = (typeof RealtimeUpdateMetricEnum)[keyof typeof RealtimeUpdateMetricEnum];
