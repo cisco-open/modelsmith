@@ -116,10 +116,23 @@
 			</div>
 		</div>
 
-		<div
-			#terminalContainer
-			class="terminal-wrapper"
-			[style.background-color]="form.get('background')?.value"
-			[style.border-color]="form.get('background')?.value"></div>
+		<div class="right-side-container">
+			<div class="search-icon">
+				<button
+					mat-icon-button
+					color="primary"
+					matTooltip="Search terminal"
+					#searchTooltip
+					(click)="openPanel(searchTooltip)">
+					<mat-icon fontSet="ms" fontIcon="icon-MagnifyingGlass"></mat-icon>
+				</button>
+			</div>
+
+			<div
+				#terminalContainer
+				class="terminal-wrapper"
+				[style.background-color]="form.get('background')?.value"
+				[style.border-color]="form.get('background')?.value"></div>
+		</div>
 	</div>
 </mat-card>

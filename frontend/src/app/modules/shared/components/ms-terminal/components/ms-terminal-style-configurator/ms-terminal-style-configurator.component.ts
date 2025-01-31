@@ -27,19 +27,27 @@ import {
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatButtonModule } from '@angular/material/button';
+import { MatButtonModule, MatIconButton } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { FitAddon } from '@xterm/addon-fit';
+import { SearchAddon } from '@xterm/addon-search';
 import { Terminal } from '@xterm/xterm';
 import { NgxColorsModule } from 'ngx-colors';
+import { take } from 'rxjs';
+import { PopoverRef } from '../../../../../core/components/ms-popover';
+import { PopoverPosition } from '../../../../../core/components/ms-popover/models/enums/popover-position.enum';
+import { PopoverService } from '../../../../../core/components/ms-popover/service/popover.service';
+import { isNil } from '../../../../shared.utils';
 import { BannerService } from '../../../ms-banner/services/banner.service';
 import { FONT_FAMILIES } from '../../models/font-families.const';
 import { FONT_WEIGHT } from '../../models/font-weight.const';
 import { TerminalStylesService } from '../../services/terminal-styles.service';
+import { MsTerminalToolbarSearchPopoverComponent } from '../ms-terminal-toolbar-search-popover/ms-terminal-toolbar-search-popover.component';
 
 @Component({
 	selector: 'ms-terminal-style-configurator',
@@ -54,11 +62,13 @@ import { TerminalStylesService } from '../../services/terminal-styles.service';
 		NgxColorsModule,
 		MatTooltipModule,
 		MatCardModule,
-		MatButtonModule
+		MatButtonModule,
+		MatIconModule
 	],
 	templateUrl: './ms-terminal-style-configurator.component.html',
 	styleUrl: './ms-terminal-style-configurator.component.scss',
-	encapsulation: ViewEncapsulation.None
+	encapsulation: ViewEncapsulation.None,
+	providers: [PopoverService]
 })
 export class MsTerminalStyleConfiguratorComponent implements OnInit, OnDestroy {
 	@ViewChild('terminalContainer', { static: true }) terminalDiv!: ElementRef;
@@ -67,6 +77,7 @@ export class MsTerminalStyleConfiguratorComponent implements OnInit, OnDestroy {
 	private fb = inject(FormBuilder);
 	private terminalStylesService = inject(TerminalStylesService);
 	private bannerService = inject(BannerService);
+	private popoverService = inject(PopoverService);
 
 	public fontFamilies = FONT_FAMILIES;
 	public fontWeight = FONT_WEIGHT;
@@ -74,8 +85,11 @@ export class MsTerminalStyleConfiguratorComponent implements OnInit, OnDestroy {
 	private terminal!: Terminal;
 	private fitAddon = new FitAddon();
 	private resizeObserver?: ResizeObserver;
+	private searchPanelRef?: PopoverRef;
 
 	public form: FormGroup = new FormGroup({});
+
+	private searchAddon = new SearchAddon();
 
 	ngOnInit(): void {
 		this.initializeForm();
@@ -101,7 +115,10 @@ export class MsTerminalStyleConfiguratorComponent implements OnInit, OnDestroy {
 
 	private initializeTerminal(): void {
 		this.terminal = this.terminalStylesService.createTerminalInstance();
+
 		this.terminal.loadAddon(this.fitAddon);
+		this.terminal.loadAddon(this.searchAddon);
+
 		this.terminal.open(this.terminalDiv.nativeElement);
 		this.setupResizeObserver();
 	}
@@ -157,6 +174,42 @@ export class MsTerminalStyleConfiguratorComponent implements OnInit, OnDestroy {
 
 	public hasUnsavedChanges(): boolean {
 		return this.form.dirty;
+	}
+
+	public search(value: string): void {
+		this.searchAddon.findNext(value, {
+			decorations: this.terminalStylesService.getSearchDecorationOptions()
+		});
+	}
+
+	public openPanel(origin: MatIconButton) {
+		if (!isNil(this.searchPanelRef)) {
+			return;
+		}
+
+		this.searchPanelRef = this.popoverService.open(
+			MsTerminalToolbarSearchPopoverComponent,
+			origin._elementRef,
+			{
+				position: PopoverPosition.LEFT,
+				width: '200px',
+				height: '60px'
+			},
+			''
+		);
+
+		this.searchPanelRef.data$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((data: any) => {
+			this.search(data);
+		});
+
+		this.searchPanelRef
+			.afterClosed()
+			.pipe(take(1))
+			.subscribe(() => {
+				this.searchPanelRef = undefined;
+				this.searchAddon.clearDecorations();
+				this.searchAddon.findNext('');
+			});
 	}
 
 	ngOnDestroy(): void {
