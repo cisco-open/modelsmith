@@ -43,6 +43,14 @@
 				<mat-icon fontSet="ms" fontIcon="icon-Bell" class="mat-white"></mat-icon>
 			</button>
 		</div>
+		<div>
+			<button
+				mat-icon-button
+				(click)="toggleTheme()"
+				[matTooltip]="currentTheme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'">
+				<mat-icon class="mat-white">{{ themeIcon }}</mat-icon>
+			</button>
+		</div>
 		<div class="vertical-divider h-9"></div>
 		<div>
 			<ms-user-navigation></ms-user-navigation>

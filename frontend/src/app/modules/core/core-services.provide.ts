@@ -22,10 +22,12 @@ import {
 import { IconsService } from './services/icons.service';
 import { ModelsFacadeService } from './services/models-facade.service';
 import { PageRunningScriptSpiningIndicatorService } from './services/page-running-script-spinning-indicator.service';
+import { ThemeService } from './services/theme.service';
 
 export function provideCoreServices(): Provider[] {
 	return [
 		WebsocketService,
+		ThemeService,
 		TerminalWebSocketService,
 		AuthGuard,
 		NavigationService,
@@ -55,9 +57,11 @@ export function provideCoreServices(): Provider[] {
 				const websocketService = inject(WebsocketService);
 				const terminalWebSocketService = inject(TerminalWebSocketService);
 				const iconService = inject(IconsService);
+				const themeService = inject(ThemeService);
 
 				websocketService.connect();
 				terminalWebSocketService.connect();
+				themeService.setThemeFromStorage();
 
 				navigationService.trackNavigationHistory();
 				pageSpinningIndicatorService.trackCurrentRunningPage();

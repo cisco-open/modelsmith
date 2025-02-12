@@ -1,0 +1,181 @@
+//   Copyright 2024 Cisco Systems, Inc.
+//
+//   Licensed under the Apache License, Version 2.0 (the "License");
+//   you may not use this file except in compliance with the License.
+//   You may obtain a copy of the License at
+//
+//        http://www.apache.org/licenses/LICENSE-2.0
+//
+//   Unless required by applicable law or agreed to in writing, software
+//   distributed under the License is distributed on an "AS IS" BASIS,
+//   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//   See the License for the specific language governing permissions and
+//   limitations under the License.
+//
+//   SPDX-License-Identifier: Apache-2.0
+
+/**
+ * 🎨 Color Palette Description:
+ *
+ * - 🏆 Primary: Predominantly used across app screens and components.
+ * - 🌸 Accent: Interactive elements such as buttons, action buttons, text fields, etc.
+ * - ✅ Success: Indication for successful actions.
+ * - ⚠️ Warning: Indication for cautionary actions.
+ * - 🛑 Error: Indication for erroneous actions.
+ * - 🖤 Backgrounds: Colors for elements like disabled buttons, dialogs, tooltips, cards, tables, etc.
+ * - 🤍 Foregrounds: Typically for texts, icons, or strokes. Serves as contrast for background colors.
+ *
+ * Guidelines:
+ * - ➡️ Colors can be accessed using CSS custom properties. Example: var(--primary-500).
+ * - ➡️ Default shade: 500. Shades closer to 100 are lighter; those closer to 900 are darker.
+ * - ➡️ If no color suffices, add your own color within the defined palettes.
+ * - ➡️ Direct RGBA with CSS custom properties don't work. For example, rgba(var(--primary-500),.5). 
+ *       Hence, separate values for alpha are defined, e.g., 300-alpha: rgba(14, 33, 97, 0.5).
+ */
+
+$ms-dark-theme-variables: (
+	primary: (
+		50: #dce0f3,
+		100: #b2b7dd,
+		200: #8992c9,
+		300: #6270b7,
+		400: #4051a3,
+		500: #2e3d95,
+		600: #283a8d,
+		700: #222f84,
+		800: #1b2980,
+		// BASE
+		900: #131e70,
+		contrast: (
+			50: white,
+			100: white,
+			200: white,
+			300: white,
+			400: white,
+			500: white,
+			600: white,
+			700: white,
+			800: white,
+			900: white
+		)
+	),
+	accent: (
+		50: #e9eaff,
+		100: #c6c5f3,
+		200: #a2a1ed,
+		300: #7d7de6,
+		400: #5b5ae0,
+		// BASE
+		500: #4847d8,
+		600: #4141cf,
+		700: #3a3ac6,
+		800: #3232bd,
+		900: #2626b0,
+		contrast: (
+			50: white,
+			100: white,
+			200: white,
+			300: white,
+			400: white,
+			500: white,
+			600: white,
+			700: white,
+			800: white,
+			900: white
+		)
+	),
+	complementary: (
+		50: #fdeef3,
+		100: #fcbddf,
+		200: #f98cb9,
+		300: #f65a93,
+		400: #f33a7a,
+		500: #f02062,
+		600: #d91a56,
+		700: #bf164b,
+		800: #a51240,
+		// BASE
+		900: #7e0f33
+	),
+	success: (
+		50: #d0f3e9,
+		100: #9be6d0,
+		200: #68d9b8,
+		300: #36cc9f,
+		400: #25b98b,
+		500: #1ea377,
+		600: #1a8c66,
+		700: #167054,
+		800: #125b43,
+		900: #0c3e2e
+	),
+	warning: (
+		100: #fff0d9,
+		200: #ffe1b3,
+		300: #ffd28c,
+		400: #ffc466,
+		500: #ffb540,
+		600: #cc9436,
+		700: #99702b,
+		800: #664c21,
+		900: #332611
+	),
+	error: (
+		100: #ffe0e4,
+		200: #ffb3b7,
+		300: #ff868a,
+		400: #ff595d,
+		500: #ff2d30,
+		600: #cc2629,
+		700: #991f21,
+		800: #661719,
+		900: #330e0d
+	),
+	backgrounds: (
+		50: #121212,
+		80: #1d1d1d,
+		100: #212121,
+		// BASE
+		150: #272727,
+		200: #2e2e2e,
+		300: #333333,
+		400: #383838,
+		500: #3e3e3e,
+		600: #444444,
+		700: #4a4a4a,
+		800: #515151,
+		900: #595959
+	),
+	foregrounds: (
+		50: #ffffff,
+		100: #f8f8f8,
+		150: #f1f1f1,
+		200: #e9e9e9,
+		300: #e2e2e2,
+		400: #dadada,
+		500: #d3d3d3,
+		500-alpha: rgba(211, 211, 211, 0.69),
+		550: #cccccc,
+		600: #c4c4c4,
+		650: #bdbdbd,
+		700: #b5b5b5,
+		// BASE
+		750: #aeaeae,
+		800: #a7a7a7,
+		900: #a0a0a0
+	),
+	tooltip: #424242,
+	terminal-color: #a0a4a9,
+	popover-color: #a0a4a9,
+	login-title: #4fcaff,
+	header: (
+		left: #4fe0c8,
+		right: #39b9e5
+	),
+	metrics: (
+		sparsity: #33b8e0,
+		accuracy: #4deec8,
+		loss: #c0392b,
+		testing: #f39c12
+	)
+);

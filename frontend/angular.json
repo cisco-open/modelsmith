@@ -36,8 +36,14 @@
 						"styles": [
 							"src/styles.scss",
 							{
-								"input": "src/app/styles/theme/_ms-theme.scss",
-								"bundleName": "theme"
+								"input": "src/app/styles/theme/_ms-light-theme.scss",
+								"bundleName": "light-theme",
+								"inject": false
+							},
+							{
+								"input": "src/app/styles/theme/_ms-dark-theme.scss",
+								"bundleName": "dark-theme",
+								"inject": false
 							}
 						],
 						"browser": "src/main.ts",
