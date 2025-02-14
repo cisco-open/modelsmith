@@ -35,17 +35,17 @@
 
 $ms-dark-theme-variables: (
 	primary: (
-		50: #dce0f3,
-		100: #b2b7dd,
-		200: #8992c9,
-		300: #6270b7,
-		400: #4051a3,
-		500: #2e3d95,
-		600: #283a8d,
-		700: #222f84,
-		800: #1b2980,
-		// BASE
-		900: #131e70,
+		50: #0d1120,
+		100: #12182a,
+		200: #172133,
+		300: #1d2840,
+		400: #22304c,
+		500: #283758,
+		// base
+		600: #2e3f64,
+		700: #344671,
+		800: #3a4e7e,
+		900: #405b8b,
 		contrast: (
 			50: white,
 			100: white,
@@ -60,17 +60,16 @@ $ms-dark-theme-variables: (
 		)
 	),
 	accent: (
-		50: #e9eaff,
-		100: #c6c5f3,
-		200: #a2a1ed,
-		300: #7d7de6,
-		400: #5b5ae0,
-		// BASE
-		500: #4847d8,
-		600: #4141cf,
-		700: #3a3ac6,
-		800: #3232bd,
-		900: #2626b0,
+		50: #100f2a,
+		100: #150f32,
+		200: #1a133a,
+		300: #1f1941,
+		400: #241f49,
+		500: #29264f,
+		600: #2f2c55,
+		700: #34235b,
+		800: #392961,
+		900: #3e2f67,
 		contrast: (
 			50: white,
 			100: white,
@@ -134,8 +133,7 @@ $ms-dark-theme-variables: (
 	backgrounds: (
 		50: #121212,
 		80: #1d1d1d,
-		100: #212121,
-		// BASE
+		100: #424242,
 		150: #272727,
 		200: #2e2e2e,
 		300: #333333,
@@ -169,13 +167,46 @@ $ms-dark-theme-variables: (
 	popover-color: #a0a4a9,
 	login-title: #4fcaff,
 	header: (
-		left: #4fe0c8,
-		right: #39b9e5
+		left: rgb(65, 65, 65),
+		right: #333536
 	),
 	metrics: (
 		sparsity: #33b8e0,
 		accuracy: #4deec8,
 		loss: #c0392b,
 		testing: #f39c12
+	),
+	text-primary: #ececec,
+	text-secondary: #121212,
+	icons-contrast: #ececec,
+	page-background-color: #212121,
+	form: (
+		background-color: rgb(48, 48, 48),
+		border-color: rgb(48, 48, 48),
+		text-color: #ececec,
+		placeholder-color: #8a8a8a,
+		hover-border-color: rgb(76, 76, 76),
+		dark-background-color: #121212,
+		dark-border-color: #2c2c2c,
+		dark-text-color: #e0e0e0,
+		dark-placeholder-color: #757575,
+		dark-hover-border-color: #5e5e5e
+	),
+	sidenav: (
+		text-color: #ececec,
+		active-text-color: #ececec,
+		background-color: rgb(65, 65, 65)
+	),
+	links: (
+		text-color: #5e80b7,
+		hover-text-color: #7398d4
+	),
+	scrollbar: (
+		track: transparent,
+		thumb: #676767,
+		thumb-hover: #7d7d7d
+	),
+	divider: (
+		color: #313131
 	)
 );

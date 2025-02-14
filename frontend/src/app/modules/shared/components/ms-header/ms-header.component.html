@@ -18,7 +18,7 @@
 	<div class="left flex justify-center items-center">
 		<div class="icon">
 			<button mat-icon-button>
-				<mat-icon fontSet="ms" fontIcon="icon-Nav" class="mat-white"></mat-icon>
+				<mat-icon fontSet="ms" fontIcon="icon-Nav" class="mat-contrast"></mat-icon>
 			</button>
 		</div>
 		<div class="logo ml-4">
@@ -35,12 +35,12 @@
 		</div>
 		<div>
 			<button mat-icon-button>
-				<mat-icon fontSet="ms" fontIcon="icon-Question" class="mat-white"></mat-icon>
+				<mat-icon fontSet="ms" fontIcon="icon-Question" class="mat-contrast"></mat-icon>
 			</button>
 		</div>
 		<div>
 			<button mat-icon-button>
-				<mat-icon fontSet="ms" fontIcon="icon-Bell" class="mat-white"></mat-icon>
+				<mat-icon fontSet="ms" fontIcon="icon-Bell" class="mat-contrast"></mat-icon>
 			</button>
 		</div>
 		<div>
@@ -48,16 +48,16 @@
 				mat-icon-button
 				(click)="toggleTheme()"
 				[matTooltip]="currentTheme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'">
-				<mat-icon class="mat-white">{{ themeIcon }}</mat-icon>
+				<mat-icon class="mat-contrast">{{ themeIcon }}</mat-icon>
 			</button>
 		</div>
-		<div class="vertical-divider h-9"></div>
+		<div class="vertical-divider-header h-9"></div>
 		<div>
 			<ms-user-navigation></ms-user-navigation>
 		</div>
 		<div class="icon cursor-pointer">
 			<button mat-icon-button>
-				<mat-icon fontSet="ms" fontIcon="icon-Nav" class="mat-white"></mat-icon>
+				<mat-icon fontSet="ms" fontIcon="icon-Nav" class="mat-contrast"></mat-icon>
 			</button>
 		</div>
 	</div>

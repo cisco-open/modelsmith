@@ -64,10 +64,11 @@
 		padding: 6px;
 		cursor: pointer;
 		transition: background-color 0.3s ease;
+		color: var(--foregrounds-750);
 
 		&:hover {
 			color: var(--foregrounds-800);
-			background-color: var(--foregrounds-150);
+			background-color: var(--sidenav-background-color);
 			border-radius: 8px;
 		}
 
@@ -75,8 +76,6 @@
 			margin-right: 8px;
 			color: var(--foregrounds-750);
 		}
-
-		color: var(--foregrounds-750);
 	}
 }
 

@@ -21,6 +21,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { MsEmptyStateComponent } from '../shared/components/ms-empty-state/ms-empty-state.component';
 import { MsLineChartComponent } from '../shared/components/ms-line-chart/ms-line-chart.component';
 import { ChartToolsGlobalSignalsService } from '../shared/components/ms-line-chart/services/chart-tools-global-signals.service';
@@ -55,7 +56,8 @@ import { RunningRoutingModule } from './running-routing.module';
 		MatCardModule,
 		FormsModule,
 		ReactiveFormsModule,
-		MatSlideToggleModule
+		MatSlideToggleModule,
+		MatTooltipModule
 	],
 	providers: [ChartToolsGlobalSignalsService]
 })

@@ -16,12 +16,5 @@
 
 :root {
 	--mat-divider-width: 2px;
-	--mat-divider-color: var(--foregrounds-300);
-}
-
-.vertical-divider {
-	height: 100%;
-	width: 1px;
-	background-color: var(--backgrounds-50);
-	margin: 0 12px;
+	--mat-divider-color: var(--divider-color);
 }

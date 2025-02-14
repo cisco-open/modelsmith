@@ -22,3 +22,9 @@
 	display: flex;
 	justify-content: space-between;
 }
+
+.vertical-divider-header {
+	width: 1px;
+	background-color: var(--icons-contrast);
+	margin: 0 12px;
+}

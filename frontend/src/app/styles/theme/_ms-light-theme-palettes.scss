@@ -177,5 +177,38 @@ $ms-light-theme-variables: (
 		accuracy: #40dab7,
 		loss: #b02863,
 		testing: #f1c40f
+	),
+	text-primary: #000000,
+	text-secondary: #b4b4b4,
+	icons-contrast: #ffffff,
+	page-background-color: #f6f6f6,
+	form: (
+		background-color: #ffffff,
+		border-color: #dcdcdc,
+		text-color: #000000,
+		placeholder-color: #8a8a8a,
+		hover-border-color: #bcbcbc,
+		dark-background-color: #121212,
+		dark-border-color: #2c2c2c,
+		dark-text-color: #e0e0e0,
+		dark-placeholder-color: #757575,
+		dark-hover-border-color: #5e5e5e
+	),
+	sidenav: (
+		text-color: #596069,
+		active-text-color: #23282e,
+		background-color: #f0f1f2
+	),
+	links: (
+		text-color: #1d69cc,
+		hover-text-color: rgb(68, 70, 212)
+	),
+	scrollbar: (
+		track: #ffffff,
+		thumb: #a4a4a4,
+		thumb-hover: #666666
+	),
+	divider: (
+		color: #e1e4e8
 	)
 );

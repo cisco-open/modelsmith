@@ -17,7 +17,7 @@ SPDX-License-Identifier: Apache-2.0 -->
 <button mat-button [matMenuTriggerFor]="menu" #menuTrigger="matMenuTrigger">
 	<div class="user-navigation-content-wrapper flex items-center gap-2">
 		<div class="content-1 flex items-center">
-			<mat-icon fontSet="ms" fontIcon="icon-User" class="mat-white"></mat-icon>
+			<mat-icon fontSet="ms" fontIcon="icon-User" class="mat-contrast"></mat-icon>
 		</div>
 		@if (user$ | async; as currentUser) {
 		<div class="content-2 right text-left ml-2">
@@ -30,7 +30,7 @@ SPDX-License-Identifier: Apache-2.0 -->
 				fontSet="ms"
 				fontIcon="icon-CaretDown"
 				[style.transform]="menuTrigger.menuOpen ? 'rotate(180deg)' : 'rotate(0)'"
-				class="mat-white rotate-icon text-base">
+				class="mat-contrast rotate-icon text-base">
 			</mat-icon>
 		</div>
 	</div>

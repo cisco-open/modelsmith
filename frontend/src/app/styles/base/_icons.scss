@@ -24,6 +24,7 @@ $icons-success: var(--success-500);
 $icons-warn: var(--warning-500);
 $icons-error: var(--error-500);
 $icons-white: var(--backgrounds-50);
+$icons-contrast: var(--icons-contrast);
 
 @mixin icon-size($size) {
 	font-size: $size;
@@ -80,6 +81,10 @@ mat-icon {
 		color: $icons-white !important;
 	}
 
+	&.mat-contrast {
+		color: $icons-contrast !important;
+	}
+
 	&.mat-accent {
 		color: $icons-accent !important;
 	}
@@ -99,7 +104,7 @@ mat-icon {
 
 button[disabled] {
 	mat-icon {
-		color: var(--backgroudns-800) !important;
+		color: var(--backgrounds-800) !important;
 	}
 }
 

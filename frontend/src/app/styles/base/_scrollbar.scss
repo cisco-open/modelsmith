@@ -21,16 +21,16 @@
 
 /* Track */
 ::-webkit-scrollbar-track {
-	background: var(--backgrounds-100);
+	background: var(--scrollbar-track);
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-	background: var(--backgrounds-500);
+	background: var(--scrollbar-thumb);
 	border-radius: 16px;
 }
 
 /* Handle on Hover */
 ::-webkit-scrollbar-thumb:hover {
-	background: var(--backgrounds-700);
+	background: var(--scrollbar-thumb-hover);
 }

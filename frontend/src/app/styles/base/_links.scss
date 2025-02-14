@@ -19,11 +19,11 @@
 a {
 	cursor: pointer;
 
-	color: var(--primary-800);
+	color: var(--links-text-color);
 	text-decoration: none;
 	@include typography.paragraph-bold-p4-small-bold;
 
 	&:hover {
-		color: var(--primary-600);
+		color: var(--links-hover-text-color);
 	}
 }
