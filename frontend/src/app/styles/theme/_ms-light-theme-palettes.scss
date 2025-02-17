@@ -222,5 +222,18 @@ $ms-light-theme-variables: (
 		selected-border-color: #3ed4bb
 	),
 	chips-accent-color: #ebedff,
-	stepper-icon-background-color: #777777
+	stepper-icon-background-color: #777777,
+	slide-toggle: (
+		focus-state-layer-color: #228df2,
+		handle-color: #228df2,
+		hover-state-layer-color: #228df2,
+		pressed-state-layer-color: #228df2,
+		focus-handle-color: #184aad,
+		hover-handle-color: #184aad,
+		pressed-handle-color: #184aad,
+		focus-track-color: #65b9ff,
+		hover-track-color: #65b9ff,
+		pressed-track-color: #65b9ff,
+		track-color: #65b9ff
+	)
 );

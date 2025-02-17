@@ -220,5 +220,18 @@ $ms-dark-theme-variables: (
 		selected-border-color: #aeaeae
 	),
 	chips-accent-color: #3e2f67,
-	stepper-icon-background-color: #424242
+	stepper-icon-background-color: #424242,
+	slide-toggle: (
+		focus-state-layer-color: #82b1ff,
+		handle-color: #82b1ff,
+		hover-state-layer-color: #82b1ff,
+		pressed-state-layer-color: #82b1ff,
+		focus-handle-color: #5e9eff,
+		hover-handle-color: #5e9eff,
+		pressed-handle-color: #5e9eff,
+		focus-track-color: #a3c8ff,
+		hover-track-color: #a3c8ff,
+		pressed-track-color: #a3c8ff,
+		track-color: #a3c8ff
+	)
 );
