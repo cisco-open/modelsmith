@@ -19,8 +19,8 @@
 button.ms-white-stroked-button {
 	&.mat-mdc-outlined-button {
 		@include typography.paragraph-monospace-p2-large;
-		border-color: var(--backgrounds-50);
-		color: var(--backgrounds-50);
+		border-color: var(--icons-contrast);
+		color: var(--icons-contrast);
 	}
 }
 
@@ -36,7 +36,7 @@ button.ms-white-stroked-button {
 
 	&:not(:disabled) {
 		&.mat-primary {
-			border-color: var(--primary-800);
+			border-color: var(--outlined-button-color);
 		}
 
 		&.mat-accent {

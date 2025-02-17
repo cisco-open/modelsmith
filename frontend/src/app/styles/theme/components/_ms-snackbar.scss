@@ -15,8 +15,8 @@
 //   SPDX-License-Identifier: Apache-2.0
 
 .mat-mdc-snack-bar-container {
-	--mdc-snackbar-container-color: rgba(255, 255, 255, 1) !important;
-	--mdc-snackbar-supporting-text-color: rgba(35, 40, 46, 1) !important;
+	--mdc-snackbar-container-color: var(--snackbar-background-color) !important;
+	--mdc-snackbar-supporting-text-color: var(--text-primary) !important;
 }
 
 .notification-panel {

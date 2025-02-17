@@ -84,17 +84,15 @@ $ms-dark-theme-variables: (
 		)
 	),
 	complementary: (
-		50: #fdeef3,
-		100: #fcbddf,
-		200: #f98cb9,
-		300: #f65a93,
-		400: #f33a7a,
-		500: #f02062,
-		600: #d91a56,
-		700: #bf164b,
-		800: #a51240,
-		// BASE
-		900: #7e0f33
+		100: #ffe0e4,
+		200: #ffb3b7,
+		300: #ff868a,
+		400: #ff595d,
+		500: #ff2d30,
+		600: #cc2629,
+		700: #991f21,
+		800: #661719,
+		900: #330e0d
 	),
 	success: (
 		50: #d0f3e9,
@@ -120,15 +118,17 @@ $ms-dark-theme-variables: (
 		900: #332611
 	),
 	error: (
-		100: #ffe0e4,
-		200: #ffb3b7,
-		300: #ff868a,
-		400: #ff595d,
-		500: #ff2d30,
-		600: #cc2629,
-		700: #991f21,
-		800: #661719,
-		900: #330e0d
+		50: #fdeef3,
+		100: #fcbddf,
+		200: #f98cb9,
+		300: #f65a93,
+		400: #f33a7a,
+		500: #f02062,
+		600: #d91a56,
+		700: #bf164b,
+		800: #a51240,
+		// BASE
+		900: #7e0f33
 	),
 	backgrounds: (
 		50: #121212,
@@ -162,10 +162,12 @@ $ms-dark-theme-variables: (
 		800: #a7a7a7,
 		900: #a0a0a0
 	),
-	tooltip: #424242,
+	tooltip: #121212,
 	terminal-color: #a0a4a9,
 	popover-color: #a0a4a9,
-	login-title: #4fcaff,
+	login-title: #395eb2,
+	logo-section-ribbon: #4b4949,
+	custom-button-contrast: #ececec,
 	header: (
 		left: rgb(65, 65, 65),
 		right: #333536
@@ -180,6 +182,9 @@ $ms-dark-theme-variables: (
 	text-secondary: #121212,
 	icons-contrast: #ececec,
 	page-background-color: #212121,
+	snackbar-background-color: #121212,
+	backdrop-color: rgba(#121212, 0.45),
+	outlined-button-color: #1a416a,
 	form: (
 		background-color: rgb(48, 48, 48),
 		border-color: rgb(48, 48, 48),
@@ -208,5 +213,11 @@ $ms-dark-theme-variables: (
 	),
 	divider: (
 		color: #313131
-	)
+	),
+	card: (
+		box-shadow: #ffffff14,
+		selected-hover-background-color: #646464,
+		selected-border-color: #aeaeae
+	),
+	chips-accent-color: #3e2f67
 );
