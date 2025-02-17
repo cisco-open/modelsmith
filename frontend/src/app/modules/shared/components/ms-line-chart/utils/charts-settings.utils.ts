@@ -91,6 +91,11 @@ export class ChartSettingsUtils {
 					ticks: {
 						display: settings.isYAxisVisible,
 						stepSize: settings.yAxisTickInterval
+					},
+					grid: {
+						color: () => {
+							return 'rgba(225, 228, 232, 0.6)';
+						}
 					}
 				},
 				x: {
@@ -102,7 +107,7 @@ export class ChartSettingsUtils {
 					grid: {
 						drawOnChartArea: true,
 						color: (context) => {
-							return context.tick && context.tick.label !== '' ? 'rgba(225, 228, 232, 1)' : 'transparent';
+							return context.tick && context.tick.label !== '' ? 'rgba(225, 228, 232, 0.6)' : 'transparent';
 						},
 						lineWidth: 1,
 						tickLength: 10
@@ -110,7 +115,7 @@ export class ChartSettingsUtils {
 					border: {
 						display: true,
 						width: 1,
-						color: 'rgba(225, 228, 232, 1)',
+						color: 'rgba(225, 228, 232, 0.6)',
 						dash: [],
 						dashOffset: 0
 					}
