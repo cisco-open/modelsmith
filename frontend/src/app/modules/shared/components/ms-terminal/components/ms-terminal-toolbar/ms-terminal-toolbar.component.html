@@ -17,28 +17,40 @@
 <div class="buttons-wrapper">
 	<button
 		mat-icon-button
-		color="primary"
+		class="mat-icon-button-contrast"
 		matTooltip="Search terminal"
 		#searchTooltip
 		(click)="openPanel(searchTooltip)">
 		<mat-icon fontSet="ms" fontIcon="icon-MagnifyingGlass"></mat-icon>
 	</button>
 
-	<button mat-icon-button color="primary" matTooltip="Terminal history" (click)="openTerminalMessagesHistoryDialog()">
+	<button
+		mat-icon-button
+		class="mat-icon-button-contrast"
+		matTooltip="Terminal history"
+		(click)="openTerminalMessagesHistoryDialog()">
 		<mat-icon>history</mat-icon>
 	</button>
 
-	<button mat-icon-button color="primary" matTooltip="Scroll to top" (click)="scrollToTopTerminal.emit()">
+	<button
+		mat-icon-button
+		class="mat-icon-button-contrast"
+		matTooltip="Scroll to top"
+		(click)="scrollToTopTerminal.emit()">
 		<mat-icon fontSet="ms" fontIcon="icon-ArrowUp"></mat-icon>
 	</button>
 
-	<button mat-icon-button color="primary" matTooltip="Scroll to bottom" (click)="scrollToBottomTerminal.emit()">
+	<button
+		mat-icon-button
+		class="mat-icon-button-contrast"
+		matTooltip="Scroll to bottom"
+		(click)="scrollToBottomTerminal.emit()">
 		<mat-icon fontSet="ms" fontIcon="icon-ArrowDown"></mat-icon>
 	</button>
 
 	<button
 		mat-icon-button
-		color="primary"
+		class="mat-icon-button-contrast"
 		matTooltip="Clear terminal"
 		[disabled]="isScriptActive"
 		(click)="clearTerminalScreen()">
@@ -47,7 +59,7 @@
 
 	<button
 		mat-icon-button
-		color="primary"
+		class="mat-icon-button-contrast"
 		[matTooltip]="isFullscreen ? 'Exit fullscreen' : 'Enter fullscreen'"
 		(click)="openFullScreenMode()">
 		<mat-icon>{{ isFullscreen ? 'fullscreen_exit' : 'fullscreen' }}</mat-icon>

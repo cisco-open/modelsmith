@@ -24,6 +24,12 @@ button.ms-white-stroked-button {
 	}
 }
 
+.mat-icon-button-contrast {
+	mat-icon {
+		color: var(--toolbar-icon-button);
+	}
+}
+
 .mat-mdc-button.mat-unthemed {
 	color: var(--foregrounds-700) !important;
 	@include typography.paragraph-semibold-p3-small-emphasis;
