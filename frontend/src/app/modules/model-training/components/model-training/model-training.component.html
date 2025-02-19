@@ -30,7 +30,7 @@
 			<button mat-raised-button color="primary" (click)="submit()" [disabled]="isScriptActive || form.invalid">
 				Run
 			</button>
-			<button class="ml-2" mat-stroked-button color="primary" (click)="navigationService.goToPreviousPage()">
+			<button class="ml-2" mat-stroked-button (click)="navigationService.goToPreviousPage()">
 				<mat-icon fontSet="ms" fontIcon="icon-ArrowLeft"></mat-icon>
 				Go back
 			</button>
