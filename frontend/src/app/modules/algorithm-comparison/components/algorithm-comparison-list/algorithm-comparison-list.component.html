@@ -21,14 +21,14 @@ SPDX-License-Identifier: Apache-2.0
 		<div class="item-wrapper">
 			<div msUseEllipsis>{{ item.recordName }}</div>
 			<div class="record-summary-buttons-wrapper">
-				<button mat-icon-button color="primary" (click)="viewRecord(item)">
-					<mat-icon fontSet="ms" fontIcon="icon-Eye" class="mat-primary"></mat-icon>
+				<button mat-icon-button class="mat-icon-button-contrast" (click)="viewRecord(item)">
+					<mat-icon fontSet="ms" fontIcon="icon-Eye"></mat-icon>
 				</button>
-				<button mat-icon-button color="primary" (click)="editRecord(i, item)">
-					<mat-icon fontSet="ms" fontIcon="icon-PencilSimple" class="mat-primary"></mat-icon>
+				<button mat-icon-button class="mat-icon-button-contrast" (click)="editRecord(i, item)">
+					<mat-icon fontSet="ms" fontIcon="icon-PencilSimple"></mat-icon>
 				</button>
-				<button mat-icon-button color="error" (click)="removeRecord(i)">
-					<mat-icon class="mat-error">delete</mat-icon>
+				<button mat-icon-button color="warn" (click)="removeRecord(i)">
+					<mat-icon>delete</mat-icon>
 				</button>
 			</div>
 		</div>

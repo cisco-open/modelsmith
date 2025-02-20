@@ -14,7 +14,21 @@
 //
 //   SPDX-License-Identifier: Apache-2.0
 
+@use '@angular/material' as mat;
+
 :root {
-	--mat-divider-width: 2px;
-	--mat-divider-color: var(--divider-color);
+	@include mat.divider-overrides(
+		(
+			color: var(--divider-color),
+			width: 1px
+		)
+	);
+
+	.divider-accent {
+		@include mat.divider-overrides(
+			(
+				color: var(--divider-accent-color)
+			)
+		);
+	}
 }

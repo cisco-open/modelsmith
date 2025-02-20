@@ -21,7 +21,7 @@ SPDX-License-Identifier: Apache-2.0
 	</mat-expansion-panel-header>
 
 	<div class="table-container">
-		<table mat-table [dataSource]="dataSource" matSort class="mat-table">
+		<table mat-table [dataSource]="dataSource" matSort>
 			<ng-container matColumnDef="recordName">
 				<th mat-header-cell *matHeaderCellDef mat-sort-header>Record Name</th>
 				<td mat-cell *matCellDef="let record">{{ record.recordName }}</td>
@@ -39,7 +39,7 @@ SPDX-License-Identifier: Apache-2.0
 			}
 
 			<tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-			<tr mat-row *matRowDef="let row; columns: displayedColumns" class="hover-highlight"></tr>
+			<tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
 		</table>
 	</div>
 </mat-expansion-panel>

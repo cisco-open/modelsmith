@@ -212,7 +212,8 @@ $ms-dark-theme-variables: (
 		thumb-hover: #7d7d7d
 	),
 	divider: (
-		color: #313131
+		color: #313131,
+		accent-color: #7d7d7d
 	),
 	card: (
 		box-shadow: #ffffff14,
@@ -234,5 +235,9 @@ $ms-dark-theme-variables: (
 		pressed-track-color: #a3c8ff,
 		track-color: #a3c8ff
 	),
-	toolbar-icon-button: #ececec
+	toolbar-icon-button: #ececec,
+	expansion-panel: (
+		container-background-color: #303030
+	),
+	hover-color: #555555
 );
