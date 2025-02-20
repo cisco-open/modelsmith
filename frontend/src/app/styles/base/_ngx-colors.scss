@@ -14,12 +14,18 @@
 //
 //   SPDX-License-Identifier: Apache-2.0
 
-@forward 'scrollbar';
-@forward 'icons';
-@forward 'typography';
-@forward 'key-value';
-@forward 'links';
-@forward 'common';
-@forward 'xterm-terminal';
-@forward 'ngx-colors';
-@forward 'inputs';
+:root {
+	ngx-colors-panel {
+		.opened {
+			background: var(--expansion-panel-container-background-color);
+
+			button {
+				color: var(--text-primary) !important;
+			}
+
+			svg {
+				fill: var(--text-primary);
+			}
+		}
+	}
+}

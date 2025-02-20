@@ -14,12 +14,13 @@
 //
 //   SPDX-License-Identifier: Apache-2.0
 
-@forward 'scrollbar';
-@forward 'icons';
-@forward 'typography';
-@forward 'key-value';
-@forward 'links';
-@forward 'common';
-@forward 'xterm-terminal';
-@forward 'ngx-colors';
-@forward 'inputs';
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+	-webkit-appearance: none;
+	margin: 0;
+}
+
+/* Firefox */
+input[type='number'] {
+	-moz-appearance: textfield;
+}
