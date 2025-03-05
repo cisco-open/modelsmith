@@ -83,7 +83,7 @@ SPDX-License-Identifier: Apache-2.0
 				<div class="key-value-container single">
 					<div class="key-value-pair space-between">
 						<div class="key-value-key">{{ item.key | parametersLabel }}:</div>
-						<div class="key-value-value">
+						<div class="key-value-value" msUseEllipsis [maxEllipsisLines]="1">
 							@switch (item.key) { @case ('file_size_bytes') {
 							{{ item.value | adaptiveFileSize }}
 							} @case ('creation_date') {
