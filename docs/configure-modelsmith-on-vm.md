@@ -198,7 +198,7 @@ BACKUP_PROXY_SSH_PRIVATE_KEY_PATH=/path/to/proxy/backup/private/key
 - **PORT**: The port number where the backend server listens. (default = 3000)
 - **MACHINE_LEARNING_CORE_PATH**: The path to the modelsmith python project directory on the VM. It needs to be an absolute path from the $HOME.
 - **CONDA_SH_PATH**: Path to the Conda environment script on the VM. It needs to be an absolute path from the $HOME.
-- **HUGGING_FACE_ACCESS_TOKEN**: This token is necessary for authenticating and accessing Hugging Face's model repositories. To obtain the token, please check: [AutoAWQ Configuration Guide](configure-autoawq.md)
+- **HUGGING_FACE_ACCESS_TOKEN**: This token is necessary for authenticating and accessing Hugging Face's model repositories. To obtain the token, please check at the bottom of this readme, in the FAQ. 
 
 - **CONNECTION_TYPE**: Set to `VM` to indicate the project is configured to use virtual machines for model training.
 
@@ -246,3 +246,26 @@ To start ModelSmith:
 2. Visit `http://localhost:4200` in your web browser to access the application.
 
 Successfully configuring ModelSmith on a VM allows you to leverage remote computational resources for training and deploying machine learning models.
+
+
+## FAQ
+
+1. **How to obtain the hugging face access token?**:
+
+   In this step, you need to obtain an access token from Hugging Face and add it to your `.env` configuration file.
+
+   1. **Obtain the Access Token:**
+
+      - If you don't have a Hugging Face account, create one [here](https://huggingface.co/join).
+      - Request access to [Mistral-7B-Instruct-v0.2 on Hugging Face](https://huggingface.co/mistralai/Mistral-7B-Instruct-v0.2).
+      - After gaining access, navigate to your Hugging Face account:
+        - Go to [Profile/Settings](https://huggingface.co/settings/tokens).
+        - Under the "Access Tokens" section, generate a new token with read permissions.
+
+   2. **Add the Access Token to the `.env` File:**
+
+      Open your `.env` file and add the following line, replacing `insert_token_here` with your actual Hugging Face access token:
+
+      ```bash
+      HUGGING_FACE_ACCESS_TOKEN=insert_token_here
+      ```
