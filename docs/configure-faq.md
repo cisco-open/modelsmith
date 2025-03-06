@@ -6,9 +6,11 @@
 
    1.1. **Obtain the Access Token:**
 
-      - If you don't have a Hugging Face account, create one [here](https://huggingface.co/join).
-      - Request access to [Mistral-7B-Instruct-v0.2 on Hugging Face](https://huggingface.co/mistralai/Mistral-7B-Instruct-v0.2).
-      - After gaining access, navigate to your Hugging Face account:
+      1.1.1. If you don't have a Hugging Face account, create one [here](https://huggingface.co/join).
+      
+      1.1.2. Request access to [Mistral-7B-Instruct-v0.2 on Hugging Face](https://huggingface.co/mistralai/Mistral-7B-Instruct-v0.2).
+      
+       1.1.3. After gaining access, navigate to your Hugging Face account:
         - Go to [Profile/Settings](https://huggingface.co/settings/tokens).
         - Under the "Access Tokens" section, generate a new token with read permissions.
 
