@@ -82,6 +82,40 @@ source ~/.bashrc
 conda --version
 ```
 
+2.6. (Optional) If `conda` is not found
+
+If you see a `command not found: conda` error when opening a new terminal, you may need to manually add Miniconda to your PATH. Follow these steps:
+
+2.6.1. **Open your `~/.bashrc` file using vi:**
+
+   ```bash
+   vi ~/.bashrc
+   ```
+
+2.6.2. **Enter Insert Mode:**  
+   Press `i` to enter insert mode.
+
+2.6.3. **Add the following line** (replace `username` with your actual username):
+
+   ```bash
+   export PATH="/home/username/miniconda/bin:$PATH"
+   ```
+
+2.6.4. **Save and Exit:**  
+   Press `Esc`, then type `:wq` and hit Enter.
+
+2.6.5. **Reload your `.bashrc`:**
+
+   ```bash
+   source ~/.bashrc
+   ```
+
+2.6.6. **Verify the installation:**
+
+   ```bash
+   conda --version
+   ```
+
 3. **Create and Activate a New Conda Environment**: With Miniconda installed, create a new Conda environment and activate it:
 
    ```bash
@@ -111,7 +145,7 @@ conda --version
 
    Please refer to the [Diffusion Model Configuration Guide](configure-diffusion-model.md) for detailed instructions.
 
-## Phase 2: Configure the Environment
+## Phase 2: Configure the Environment on Local Machine
 
 After configuring the Python environment, the next step involves setting up the project environment. This is done by executing the `setup_environment.sh` script located in the `backend` directory. The script performs several tasks, including setting up the `.env` file for the backend server.
 
