@@ -131,7 +131,7 @@ The `.env` file is crucial for defining environment-specific variables that conf
 
 - **CONDA_SH_PATH**: Indicates the path to the Conda environment script. This path is necessary for the script to activate the Conda environment correctly. In the given example, `~/miniconda3/etc/profile.d/conda.sh` points to the Conda initialization script for Miniconda installations.
 
-- **HUGGING_FACE_ACCESS_TOKEN**: This token is necessary for authenticating and accessing Hugging Face's model repositories. To obtain the token, please check: [AutoAWQ Configuration Guide](configure-autoawq.md)
+- **HUGGING_FACE_ACCESS_TOKEN**: This token is necessary for authenticating and accessing Hugging Face's model repositories. To obtain the token, please check: [FAQ](configure-faq.md)
 
 - **CONNECTION_TYPE**: Determines the connection type for the model training environment. Setting this to `LOCAL` specifies that all operations, including model training and inference, will be performed on the local machine, utilizing the local GPU if available.
 
