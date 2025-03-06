@@ -2,17 +2,6 @@
 
 This guide provides detailed steps to configure and set up the Multiflow project.
 
-## Prerequisites
-
-Before proceeding, ensure you have Conda installed on your system. If not, follow these steps to install it:
-
-```bash
-wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
-bash Miniconda3-latest-Linux-x86_64.sh  # Make sure to add it as a PATH variable
-source ~/.bashrc
-conda --version  # To check if it's installed
-```
-
 ## Step-by-Step Configuration
 
 ### Step 1: Activate Conda Environment
