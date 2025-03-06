@@ -7,9 +7,7 @@ This guide provides instructions to configure ModelSmith to work with [AutoAWQ](
 - [Original Paper: AutoAWQ](https://arxiv.org/pdf/2306.00978)
 - [Main Repository: AutoAWQ](https://github.com/mit-han-lab/llm-awq)
 
-## Prerequisites
-
-Before proceeding, ensure you have configured the project locally or on a VM.
+## Steps
 
 1. **Activate the current Conda Environment**:
 
