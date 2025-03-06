@@ -243,6 +243,11 @@ If a proxy is required to access the backup VM, configure these fields:
 To start ModelSmith:
 
 1. Execute the `start_modelsmith.sh` script to launch both the frontend and backend servers.
+
+```bash
+bash start_modelsmith.sh
+```
+
 2. Visit `http://localhost:4200` in your web browser to access the application.
 
 Successfully configuring ModelSmith on a VM allows you to leverage remote computational resources for training and deploying machine learning models.
