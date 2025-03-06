@@ -6,13 +6,14 @@ This guide outlines the process of configuring ModelSmith to run on a Virtual Ma
 
 Before you can use this application, please ensure that you have the following installed on your system:
 
-- [Node.js](https://nodejs.org/) (v20 or higher)
+- Node.js v20.15.1
+- npm v10.7.0
 
 If you don't have Node.js and npm installed, you can follow these steps to install them:
 
 **Node.js:**
 
-- Visit the [Node.js website](https://nodejs.org/).
+- Visit the [Node.js v20.15.0 website](https://nodejs.org/en/blog/release/v20.15.0).
 - Download the installer for your operating system.
 - Run the installer and follow the on-screen instructions.
 
@@ -21,6 +22,14 @@ To verify that you have successfully installed Node.js and npm, you can run the 
 ```bash
 node -v
 ```
+Ensure it displays v20.10.1.
+
+**npm:**
+
+```bash
+npm install --global npm@10.7.0
+```
+Ensure it displays v10.7.0.
 
 ## Phase 1: Setup on the VM
 
