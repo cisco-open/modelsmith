@@ -46,7 +46,7 @@ Before running the backend container, you need to set up the environment variabl
 
 - `MACHINE_LEARNING_CORE_PATH`: Path to the machine learning core within the container. The default value is "../machine_learning_core".
 - `CONDA_SH_PATH`: Path to the Conda shell script for environment activation within the container. The default value is "../../root/miniconda3/etc/profile.d/conda.sh".
-- `HUGGING_FACE_ACCESS_TOKEN`: Your Hugging Face access token for model downloads. Please refer to the [AutoAWQ Configuration Guide](configure-autoawq.md)
+- `HUGGING_FACE_ACCESS_TOKEN`: This token is necessary for authenticating and accessing Hugging Face's model repositories. To obtain the token, please check: [FAQ](configure-faq.md)
 - `CONNECTION_TYPE`: Type of connection ("LOCAL" for docker container machine with host GPU).
 
 Note: The initial backend configuration will take up to 5-10 minutes.
