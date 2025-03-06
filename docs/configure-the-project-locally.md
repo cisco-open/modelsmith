@@ -22,7 +22,7 @@ To verify that you have successfully installed Node.js and npm, you can run the 
 ```bash
 node -v
 ```
-Ensure it displays v20.10.1.
+Ensure it displays v20.15.0.
 
 **npm:**
 
